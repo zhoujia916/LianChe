@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoUserMapper">
+    <resultMap id="AutoUser" type="puzzle.lianche.entity.AutoUser">
+    	<id column="user_id" property="userId" /> 
+    	<result column="user_name" property="userName" /> 
+    	<result column="password" property="password" /> 
+    	<result column="birth" property="birth" /> 
+    	<result column="phone" property="phone" /> 
+    	<result column="email" property="email" /> 
+    	<result column="user_avatar" property="userAvatar" /> 
+    	<result column="status" property="status" /> 
+    	<result column="point" property="point" /> 
+    	<result column="remark" property="remark" /> 
+    	<result column="add_time" property="addTime" /> 
+    	<result column="authenticate_time" property="authenticateTime" /> 
+    	<result column="sort_order" property="sortOrder" />
+        <result column="realName" property="realName"/>
+        <result column="shopName" property="shopName"/>
+        <result column="shopType" property="shopType"/>
+    </resultMap>
+
+    <sql id="allColumn">
+    	user_id, user_name, password, birth, phone, email, user_avatar, status, point, remark, add_time, authenticate_time, sort_order
+    </sql>
+
+    <insert id="insert" parameterType="AutoUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into auto_user 
+        (
+        	
+        	<if test="userName != null">user_name, </if>
+        	<if test="password != null">password, </if>
+        	<if test="birth != null">birth, </if>
+        	<if test="phone != null">phone, </if>
+        	<if test="email != null">email, </if>
+        	<if test="userAvatar != null">user_avatar, </if>
+        	<if test="status != null">status, </if>
+        	<if test="point != null">point, </if>
+        	<if test="remark != null">remark, </if>
+        	<if test="addTime != null">add_time, </if>
+        	<if test="authenticateTime != null">authenticate_time, </if>
+        	<if test="sortOrder != null">sort_order</if>
+        )
+        values 
+        (
+        	
+        	<if test="userName != null">#{userName}, </if>
+        	<if test="password != null">#{password}, </if>
+        	<if test="birth != null">#{birth}, </if>
+        	<if test="phone != null">#{phone}, </if>
+        	<if test="email != null">#{email}, </if>
+        	<if test="userAvatar != null">#{userAvatar}, </if>
+        	<if test="status != null">#{status}, </if>
+        	<if test="point != null">#{point}, </if>
+        	<if test="remark != null">#{remark}, </if>
+        	<if test="addTime != null">#{addTime}, </if>
+        	<if test="authenticateTime != null">#{authenticateTime}, </if>
+        	<if test="sortOrder != null">#{sortOrder}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoUser">
+        update auto_user
+        <set>
+        	<if test="userName != null and userName !=''">
+        		user_name = #{userName},
+        	</if>
+        	<if test="password != null and password !=''">
+        		password = #{password},
+        	</if>
+        	<if test="birth != null">
+        		birth = #{birth},
+        	</if>
+        	<if test="phone != null and phone > 0">
+        		phone = #{phone},
+        	</if>
+        	<if test="email != null and email > 0">
+        		email = #{email},
+        	</if>
+        	<if test="userAvatar != null userAvatar > 0">
+        		user_avatar = #{userAvatar},
+        	</if>
+        	<if test="status > 0">
+        		status = #{status},
+        	</if>
+        	<if test="point > 0">
+        		point = #{point},
+        	</if>
+        	<if test="remark != null and remark !=''">
+        		remark = #{remark},
+        	</if>
+        	<if test="addTime != null">  
+        		add_time = #{addTime},
+        	</if>
+        	<if test="authenticateTime != null">  
+        		authenticate_time = #{authenticateTime},
+        	</if>
+        	<if test="sortOrder > 0">
+        		sort_order = #{sortOrder},
+        	</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_user
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="userId > 0">
+	                user_id = #{userId}
+	            </if>
+                <if test="userIds !=null and userIds.length > 0">
+                    user_id in
+                    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                        #{userId}
+                    </foreach>
+                </if>
+	        	<if test="userName != null">
+	                user_name = #{userName}
+	            </if>
+	        	<if test="password != null">
+	                password = #{password}
+	            </if>
+	        	<if test="phone != null">
+	                phone = #{phone}
+	            </if>
+	        	<if test="email != null">
+	                email = #{email}
+	            </if>
+	        	<if test="userAvatar != null">
+	                user_avatar = #{userAvatar}
+	            </if>
+	        	<if test="status > 0">
+	                status = #{status}
+	            </if>
+	        	<if test="point > 0">
+	                point = #{point}
+	            </if>
+	        	<if test="remark != null">
+	                remark = #{remark}
+	            </if>
+	        	<if test="sortOrder > 0">
+	                sort_order = #{sortOrder}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoUser">
+        select <include refid="allColumn"/> from auto_user
+        <where>  
+        	<if test="userId > 0">
+                user_id = #{userId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoUser">
+        select au.*,aup.real_name as realName,aup.shop_name as shopName,aup.shop_type as shopType
+        from auto_user as au left join auto_user_profile as aup on au.user_id=aup.user_id
+        <where>
+            <if test="userName != null and userName != ''">
+                and au.user_name like concat('%',#{userName},'%')
+            </if>
+            <if test="userStatus !=null and userStatus!=''">
+                and au.status in (${userStatus})
+            </if>
+            <if test="shopName !=null and shopName !=''">
+                and aup.shop_name like concat('%',#{shopName},'%')
+            </if>
+            <if test="shopType !=null and shopType!=''">
+                and aup.shop_type in (${shopType})
+            </if>
+            <if test="userId!=null and userId!=''">
+                and au.user_id in (${userId})
+            </if>
+        </where>
+        order by au.sort_order desc,au.user_id desc
+    </select>
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SystemMsgMapper">
+    <resultMap id="SystemMsg" type="puzzle.lianche.entity.SystemMsg">
+    	<id column="msg_id" property="msgId" /> 
+    	<result column="content" property="content" /> 
+    	<result column="add_time" property="addTime" /> 
+    	<result column="source_user" property="sourceUser" /> 
+    	<result column="target_user" property="targetUser" /> 
+    </resultMap>
+
+    <sql id="allColumn">
+    	msg_id, content, add_time, source_user, target_user
+    </sql>
+
+    <insert id="insert" parameterType="SystemMsg" useGeneratedKeys="true" keyProperty="msgId">
+        insert into system_msg 
+        (
+        	
+        	<if test="content != null">content, </if>
+        	<if test="addTime != null">add_time, </if>
+        	<if test="sourceUser != null">source_user, </if>
+        	<if test="targetUser != null">target_user</if>
+        )
+        values 
+        (
+        	
+        	<if test="content != null">#{content}, </if>
+        	<if test="addTime != null">#{addTime}, </if>
+        	<if test="sourceUser != null">#{sourceUser}, </if>
+        	<if test="targetUser != null">#{targetUser}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="SystemMsg">
+        update system_msg set 
+        <set>
+        	<if test="content != null">  
+        		content = #{content}
+        	</if>
+        	<if test="addTime != null">  
+        		add_time = #{addTime}
+        	</if>
+        	<if test="sourceUser != null">  
+        		source_user = #{sourceUser}
+        	</if>
+        	<if test="targetUser != null">  
+        		target_user = #{targetUser}
+        	</if>
+        </set>
+        <where> 
+        	<if test="msgId > 0">
+                msg_id = #{msgId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from system_msg
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="msgId > 0">
+	                msg_id = #{msgId}
+	            </if>
+	        	<if test="content != null">
+	                content = #{content}
+	            </if>
+	        	<if test="addTime > 0">
+	                add_time = #{addTime}
+	            </if>
+	        	<if test="sourceUser > 0">
+	                source_user = #{sourceUser}
+	            </if>
+	        	<if test="targetUser > 0">
+	                target_user = #{targetUser}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="SystemMsg">
+        select <include refid="allColumn"/> from system_msg
+        <where>  
+        	<if test="msgId > 0">
+                msg_id = #{msgId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="SystemMsg">
+        select <include refid="allColumn"/> from system_msg
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="msgId > 0">
+	                msg_id = #{msgId}
+	            </if>
+	        	<if test="content != null">
+	                content = #{content}
+	            </if>
+	        	<if test="addTime > 0">
+	                add_time = #{addTime}
+	            </if>
+	        	<if test="sourceUser > 0">
+	                source_user = #{sourceUser}
+	            </if>
+	        	<if test="targetUser > 0">
+	                target_user = #{targetUser}
+	            </if>
+	        </trim>
+        </where>
+    </select>
+
+</mapper>

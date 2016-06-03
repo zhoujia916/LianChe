@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoMsgMapper">
+    <resultMap id="AutoMsg" type="puzzle.lianche.entity.AutoMsg">
+    	<id column="msg_id" property="msgId" /> 
+    	<result column="msg_title" property="msgTitle" /> 
+    	<result column="msg_content" property="msgContent" /> 
+    	<result column="msg_type" property="msgType" /> 
+    	<result column="msg_content_type" property="msgContentType" /> 
+    	<result column="msg_author" property="msgAuthor" /> 
+    	<result column="msg_url" property="msgUrl" /> 
+    	<result column="add_time" property="addTime" /> 
+    	<result column="from_user_id" property="fromUserId" /> 
+    	<result column="to_user_id" property="toUserId" /> 
+    	<result column="view_count" property="viewCount" /> 
+    	<result column="status" property="status" />
+        <result column="fromUserName" property="fromUserName"/>
+        <result column="fromRealName" property="fromRealName"/>
+        <result column="toUserName" property="toUserName"/>
+        <result column="toRealName" property="toRealName"/>
+    </resultMap>
+
+    <sql id="allColumn">
+    	msg_id, msg_title, msg_content, msg_type, msg_content_type, msg_author, msg_url, add_time, from_user_id, to_user_id, view_count, status
+    </sql>
+
+    <insert id="insert" parameterType="AutoMsg" useGeneratedKeys="true" keyProperty="msgId">
+        insert into auto_msg 
+        (
+        	
+        	<if test="msgTitle != null">msg_title, </if>
+        	<if test="msgContent != null">msg_content, </if>
+        	<if test="msgType != null">msg_type, </if>
+        	<if test="msgContentType != null">msg_content_type, </if>
+        	<if test="msgAuthor != null">msg_author, </if>
+        	<if test="msgUrl != null">msg_url, </if>
+        	<if test="addTime != null">add_time, </if>
+        	<if test="fromUserId != null">from_user_id, </if>
+        	<if test="toUserId != null">to_user_id, </if>
+        	<if test="viewCount != null">view_count, </if>
+        	<if test="status != null">status</if>
+        )
+        values 
+        (
+        	
+        	<if test="msgTitle != null">#{msgTitle}, </if>
+        	<if test="msgContent != null">#{msgContent}, </if>
+        	<if test="msgType != null">#{msgType}, </if>
+        	<if test="msgContentType != null">#{msgContentType}, </if>
+        	<if test="msgAuthor != null">#{msgAuthor}, </if>
+        	<if test="msgUrl != null">#{msgUrl}, </if>
+        	<if test="addTime != null">#{addTime}, </if>
+        	<if test="fromUserId != null">#{fromUserId}, </if>
+        	<if test="toUserId != null">#{toUserId}, </if>
+        	<if test="viewCount != null">#{viewCount}, </if>
+        	<if test="status != null">#{status}</if>
+       	)
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into auto_msg
+        (
+            msg_title,
+            msg_content,
+            msg_type,
+            msg_content_type,
+            msg_author,
+            msg_url,
+            add_time,
+            from_user_id,
+            to_user_id,
+            view_count,
+            status
+        )
+        values
+        <foreach collection="list" item="msg" index="index" separator=",">
+        (
+            #{msg.msgTitle},
+            #{msg.msgContent},
+            #{msg.msgType},
+            #{msg.msgContentType},
+            #{msg.msgAuthor},
+            #{msg.msgUrl},
+            #{msg.addTime},
+            #{msg.fromUserId},
+            #{msg.toUserId},
+            #{msg.viewCount},
+            #{msg.status}
+        )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="AutoMsg">
+        update auto_msg set 
+        <set>
+        	<if test="msgTitle != null">  
+        		msg_title = #{msgTitle}
+        	</if>
+        	<if test="msgContent != null">  
+        		msg_content = #{msgContent}
+        	</if>
+        	<if test="msgType != null">  
+        		msg_type = #{msgType}
+        	</if>
+        	<if test="msgContentType != null">  
+        		msg_content_type = #{msgContentType}
+        	</if>
+        	<if test="msgAuthor != null">  
+        		msg_author = #{msgAuthor}
+        	</if>
+        	<if test="msgUrl != null">  
+        		msg_url = #{msgUrl}
+        	</if>
+        	<if test="addTime != null">  
+        		add_time = #{addTime}
+        	</if>
+        	<if test="fromUserId != null">  
+        		from_user_id = #{fromUserId}
+        	</if>
+        	<if test="toUserId != null">  
+        		to_user_id = #{toUserId}
+        	</if>
+        	<if test="viewCount != null">  
+        		view_count = #{viewCount}
+        	</if>
+        	<if test="status != null">  
+        		status = #{status}
+        	</if>
+        </set>
+        <where> 
+        	<if test="msgId > 0">
+                msg_id = #{msgId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_msg
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="msgId > 0">
+	                msg_id = #{msgId}
+	            </if>
+                <if test="msgIds!=null and msgIds.length>0">
+                    msg_id in
+                    <foreach collection="msgIds" item="msgId" open="(" separator="," close=")">
+                        #{msgId}
+                    </foreach>
+                </if>
+	        	<if test="msgTitle != null">
+	                msg_title = #{msgTitle}
+	            </if>
+	        	<if test="msgContent != null">
+	                msg_content = #{msgContent}
+	            </if>
+	        	<if test="msgType > 0">
+	                msg_type = #{msgType}
+	            </if>
+	        	<if test="msgContentType > 0">
+	                msg_content_type = #{msgContentType}
+	            </if>
+	        	<if test="msgAuthor != null">
+	                msg_author = #{msgAuthor}
+	            </if>
+	        	<if test="msgUrl != null">
+	                msg_url = #{msgUrl}
+	            </if>
+	        	<if test="fromUserId > 0">
+	                from_user_id = #{fromUserId}
+	            </if>
+	        	<if test="toUserId > 0">
+	                to_user_id = #{toUserId}
+	            </if>
+	        	<if test="viewCount > 0">
+	                view_count = #{viewCount}
+	            </if>
+	        	<if test="status > 0">
+	                status = #{status}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoMsg">
+        select <include refid="allColumn"/> from auto_msg
+        <where>  
+        	<if test="msgId > 0">
+                msg_id = #{msgId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoMsg">
+        select am.*,
+        (select user_name from auto_user as au where au.user_id=am.from_user_id and am.msg_type=1 ) as fromUserName,
+        (select real_name from auto_user_profile as aup where aup.user_id=am.from_user_id and am.msg_type=1) as fromRealName,
+        (select user_name from auto_user as au where au.user_id=am.to_user_id) as toUserName,
+        (select real_name from auto_user_profile as aup where aup.user_id=am.to_user_id) as toRealName
+        from auto_msg as am
+        <where>
+            <if test="toUserName!=null and toUserName!=''">
+                and am.to_user_id in (select user_id from auto_user where user_name like concat('%',#{toUserName},'%'))
+            </if>
+            <if test="fromUserName!=null and fromUserName!=''">
+                and am.from_user_id in (select user_id from auto_user where user_name like concat('%',#{fromUserName},'%'))
+            </if>
+            <if test="fromUserName==null">
+                and am.msg_type=0
+            </if>
+            <if test="msgType>-1 and msgType!=null">
+                and am.msg_type=#{msgType}
+            </if>
+            <if test="status>-1 and status!=null">
+                and am.status=#{status}
+            </if>
+            <if test="beginTime!=null">
+                and add_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime!=null">
+                and add_time &lt;= #{endTime}
+            </if>
+        </where>
+        order by am.msg_id desc
+    </select>
+
+</mapper>

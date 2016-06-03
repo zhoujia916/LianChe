@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoCarAttrMapper">
+    <resultMap id="AutoCarAttr" type="puzzle.lianche.entity.AutoCarAttr">
+    	<id column="car_attr_id" property="carAttrId" /> 
+    	<result column="car_id" property="carId" /> 
+    	<result column="attr_id" property="attrId" /> 
+    	<result column="attr_value" property="attrValue" /> 
+    	<result column="attr_price" property="attrPrice" /> 
+    </resultMap>
+
+    <sql id="allColumn">
+    	car_attr_id, car_id, attr_id, attr_value, attr_price
+    </sql>
+
+    <insert id="insert" parameterType="AutoCarAttr" useGeneratedKeys="true" keyProperty="carAttrId">
+        insert into auto_car_attr 
+        (
+        	
+        	<if test="carId != null">car_id, </if>
+        	<if test="attrId != null">attr_id, </if>
+        	<if test="attrValue != null">attr_value, </if>
+        	<if test="attrPrice != null">attr_price</if>
+        )
+        values 
+        (
+        	
+        	<if test="carId != null">#{carId}, </if>
+        	<if test="attrId != null">#{attrId}, </if>
+        	<if test="attrValue != null">#{attrValue}, </if>
+        	<if test="attrPrice != null">#{attrPrice}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoCarAttr">
+        update auto_car_attr set 
+        <set>
+        	<if test="carId != null">  
+        		car_id = #{carId}
+        	</if>
+        	<if test="attrId != null">  
+        		attr_id = #{attrId}
+        	</if>
+        	<if test="attrValue != null">  
+        		attr_value = #{attrValue}
+        	</if>
+        	<if test="attrPrice != null">  
+        		attr_price = #{attrPrice}
+        	</if>
+        </set>
+        <where> 
+        	<if test="carAttrId > 0">
+                car_attr_id = #{carAttrId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_car_attr
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="carAttrId > 0">
+	                car_attr_id = #{carAttrId}
+	            </if>
+	        	<if test="carId > 0">
+	                car_id = #{carId}
+	            </if>
+                <if test="carIds!=null and carIds.length>0">
+                    car_id in
+                    <foreach collection="carIds" item="carId" open="(" separator="," close=")">
+                        #{carId}
+                    </foreach>
+                </if>
+	        	<if test="attrId > 0">
+	                attr_id = #{attrId}
+	            </if>
+                <if test="attrIds!=null and attrIds.length>0">
+                    attr_id in
+                    <foreach collection="attrIds" item="attrId" open="(" separator="," close=")">
+                        #{attrId}
+                    </foreach>
+                </if>
+	        	<if test="attrValue != null">
+	                attr_value = #{attrValue}
+	            </if>
+	        	<if test="attrPrice > 0">
+	                attr_price = #{attrPrice}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoCarAttr">
+        select <include refid="allColumn"/> from auto_car_attr
+        <where>  
+        	<if test="carAttrId > 0">
+                car_attr_id = #{carAttrId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoCarAttr">
+        select <include refid="allColumn"/> from auto_car_attr
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="carAttrId > 0">
+	                car_attr_id = #{carAttrId}
+	            </if>
+	        	<if test="carId > 0">
+	                car_id = #{carId}
+	            </if>
+	        	<if test="attrId > 0">
+	                attr_id = #{attrId}
+	            </if>
+	        	<if test="attrValue != null">
+	                attr_value = #{attrValue}
+	            </if>
+	        	<if test="attrPrice > 0">
+	                attr_price = #{attrPrice}
+	            </if>
+	        </trim>
+        </where>
+    </select>
+
+</mapper>

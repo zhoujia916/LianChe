@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoAdMapper">
+    <resultMap id="AutoAd" type="puzzle.lianche.entity.AutoAd">
+    	<id column="ad_id" property="adId" /> 
+    	<result column="ad_position_id" property="adPositionId" /> 
+    	<result column="ad_link" property="adLink" /> 
+    	<result column="add_time" property="addTime" /> 
+    	<result column="start_date" property="startDate" /> 
+    	<result column="end_date" property="endDate" /> 
+    	<result column="status" property="status" />
+        <result column="positionName" property="positionName"/>
+        <result column="width" property="width"/>
+        <result column="height" property="height"/>
+    </resultMap>
+
+    <sql id="allColumn">
+    	ad_id, ad_position_id, ad_link, add_time, start_date, end_date, status
+    </sql>
+
+    <insert id="insert" parameterType="AutoAd" useGeneratedKeys="true" keyProperty="adId">
+        insert into auto_ad 
+        (
+        	
+        	<if test="adPositionId != null">ad_position_id, </if>
+        	<if test="adLink != null">ad_link, </if>
+        	<if test="addTime != null">add_time, </if>
+        	<if test="startDate != null">start_date, </if>
+        	<if test="endDate != null">end_date, </if>
+        	<if test="status != null">status</if>
+        )
+        values 
+        (
+        	
+        	<if test="adPositionId != null">#{adPositionId}, </if>
+        	<if test="adLink != null">#{adLink}, </if>
+        	<if test="addTime != null">#{addTime}, </if>
+        	<if test="startDate != null">#{startDate}, </if>
+        	<if test="endDate != null">#{endDate}, </if>
+        	<if test="status != null">#{status}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoAd">
+        update auto_ad
+        <set>
+        	<if test="adPositionId != null">  
+        		ad_position_id = #{adPositionId},
+        	</if>
+        	<if test="adLink != null">  
+        		ad_link = #{adLink},
+        	</if>
+        	<if test="addTime != null">  
+        		add_time = #{addTime},
+        	</if>
+        	<if test="startDate != null">  
+        		start_date = #{startDate},
+        	</if>
+        	<if test="endDate != null">  
+        		end_date = #{endDate},
+        	</if>
+        	<if test="status != null">  
+        		status = #{status},
+        	</if>
+        </set>
+        where ad_id = #{adId}
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_ad
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="adId > 0">
+	                ad_id = #{adId}
+	            </if>
+                <if test="adIds!=null and adIds.length>0">
+                    ad_id in
+                    <foreach collection="adIds" item="adId" open="(" separator="," close=")">
+                        #{adId}
+                    </foreach>
+                </if>
+	        	<if test="adPositionId > 0">
+	                ad_position_id = #{adPositionId}
+	            </if>
+	        	<if test="adLink != null">
+	                ad_link = #{adLink}
+	            </if>
+	        	<if test="status > 0">
+	                status = #{status}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoAd">
+        select <include refid="allColumn"/> from auto_ad
+        <where>  
+        	<if test="adId > 0">
+                ad_id = #{adId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoAd">
+        select aa.*,aap.position_name as positionName,aap.width as width,aap.height as height
+        from auto_ad as aa
+        inner join auto_ad_position as aap on aa.ad_position_id=aap.position_id
+        <where>
+            <if test="adPositionIds!=null and adPositionIds!=''">
+                and aa.ad_position_id in (${adPositionIds})
+            </if>
+            <if test="startDate!=null">
+                and start_date &gt;= #{startDate}
+            </if>
+            <if test="endDate!=null">
+                and end_date &lt;= #{endDate}
+            </if>
+        </where>
+        order by aa.ad_id desc
+    </select>
+</mapper>

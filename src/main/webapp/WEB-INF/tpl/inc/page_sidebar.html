@@ -1,0 +1,158 @@
+<!-- #section:basics/sidebar -->
+<div id="sidebar" class="sidebar responsive sidebar-fixed">
+    <!-- .sidebar-shortcuts -->
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+            <a class="btn btn-success" title="订单列表" href="#page/autoorder/detail">
+                <i class="ace-icon fa fa-shopping-cart"></i>
+            </a>
+
+            <a class="btn btn-info" title="车源列表" href="#page/autocar/detail">
+                <i class="ace-icon fa fa-car"></i>
+            </a>
+
+            <a class="btn btn-warning" title="用户列表" href="#page/autouser/index">
+                <i class="ace-icon fa fa-users"></i>
+            </a>
+
+            <a class="btn btn-danger" title="评论列表" href="#page/autocomment/index">
+                <i class="ace-icon fa fa-cogs"></i>
+            </a>
+        </div>
+
+        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+            <a class="btn btn-success" href="#page/autoorder/detail"></a>
+
+            <a class="btn btn-info" href="#page/autocar/detail"></a>
+
+            <a class="btn btn-warning" href="#page/autouser/index"></a>
+
+            <a class="btn btn-danger" href="#page/autocomment/index"></a>
+        </div>
+    </div>
+    <!-- /.sidebar-shortcuts -->
+
+    <ul class="nav nav-list">
+        <li class="">
+            <a data-url="page/main" href="index#page/main">
+                <i class="menu-icon fa fa-tachometer"></i>
+                <span class="menu-text">系统首页</span>
+            </a>
+        </li>
+        {{if $admin.menus}}
+        {{foreach from=$admin.menus item=menuItem}}
+        <li>
+            {{if $menuItem.children}}
+            <a href="#" class="dropdown-toggle">
+                {{if $menuItem.menuIco}}<i class="{{$menuItem.menuIco}}"></i>{{/if}}
+                <span class="menu-text">{{$menuItem.menuName}}</span>
+
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+                {{foreach from=$menuItem.children item=child0Item}}
+                <li>
+                    {{if $child0Item.children}}
+                    <a href="#" class="dropdown-toggle">
+                        {{if $child0Item.menuIco}}<i class="{{$child0Item.menuIco}}"></i>{{/if}}
+                        <span class="menu-text">{{$child0Item.menuName}}</span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                        {{foreach from=$child0Item.children item=child1Item}}
+                        <li>
+                            {{if $child1Item.children}}
+                            <a href="#" class="dropdown-toggle">
+                                {{if $child1Item.menuIco}}<i class="{{$child1Item.menuIco}}"></i>{{/if}}
+                                {{$child1Item.menuName}}
+                                <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+                            <ul class="submenu">
+                                {{foreach from=$child1Item.children item=child2Item}}
+                                <li>
+                                    {{if $child2Item.children}}
+                                    <a href="#" class="dropdown-toggle">
+                                        {{if $child2Item.menuIco}}<i class="{{$child2Item.menuIco}}"></i>{{/if}}
+                                        {{$child2Item.menuName}}
+                                        <b class="arrow fa fa-angle-down"></b>
+                                    </a>
+                                    <b class="arrow"></b>
+                                    <!---->
+                                    <ul class="submenu">
+                                        {{foreach from=$child2Item.children item=child3Item}}
+                                        <li>
+                                            {{if $child3Item.children}}
+                                            <a href="#" class="dropdown-toggle">
+                                                {{if $child3Item.menuIco}}<i class="{{$child3Item.menuIco}}"></i>{{/if}}
+                                                {{$child3Item.menuName}}
+                                                <b class="arrow fa fa-angle-down"></b>
+                                            </a>
+                                            <b class="arrow"></b>
+                                            <ul class="submenu">
+                                                {{foreach from=$child3Item.children item=child4Item}}
+                                                <li>
+                                                    <a data-url="{{$child4Item.menuUrl}}" href="index#page/{{$child4Item.menuUrl}}">
+                                                        {{if $child4Item.menuIco}}<i class="{{$child4Item.menuIco}}"></i>{{/if}}
+                                                        {{$child4Item.menuName}}
+                                                    </a>
+                                                </li>
+                                                {{/foreach}}
+                                            </ul>
+                                            {{else}}
+                                            <a data-url="{{$child3Item.menuUrl}}" href="index#page/{{$child3Item.menuUrl}}">
+                                                {{if $child3Item.menuIco}}<i class="{{$child3Item.menuIco}}"></i>{{/if}}
+                                                {{$child3Item.menuName}}
+                                            </a>
+                                            {{/if}}
+                                        </li>
+                                        {{/foreach}}
+                                    </ul>
+                                    {{else}}
+                                    <a data-url="{{$child2Item.menuUrl}}" href="index#page/{{$child2Item.menuUrl}}">
+                                        {{if $child2Item.menuIco}}<i class="{{$child2Item.menuIco}}"></i>{{/if}}
+                                        {{$child2Item.menuName}}
+                                    </a>
+                                    {{/if}}
+                                </li>
+                                {{/foreach}}
+                            </ul>
+                            {{else}}
+                            <a data-url="{{$child1Item.menuUrl}}" href="index#page/{{$child1Item.menuUrl}}">
+                                {{if $child1Item.menuIco}}<i class="{{$child1Item.menuIco}}"></i>{{/if}}
+                                {{$child1Item.menuName}}
+                            </a>
+                            {{/if}}
+                        </li>
+                        {{/foreach}}
+                    </ul>
+                    {{else}}
+                    <a data-url="{{$child0Item.menuUrl}}" href="index#page/{{$child0Item.menuUrl}}">
+                        {{if $child0Item.menuIco}}<i class="{{$child0Item.menuIco}}"></i>{{/if}}
+                        <span class="menu-text">{{$child0Item.menuName}}</span>
+                    </a>
+                    {{/if}}
+                </li>
+                {{/foreach}}
+            </ul>
+            {{else}}
+            <a data-url="{{$menuItem.menuUrl}}" href="index#page/{{$menuItem.menuUrl}}">
+                {{if $menuItem.menuIco}}<i class="{{$menuItem.menuIco}}"></i>{{/if}}
+                <span class="menu-text">{{$menuItem.menuName}}</span>
+            </a>
+            {{/if}}
+        </li>
+        {{/foreach}}
+        {{/if}}
+    </ul><!-- /.nav-list -->
+
+    <!-- #section:basics/sidebar.layout.minimize -->
+    <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+        <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+    </div>
+
+    <!-- /section:basics/sidebar.layout.minimize -->
+</div>

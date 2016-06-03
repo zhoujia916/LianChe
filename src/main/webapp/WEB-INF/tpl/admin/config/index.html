@@ -1,0 +1,409 @@
+
+<title>Puzzle Admin-配置管理</title>
+
+<!-- ajax layout which only needs content area -->
+<div class="page-header">
+	<h1>
+		配置管理
+	</h1>
+</div><!-- /.page-header -->
+
+<div class="row">
+    <div class="tabbable">
+        <ul class="nav nav-tabs padding-18">
+            <li>
+                <a data-toggle="tab" href="#dept">
+                    <i class="green ace-icon fa fa-user bigger-120"></i>
+                    模块设置
+                </a>
+            </li>
+            <li class="active">
+                <a data-toggle="tab" href="#order">
+                    <i class="green ace-icon fa fa-users bigger-120"></i>
+                    订单
+                </a>
+            </li>
+
+            <li>
+                <a data-toggle="tab" href="#msg">
+                    <i class="orange ace-icon fa fa-rss bigger-120"></i>
+                    消息通知
+                </a>
+            </li>
+
+            <li>
+                <a data-toggle="tab" href="#friends">
+                    <i class="blue ace-icon fa fa-users bigger-120"></i>
+                    Friends
+                </a>
+            </li>
+
+            <li>
+                <a data-toggle="tab" href="#pictures">
+                    <i class="pink ace-icon fa fa-picture-o bigger-120"></i>
+                    Pictures
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content no-border padding-24">
+            <div id="dept" class="tab-pane"></div>
+
+            <div id="order" class="tab-pane in active">
+                <div class="row">
+                    <div class="col-sm-6 widget-container-col ui-sortable">
+                        <div class="widget-box transparent ui-sortable-handle">
+                            <div class="widget-header">
+                                <h4 class="widget-title lighter">支付配置</h4>
+
+                                <div class="widget-toolbar no-border">
+                                    <ul class="nav nav-tabs" id="myTab2">
+                                        <li class="active">
+                                            <a data-toggle="tab" href="#alipay">支付宝</a>
+                                        </li>
+
+                                        <li>
+                                            <a data-toggle="tab" href="#wxpay">微信支付</a>
+                                        </li>
+
+                                        <li>
+                                            <a data-toggle="tab" href="#common">通用参数</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main padding-12 no-padding-left no-padding-right">
+                                    <div class="tab-content padding-4">
+                                        <div id="alipay" class="tab-pane in active">
+                                            <!-- #section:custom/scrollbar.horizontal -->
+                                            <div class="scrollable-horizontal ace-scroll" data-size="800" style="position: relative; padding-top: 12px;">
+                                                <div class="scroll-content" style="max-width: 800px;">
+                                                    <form class="form-horizontal" role="form">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                签约账号(身份ID)
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="alipay_partner" placeholder="请输入合作身份ID" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                收款支付宝账号
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="alipay_sellerid" placeholder="请输入收款支付宝账号" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                收款支付宝账号
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="alipay_account" placeholder="请输入支付宝账户" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                安全检验码
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="alipay_key" placeholder="请输入安全检验码" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                支付宝账户
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="alipay_account" placeholder="请输入支付宝账户" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                            <!-- /section:custom/scrollbar.horizontal -->
+                                        </div>
+
+                                        <div id="wxpay" class="tab-pane">
+                                            <div class="scrollable ace-scroll" data-size="100" data-position="left" style="position: relative;">
+                                                <div class="scroll-content">
+                                                    <form class="form-horizontal" role="form">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                微信帐号APPID
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="wxpay_appid" placeholder="请输入微信APPID" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                商户号(MCHID)
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="wxpay_mchid" placeholder="请输入微信商户号" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                微信KEY(APPKEY)
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="wxpay_appkey" placeholder="请输入微信KEY" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                微信密钥(APPSECRET)
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="wxpay_appsecret" placeholder="请输入微信密钥" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                               安全证书路径
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="wxpay_sslcert" placeholder="请输入安全证书路径" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                安全证书KEY
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="wxpay_sslkey" placeholder="请输入安全证书KEY" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="common" class="tab-pane">
+                                            <div class="scrollable ace-scroll" data-size="100" style="position: relative;"><div class="scroll-track" style="display: none;"><div class="scroll-bar"></div></div><div class="scroll-content" style="max-height: 100px;">
+                                                asdf
+                                            </div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 widget-container-col ui-sortable">
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="msg" class="tab-pane">
+                <div class="row">
+                    <div class="col-sm-12 widget-container-col ui-sortable">
+                        <div class="widget-box transparent ui-sortable-handle">
+                            <div class="widget-header">
+                                <h4 class="widget-title lighter">消息配置</h4>
+
+                                <div class="widget-toolbar no-border">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active">
+                                            <a data-toggle="tab" href="#push">系统推送</a>
+                                        </li>
+
+                                        <li>
+                                            <a data-toggle="tab" href=".sms">短信推送</a>
+                                        </li>
+
+                                        <li>
+                                            <a data-toggle="tab" href="#msg-common">通用参数</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main padding-12 no-padding-left no-padding-right">
+                                    <div class="tab-content padding-4">
+                                        <div id="push" class="tab-pane in active">
+                                            <!-- #section:custom/scrollbar.horizontal -->
+                                            <div class="scrollable-horizontal ace-scroll" data-size="800" style="position: relative; padding-top: 12px;">
+                                                <div class="scroll-content" style="max-width: 800px;">
+                                                    <form class="form-horizontal" role="form">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                签约账号(身份ID)
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="alipay_partner" placeholder="请输入合作身份ID" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                收款支付宝账号
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="alipay_sellerid" placeholder="请输入收款支付宝账号" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                收款支付宝账号
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="alipay_account" placeholder="请输入支付宝账户" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                安全检验码
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="alipay_key" placeholder="请输入安全检验码" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                支付宝账户
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="alipay_account" placeholder="请输入支付宝账户" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                            <!-- /section:custom/scrollbar.horizontal -->
+                                        </div>
+
+                                        <div id="sms" class="sms tab-pane">
+                                            <div class="scrollable ace-scroll" data-size="100" data-position="left" style="position: relative;">
+                                                <div class="scroll-content">
+                                                    <form class="form-horizontal" role="form">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                短信网关
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="sms_url" placeholder="请输入短信网关" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                短信账户
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="sms_account" placeholder="请输入短信账户" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                短信密码
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="password" data-key="1" name="sms_password" placeholder="请输入短信密码" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="msg-common" class="tab-pane">
+                                            <div class="scrollable ace-scroll" data-size="100" style="position: relative;">
+                                                <div class="scroll-track" style="display: none;"><div class="scroll-bar"></div></div>
+                                                <div class="scroll-content">
+                                                    <form class="form-horizontal" role="form">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                提交订单时
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="radio" id="radio_msg" name="submit_order_notify" class="ace" value="msg" />
+                                                                <label class="lbl" for="radio_msg">
+                                                                    消息通知
+                                                               </label>
+
+                                                               <input type="radio" id="radio_sms" name="submit_order_notify" class="ace" value="sms" />
+                                                                <label class="lbl" for="radio_sms">
+                                                                    短信通知
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                短信账户
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="text" data-key="1" name="sms_account" placeholder="请输入短信账户" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">
+                                                                短信密码
+                                                            </label>
+
+                                                            <div class="col-sm-9">
+                                                                <input type="password" data-key="1" name="sms_password" placeholder="请输入短信密码" class="txt input-sm col-sm-8 ">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="friends" class="tab-pane in active">
+            </div>
+
+            <div id="pictures" class="tab-pane in active">
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script type="text/javascript">
+    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+
+    })
+</script>

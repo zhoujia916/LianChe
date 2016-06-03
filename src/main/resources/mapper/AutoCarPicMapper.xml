@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoCarPicMapper">
+    <resultMap id="AutoCarPic" type="puzzle.lianche.entity.AutoCarPic">
+    	<result column="pic_id" property="picId" /> 
+    	<result column="car_id" property="carId" /> 
+    	<result column="path" property="path" /> 
+    </resultMap>
+
+    <sql id="allColumn">
+    	pic_id, car_id, path
+    </sql>
+
+    <insert id="insert" parameterType="AutoCarPic" useGeneratedKeys="true" keyProperty="">
+        insert into auto_car_pic 
+        (
+        	<if test="picId != null">pic_id, </if>
+        	<if test="carId != null">car_id, </if>
+        	<if test="path != null">path</if>
+        )
+        values 
+        (
+        	<if test="picId != null">#{picId}, </if>
+        	<if test="carId != null">#{carId}, </if>
+        	<if test="path != null">#{path}</if>
+       	)
+    </insert>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_car_pic
+        <where>
+            <trim prefixOverrides="and | or">
+                <if test="carId > 0">
+                    car_id = #{carId}
+                </if>
+                <if test="carIds!=null and carIds.length>0">
+                    car_id in
+                    <foreach collection="carIds" item="carId" open="(" separator="," close=")">
+                        #{carId}
+                    </foreach>
+                </if>
+            </trim>
+        </where>
+    </delete>
+</mapper>
+

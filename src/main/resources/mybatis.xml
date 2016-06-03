@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+    <!-- mybatis配置 -->
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
+        <setting name="useGeneratedKeys" value="true"/>
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+        <setting name="defaultStatementTimeout" value="25"/>
+        <setting name="safeRowBoundsEnabled" value="false"/>
+        <setting name="mapUnderscoreToCamelCase" value="false"/>
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="puzzle.lianche.entity.SystemAuthority" alias="SystemAuthority" />
+        <typeAlias type="puzzle.lianche.entity.SystemConfig" alias="SystemConfig" />
+        <typeAlias type="puzzle.lianche.entity.SystemDept" alias="SystemDept" />
+        <typeAlias type="puzzle.lianche.entity.SystemLog" alias="SystemLog" />
+        <typeAlias type="puzzle.lianche.entity.SystemMenu" alias="SystemMenu" />
+        <typeAlias type="puzzle.lianche.entity.SystemMenuAction" alias="SystemMenuAction" />
+        <typeAlias type="puzzle.lianche.entity.SystemMsg" alias="SystemMsg" />
+        <typeAlias type="puzzle.lianche.entity.SystemRole" alias="SystemRole" />
+        <typeAlias type="puzzle.lianche.entity.SystemUser" alias="SystemUser" />
+        <typeAlias type="puzzle.lianche.entity.SystemUserGroup" alias="SystemUserGroup" />
+        <typeAlias type="puzzle.lianche.entity.SystemUserMap" alias="SystemUserMap" />
+
+
+        <typeAlias type="puzzle.lianche.entity.AutoAd" alias="AutoAd" />
+        <typeAlias type="puzzle.lianche.entity.AutoAdPosition" alias="AutoAdPosition" />
+        <typeAlias type="puzzle.lianche.entity.AutoArticle" alias="AutoArticle" />
+        <typeAlias type="puzzle.lianche.entity.AutoArticleCat" alias="AutoArticleCat" />
+        <typeAlias type="puzzle.lianche.entity.AutoArticleTemplate" alias="AutoArticleTemplate" />
+        <typeAlias type="puzzle.lianche.entity.AutoAttr" alias="AutoAttr" />
+        <typeAlias type="puzzle.lianche.entity.AutoBrand" alias="AutoBrand" />
+        <typeAlias type="puzzle.lianche.entity.AutoBrandCat" alias="AutoBrandCat" />
+        <typeAlias type="puzzle.lianche.entity.AutoBrandModel" alias="AutoBrandModel" />
+        <typeAlias type="puzzle.lianche.entity.AutoCar" alias="AutoCar" />
+        <typeAlias type="puzzle.lianche.entity.AutoCarAttr" alias="AutoCarAttr" />
+        <typeAlias type="puzzle.lianche.entity.AutoCarPic" alias="AutoCarPic" />
+        <typeAlias type="puzzle.lianche.entity.AutoCollect" alias="AutoCollect" />
+        <typeAlias type="puzzle.lianche.entity.AutoFeedback" alias="AutoFeedback" />
+        <typeAlias type="puzzle.lianche.entity.AutoMsg" alias="AutoMsg" />
+        <typeAlias type="puzzle.lianche.entity.AutoOrder" alias="AutoOrder" />
+        <typeAlias type="puzzle.lianche.entity.AutoOrderCar" alias="AutoOrderCar" />
+        <typeAlias type="puzzle.lianche.entity.AutoPay" alias="AutoPay" />
+        <typeAlias type="puzzle.lianche.entity.AutoRegion" alias="AutoRegion" />
+        <typeAlias type="puzzle.lianche.entity.AutoUser" alias="AutoUser" />
+        <typeAlias type="puzzle.lianche.entity.AutoUserPic" alias="AutoUserPic" />
+        <typeAlias type="puzzle.lianche.entity.AutoUserProfile" alias="AutoUserProfile" />
+        <typeAlias type="puzzle.lianche.entity.AutoSms" alias="AutoSms" />
+    </typeAliases>
+
+    <!-- mybatis插件 -->
+    <plugins>
+        <!---->
+        <plugin interceptor="puzzle.lianche.intercept.SqlInterceptor" />
+
+
+        <plugin interceptor="puzzle.lianche.intercept.PageInterceptor">
+            <property name="dbType" value="mysql" />
+        </plugin>
+
+
+    </plugins>
+</configuration>

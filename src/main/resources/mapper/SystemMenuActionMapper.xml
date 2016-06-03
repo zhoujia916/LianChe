@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SystemMenuActionMapper">
+    <resultMap id="SystemMenuAction" type="puzzle.lianche.entity.SystemMenuAction">
+    	<id column="action_id" property="actionId" />
+        <result column="action_code" property="actionCode" />
+        <result column="action_name" property="actionName" />
+        <result column="link_url" property="linkUrl" jdbcType="VARCHAR" />
+        <result column="action_ico" property="actionIco" jdbcType="VARCHAR" />
+    	<result column="menu_id" property="menuId" /> 
+    	<result column="action_config" property="actionConfig" /> 
+    	<result column="sort_order" property="sortOrder" />
+    </resultMap>
+
+    <sql id="allColumn">
+    	action_id, action_code, action_name, action_ico, link_url, menu_id, action_config, sort_order
+    </sql>
+
+    <insert id="insert" parameterType="SystemMenuAction" useGeneratedKeys="true" keyProperty="actionId">
+        insert into system_menu_action 
+        (
+            <if test="actionCode != null">action_code, </if>
+        	<if test="actionName != null">action_name, </if>
+            <if test="linkUrl != null">link_url, </if>
+            <if test="actionIco != null">action_ico, </if>
+        	<if test="menuId != null">menu_id, </if>
+        	<if test="actionConfig != null">action_config, </if>
+        	<if test="sortOrder != null">sort_order</if>
+        )
+        values 
+        (
+            <if test="actionCode != null">#{actionCode}, </if>
+        	<if test="actionName != null">#{actionName}, </if>
+            <if test="linkUrl != null">#{linkUrl}, </if>
+            <if test="actionIco != null">#{actionIco}, </if>
+        	<if test="menuId != null">#{menuId}, </if>
+        	<if test="actionConfig != null">#{actionConfig}, </if>
+        	<if test="sortOrder != null">#{sortOrder}</if>
+       	)
+    </insert>
+
+    <insert id="insertBatch" parameterType="List">
+        insert into system_menu_action
+        (
+            action_code, action_name, link_url, action_ico, menu_id, action_config, sort_order
+        )
+        values
+        <foreach collection="list" item ="item" index ="index" separator =",">
+        (
+            #{item.actionCode}, #{item.actionName}, #{item.linkUrl}, #{item.actionIco}, #{item.menuId}, #{item.actionConfig}, #{item.sortOrder}
+        )
+        </foreach >
+    </insert>
+
+    <update id="update" parameterType="SystemMenuAction">
+        update system_menu_action set 
+        <set>
+        	<if test="actionName != null">  
+        		action_name = #{actionName}
+        	</if>
+            <if test="actionCode != null">
+                action_code = #{actionCode}
+            </if>
+            <if test="linkUrl != null">
+                link_url = #{linkUrl}
+            </if>
+            <if test="actionIco != null">
+                action_ico = #{actionIco}
+            </if>
+        	<if test="menuId != null">  
+        		menu_id = #{menuId}
+        	</if>
+        	<if test="actionConfig != null">  
+        		action_config = #{actionConfig}
+        	</if>
+        	<if test="sortOrder != null">  
+        		sort_order = #{sortOrder}
+        	</if>
+        </set>
+        <where> 
+        	<if test="actionId != null">
+                action_id = #{actionId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from system_menu_action
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="actionId > 0">
+	                action_id = #{actionId}
+	            </if>
+                <if test="actionIds != null">
+                    and action_id in
+                    <foreach item="item" index="index" collection="actionIds" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="actionCode != null">
+                    action_code = #{actionCode}
+                </if>
+	        	<if test="actionName != null">
+	                action_name = #{actionName}
+	            </if>
+	        	<if test="menuId > 0">
+	                menu_id = #{menuId}
+	            </if>
+	        	<if test="actionConfig != null">
+	                action_config = #{actionConfig}
+	            </if>
+	        	<if test="sortOrder > 0">
+	                sort_order = #{sortOrder}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="SystemMenuAction">
+        select <include refid="allColumn"/> from system_menu_action
+        <where>  
+        	<if test="actionId > 0">
+                action_id = #{actionId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="SystemMenuAction">
+        select <include refid="allColumn"/> from system_menu_action
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="actionId > 0">
+                    and action_id = #{actionId}
+	            </if>
+                <if test="actionIds != null">
+                    and action_id in
+                    <foreach item="item" index="index" collection="actionIds" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="actionCode != null">
+                    and action_code = #{actionCode}
+                </if>
+	        	<if test="actionName != null">
+                    and action_name = #{actionName}
+	            </if>
+	        	<if test="menuId > 0">
+                    and menu_id = #{menuId}
+	            </if>
+	        	<if test="actionConfig != null">
+                    and action_config = #{actionConfig}
+	            </if>
+	        </trim>
+        </where>
+    </select>
+
+</mapper>

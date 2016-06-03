@@ -1,0 +1,354 @@
+@charset "utf-8";
+html,body,div,span,p,table,tr,td,th,h1,h2,h3,h4,h5,h6,ul,ol,li,dd,dt,i,s,b{
+    margin:0;
+    padding:0;
+}
+ul,li,ol{
+    list-style: none;
+}
+.page-content{
+    overflow: auto;
+}
+.page-content-fixed{
+}
+.page-content-area{
+
+}
+
+.table-list{
+	width:	100%;
+	border-collapse: collapse;
+	margin-bottom: 10px;
+}
+
+.table-list thead th, .table-list tbody td{
+	text-align: center;
+}
+.table-list .btn-action{
+	margin:0 5px;
+}
+.table-list .tfoot{
+	background:#EFF3F8;
+}
+.table-list .empty{
+	
+}
+.table-tree{
+	
+}
+.table-tree .tree-node{ 
+	cursor:pointer; 
+}
+.table-tree .tree-wrap{ 
+	width:18px; 
+}
+.table-tree .tree-wrap-ltr{ 
+	float:left; 
+}
+.table-tree .tree-wrap-rtl{ 
+	float:right; 
+}
+.table-tree .level0{ 
+	margin-left:0; 
+}
+.table-tree .level1{ 
+	margin-left:18px; 
+}
+.table-tree .level2{ 
+	margin-left:36px; 
+}
+.table-tree .level3{ 
+	margin-left:54px; 
+}
+.table-tree .level4{ 
+	margin-left:72px; 
+}
+.table-tree .level5{ 
+	margin-left:90px; 
+}
+.table-tree .level6{ 
+	margin-left:118px; 
+}
+.table-tree .level7{ 
+	margin-left:136px; 
+}
+.table-tree .level8{ 
+	margin-left:154px;
+}
+.table-tree .level9{ 
+	margin-left:172px; 
+}
+
+.gridview{
+    padding:5px;
+}
+
+.gridview .grid-action{
+	text-align:right;
+    margin: 10px 0;
+}
+
+.gridview .grid-table{
+	
+}
+
+.gridview .grid-table .loading, .gridview .grid-table .empty, .gridview .grid-table .error{
+	height: 200px;
+	line-height: 200px;
+	text-align: center;
+	background-color: #fff;
+}
+.gridview .grid-table .loading .ace-icon{
+	animation: kf_rotate 1s linear infinite;
+	-webkit-animation: kf_rotate 1s linear infinite;
+}
+.gridview .grid-table .loading .text{
+	position: relative;
+	top: -4px;
+	left: 0.5em;
+	color: #FF892A;
+}
+@keyframes kf_rotate{
+	0%{ transform:rotate(0deg); }
+	50%{ -webkit-transform: rotate(180deg); }
+	100%{ transform:rotate(360deg); }
+}
+@-webkit-keyframes kf_rotate{
+	0%{ transform:rotate(0deg); }
+	50%{ -webkit-transform: rotate(180deg); }
+	100%{ transform:rotate(360deg); }
+}
+
+
+
+.gridview .grid-form {
+	display:none;
+	width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    z-index:10000;
+    position:fixed;
+}
+.gridview .grid-form .overlay{
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    background-color:#333333;
+    opacity:0.1;
+    filter:alpha(opacity=10);
+}
+.gridview .grid-form .widget-box{
+    position:absolute;
+    top:50%;
+    left:50%;
+    z-index:1100;
+}
+
+.gridview .grid-form .alert-info{
+	text-align:center;
+	display: none;
+	background-color: #fff;
+	position:relative;
+	height: 30px;
+	line-height:30px;
+	top: -10px;
+}
+
+.gridview .grid-form .form-group input[disabled],
+.gridview .grid-form .form-group textarea[disabled],
+.gridview .grid-form .form-group select[disabled]{
+	border: none;
+	background-color: transparent !important;
+}
+
+.gridview .grid-form .widget-main{
+	padding: 10px 0 0;
+}
+
+.gridview .grid-form .form-actions{
+	text-align: center;
+	margin-bottom: 0;
+	background-color:#D9EDF7;
+}
+
+.gridview .grid-form .position-relative{
+    margin-top:8px;
+    margin-right: 5px;
+}
+
+.gridview .pagination-box{
+    text-align: right;
+}
+
+/* 分页样式 */
+.pagination{
+    margin:0;
+}
+.pagination a:hover{
+    cursor:pointer;
+}
+.pagination .total{
+
+}
+.pagination .go a{
+	height: 32px;
+}
+.pagination .go input{
+	text-align: center;
+	width: 40px;
+	height: 20px;
+	line-height: 20px;
+	font-size: 12px;
+	padding: 0;
+	margin: 0;
+}
+.pagination .go span{
+	margin-left: 5px;
+	background:#6FAED9;
+	color:#fff;
+	padding:0 5px;
+}
+.pagination .go span:hover{
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+}
+
+
+.ui-dialog{
+
+}
+.ui-dialog .ui-dialog-titlebar{
+    position: relative;
+}
+.ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close{
+    position: absolute;
+    top: 8px;
+    bottom: 0;
+
+}
+.ui-dialog .ui-dialog-content{
+	
+}
+.ui-dialog .ui-dialog-content .main{
+	margin: 0;
+	background-color: #D9EDF7;
+	color: #31708F;
+	padding: 15px;
+	border: 1px solid #BCE8F1;
+    min-height: 31px;
+    line-height: 31px;
+}
+.ui-dialog .ui-dialog-content .main .ace-icon{
+	margin-right: .5em;
+    margin-top: 2px;
+}
+.ui-dialog .ui-dialog-buttonpane{
+	text-align: center;
+    padding: 10px 0;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset{
+	float: none;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-button{
+	padding: 0;
+	margin: 0 1em;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-button .ui-button-text{
+	padding: .2em .5em;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-button .ace-icon{
+	margin-right: 3px;
+}
+
+.chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
+    background: none;
+}
+.ace-switch + .lbl{
+    top: 6px;
+}
+.alert-tip{
+    border-radius: 2px;
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    margin-left: -100px;
+    top: 0px;
+    display: none;
+}
+.page-header{
+    padding:0;
+    margin:0;
+}
+.page-header h1,.page-header h2,.page-header h3,.page-header h4,.page-header h5,.page-header h6{
+    padding:10px;
+    margin:0;
+}
+
+.box-list{
+
+}
+.box-list li{
+    padding:5px;
+    margin:0;
+}
+.box-list li:hover{
+    background-color:#f2f2f2;
+}
+.box-list a{
+    color: #438EB9;
+}
+.box-list a:hover{
+    text-decoration:none;
+}
+.box-list li.selected{
+     background-color: #438EB9;
+ }
+.box-list li.selected a{
+    color: #ffffff;
+    font-weight: bold;
+}
+.tree-list{
+
+}
+.tree-list input[type=checkbox].ace + .lbl::before,
+.tree-list input[type=radio].ace + .lbl::before{
+    left:-3px;
+}
+.tree-list .tree-branch .tree-branch-children:before{
+    top:-8px;
+}
+/**/
+.tree-list .tree-branch-name .fa-times, .tree-list .tree-branch-name .fa-check{
+    color: #F9E8CE;
+    width: 13px;
+    height: 13px;
+    line-height: 13px;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 3px;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    background-color: #FAFAFA;
+    border: 1px solid #CCC;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.tree-list .tree-branch-name .fa-times:before {
+    content:"\f00d";
+}
+.tree-list .tree-branch-name .fa-check:before {
+    content:"\f00c";
+    background-color: #F9A021;
+    border-color: #F9A021;
+    color: #FFF;
+}
+.clear{
+	clear: both;
+}

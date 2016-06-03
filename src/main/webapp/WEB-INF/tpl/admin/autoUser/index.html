@@ -1,0 +1,329 @@
+<div class="page-header">
+
+    <h1>
+        <i class="glyphicon glyphicon-signal"></i>
+            会员管理
+    </h1>
+
+</div>
+
+<div class="row" id="">
+    <div class="col-xs-12">
+        <div id="role-gridview" class="gridview">
+            <div class="grid-filter">
+                <input type="text input-sm" style="height: 29px" class="txt" name="userName" placeholder="用户名" />
+                <input type="text input-sm" style="height: 29px" class="txt" name="shopName" placeholder="店铺名" />
+                <select multiple="" data-init="0" name="statusString" class="select2" data-placeholder=" 请选择用户状态">
+                    <option value="">&nbsp;</option>
+                    <option value="0">账户禁用</option>
+                    <option value="1">注册或添加</option>
+                    <option value="2">等待实名认证</option>
+                    <option value="3">实名认证通过</option>
+                    <option value="4">实名认证未通过</option>
+                </select>
+                <select multiple="" data-init="0" name="shopTypeString" class="select2" data-placeholder=" 请选择店铺类型">
+                    <option value="">&nbsp;</option>
+                    <option value="1">4s店</option>
+                    <option value="2">有实体店二网</option>
+                    <option value="3">无实体店二网</option>
+                    <option value="4">个人</option>
+                </select>
+                <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
+            </div>
+
+            {{include file="/inc/module_action.html"}}
+
+            <div class="grid-table">
+                <table class="table table-striped table-bordered table-hover table-list table-tree">
+                    <thead>
+                    <tr>
+                        <th width="50">
+                            <label class="position-relative">
+                                <input type="checkbox" class="ace grid-cb-all" />
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th width="100">编号</th>
+                        <th>头像</th>
+                        <th>用户名</th>
+                        <th>真实姓名</th>
+                        <th>用户状态</th>
+                        <th>店铺名</th>
+                        <th>店铺类型</th>
+                        <th>排序号</th>
+                        <th width="120">操作</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td colspan="10">
+                            <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="pagination-box">
+
+                </div>
+            </div>
+            <!--
+            <div style="position: fixed;width:100%;height:100%;top:0;z-index:1000;">
+                <div style="background:#000;opacity:0.1;width:100%;height:100%;"></div>
+            </div>
+            -->
+            <!--edit form-->
+            <div class="grid-form save-form" style="">
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                    <div class="widget-header">
+                        <h5 class="widget-title smaller"></h5>
+
+                        <div class="widget-toolbar">
+                            <a href="#" class="btn-action" data-action="hide">
+                                <i class="ace-icon fa fa-close white"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="alert-info red"></div>
+                            <form class="form-horizontal" role="form" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        用户名
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" id="userName" name="userName" placeholder="用户名" class="txt input-sm col-sm-5">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        密码
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="password" id="password" name="password" placeholder="密码" class="txt input-sm col-sm-8">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        生日
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" id="datepicker" name="birthDay" placeholder="生日" class="txt input-sm col-sm-8">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        电话号码
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" id="phone" name="phone" placeholder="电话号码" class="txt input-sm col-sm-8">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        邮箱
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" id="email" name="email" placeholder="邮箱" class="txt input-sm col-sm-8">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        积分
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" data-init="0" id="point"  name="point" placeholder="积分" class="txt input-sm col-sm-2">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        排序号
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" data-init="0" id="sortOrder"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        备注
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" id="remark" name="remark" placeholder="备注" class="txt input-sm col-sm-8">
+                                    </div>
+                                </div>
+                                <div class="clearfix form-actions">
+                                    <input type="hidden" name="userId" value="" />
+                                    <a class="btn btn-sm btn-action" data-action="reset">
+                                        <i class="ace-icon fa fa-undo"></i>
+                                        重置
+                                    </a>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <a class="btn btn-sm btn-primary btn-action" data-action="save">
+                                        <i class="ace-icon fa fa-check"></i>
+                                        提交
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-form search-form "></div>
+
+        </div>
+
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+    $('.select2').css('width','160px').select2({allowClear:true})
+    $('#select2-multiple-style .btn').on('click', function(e){
+        var target = $(this).find('input[type=radio]');
+        var which = parseInt(target.val());
+        if(which == 2) $('.select2').addClass('tag-input-style');
+        else $('.select2').removeClass('tag-input-style');
+    });
+
+    $(document).one('ajaxloadstart.page', function(e) {
+        $('[class*=select2]').remove();
+    });
+
+    $( "#datepicker" ).datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: false
+    });
+
+    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $("#btn-view").on("click", function(){
+            var keys = $("#role-gridview").gridview("getKeys");
+            var hash = "#page/usercollect/";
+            if(keys.length > 0){
+                hash = hash + "index/" + keys.join(",");
+            }
+            window.location.hash = hash;
+        });
+        $(function () {
+            $("#role-gridview").gridview({
+                debug: true,
+                url: "autoUser/list.do",
+                form: {
+                    url: "autoUser/action.do",
+                    check: function(){
+                        var userName=$("#userName").val();
+                        var password=$("#password").val();
+                        var birth=$("#datepicker").val();
+                        var dateFormat=/(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)/;
+                        var phone=$("#phone").val();
+                        var phoneFormat1=/^1\d{10}$/;
+                        var phoneFormat2=/^0\d{2,3}-?\d{7,8}$/;
+                        var email=$("#email").val();
+                        var emailFormat=/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+                        var point=$("#point").val();
+                        var sortOrder=$("#sortOrder").val();
+                        if(!userName){
+                            console.log("check form");
+                            $("#userName").focus();
+                            return "请输入用户名";
+                        }else if(userName.length<6 || userName.length>20){
+                            console.log("check form");
+                            $("#userName").focus();
+                            return "用户名长度必须在6-20位之间";
+                        }else if(!password){
+                            console.log("check form");
+                            $("#password").focus();
+                            return "请输入密码";
+                        }else if(password.length<6 || password.length>20){
+                            console.log("check form");
+                            $("#password").focus();
+                            return "密码长度必须在6-20位之间";
+                        }else if(!dateFormat.test(birth) && birth){
+                            console.log("check form");
+                            $("#datepicker").focus();
+                            return "日期格式应为yyyy-MM-dd,如:2001:05:10";
+                        }else if(!phone){
+                            console.log("check form");
+                            $("#phone").focus();
+                            return "电话号码不能为空";
+                        }else if(!phoneFormat1.test(phone) && !phoneFormat2.test(phone) ){
+                            console.log("check form");
+                            $("#phone").focus();
+                            return "电话号码格式错误";
+                        }else if(!email){
+                            console.log("check form");
+                            $("#email").focus();
+                            return "邮箱不能为空";
+                        }else if(!emailFormat.test(email)){
+                            console.log("check form");
+                            $("#email").focus();
+                            return "邮箱格式错误";
+                        }else if(point<0 || isNaN(point)){
+                            console.log("check form");
+                            $("#point").focus();
+                            return "积分必须大于0且必须为数字";
+                        }else if(sortOrder<0 || isNaN(sortOrder)){
+                            console.log("check form");
+                            $("#sortOrder").focus();
+                            return "排序号必须大于等于0且必须为数字";
+                        }else{
+                            return true;
+                        }
+                    }
+                },
+                jsonReader: {
+                    key_field: 'userId'
+                },
+                columns: [
+                    {
+                        name: "checkbox"
+                    },
+                    {
+                        name: "userId"
+                    },
+                    {
+                        name: "userAvatar",
+                        format: function(opts, column, row){
+                            return "<td><img style='width: 30px;height: 30px;' src='" + row[column.name] + "' /></td>";
+                        }
+                    },
+                    {
+                        name: "userName"
+                    },
+                    {
+                        name: "realName"
+                    },
+                    {
+                        name: "status"
+                    },
+                    {
+                        name: "shopName"
+                    },
+                    {
+                        name: "shopType"
+                    },
+                    {
+                        name: "sortOrder",
+                        format: function(opts, column, row){
+                            return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                        }
+                    },
+                    {
+                        name: "actions",
+                        list: ["edit", "delete", "view"]
+                    }
+                ]
+            });
+        });
+    });
+</script>

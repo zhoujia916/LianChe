@@ -1,0 +1,312 @@
+<title>Puzzle Admin - 授权管理</title>
+<!-- ajax layout which only needs content area -->
+<div class="page-header">
+    <h1>
+        <i class="glyphicon glyphicon-signal"></i>
+        授权管理
+    </h1>
+</div><!-- /.page-header -->
+
+<div class="row">
+    <div class="tabbable">
+        <ul class="nav nav-tabs padding-18">
+            <li class="active">
+                <a data-toggle="tab" href="#user">
+                    <i class="blue ace-icon fa fa-user bigger-120"></i>
+                    用户授权
+                </a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#role">
+                    <i class="green ace-icon fa fa-users bigger-120"></i>
+                    角色授权
+                </a>
+            </li>
+
+            <li>
+                <a data-toggle="tab" href="#group">
+                    <i class="orange ace-icon fa fa-group bigger-120"></i>
+                    用户组授权
+                </a>
+            </li>
+
+            <li>
+                <a data-toggle="tab" href="#dept">
+                    <i class="purple ace-icon fa fa-users bigger-120"></i>
+                    部门授权
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content no-border padding-24">
+            <div id="user" class="tab-pane in active">
+                <div class="row">
+                    <div class="col-xs-2 col-md-2">
+
+                        <div class="widget-box widget-color-blue2">
+                            <div class="widget-header">
+                                <h4 class="widget-title lighter smaller">授权用户(单击选择)</h4>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main padding-8">
+                                    <ul class="box-list">
+                                        {{if $userList}}
+                                        {{foreach from=$userList item=userItem key=index}}
+                                        <li {{if $index eq 0}}class="selected"{{/if}}><a>{{$userItem.userName}}</a></li>
+                                        {{/foreach}}
+                                        {{else}}
+                                        <li class="empty"><a>暂无用户数据</a></li>
+                                        {{/if}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 col-md-2">
+                        <div class="widget-box widget-color-green2">
+                            <div class="widget-header">
+                                <h4 class="widget-title lighter smaller">权限设置</h4>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main padding-8">
+                                    <ul class="tree-list"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 col-md-2" style="height:100%">
+
+                        <a class="btn btn-primary" style="margin-top:50px;"><i class="glyphicon glyphicon-ok"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="role" class="tab-pane">
+                <div class="col-xs-2 col-md-2">
+                    <div class="user-list">
+
+                    </div>
+                    <div class="widget-box widget-color-blue2">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">授权角色(单击选择)</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <ul class="box-list">
+                                    {{if $roleList}}
+                                    {{foreach from=$roleList item=roleItem key=index}}
+                                    <li {{if $index eq 0}}class="selected"{{/if}}><a>{{$roleItem.roleName}}</a></li>
+                                    {{/foreach}}
+                                    {{else}}
+                                    <li class="empty"><a>暂无角色数据</a></li>
+                                    {{/if}}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2 col-md-2">
+                    <div class="widget-box widget-color-green2">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">权限设置</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <ul class="tree-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="group" class="tab-pane">
+                <div class="col-xs-2 col-md-2">
+                    <div class="user-list">
+
+                    </div>
+
+                    <div class="widget-box widget-color-blue2">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">授权用户组(单击选择)</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <ul class="box-list">
+                                    {{if $groupList}}
+                                    {{foreach from=$groupList item=groupItem key=index}}
+                                    <li {{if $index eq 0}}class="selected"{{/if}}><a>{{$groupItem.groupName}}</a></li>
+                                    {{/foreach}}
+                                    {{else}}
+                                    <li class="empty"><a>暂无用户组数据</a></li>
+                                    {{/if}}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2 col-md-2">
+                    <div class="widget-box widget-color-green2">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">权限设置</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <ul class="tree-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dept" class="tab-pane">
+                <div class="col-xs-2 col-md-2">
+                    <div class="user-list">
+
+                    </div>
+
+                    <div class="widget-box widget-color-blue2">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">授权部门(单击选择)</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <ul class="box-list">
+                                    {{if $deptList}}
+                                    {{foreach from=$deptList item=deptItem key=index}}
+                                    <li {{if $index eq 0}}class="selected"{{/if}}><a>{{$deptItem.deptName}}</a></li>
+                                    {{/foreach}}
+                                    {{else}}
+                                    <li class="empty"><a>暂无部门数据</a></li>
+                                    {{/if}}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2 col-md-2">
+                    <div class="widget-box widget-color-green2">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">权限设置</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <ul class="tree-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script type="text/javascript">
+    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $(".box-list").on("click", "li", function(){
+            if(!$(this).hasClass("selected")){
+                $(this).addClass("selected").siblings().removeClass("selected");
+            }
+        });
+
+        $(".box-list,.tree-list").height($(window).height() - 300);
+
+        initTree();
+    })
+
+    function initTree(){
+        $.post("menu/list.do", null, function(response){
+            if(response.code == 0){
+                if(response.data != null && response.data.length > 0){
+                    var treeData = showTree(response.data);
+                    $('.tree-list').ace_tree({
+                        dataSource: function(options, callback){
+                            var data = null
+                            if(!("text" in options) && !("type" in options)){
+                                data = treeData;
+                                callback({ data: data });
+                                return;
+                            }
+                            else if("type" in options && options.type == "folder") {
+                                if("additionalParameters" in options && "children" in options.additionalParameters)
+                                    data = options.additionalParameters.children;
+                                else data = {
+
+                                }
+                            }
+
+                            if(data != null)//this setTimeout is only for mimicking some random delay
+                                setTimeout(function(){callback({ data: data });} , parseInt(Math.random() * 500) + 200);
+                        },
+                        multiSelect: true,
+                        cacheItems: true,
+                        'open-icon' : 'ace-icon tree-minus',
+                        'close-icon' : 'ace-icon tree-plus',
+                        'selectable' : true,
+                        'selected-icon' : 'ace-icon fa fa-check',
+                        'unselected-icon' : 'ace-icon fa fa-times',
+                        loadingHTML : '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>'
+                    });
+                }
+            }else{
+                showAlert(response.msg);
+            }
+        }, "json");
+    }
+
+    function showTree(list){
+        var treeData = {};
+        for(var i = 0; i < list.length; i++){
+            if(list[i].parentId == 0){
+                treeData[list[i].menuName] = showNode(list, list[i]);
+            }
+        }
+        return treeData;
+    }
+
+    function showNode(list, item){
+        var children = findChild(list, item);
+        var newItem = {text: item.menuName, type: "folder"};//children.length > 0 ? "folder" : "item"
+        if(children.length > 0){
+            if(!newItem["additionalParameters"]){
+                newItem["additionalParameters"] = {};
+                newItem["additionalParameters"]["children"] = {};
+            }
+            for(var i = 0; i < children.length; i++){
+                var child = showNode(list, children[i]);
+                newItem["additionalParameters"]["children"][children[i]["menuName"]] = child;
+            }
+        }
+        else if(item.actions != null && item.actions.length > 0){
+            for(var i = 0; i < item.actions.length; i++){
+                newItem["type"] = "folder";
+                if(!newItem["additionalParameters"]){
+                    newItem["additionalParameters"] = {};
+                    newItem["additionalParameters"]["children"] = {};
+                }
+                newItem["additionalParameters"]["children"][item.actions[i]["actionName"]] = {
+                    text: item.actions[i]["actionName"],
+                    type: "item"
+                };
+            }
+        }
+        return newItem;
+    }
+
+    function findChild(list, item){
+        var children = [];
+        for(var i = 0; i < list.length; i++) {
+            if (list[i].parentId == item.menuId) {
+                children.push(list[i]);
+            }
+        }
+        return children;
+    }
+</script>

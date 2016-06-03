@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SystemLogMapper">
+    <resultMap id="SystemLog" type="puzzle.lianche.entity.SystemLog">
+    	<id column="log_id" property="logId" /> 
+    	<result column="log_type" property="logType" /> 
+    	<result column="log_time" property="logTime" /> 
+    	<result column="log_ip" property="logIp" /> 
+    	<result column="log_msg" property="logMsg" /> 
+    	<result column="user_id" property="userId" />
+        <result column="userName" property="userName"/>
+    </resultMap>
+
+    <sql id="allColumn">
+    	log_id, log_type, log_time, log_ip, log_msg, user_id
+    </sql>
+
+    <insert id="insert" parameterType="SystemLog" useGeneratedKeys="true" keyProperty="logId">
+        insert into system_log 
+        (
+        	
+        	<if test="logType != null">log_type, </if>
+        	<if test="logTime != null">log_time, </if>
+        	<if test="logIp != null">log_ip, </if>
+        	<if test="logMsg != null">log_msg, </if>
+        	<if test="userId != null">user_id</if>
+        )
+        values 
+        (
+        	
+        	<if test="logType != null">#{logType}, </if>
+        	<if test="logTime != null">#{logTime}, </if>
+        	<if test="logIp != null">#{logIp}, </if>
+        	<if test="logMsg != null">#{logMsg}, </if>
+        	<if test="userId != null">#{userId}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="SystemLog">
+        update system_log
+        <set>
+        	<if test="logType != null">  
+        		log_type = #{logType},
+        	</if>
+        	<if test="logTime != null">  
+        		log_time = #{logTime},
+        	</if>
+        	<if test="logIp != null">  
+        		log_ip = #{logIp},
+        	</if>
+        	<if test="logMsg != null">  
+        		log_msg = #{logMsg},
+        	</if>
+        	<if test="userId != null">  
+        		user_id = #{userId},
+        	</if>
+        </set>
+        where log_id = #{logId}
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from system_log
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="logId > 0">
+	                log_id = #{logId}
+	            </if>
+                <if test="logIds !=null and logIds.length>0">
+                    log_id in
+                    <foreach collection="logIds" item="logId" open="(" separator="," close=")">
+                        #{logId}
+                    </foreach>
+                </if>
+	        	<if test="logType > 0">
+	                log_type = #{logType}
+	            </if>
+	        	<if test="logTime > 0">
+	                log_time = #{logTime}
+	            </if>
+	        	<if test="logIp != null">
+	                log_ip = #{logIp}
+	            </if>
+	        	<if test="logMsg != null">
+	                log_msg = #{logMsg}
+	            </if>
+	        	<if test="userId > 0">
+	                user_id = #{userId}
+	            </if>
+                <if test="userIds != null and userIds.length > 0">
+                    user_id in
+                    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                        #{userId}
+                    </foreach>
+                </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="SystemLog">
+        select <include refid="allColumn"/> from system_log
+        <where>  
+        	<if test="logId > 0">
+                log_id = #{logId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="SystemLog">
+        select system_log.*,system_user.user_name as userName from system_log inner join system_user on system_log.user_id=system_user.user_id
+        <where>
+            <if test="logType!=null and logType!=''">
+                and log_type in (${logType})
+            </if>
+            <if test="beginTime!=null">
+                and log_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime!=null">
+                and log_time &lt;= #{endTime}
+            </if>
+            <if test="logIp != null and logIp!='' ">
+                and log_ip like concat('%',#{logIp},'%')
+            </if>
+            <if test="userName!=null and userName!=''">
+                and system_user.user_name like concat('%',#{userName},'%')
+            </if>
+        </where>
+        order by log_id desc
+    </select>
+</mapper>

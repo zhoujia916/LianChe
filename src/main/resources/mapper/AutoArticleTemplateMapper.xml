@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoArticleTemplateMapper">
+    <resultMap id="AutoArticleTemplate" type="puzzle.lianche.entity.AutoArticleTemplate">
+    	<id column="template_id" property="templateId" />
+    	<result column="name" property="name" />
+    	<result column="content" property="content" />
+    	<result column="sort_order" property="sortOrder" />
+    </resultMap>
+
+    <sql id="allColumn">
+    	template_id, name, content, sort_order
+    </sql>
+
+    <insert id="insert" parameterType="AutoArticleTemplate" useGeneratedKeys="true" keyProperty="templateId">
+        insert into auto_article_template 
+        (
+        	<if test="name != null">name, </if>
+        	<if test="content != null">content, </if>
+        	<if test="sort_order != null">sort_order</if>
+        )
+        values 
+        (
+        	<if test="name != null">#{name}, </if>
+        	<if test="content != null">#{name}, </if>
+        	<if test="sort_order != null">#{sortOrder}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoArticleTemplate">
+        update auto_article_template
+        <set>
+        	<if test="name != null">
+                name = #{name},
+        	</if>
+        	<if test="content != null">
+                content = #{content},
+        	</if>
+        	<if test="sortOrder != null">  
+        		sort_order = #{sortOrder},
+        	</if>
+        </set>
+        where template_id = #{templateId}
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_article_template
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="templateId > 0">
+                    and template_id = #{templateId}
+	            </if>
+                <if test="templateIds!=null and templateIds.length > 0">
+                    and template_id in
+                    <foreach collection="templateIds" item="templateId" open="(" separator="," close=")">
+                        #{templateId}
+                    </foreach>
+                </if>
+	        	<if test="name != null">
+	                name = #{name}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoArticleTemplate">
+        select <include refid="allColumn"/> from auto_article_template
+        <where>  
+        	<if test="templateId > 0">
+                template_id = #{templateId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoArticleTemplate">
+        select <include refid="allColumn"/> from auto_article_template
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="templateId > 0">
+                    and template_id = #{templateId}
+	            </if>
+	        	<if test="name != null">
+                    and name like concat('%', #{name}, '%')
+	            </if>
+	        </trim>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SystemMenuMapper">
+    <resultMap id="SystemMenu" type="puzzle.lianche.entity.SystemMenu">
+        <id column="menu_id" property="menuId" jdbcType="INTEGER" />
+        <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+        <result column="menu_url" property="menuUrl" jdbcType="VARCHAR" />
+        <result column="menu_link" property="linkUrl" jdbcType="VARCHAR" />
+        <result column="menu_ico" property="menuIco" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="sort_order" property="sortOrder" jdbcType="INTEGER" />
+        <!--
+        <collection property="actions" column="menu_id" javaType="java.util.ArrayList" ofType="SystemMenuAction" select="queryAction" />
+        -->
+    </resultMap>
+
+    <sql id="allColumn">
+        menu_id, menu_name, menu_url, menu_ico, link_url, parent_id, status, sort_order
+    </sql>
+
+    <insert id="insert" parameterType="SystemMenu" useGeneratedKeys="true" keyProperty="menuId">
+        insert into system_menu
+        (
+            <if test="menuName != null">menu_name, </if>
+            <if test="menuUrl != null">menu_url, </if>
+            <if test="linkUrl != null">link_url, </if>
+            <if test="menuIco != null">menu_ico, </if>
+            <if test="parentId != null">parent_id, </if>
+            <if test="status != null">status, </if>
+            <if test="sortOrder != null">sort_order</if>
+        )
+        values
+        (
+            <if test="menuName != null">#{menuName, jdbcType=VARCHAR}, </if>
+            <if test="menuUrl != null">#{menuUrl, jdbcType=VARCHAR}, </if>
+            <if test="linkUrl != null">#{linkUrl, jdbcType=VARCHAR}, </if>
+            <if test="menuIco != null">#{menuIco, jdbcType=VARCHAR}, </if>
+            <if test="parentId != null">#{parentId, jdbcType=INTEGER}, </if>
+            <if test="status != null">#{status, jdbcType=INTEGER}, </if>
+            <if test="sortOrder != null">#{sortOrder, jdbcType=INTEGER}</if>
+        )
+    </insert>
+
+    <update id="update" parameterType="SystemMenu">
+        update system_menu
+        <set>
+            <trim prefixOverrides=",">
+                <if test="menuName != null">
+                    , menu_name = #{menuName, jdbcType=VARCHAR}
+                </if>
+                <if test="menuUrl != null">
+                    , menu_url = #{menuUrl, jdbcType=VARCHAR}
+                </if>
+                <if test="linkUrl != null">
+                    , link_url = #{linkUrl, jdbcType=VARCHAR}
+                </if>
+                <if test="menuIco != null">
+                    , menu_ico = #{menuIco, jdbcType=VARCHAR}
+                </if>
+                <if test="parentId != null">
+                    , parent_id = #{parentId, jdbcType=INTEGER}
+                </if>
+                <if test="status != null">
+                    , status = #{status, jdbcType=INTEGER}
+                </if>
+                <if test="sortOrder != null">
+                    , sort_order = #{sortOrder, jdbcType=INTEGER}
+                </if>
+            </trim>
+        </set>
+        <where>
+            <if test="menuId != null">
+                menu_id = #{menuId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from system_menu
+        <where>
+            <trim prefixOverrides="and | or">
+                <if test="menuId != null">
+                    and menu_id = #{menuId}
+                </if>
+                <if test="menuIds != null and menuIds != ''">
+                    and menu_id in (#{menuIds})
+                </if>
+                <if test="menuName != null">
+                    and menu_name = #{menuName, jdbcType=VARCHAR}
+                </if>
+                <if test="menuUrl != null">
+                    and menu_url = #{menuUrl, jdbcType=VARCHAR}
+                </if>
+                <if test="parentId != null">
+                    and parent_id = #{parentId, jdbcType=INTEGER}
+                </if>
+                <if test="status != null">
+                    and status = #{status, jdbcType=INTEGER}
+                </if>
+                <if test="sortOrder != null">
+                    and sort_order = #{sortOrder, jdbcType=INTEGER}
+                </if>
+            </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="SystemMenu">
+        select sm.*, pm.menu_name as parentName
+        from system_menu as sm
+        left join system_menu as pm on sm.parent_id = pm.menu_id
+        <where>
+            <if test="menuId != null">
+                sm.menu_id = #{menuId, jdbcType=INTEGER}
+            </if>
+            <if test="menuUrl != null">
+                sm.menu_url = #{menuUrl, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="SystemMenu">
+        select sm.*, pm.menu_name as parentName
+        from system_menu as sm
+        left join system_menu as pm on sm.parent_id = pm.menu_id
+        <where>
+            <trim prefixOverrides="and | or">
+                <if test="menuId > 0">
+                    and sm.menu_id = #{menuId, jdbcType=INTEGER}
+                </if>
+                <if test="menuName != null">
+                    and sm.menu_name = #{menuName, jdbcType=VARCHAR}
+                </if>
+                <if test="menuUrl != null and menuUrl != ''">
+                    and sm.menu_url = #{menuUrl, jdbcType=VARCHAR}
+                </if>
+                <if test="parentId > 0">
+                    and sm.parent_id = #{parentId, jdbcType=INTEGER}
+                </if>
+                <if test="status > 0">
+                    and sm.status = #{status, jdbcType=INTEGER}
+                </if>
+                <if test="sortOrder > 0">
+                    and sm.sort_order = #{sortOrder, jdbcType=INTEGER}
+                </if>
+            </trim>
+        </where>
+        order by sm.parent_id asc, sm.sort_order asc
+    </select>
+
+    <!--
+    <select id="queryAction" parameterType="int" resultMap="SystemMenuActionMapper.SystemMenuAction">
+        select sma.*
+        from system_menu_action as sma
+        where sma.menu_id = #{menu_id}
+        order by sma.sort_order asc
+    </select>
+    -->
+</mapper>

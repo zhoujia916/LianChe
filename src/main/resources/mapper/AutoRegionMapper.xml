@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoRegionMapper">
+    <resultMap id="AutoRegion" type="puzzle.lianche.entity.AutoRegion">
+    	<id column="region_id" property="regionId" /> 
+    	<result column="parent_id" property="parentId" /> 
+    	<result column="region_name" property="regionName" /> 
+    	<result column="region_type" property="regionType" /> 
+    </resultMap>
+
+    <sql id="allColumn">
+    	region_id, parent_id, region_name, region_type
+    </sql>
+
+    <insert id="insert" parameterType="AutoRegion" useGeneratedKeys="true" keyProperty="regionId">
+        insert into auto_region 
+        (
+        	
+        	<if test="parentId != null">parent_id, </if>
+        	<if test="regionName != null">region_name, </if>
+        	<if test="regionType != null">region_type</if>
+        )
+        values 
+        (
+        	
+        	<if test="parentId != null">#{parentId}, </if>
+        	<if test="regionName != null">#{regionName}, </if>
+        	<if test="regionType != null">#{regionType}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoRegion">
+        update auto_region set 
+        <set>
+        	<if test="parentId != null">  
+        		parent_id = #{parentId}
+        	</if>
+        	<if test="regionName != null">  
+        		region_name = #{regionName}
+        	</if>
+        	<if test="regionType != null">  
+        		region_type = #{regionType}
+        	</if>
+        </set>
+        <where> 
+        	<if test="regionId > 0">
+                region_id = #{regionId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_region
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="regionId > 0">
+	                region_id = #{regionId}
+	            </if>
+	        	<if test="parentId > 0">
+	                parent_id = #{parentId}
+	            </if>
+	        	<if test="regionName != null">
+	                region_name = #{regionName}
+	            </if>
+	        	<if test="regionType > 0">
+	                region_type = #{regionType}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoRegion">
+        select <include refid="allColumn"/> from auto_region
+        <where>  
+        	<if test="regionId > 0">
+                region_id = #{regionId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoRegion">
+        select <include refid="allColumn"/> from auto_region
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="regionId > 0">
+	                region_id = #{regionId}
+	            </if>
+	        	<if test="parentId > 0">
+	                parent_id = #{parentId}
+	            </if>
+	        	<if test="regionName != null">
+	                region_name = #{regionName}
+	            </if>
+	        	<if test="regionType > 0">
+	                region_type = #{regionType}
+	            </if>
+	        </trim>
+        </where>
+    </select>
+
+</mapper>
