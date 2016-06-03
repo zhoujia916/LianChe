@@ -1,0 +1,226 @@
+<div class="page-header">
+
+    <h1>
+        <i class="glyphicon glyphicon-signal"></i>
+        文章分类
+    </h1>
+
+</div>
+<div class="row" id="">
+    <div class="col-xs-12">
+        <div id="gridview" class="gridview">
+            <div class="grid-filter">
+                <input type="text input-sm" class="txt" name="catName" placeholder="名称" />
+                <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
+            </div>
+
+            {{include file="/inc/module_action.html"}}
+
+            <div class="grid-table">
+                <table class="table table-striped table-bordered table-hover table-list table-tree">
+                    <thead>
+                    <tr>
+                        <th width="50">
+                            <label class="position-relative">
+                                <input type="checkbox" class="ace grid-cb-all" />
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th width="100">编号</th>
+                        <th>名称</th>
+                        <th>
+                            <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+                            上级类型
+                        </th>
+                        <th>排序号</th>
+                        <th width="120">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td colspan="6">
+                            <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="pagination-box">
+
+                </div>
+            </div>
+            <div class="grid-form save-form" style="">
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                    <div class="widget-header">
+                        <h5 class="widget-title smaller"></h5>
+
+                        <div class="widget-toolbar">
+                            <a href="#" class="btn-action" data-action="hide">
+                                <i class="ace-icon fa fa-close white"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="alert-info red"></div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        名称
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" id="catName" name="catName" placeholder="名称" class="txt input-sm col-sm-5 ">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        上级类型
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select id="sltParent" name="parentId" class="select" data-init="0" >
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        排序号
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" data-init="0" id="sortOrder"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
+                                    </div>
+                                </div>
+                                <div class="clearfix form-actions">
+                                    <input type="hidden" name="catId" value="" />
+                                    <a class="btn btn-sm btn-action" data-action="reset">
+                                        <i class="ace-icon fa fa-undo"></i>
+                                        重置
+                                    </a>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <a class="btn btn-sm btn-primary btn-action" data-action="save">
+                                        <i class="ace-icon fa fa-check"></i>
+                                        提交
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-form search-form "></div>
+
+        </div>
+
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+
+    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $(function($) {
+            $("#gridview").gridview({
+                url: "articlecat/list.do",
+                treeReader:{
+                    show: true,
+                    expand_column: 'catName'
+                },
+                form:{
+                    url: "articlecat/action.do",
+                    check:function(){
+                        var catName=$("#catName").val();
+                        var sortOrder=$("#sortOrder").val();
+                        if(!catName){
+                            console.log("check form");
+                            $("#catName").focus();
+                            return "名称";
+                        }else if(sortOrder<0 || isNaN(sortOrder)){
+                            console.log("check form");
+                            $("#sortOrder").focus();
+                            return "排序号必须大于等于0且必须为数字";
+                        }else{
+                            return true;
+                        }
+                    }
+                },
+                onLoadSuccess: function(data){
+                        function showOption(list, row){
+                            var html = "";
+                            html += "<option value=" + row.catId + ">" + getOptionName(list, row) + "</option>";
+                            $.each(list, function () {
+                                if(this.parentId == row.catId){
+                                    html += showOption(list, this);
+                                }
+                            });
+                            return html;
+                        }
+
+                        function getOptionName(list, row){
+                            var level = getLevel(list, row);
+                            var name = "|-";
+                            var len = level * 4;
+                            while(len > 0){
+                                name += "-";
+                                len--;
+                            }
+                            return name + row.catName;
+                        }
+
+                        function getLevel(list, row){
+                            if(row.parentId == 0)
+                                return 0;
+                            var level = 0;
+                            var hasParent = true;
+                            while(hasParent){
+                                hasParent = false;
+                                $.each(list, function(){
+                                    if(this.catId == row.parentId){
+                                        hasParent = true;
+                                        level++;
+                                        row = this;
+                                        return false;
+                                    }
+                                });
+                            }
+                            return level;
+                        }
+
+                        var options = "<option value='0' selected='selected'>请选择上级</option>";
+                        if(data!=null && data.length>0)
+                        {
+                            $.each(data, function(){
+                                if(this.parentId == 0){
+                                    options += showOption(data, this);
+                                }
+                            });
+                        }
+                        $("#sltParent").html(options);
+                },
+                jsonReader:{
+                    key_field: "catId"
+                },
+                columns:[{
+                    name: "checkbox"
+                },{
+                    name: "catId"
+                },{
+                    name: "catName"
+                },{
+                    name: "parentId",
+                    value: "parentName"
+                },{
+                    name: "sortOrder",
+                    format: function(opts, column, row){
+                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                    }
+                },{
+                    name: "actions",
+                    list: ["edit", "delete"]
+                }]
+            });
+        });
+    });
+</script>

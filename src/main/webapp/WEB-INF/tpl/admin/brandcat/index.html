@@ -1,0 +1,241 @@
+
+<title>Puzzle Admin-车系管理</title>
+
+<div class="page-header">
+
+    <h1>
+        <i class="glyphicon glyphicon-signal"></i>
+            车系管理
+        <a class="btn btn-xs orange pull-right btn-warning" onclick="goBack()">
+            <i class="glyphicon glyphicon-arrow-left"></i>返回品牌管理</span></a>
+    </h1>
+
+</div>
+
+<div class="row" id="">
+    <div class="col-xs-12">
+        <div id="brandcat-gridview" class="gridview">
+            <div class="grid-filter">
+                <input type="hidden" id="brandString" name="brandString" value="{{$brandId}}" />
+                <select multiple="" data-init="0" name="brands" class="select2" placeholder=" 请选择品牌">
+                    <option value="">&nbsp;</option>
+                    {{foreach from=$brandList item=brand}}
+                    <option value="{{$brand.brandId}}">{{$brand.brandName}}</option>
+                    {{/foreach}}
+                </select>
+                <input type="text input-sm" style="height: 29px" class="txt" name="catName" placeholder="车系名称" />
+                <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
+            </div>
+
+            <div class="hr hr-18 dotted"></div>
+
+            <div class="grid-action" style="margin:10px 0;">
+                <a data-action="add" class="btn btn-action btn-primary btn-xs white"><i class="ace-icon fa fa-plus-circle"></i>新建</a>
+
+                <a data-action="edit" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-pencil"></i>编辑</a>
+
+                <a data-action="delete" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-trash-o"></i>删除</a>
+
+                <a data-action="refresh" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-refresh"></i>刷新</a>
+
+                <a id="btn-view" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-search-plus"></i>查看车型</a>
+            </div>
+
+            <div class="grid-table">
+                <table class="table table-striped table-bordered table-hover table-list table-tree">
+                    <thead>
+                    <tr>
+                        <th width="50">
+                            <label class="position-relative">
+                                <input type="checkbox" class="ace grid-cb-all" />
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th width="100">编号</th>
+                        <th>车系名称</th>
+                        <th>所属品牌</th>
+                        <th>排序号</th>
+                        <th width="120">操作</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td colspan="6">
+                            <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="pagination-box">
+
+                </div>
+            </div>
+            <!--
+            <div style="position: fixed;width:100%;height:100%;top:0;z-index:1000;">
+                <div style="background:#000;opacity:0.1;width:100%;height:100%;"></div>
+            </div>
+            -->
+            <!--edit form-->
+            <div class="grid-form save-form" style="">
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                    <div class="widget-header">
+                        <h5 class="widget-title smaller"></h5>
+
+                        <div class="widget-toolbar">
+                            <a href="#" class="btn-action" data-action="hide">
+                                <i class="ace-icon fa fa-close white"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="alert-info red"></div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        车系名称
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="catName" name="catName" placeholder="车系名称" class="txt input-sm col-sm-5 ">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        所属品牌
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select id="brandId" name="brandId" data-init="0">
+                                            <option value="0">请选择品牌</option>
+                                            {{foreach from=$list item=brand}}
+                                            <option value="{{$brand.brandId}}">{{$brand.brandName}}</option>
+                                            {{/foreach}}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        排序号
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" data-init="0" id="sortOrder"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
+                                    </div>
+                                </div>
+                                <div class="clearfix form-actions">
+                                    <input type="hidden" name="catId" value="" />
+                                    <a class="btn btn-sm btn-action" data-action="reset">
+                                        <i class="ace-icon fa fa-undo"></i>
+                                        重置
+                                    </a>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <a class="btn btn-sm btn-primary btn-action" data-action="save">
+                                        <i class="ace-icon fa fa-check"></i>
+                                        提交
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-form search-form "></div>
+
+        </div>
+
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+
+    $('.select2').css('width','160px').select2({allowClear:true})
+    $('#select2-multiple-style .btn').on('click', function(e){
+        var target = $(this).find('input[type=radio]');
+        var which = parseInt(target.val());
+        if(which == 2) $('.select2').addClass('tag-input-style');
+        else $('.select2').removeClass('tag-input-style');
+    });
+
+    $(document).one('ajaxloadstart.page', function(e) {
+        $('[class*=select2]').remove();
+    });
+
+    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $("#btn-view").on("click", function(){
+            var keys = $("#brandcat-gridview").gridview("getKeys");
+            var hash = "#page/brandmodel/";
+            if(keys.length > 0){
+                hash = hash + "index/" + keys.join(",");
+            }
+            window.location.hash = hash;
+        });
+        $(function () {
+            $("#brandcat-gridview").gridview({
+                debug: true,
+                url: "brandcat/list.do",
+                filter:{
+                    brandString: $("#brandString").val()
+                },
+                form: {
+                    url: "brandcat/action.do",
+                    check:function(){
+                        var catName=$("#catName").val();
+                        var brandId=$("#brandId").val();
+                        var sortOrder=$("#sortOrder").val();
+                        if(!catName){
+                            console.log("check form");
+                            $("#catName").focus();
+                            return "请输入车系名称";
+                        }else if(brandId==0){
+                            console.log("check form");
+                            $("#brandId").focus();
+                            return "请选择所属品牌";
+                        }else if(sortOrder<0 || isNaN(sortOrder)){
+                            console.log("check form");
+                            $("#sortOrder").focus();
+                            return "排序号必须大于等于0且必须为数字";
+                        }else{
+                            return true;
+                        }
+                    }
+                },
+                jsonReader: {
+                    key_field: 'catId'
+                },
+                columns: [
+                    {
+                        name: "checkbox"
+                    },
+                    {
+                        name: "catId"
+                    },
+                    {
+                        name: "catName"
+                    },
+                    {
+                        name: "brandName"
+                    },
+                    {
+                        name: "sortOrder",
+                        format: function(opts, column, row){
+                            return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                        }
+                    },
+                    {
+                        name: "actions",
+                        list: ["edit", "delete"]
+                    }
+                ]
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    function goBack(){
+        window.history.back();
+    }
+</script>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SystemConfigMapper">
+    <resultMap id="SystemConfig" type="puzzle.lianche.entity.SystemConfig">
+    	<id column="config_id" property="configId" /> 
+    	<result column="code" property="code" /> 
+    	<result column="name" property="name" /> 
+    	<result column="value" property="value" /> 
+    	<result column="value_type" property="valueType" /> 
+    	<result column="value_range" property="valueRange" /> 
+    	<result column="sort_order" property="sortOrder" /> 
+    	<result column="group_id" property="groupId" /> 
+    </resultMap>
+
+    <sql id="allColumn">
+    	config_id, code, name, value, value_type, value_range, sort_order, group_id
+    </sql>
+
+    <insert id="insert" parameterType="SystemConfig" useGeneratedKeys="true" keyProperty="configId">
+        insert into system_config 
+        (
+        	
+        	<if test="code != null">code, </if>
+        	<if test="name != null">name, </if>
+        	<if test="value != null">value, </if>
+        	<if test="valueType != null">value_type, </if>
+        	<if test="valueRange != null">value_range, </if>
+        	<if test="sortOrder != null">sort_order, </if>
+        	<if test="groupId != null">group_id</if>
+        )
+        values 
+        (
+        	
+        	<if test="code != null">#{code}, </if>
+        	<if test="name != null">#{name}, </if>
+        	<if test="value != null">#{value}, </if>
+        	<if test="valueType != null">#{valueType}, </if>
+        	<if test="valueRange != null">#{valueRange}, </if>
+        	<if test="sortOrder != null">#{sortOrder}, </if>
+        	<if test="groupId != null">#{groupId}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="SystemConfig">
+        update system_config set 
+        <set>
+        	<if test="code != null">  
+        		code = #{code}
+        	</if>
+        	<if test="name != null">  
+        		name = #{name}
+        	</if>
+        	<if test="value != null">  
+        		value = #{value}
+        	</if>
+        	<if test="valueType != null">  
+        		value_type = #{valueType}
+        	</if>
+        	<if test="valueRange != null">  
+        		value_range = #{valueRange}
+        	</if>
+        	<if test="sortOrder != null">  
+        		sort_order = #{sortOrder}
+        	</if>
+        	<if test="groupId != null">  
+        		group_id = #{groupId}
+        	</if>
+        </set>
+        <where> 
+        	<if test="configId > 0">
+                config_id = #{configId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from system_config
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="configId > 0">
+	                config_id = #{configId}
+	            </if>
+	        	<if test="code != null">
+	                code = #{code}
+	            </if>
+	        	<if test="name != null">
+	                name = #{name}
+	            </if>
+	        	<if test="value != null">
+	                value = #{value}
+	            </if>
+	        	<if test="valueType > 0">
+	                value_type = #{valueType}
+	            </if>
+	        	<if test="valueRange != null">
+	                value_range = #{valueRange}
+	            </if>
+	        	<if test="sortOrder > 0">
+	                sort_order = #{sortOrder}
+	            </if>
+	        	<if test="groupId > 0">
+	                group_id = #{groupId}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="SystemConfig">
+        select <include refid="allColumn"/> from system_config
+        <where>  
+        	<if test="configId > 0">
+                config_id = #{configId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="SystemConfig">
+        select <include refid="allColumn"/> from system_config
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="configId > 0">
+	                config_id = #{configId}
+	            </if>
+	        	<if test="code != null">
+	                code = #{code}
+	            </if>
+	        	<if test="name != null">
+	                name = #{name}
+	            </if>
+	        	<if test="value != null">
+	                value = #{value}
+	            </if>
+	        	<if test="valueType > 0">
+	                value_type = #{valueType}
+	            </if>
+	        	<if test="valueRange != null">
+	                value_range = #{valueRange}
+	            </if>
+	        	<if test="sortOrder > 0">
+	                sort_order = #{sortOrder}
+	            </if>
+	        	<if test="groupId > 0">
+	                group_id = #{groupId}
+	            </if>
+	        </trim>
+        </where>
+    </select>
+
+</mapper>

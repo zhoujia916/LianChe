@@ -1,0 +1,94 @@
+<! doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link type="text/css" rel="Stylesheet" href="http://blog.mn886.net/jqGrid/javascript/jqgrid/css/css/redmond/jquery-ui-1.8.16.custom.css" />
+    <link type="text/css" rel="Stylesheet" href="http://blog.mn886.net/jqGrid/javascript/jqgrid/css/ui.jqgrid.css"/>
+
+    <script type="text/javascript" src="http://blog.mn886.net/jqGrid/javascript/jquery-1.7.1.js"></script>
+
+    <script type="text/javascript" src="http://blog.mn886.net/jqGrid/javascript/jqgrid/js/i18n/grid.locale-cn.js"></script>
+
+    <script type="text/javascript" src="http://blog.mn886.net/jqGrid/javascript/jqgrid/js/jquery.jqGrid.src.js"></script>
+</head>
+<body>
+<table id="treegrid"></table>
+<div id="paddtree"></div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        var topicjson={
+                    "response": [
+                        {
+                            "id": "1",
+                            "elementName": "Grouping",
+                            level:"0", parent:"", isLeaf:false, expanded:false, loaded:true
+                        },
+                        {
+                            "id": "1_1",
+                            "elementName": "Simple Grouping",
+                            level:"1", parent:"1", isLeaf:true, expanded:false, loaded:true
+                        },
+                        {
+                            "id": "1_2",
+                            "elementName": "May be some other grouping",
+                            level:"1", parent:"1", isLeaf:true, expanded:false, loaded:true
+                        },
+                        {
+                            "id": "2",
+                            "elementName": "CustomFormater",
+                            level:"0", parent:"", isLeaf:false, expanded:true, loaded:true
+                        },
+                        {
+                            "id": "2_1",
+                            "elementName": "Image Formatter",
+                            level:"1", parent:"2", isLeaf:true, expanded:false, loaded:true
+                        },
+                        {
+                            "id": "2_1",
+                            "elementName": "Anchor Formatter",
+                            level:"1", parent:"2", isLeaf:true, expanded:false, loaded:true
+                        }
+                    ]
+                },
+                grid;
+// $('<table id="list2"></table>').appendTo('#topics');
+        var lastsel;
+        grid = jQuery("#treegrid");
+        grid.jqGrid({
+            datastr: topicjson,
+            datatype: "jsonstring",
+            height: "auto",
+            loadui: "disable",
+            colNames: ["id","Items","url"],
+            colModel: [
+                {name: "id",width:200, hidden:false, key:true},
+                {name: "elementName", editable:true,width:250, resizable: false},
+                {name: "url",width:1, editable:true,hidden:true}
+            ],
+            treeGrid: true,
+            treeGridModel: "adjacency",
+            ExpandColumn: "elementName",
+            treeIcons: {leaf:'ui-icon-document-b'},
+            caption: "jqGrid Demos",
+            //autowidth: true,
+            rowNum: 10000,
+            //ExpandColClick: true,
+            jsonReader: {
+                repeatitems: false,
+                root: "response"
+            },
+            onSelectRow: function(id){
+                if(id && id!==lastsel){
+                    grid.jqGrid('restoreRow',lastsel);
+                    grid.jqGrid('editRow',id,true);
+                    lastsel=id;
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

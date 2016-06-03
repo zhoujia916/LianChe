@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoArticleCatMapper">
+    <resultMap id="AutoArticleCat" type="puzzle.lianche.entity.AutoArticleCat">
+    	<id column="cat_id" property="catId" /> 
+    	<result column="cat_name" property="catName" /> 
+    	<result column="parent_id" property="parentId" /> 
+    	<result column="sort_order" property="sortOrder" />
+        <result column="parentName" property="parentName"/>
+    </resultMap>
+
+    <sql id="allColumn">
+    	cat_id, cat_name, parent_id, sort_order
+    </sql>
+
+    <insert id="insert" parameterType="AutoArticleCat" useGeneratedKeys="true" keyProperty="catId">
+        insert into auto_article_cat 
+        (
+        	
+        	<if test="catName != null">cat_name, </if>
+        	<if test="parentId != null">parent_id, </if>
+        	<if test="sortOrder != null">sort_order</if>
+        )
+        values 
+        (
+        	
+        	<if test="catName != null">#{catName}, </if>
+        	<if test="parentId != null">#{parentId}, </if>
+        	<if test="sortOrder != null">#{sortOrder}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoArticleCat">
+        update auto_article_cat
+        <set>
+        	<if test="catName != null">  
+        		cat_name = #{catName},
+        	</if>
+        	<if test="parentId != null">  
+        		parent_id = #{parentId},
+        	</if>
+        	<if test="sortOrder != null">  
+        		sort_order = #{sortOrder},
+        	</if>
+        </set>
+        where cat_id = #{catId}
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_article_cat
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="catId > 0">
+	                cat_id = #{catId}
+	            </if>
+                <if test="catIds!=null and catIds.length>0">
+                    cat_id in
+                    <foreach collection="catIds" item="catId" open="(" separator="," close=")">
+                        #{catId}
+                    </foreach>
+                </if>
+	        	<if test="catName != null">
+	                cat_name = #{catName}
+	            </if>
+	        	<if test="parentId > 0">
+	                parent_id = #{parentId}
+	            </if>
+	        	<if test="sortOrder > 0">
+	                sort_order = #{sortOrder}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoArticleCat">
+        select <include refid="allColumn"/> from auto_article_cat
+        <where>  
+        	<if test="catId > 0">
+                cat_id = #{catId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoArticleCat">
+        select <include refid="allColumn"/> from auto_article_cat
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="catId > 0">
+                    and cat_id = #{catId}
+	            </if>
+	        	<if test="catName != null">
+                    and cat_name = #{catName}
+	            </if>
+	        	<if test="parentId > 0">
+                    and parent_id = #{parentId}
+	            </if>
+	        	<if test="sortOrder > 0">
+                    and sort_order = #{sortOrder}
+	            </if>
+	        </trim>
+        </where>
+    </select>
+
+    <!--新增方法-->
+    <select id="queryByArticleCat" parameterType="AutoArticleCat" resultMap="AutoArticleCat">
+        select aa.*,aac.cat_name as parentName from auto_article_cat as aa
+        left join auto_article_cat as aac on aa.parent_id=aac.cat_id
+        <where>
+            <if test="catName!=null and catName!=''">
+                aa.cat_id in (select a.cat_id from auto_article_cat as a where a.cat_name like concat('%',#{catName},'%'))
+                or aa.parent_id in (select a.cat_id from auto_article_cat as a where a.cat_name like concat('%',#{catName},'%'))
+            </if>
+        </where>
+    </select>
+</mapper>

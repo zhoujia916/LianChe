@@ -1,0 +1,317 @@
+<title>Puzzle Admin-推送消息管理</title>
+
+<div class="page-header">
+
+    <h1>
+        <i class="glyphicon glyphicon-signal"></i>
+            推送消息管理
+    </h1>
+
+</div>
+
+<div class="row" id="">
+    <div class="col-xs-12">
+        <div id="msg-gridview" class="gridview">
+            <div class="grid-filter">
+                <input type="text input-sm" style="height: 29px" class="txt" name="fromUserName" placeholder="发送方" />
+                <input type="text input-sm" style="height: 29px" class="txt" name="toUserName" placeholder="接收方" />
+                <select name="msgType" style="height: 29px;width: 160px;">
+                    <option value="-1">请选择消息类型</option>
+                    <option value="0">系统发给用户的消息</option>
+                    <option value="1">用户发给用户的消息</option>
+                </select>
+                <select name="status" style="height: 29px;width: 160px;">
+                    <option value="-1">请选择消息状态</option>
+                    <option value="0">待阅读</option>
+                    <option value="1">已阅读</option>
+                </select>
+                <input type="text input-sm" style="height: 29px" id="datepicker1" name="beginTimeString" placeholder="开始时间"/>
+                <input type="text input-sm" style="height: 29px" id="datepicker2" name="endTimeString" placeholder="结束时间"/>
+                <a id="select" class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
+            </div>
+
+            {{include file="/inc/module_action.html"}}
+
+            <div class="grid-table">
+                <table class="table table-striped table-bordered table-hover table-list table-tree">
+                    <thead>
+                    <tr>
+                        <th width="50">
+                            <label class="position-relative">
+                                <input type="checkbox" class="ace grid-cb-all" />
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th width="100">编号</th>
+                        <th>标题</th>
+                        <th>类型</th>
+                        <th>时间</th>
+                        <th>发送方</th>
+                        <th>发送方真实姓名</th>
+                        <th>接收方</th>
+                        <th>接收方真实姓名</th>
+                        <th>浏览次数</th>
+                        <th>状态</th>
+                        <th width="120">操作</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td colspan="8">
+                            <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="pagination-box">
+
+                </div>
+            </div>
+            <!--
+            <div style="position: fixed;width:100%;height:100%;top:0;z-index:1000;">
+                <div style="background:#000;opacity:0.1;width:100%;height:100%;"></div>
+            </div>
+            -->
+            <!--edit form-->
+            <div class="grid-form save-form" style="">
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                    <div class="widget-header">
+                        <h5 class="widget-title smaller"></h5>
+
+                        <div class="widget-toolbar">
+                            <a href="#" class="btn-action" data-action="hide">
+                                <i class="ace-icon fa fa-close white"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="alert-info red"></div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        标题
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="msgTitle" name="msgTitle" placeholder="标题" class="txt input-sm col-sm-5 ">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        作者
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" data-init="官方" id="msgAuthor" name="msgAuthor" placeholder="作者" class="txt input-sm col-sm-5 ">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        消息内容类型
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select id="msgContentType" name="msgContentType" data-init="0">
+                                            <option value="0">请选择消息类型</option>
+                                            <option value="1">消息内容为文本</option>
+                                            <option value="2">消息内容为URL链接</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        消息内容
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" name="msgContent" id="msgContent" placeholder="消息内容"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        接收方
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select id="toUserIds" name="toUserIds" class="multiselect" multiple="">
+                                            {{foreach from=$userList item=user}}
+                                                <option value="{{$user.userId}}">{{$user.userName}}</option>
+                                            {{/foreach}}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="clearfix form-actions">
+                                    <input type="hidden" name="msgId" value="" />
+                                    <a class="btn btn-sm btn-action" data-action="reset">
+                                        <i class="ace-icon fa fa-undo"></i>
+                                        重置
+                                    </a>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <a class="btn btn-sm btn-primary btn-action" data-action="save">
+                                        <i class="ace-icon fa fa-check"></i>
+                                        提交
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-form search-form "></div>
+
+        </div>
+
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+    $('.multiselect').multiselect({
+        enableFiltering: true,
+        buttonClass: 'btn btn-white btn-primary',
+        templates: {
+            button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"></button>',
+            ul: '<ul class="multiselect-container dropdown-menu"></ul>',
+            filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
+            filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
+            li: '<li><a href="javascript:void(0);"><label></label></a></li>',
+            divider: '<li class="multiselect-item divider"></li>',
+            liGroup: '<li class="multiselect-item group"><label class="multiselect-group"></label></li>'
+        }
+    });
+
+    $(document).one('ajaxloadstart.page', function(e) {
+        $('.multiselect').multiselect('destroy');
+    });
+
+    $( "#datepicker1" ).datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: false
+    });
+
+    $( "#datepicker2" ).datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: false
+    });
+
+    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $(function () {
+            $("#msg-gridview").gridview({
+                debug: true,
+                url: "msg/list.do",
+                form: {
+                    url: "msg/action.do",
+                    check:function(){
+                        var msgTitle=$("#msgTitle").val();
+                        var msgContentType=$("#msgContentType").val();
+                        var msgContent=$("#msgContent").val();
+                        var urlFormant = new RegExp(
+                                        "^" +
+                                    // protocol identifier
+                                        "(?:(?:https?|ftp)://)" +
+                                    // user:pass authentication
+                                        "(?:\\S+(?::\\S*)?@)?" +
+                                        "(?:" +
+                                    // IP address dotted notation octets
+                                    // excludes loopback network 0.0.0.0
+                                    // excludes reserved space >= 224.0.0.0
+                                    // excludes network & broacast addresses
+                                    // (first & last IP address of each class)
+                                        "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
+                                        "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
+                                        "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
+                                        "|" +
+                                    // host name
+                                        "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+                                    // domain name
+                                        "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+                                    // TLD identifier
+                                        "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+                                        ")" +
+                                    // port number
+                                        "(?::\\d{2,5})?" +
+                                    // resource path
+                                        "(?:/\\S*)?" +
+                                        "$", "i"
+                        );
+                        var toUserIds=$("#toUserIds").val();
+                        if(!msgTitle){
+                            console.log("check form");
+                            $("#msgTitle").focus();
+                            return "请输入标题";
+                        }else if(msgContentType==0){
+                            console.log("check form");
+                            $("#msgContentType").focus();
+                            return "请选择消息内容信息";
+                        }else if(!msgContent){
+                            console.log("check form");
+                            $("#msgContent").focus();
+                            return "请输入消息内容";
+                        }else if(msgContentType==1 && msgContent.length<6){
+                            console.log("check form");
+                            $("#msgContent").focus();
+                            return "消息内容必须大于6个字";
+                        }
+                        else if(msgContentType==2 && !urlFormant.test(msgContent)){
+                            console.log("check form");
+                            $("#msgContent").focus();
+                            return "请输入正确的URL链接";
+                        }
+                        else if(toUserIds=="null" || toUserIds==null){
+                            console.log("check form");
+                            $("#toUserIds").focus();
+                            return "请选择相关接收方";
+                        }else {
+                            return true;
+                        }
+                    }
+                },
+                jsonReader: {
+                    key_field: 'msgId'
+                },
+                columns: [
+                    {
+                        name: "checkbox"
+                    },
+                    {
+                        name: "msgId"
+                    },
+                    {
+                        name: "msgTitle"
+                    },
+                    {
+                        name: "msgType"
+                    },
+                    {
+                        name: "addTime"
+                    },
+                    {
+                        name: "fromUserName"
+                    },
+                    {
+                        name: "fromRealName"
+                    },
+                    {
+                        name : "toUserName"
+                    },
+                    {
+                        name : "toRealName"
+                    },
+                    {
+                        name : "viewCount"
+                    },
+                    {
+                        name: "status",
+                        format: function(opts, column, row){
+                            var text = ["<span class='label label-sm label-warning'>待阅读</span>", "<span class='label label-sm label-success'>已阅读</span>"];
+                            return "<td>" + text[row[column.name]] + "</td>";
+                        }
+                    },
+                    {
+                        name: "actions",
+                        list:["delete", "view"]
+                    }
+                ]
+            });
+        });
+    });
+</script>

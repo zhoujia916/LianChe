@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SystemUserMapMapper">
+    <resultMap id="SystemUserMap" type="puzzle.lianche.entity.SystemUserMap">
+    	<id column="map_id" property="mapId" /> 
+    	<result column="user_id" property="userId" /> 
+    	<result column="target_id" property="targetId" /> 
+    	<result column="target_type" property="targetType" /> 
+    </resultMap>
+
+    <sql id="allColumn">
+    	map_id, user_id, target_id, target_type
+    </sql>
+
+    <insert id="insert" parameterType="SystemUserMap" useGeneratedKeys="true" keyProperty="mapId">
+        insert into system_user_map 
+        (
+        	<if test="userId != null">user_id, </if>
+        	<if test="targetId != null">target_id, </if>
+        	<if test="targetType != null">target_type</if>
+        )
+        values
+        (
+        	<if test="userId != null">#{userId}, </if>
+        	<if test="targetId != null">#{targetId}, </if>
+        	<if test="targetType != null">#{targetType}</if>
+       	)
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into system_user_map
+        (
+            user_id,
+            target_id,
+            target_type
+        )
+        values
+        <foreach collection="list" item="userMap" index="index" separator="," >
+        (
+            ${userMap.userId},
+            ${userMap.targetId},
+            ${userMap.targetType}
+        )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="SystemUserMap">
+        update system_user_map set 
+        <set>
+        	<if test="userId != null">  
+        		user_id = #{userId}
+        	</if>
+        	<if test="targetId != null">  
+        		target_id = #{targetId}
+        	</if>
+        	<if test="targetType != null">  
+        		target_type = #{targetType}
+        	</if>
+        </set>
+        <where> 
+        	<if test="mapId > 0">
+                map_id = #{mapId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from system_user_map
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="mapId > 0">
+	                map_id = #{mapId}
+	            </if>
+                <if test="mapIds != null and mapIds.length > 0">
+                    map_id in
+                    <foreach collection="mapIds" item="mapId" open="(" separator="," close=")">
+                        #{mapId}
+                    </foreach>
+                </if>
+	        	<if test="userId > 0">
+	                and user_id = #{userId}
+	            </if>
+                <if test="userIds != null and userIds.length > 0">
+                    user_Id in
+                    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                        #{userId}
+                    </foreach>
+                </if>
+	        	<if test="targetId > 0">
+	                target_id = #{targetId}
+	            </if>
+	        	<if test="targetType > 0">
+	                and target_type = #{targetType}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="SystemUserMap">
+        select <include refid="allColumn"/> from system_user_map
+        <where>  
+        	<if test="mapId > 0">
+                and map_id = #{mapId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="SystemUserMap">
+        select <include refid="allColumn"/> from system_user_map
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="mapId > 0">
+	                map_id = #{mapId}
+	            </if>
+	        	<if test="userId > 0">
+	                user_id = #{userId}
+	            </if>
+	        	<if test="targetId > 0">
+	                target_id = #{targetId}
+	            </if>
+	        	<if test="targetType > 0">
+	                target_type = #{targetType}
+	            </if>
+	        </trim>
+        </where>
+    </select>
+
+</mapper>

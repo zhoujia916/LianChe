@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoSmsMapper">
+    <resultMap id="AutoSms" type="puzzle.lianche.entity.AutoSms">
+    	<id column="sms_id" property="smsId" /> 
+    	<result column="sms_type" property="smsType" /> 
+    	<result column="sms_content" property="smsContent" /> 
+    	<result column="code" property="code" /> 
+    	<result column="phone" property="phone" />
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <sql id="allColumn">
+    	sms_id, sms_type, sms_content, code, phone, status
+    </sql>
+
+    <insert id="insert" parameterType="AutoSms" useGeneratedKeys="true" keyProperty="smsId">
+        insert into auto_sms 
+        (
+        	
+        	<if test="smsType != null">sms_type, </if>
+        	<if test="smsContent != null">sms_content, </if>
+        	<if test="code != null">code, </if>
+        	<if test="phone != null">phone, </if>
+            <if test="status != null">status</if>
+        )
+        values 
+        (
+        	
+        	<if test="smsType != null">#{smsType}, </if>
+        	<if test="smsContent != null">#{smsContent}, </if>
+        	<if test="code != null">#{code}, </if>
+        	<if test="phone != null">#{phone}, </if>
+            <if test="status != null">#{status}</if>
+       	)
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into auto_sms
+        (
+            sms_type,
+            sms_content,
+            phone,
+            status
+        )
+        values
+        <foreach collection="list" item="sms" index="index" separator=",">
+        (
+            #{sms.smsType},
+            #{sms.smsContent},
+            #{sms.phone},
+            #{sms.status}
+        )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="AutoSms">
+        update auto_sms set 
+        <set>
+        	<if test="smsType != null">  
+        		sms_type = #{smsType}
+        	</if>
+        	<if test="smsContent != null">  
+        		sms_content = #{smsContent}
+        	</if>
+        	<if test="code != null">  
+        		code = #{code}
+        	</if>
+        	<if test="phone != null">  
+        		phone = #{phone}
+        	</if>
+        </set>
+        <where> 
+        	<if test="smsId > 0">
+                sms_id = #{smsId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_sms
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="smsId > 0">
+	                sms_id = #{smsId}
+	            </if>
+                <if test="smsIds!=null and smsIds.length>0">
+                    sms_id in
+                    <foreach collection="smsIds" item="smsId" open="(" separator="," close=")">
+                        #{smsId}
+                    </foreach>
+                </if>
+	        	<if test="smsType > 0">
+	                sms_type = #{smsType}
+	            </if>
+	        	<if test="smsContent != null">
+	                sms_content = #{smsContent}
+	            </if>
+	        	<if test="code != null">
+	                code = #{code}
+	            </if>
+	        	<if test="phone != null">
+	                phone = #{phone}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoSms">
+        select <include refid="allColumn"/> from auto_sms
+        <where>  
+        	<if test="smsId > 0">
+                sms_id = #{smsId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoSms">
+        select * from auto_sms
+        <where>
+            <if test="smsType!=null and smsType!=''">
+                and sms_type in (${smsType})
+            </if>
+            <if test="status!=null and status>0">
+                and status = ${status}
+            </if>
+        </where>
+    </select>
+
+</mapper>

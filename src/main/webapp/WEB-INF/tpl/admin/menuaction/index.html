@@ -1,0 +1,175 @@
+
+<title>Puzzle Admin-菜单管理</title>
+
+<div class="page-header">
+    <h1>
+        <i class="glyphicon glyphicon-signal"></i>
+        菜单管理
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            设置菜单动作
+        </small>
+
+        <a class="btn btn-xs orange pull-right btn-warning" href="#page/menu/index">
+        <i class="glyphicon glyphicon-arrow-left"></i>返回菜单管理</span></a>
+
+    </h1>
+</div>
+
+<div id="gridview" class="gridview">
+    <div class="grid-action">
+        <a data-action="add" class="btn btn-action btn-primary btn-xs white"><i class="ace-icon fa fa-plus-circle"></i>新建</a>
+
+        <a data-action="edit" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-pencil"></i>编辑</a>
+
+        <a data-action="delete" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-trash-o"></i>删除</a>
+
+    </div>
+
+    <div class="grid-table">
+        <table class="table table-striped table-bordered table-hover table-list table-tree">
+            <thead>
+            <tr>
+                <th style="width:50px;">
+                    <label class="position-relative">
+                        <input type="checkbox" class="ace grid-cb-all" />
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>编号</th>
+                <th>名称</th>
+                <th>动作</th>
+                <th>配置项</th>
+                <th>排序号</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td colspan="8">
+                    <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--save form-->
+    <div class="grid-form save-form">
+
+        <div class="widget-box widget-color-blue light-border ui-sortable-handle">
+            <div class="widget-header">
+                <h5 class="widget-title smaller"></h5>
+
+                <div class="widget-toolbar">
+                    <a href="#" class="btn-action" data-action="hide">
+                        <i class="ace-icon fa fa-close white"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div class="alert-info red"></div>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                名称
+                            </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="actionName" placeholder="名称" class="txt input-sm col-sm-5 ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                编码
+                            </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="actionCode" placeholder="编码" class="txt input-sm col-sm-8">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                配置信息
+                            </label>
+
+                            <div class="col-sm-9">
+                                <textarea name="actionConfig" class="txt input-sm col-sm-8"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                排序号
+                            </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" data-init="0"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
+                            </div>
+                        </div>
+                        <div class="clearfix form-actions">
+                            <input type="hidden" name="actionId" value="" />
+                            <input type="hidden" name="menuId" value="" />
+                            <a class="btn btn-sm btn-action" data-action="reset">
+                                <i class="ace-icon fa fa-undo"></i>
+                                重置
+                            </a>
+                            &nbsp; &nbsp; &nbsp;
+                            <a class="btn btn-sm btn-primary btn-action" data-action="save">
+                                <i class="ace-icon fa fa-check"></i>
+                                提交
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+
+	$('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $(function($) {
+            $(".page-content").height($(window).height() - 120);
+
+			$("#gridview").gridview({
+                url: "menuaction/list.do",
+                param:{
+                    menuId: "{{$menuId}}"
+                },
+                pagination:{
+                    show: false
+                },
+                jsonReader:{
+                    key_field: "actionId"
+                },
+                form:{
+                    url: "menuaction/action.do"
+                },
+                columns:[{
+                    name: "checkbox"
+                },{
+                    name: "actionId"
+                },{
+                    name: "actionName"
+                },{
+                    name: "actionCode"
+                },{
+                    name: "actionConfig"
+                },{
+                    name: "sortOrder",
+                    format: function(opts, column, row){
+                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                    }
+                },{
+                    name: "actions",
+                    list: ["edit", "delete"]
+                }]
+            });
+		});
+	});
+</script>

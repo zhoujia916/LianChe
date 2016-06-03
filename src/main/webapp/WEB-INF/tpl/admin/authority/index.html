@@ -1,0 +1,399 @@
+<link type="text/css" rel="stylesheet" href="../resource/admin/js/zTree/css/zTreeStyle/zTreeStyle.css" />
+
+<title>Puzzle Admin - 授权管理</title>
+<!-- ajax layout which only needs content area -->
+<div class="page-header">
+    <h1>
+        <i class="glyphicon glyphicon-signal"></i>
+        授权管理
+    </h1>
+</div><!-- /.page-header -->
+
+<div class="row">
+    <div class="tabbable">
+        <ul class="nav nav-tabs padding-18">
+            <li class="active" data-key="1">
+                <a data-toggle="tab" href="#user">
+                    <i class="blue ace-icon fa fa-user bigger-120"></i>
+                    用户授权
+                </a>
+            </li>
+            <li data-key="2">
+                <a data-toggle="tab" href="#role">
+                    <i class="green ace-icon fa fa-users bigger-120"></i>
+                    角色授权
+                </a>
+            </li>
+
+            <li data-key="3">
+                <a data-toggle="tab" href="#group">
+                    <i class="orange ace-icon fa fa-group bigger-120"></i>
+                    用户组授权
+                </a>
+            </li>
+
+            <li data-key="4">
+                <a data-toggle="tab" href="#dept">
+                    <i class="purple ace-icon fa fa-users bigger-120"></i>
+                    部门授权
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content no-border padding-24">
+            <div id="user" class="tab-pane in active">
+                <div class="row">
+                    <div class="col-xs-4 col-md-4">
+                        <div class="widget-box widget-color-blue2">
+                            <div class="widget-header">
+                                <h4 class="widget-title lighter smaller">授权用户</h4>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main padding-8">
+                                    <div class="scrollable" data-position="left">
+                                    <ul class="box-list" id="boxList1">
+                                        {{if $userList}}
+                                        {{foreach from=$userList item=userItem key=index}}
+                                        <li data-key="{{$userItem.userId}}"><a>{{$userItem.loginName}}</a></li>
+                                        {{/foreach}}
+                                        {{else}}
+                                        <li class="empty"><a>暂无用户数据</a></li>
+                                        {{/if}}
+                                    </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-md-4">
+                        <div class="widget-box widget-color-green2" id="menuWidget1">
+                            <div class="widget-header">
+                                <h4 class="widget-title lighter smaller">权限设置</h4>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main padding-8">
+                                    <div class="scrollable" data-position="left">
+                                    <ul class="tree-list ztree" id="menuTree1"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-md-4 box-buttons">
+                        <a class="btn btn-primary btn-save" data-key="user" style="margin-top:50px;"><i class="glyphicon glyphicon-ok"></i>保存设置</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="role" class="tab-pane">
+                <div class="col-xs-4 col-md-4">
+                    <div class="widget-box widget-color-blue2">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">授权角色</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <div class="scrollable" data-position="left">
+                                <ul class="box-list" id="boxList2">
+                                    {{if $roleList}}
+                                    {{foreach from=$roleList item=roleItem key=index}}
+                                    <li data-key="{{$roleItem.roleId}}"><a>{{$roleItem.roleName}}</a></li>
+                                    {{/foreach}}
+                                    {{else}}
+                                    <li class="empty"><a>暂无角色数据</a></li>
+                                    {{/if}}
+                                </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4">
+                    <div class="widget-box widget-color-green2" id="menuWidget2">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">权限设置</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <div class="scrollable" data-position="left">
+                                <ul class="tree-list ztree" id="menuTree2"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4 box-buttons">
+
+                    <a class="btn btn-primary btn-save" data-key="role" style="margin-top:50px;"><i class="glyphicon glyphicon-ok"></i>保存设置</a>
+                </div>
+            </div>
+
+            <div id="group" class="tab-pane">
+                <div class="col-xs-4 col-md-4">
+                    <div class="widget-box widget-color-blue2">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">授权用户组</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <div class="scrollable" data-position="left">
+                                <ul class="box-list" id="boxList3">
+                                    {{if $groupList}}
+                                    {{foreach from=$groupList item=groupItem key=index}}
+                                    <li data-key="{{$groupItem.groupId}}"><a>{{$groupItem.groupName}}</a></li>
+                                    {{/foreach}}
+                                    {{else}}
+                                    <li class="empty"><a>暂无用户组数据</a></li>
+                                    {{/if}}
+                                </ul>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4">
+                    <div class="widget-box widget-color-green2" id="menuWidget3">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">权限设置</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <div class="scrollable" data-position="left">
+                                <ul class="tree-list ztree" id="menuTree3"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4 box-buttons">
+                    <a class="btn btn-primary btn-save" data-key="group" style="margin-top:50px;"><i class="glyphicon glyphicon-ok"></i>保存设置</a>
+                </div>
+            </div>
+
+            <div id="dept" class="tab-pane">
+                <div class="col-xs-4 col-md-4">
+                    <div class="widget-box widget-color-blue2" id="widget4">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">授权部门</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <div class="scrollable" data-position="left">
+                                    <ul class="box-list" id="boxList4">
+                                        {{if $deptList}}
+                                        {{foreach from=$deptList item=deptItem key=index}}
+                                        <li data-key="{{$deptItem.deptId}}"><a>{{$deptItem.deptName}}</a></li>
+                                        {{/foreach}}
+                                        {{else}}
+                                        <li class="empty"><a>暂无部门数据</a></li>
+                                        {{/if}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4">
+                    <div class="widget-box widget-color-green2" id="menuWidget4">
+                        <div class="widget-header">
+                            <h4 class="widget-title lighter smaller">权限设置</h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-8">
+                                <div class="scrollable" data-position="left">
+                                <ul class="tree-list ztree" id="menuTree4"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-md-4 box-buttons">
+
+                    <a class="btn btn-primary btn-save" data-key="dept" style="margin-top:50px;"><i class="glyphicon glyphicon-ok"></i>保存设置</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('.page-content-area').ace_ajax('loadScripts', [null, "../resource/admin/js/zTree/js/jquery.ztree.all.js", null], function() {
+        $(".box-list").on("click", "li", function(){
+            if(!$(this).hasClass("selected")){
+                $(this).addClass("selected").siblings().removeClass("selected");
+                var sourceType = $(".nav-tabs .active").attr("data-key");
+                $("#menuWidget" + sourceType).widget_box('reload');
+                $.post("authority/list.do", {
+                    sourceType: sourceType,
+                    sourceId: $(this).attr("data-key")
+                }, function (result) {
+                    if(result.code == 0){
+                        var tree = $.fn.zTree.getZTreeObj("menuTree" + sourceType);
+                        var selected = result.data || [];
+                        var nodes = tree.getNodes();
+                        function checkAuth(node) {
+                            var find = false;
+                            $.each(selected, function () {
+                                if (this.targetType + "-" + this.targetId === node.id) {
+                                    find = true;
+                                    return false;
+                                }
+                            });
+                            return find;
+                        }
+
+                        function checkNode(node){
+                            node.checked = checkAuth(node);
+                            tree.updateNode(node);
+                            if(node.children){
+                                $.each(node.children, function(){
+                                    checkNode(this);
+                                });
+                            }
+                        }
+
+                        $.each(nodes, function(){
+                            checkNode(this);
+                        });
+
+                        $("#menuWidget" + sourceType).trigger('reloaded.ace.widget');
+                    }else{
+                       showAlert("加载权限信息出错！");
+                    }
+                }, "json");
+            }
+        });
+
+        $(".box-buttons").on("click", ".btn-save", function(){
+            var sourceType = $(".nav-tabs .active").attr("data-key");
+
+            var right = [];
+            var nodes = $.fn.zTree.getZTreeObj("menuTree" + sourceType).getCheckedNodes(true);
+            $.each(nodes, function(){
+                right.push(this.id);
+            });
+            var data = {
+                action: "save",
+                sourceType: sourceType,
+                sourceId: $("#boxList" + sourceType +  " li.selected").attr("data-key"),
+                target: right.join(",")
+            };
+            if(!data["sourceId"]){
+                showAlert("请选择授权对象！");
+                return;
+            }
+            if(!data["target"]){
+                showConfirm("您没有选择授权内容,将删除已授予权限？", function(){
+                    $.post("authority/action.do", data, function(result){
+                        if(result.code == 0){
+                            showTip("设置权限成功！");
+                        }else{
+                            showAlert(result.msg);
+                        }
+                    }, "json");
+
+                });
+            }else{
+                $.post("authority/action.do", data, function(result){
+                    if(result.code == 0){
+                        showTip("设置权限成功！");
+                    }else{
+                        showAlert(result.msg);
+                    }
+                }, "json");
+            }
+        });
+
+        $(".box").css({ "height": ($(window).height() - 325) + "px", "overflow": "auto"});
+
+        $('.scrollable').each(function () {
+            var $this = $(this);
+            $(this).ace_scroll({
+                size: $this.attr('data-size') || ($(window).height() - 325)
+                //styleClass: 'scroll-left scroll-margin scroll-thin scroll-dark scroll-light no-track scroll-visible'
+            });
+        });
+
+        initTree();
+    })
+
+    function initTree(){
+        var settings = {
+            check: {
+                enable: true,
+                chkboxType: {
+                    Y: "p",
+                    N: "s"
+                }
+            },
+            data: {
+                key: {
+                    name: "name"
+                },
+                simpleData: {
+                    enable: false,
+                    idKey: "id",
+                    pIdKey: "parentId"
+                }
+            }
+        };
+        $.post("menu/list.do", null, function(result){
+            if(result.code == 0){
+                if(result.data != null && result.data.length > 0){
+                    var treeData = showTree(result.data);
+                    $("#menuTree1, #menuTree2, #menuTree3, #menuTree4").each(function(){
+                        $.fn.zTree.init($(this), settings, treeData);
+                    });
+                }
+            }else{
+                showAlert(result.msg);
+            }
+        }, "json");
+    }
+
+    function showTree(list){
+        var treeData = [];
+        for(var i = 0; i < list.length; i++){
+            if(list[i].parentId == 0){
+                treeData.push(showNode(list, list[i]));
+            }
+        }
+        return treeData;
+    }
+
+    function showNode(list, item){
+        var children = findChild(list, item);
+        var newItem = {id: "1-" + item.menuId, name: item.menuName, open:true };
+        if(children.length > 0){
+            newItem["children"] = [];
+            for(var i = 0; i < children.length; i++){
+                var child = showNode(list, children[i]);
+                newItem["children"].push(child);
+            }
+        }
+        else if(item.actions != null && item.actions.length > 0){
+            newItem["children"] = [];
+            for(var i = 0; i < item.actions.length; i++){
+                newItem["children"].push({id: "2-" + item.actions[i].actionId, name: item.actions[i].actionName});
+            }
+        }
+        return newItem;
+    }
+
+    function findChild(list, item){
+        var children = [];
+        for(var i = 0; i < list.length; i++) {
+            if (list[i].parentId == item.menuId) {
+                children.push(list[i]);
+            }
+        }
+        return children;
+    }
+
+</script>

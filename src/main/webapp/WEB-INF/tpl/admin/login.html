@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        {{include file="/inc/head.html"}}
+	</head>
+
+	<body class="login-layout light-login">
+		<div class="main-container">
+			<div class="main-content">
+				<div class="row">
+					<div class="col-sm-10 col-sm-offset-1">
+						<div class="login-container" style="margin-top:10%;">
+							<div class="center">
+								<h4>
+									<i class="ace-icon fa fa-leaf green"></i>
+									<span class="red">一车管理系统</span>
+								</h4>
+								<h4 class="blue" id="id-company-text">&copy; 帕索设计(Puzzle Idea)</h4>
+							</div>
+
+							<div class="space-6"></div>
+
+							<div class="position-relative">
+								<div id="login-box" class="login-box visible widget-box no-border">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header blue lighter bigger">
+												<i class="ace-icon fa fa-coffee green"></i>
+												请输入您的账户信息
+											</h4>
+
+											<div class="space-6"></div>
+
+											<form method="post" action="/admin/login.do">
+												<fieldset>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="txtUserName"{{if $user}} value="{{$user}}"{{/if}} name="username" type="text" class="form-control" placeholder="账户" />
+															<i class="ace-icon fa fa-user"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input id="txtPassword" name="password" type="password" class="form-control" placeholder="密码" />
+															<i class="ace-icon fa fa-lock"></i>
+														</span>
+													</label>
+
+													<div class="space"></div>
+
+													<div class="clearfix">
+														<label class="inline">
+															<input id="cbRemember" type="checkbox"{{if $remember eq 1}} checked="{{$user}}"{{/if}} class="ace" />
+															<span class="lbl">记住账户</span>
+														</label>
+
+														<button id="btn-sign" type="button" class="width-35 pull-right btn btn-sm btn-primary">
+															<i class="ace-icon fa fa-key"></i>
+															<span class="bigger-110">登&nbsp;&nbsp;录</span>
+														</button>
+													</div>
+
+													<div class="space-4"></div>
+												</fieldset>
+											</form>
+										</div>
+									</div><!-- /.widget-body -->
+								</div><!-- /.login-box -->
+
+							</div><!-- /.position-relative -->
+						</div>
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div><!-- /.main-content -->
+		</div><!-- /.main-container -->
+
+		<!-- basic scripts -->
+
+        {{include file="/inc/page_script_basic.html"}}
+
+
+		<!-- inline scripts related to this page -->
+		<script type="text/javascript">
+			$(function($) {
+
+                 $('#btn-sign').on('click', function(e){
+                      var username = $.trim($("#txtUserName").val());
+                      var password = $.trim($("#txtPassword").val());
+                      var remember = document.getElementById("cbRemember").checked ? "1" : "0";
+                      if(username == ""){
+                          showAlert("用户名不能为空！");
+                          return;
+                      }
+                      if(password == ""){
+                         showAlert("密码不能为空！");
+                         return;
+                      }
+                      $.post("{{$contextPath}}/admin/sign.do", {username: username, password: password, remember: remember}, function(result){
+                          if(result.code == 0){
+                              window.location = "{{$contextPath}}{{if $ReturnUrl}}{{$ReturnUrl}}{{else}}/admin/index{{/if}}";
+                          }else{
+                              showAlert(result.msg);
+                          }
+                      }, "json");
+                      e.preventDefault();
+                 });
+
+                $("input.form-control").on("keyup", function (e) {
+                    if(e.keyCode == 13){
+                        $('#btn-sign').trigger("click");
+                    }
+                })
+			});
+		</script>
+	</body>
+</html>

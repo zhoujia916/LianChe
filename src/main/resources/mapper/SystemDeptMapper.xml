@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SystemDeptMapper">
+    <resultMap id="SystemDept" type="puzzle.lianche.entity.SystemDept">
+    	<id column="dept_id" property="deptId" /> 
+    	<result column="dept_name" property="deptName" />
+        <result column="parent_id" property="parentId" />
+        <result column="parent_name" property="parentName" />
+    	<result column="sort_order" property="sortOrder" /> 
+    </resultMap>
+
+    <sql id="allColumn">
+    	dept_id, dept_name, parent_id, sort_order
+    </sql>
+
+    <insert id="insert" parameterType="SystemDept" useGeneratedKeys="true" keyProperty="deptId">
+        insert into system_dept 
+        (
+        	<if test="deptName != null">dept_name, </if>
+        	<if test="parentId != null">parent_id, </if>
+        	<if test="sortOrder != null">sort_order</if>
+        )
+        values 
+        (
+        	<if test="deptName != null">#{deptName}, </if>
+        	<if test="parentId != null">#{parentId}, </if>
+        	<if test="sortOrder != null">#{sortOrder}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="SystemDept">
+        update system_dept
+        <set>
+        	<if test="deptName != null">  
+        		dept_name = #{deptName},
+        	</if>
+        	<if test="parentId != null">  
+        		parent_id = #{parentId},
+        	</if>
+        	<if test="sortOrder != null">  
+        		sort_order = #{sortOrder}
+        	</if>
+        </set>
+        where dept_id = #{deptId}
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from system_dept
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="deptId > 0">
+	                dept_id = #{deptId}
+	            </if>
+                <if test="deptIds!=null and deptIds.length>0">
+                    dept_id in
+                    <foreach collection="deptIds" index="index" item="deptId" open="(" separator="," close=")">
+                        #{deptId}
+                    </foreach>
+                </if>
+	        	<if test="deptName != null">
+	                dept_name like concat('%', #{deptName}, '%')
+	            </if>
+	        	<if test="parentId != null">
+	                parent_id = #{parentId}
+	            </if>
+	        	<if test="sortOrder != null">
+	                sort_order = #{sortOrder}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="SystemDept">
+        select <include refid="allColumn"/> from system_dept
+        <where>  
+        	<if test="deptId != null">
+                dept_id = #{deptId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="SystemDept">
+        select sd.*, pd.dept_name as parent_name  from system_dept  as sd
+        left join system_dept as pd on pd.dept_id = sd.parent_id
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="deptId != null">
+	                dept_id = #{deptId}
+	            </if>
+	        	<if test="deptName != null and deptName!=''">
+                    sd.dept_name like concat('%', #{deptName}, '%')
+	            </if>
+	        	<if test="parentId != null">
+	                parent_id = #{parentId}
+	            </if>
+	        	<if test="sortOrder != null">
+	                sort_order = #{sortOrder}
+	            </if>
+	        </trim>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,10 @@
+{{if $actions}}
+<div class="grid-action" style="text-align: right">
+    {{foreach from=$actions item=actionItem}}
+    <a data-action="{{$actionItem.actionCode}}" class="btn btn-action btn-primary btn-xs white">
+        {{if $actionItem.actionIco}}<i class="{{$actionItem.actionIco}}"></i>{{/if}}
+        {{$actionItem.actionName}}
+    </a>
+    {{/foreach}}
+</div>
+{{/if}}

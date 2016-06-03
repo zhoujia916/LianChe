@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoUserPicMapper">
+    <resultMap id="AutoUserPic" type="puzzle.lianche.entity.AutoUserPic">
+    	<id column="pic_id" property="picId" /> 
+    	<result column="user_id" property="userId" /> 
+    	<result column="pic_type" property="picType" /> 
+    	<result column="pic_path" property="picPath" /> 
+    	<result column="add_time" property="addTime" /> 
+    </resultMap>
+
+    <sql id="allColumn">
+    	pic_id, user_id, pic_type, pic_path, add_time
+    </sql>
+
+    <insert id="insert" parameterType="AutoUserPic" useGeneratedKeys="true" keyProperty="picId">
+        insert into auto_user_pic 
+        (
+        	
+        	<if test="userId != null">user_id, </if>
+        	<if test="picType != null">pic_type, </if>
+        	<if test="picPath != null">pic_path, </if>
+        	<if test="addTime != null">add_time</if>
+        )
+        values 
+        (
+        	
+        	<if test="userId != null">#{userId}, </if>
+        	<if test="picType != null">#{picType}, </if>
+        	<if test="picPath != null">#{picPath}, </if>
+        	<if test="addTime != null">#{addTime}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoUserPic">
+        update auto_user_pic set 
+        <set>
+        	<if test="userId != null">  
+        		user_id = #{userId}
+        	</if>
+        	<if test="picType != null">  
+        		pic_type = #{picType}
+        	</if>
+        	<if test="picPath != null">  
+        		pic_path = #{picPath}
+        	</if>
+        	<if test="addTime != null">  
+        		add_time = #{addTime}
+        	</if>
+        </set>
+        <where> 
+        	<if test="picId > 0">
+                pic_id = #{picId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_user_pic
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="picId > 0">
+	                pic_id = #{picId}
+	            </if>
+                <if test="userId > 0">
+                    user_id = #{userId}
+                </if>
+                <if test="userIds !=null and userIds.length > 0">
+                    user_id in
+                    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                        #{userId}
+                    </foreach>
+                </if>
+	        	<if test="picType > 0">
+	                pic_type = #{picType}
+	            </if>
+	        	<if test="picPath != null">
+	                pic_path = #{picPath}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoUserPic">
+        select <include refid="allColumn"/> from auto_user_pic
+        <where>  
+        	<if test="picId > 0">
+                pic_id = #{picId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoUserPic">
+        select <include refid="allColumn"/> from auto_user_pic
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="picId > 0">
+	                pic_id = #{picId}
+	            </if>
+	        	<if test="userId > 0">
+	                user_id = #{userId}
+	            </if>
+	        	<if test="picType > 0">
+	                pic_type = #{picType}
+	            </if>
+	        	<if test="picPath != null">
+	                pic_path = #{picPath}
+	            </if>
+	        </trim>
+        </where>
+    </select>
+
+</mapper>

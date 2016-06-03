@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<title>jqGrid - Ace Admin</title>
+
+		<meta name="description" content="Dynamic tables and grids using jqGrid plugin" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+		<!-- bootstrap & fontawesome -->
+		<link rel="stylesheet" href="../../resource/admin/css/bootstrap.css" />
+		<link rel="stylesheet" href="../../resource/admin/css/font-awesome.css" />
+
+		<!-- page specific plugin styles -->
+		<link rel="stylesheet" href="../../resource/admin/css/jquery-ui.css" />
+		<link rel="stylesheet" href="../../resource/admin/css/datepicker.css" />
+		<link rel="stylesheet" href="../../resource/admin/css/ui.jqgrid.css" />
+
+		<!-- text fonts -->
+		<link rel="stylesheet" href="../../resource/admin/css/ace-fonts.css" />
+
+		<!-- ace styles -->
+		<link rel="stylesheet" href="../../resource/admin/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+		<!--[if lte IE 9]>
+			<link rel="stylesheet" href="../../resource/admin/css/ace-part2.css" class="ace-main-stylesheet" />
+		<![endif]-->
+
+		<!--[if lte IE 9]>
+		  <link rel="stylesheet" href="../../resource/admin/css/ace-ie.css" />
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+
+		<!-- ace settings handler -->
+		<script src="../../resource/admin/js/ace-extra.js"></script>
+
+		<!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+		<!--[if lte IE 8]>
+		<script src="../../resource/admin/js/html5shiv.js"></script>
+		<script src="../../resource/admin/js/respond.js"></script>
+		<![endif]-->
+	</head>
+
+	<body class="no-skin">
+		<!-- #section:basics/navbar.layout -->
+		<div id="navbar" class="navbar navbar-default">
+			<script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="navbar-container" id="navbar-container">
+				<!-- #section:basics/sidebar.mobile.toggle -->
+				<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+					<span class="sr-only">Toggle sidebar</span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+				</button>
+
+				<!-- /section:basics/sidebar.mobile.toggle -->
+				<div class="navbar-header pull-left">
+					<!-- #section:basics/navbar.layout.brand -->
+					<a href="#" class="navbar-brand">
+						<small>
+							<i class="fa fa-leaf"></i>
+							Ace Admin
+						</small>
+					</a>
+
+					<!-- /section:basics/navbar.layout.brand -->
+
+					<!-- #section:basics/navbar.toggle -->
+
+					<!-- /section:basics/navbar.toggle -->
+				</div>
+
+				<!-- #section:basics/navbar.dropdown -->
+				<div class="navbar-buttons navbar-header pull-right" role="navigation">
+					<ul class="nav ace-nav">
+						<li class="grey">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<i class="ace-icon fa fa-tasks"></i>
+								<span class="badge badge-grey">4</span>
+							</a>
+
+							<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+								<li class="dropdown-header">
+									<i class="ace-icon fa fa-check"></i>
+									4 Tasks to complete
+								</li>
+
+								<li class="dropdown-content">
+									<ul class="dropdown-menu dropdown-navbar">
+										<li>
+											<a href="#">
+												<div class="clearfix">
+													<span class="pull-left">Software Update</span>
+													<span class="pull-right">65%</span>
+												</div>
+
+												<div class="progress progress-mini">
+													<div style="width:65%" class="progress-bar"></div>
+												</div>
+											</a>
+										</li>
+
+										<li>
+											<a href="#">
+												<div class="clearfix">
+													<span class="pull-left">Hardware Upgrade</span>
+													<span class="pull-right">35%</span>
+												</div>
+
+												<div class="progress progress-mini">
+													<div style="width:35%" class="progress-bar progress-bar-danger"></div>
+												</div>
+											</a>
+										</li>
+
+										<li>
+											<a href="#">
+												<div class="clearfix">
+													<span class="pull-left">Unit Testing</span>
+													<span class="pull-right">15%</span>
+												</div>
+
+												<div class="progress progress-mini">
+													<div style="width:15%" class="progress-bar progress-bar-warning"></div>
+												</div>
+											</a>
+										</li>
+
+										<li>
+											<a href="#">
+												<div class="clearfix">
+													<span class="pull-left">Bug Fixes</span>
+													<span class="pull-right">90%</span>
+												</div>
+
+												<div class="progress progress-mini progress-striped active">
+													<div style="width:90%" class="progress-bar progress-bar-success"></div>
+												</div>
+											</a>
+										</li>
+									</ul>
+								</li>
+
+								<li class="dropdown-footer">
+									<a href="#">
+										See tasks with details
+										<i class="ace-icon fa fa-arrow-right"></i>
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<li class="purple">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<i class="ace-icon fa fa-bell icon-animated-bell"></i>
+								<span class="badge badge-important">8</span>
+							</a>
+
+							<ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+								<li class="dropdown-header">
+									<i class="ace-icon fa fa-exclamation-triangle"></i>
+									8 Notifications
+								</li>
+
+								<li class="dropdown-content">
+									<ul class="dropdown-menu dropdown-navbar navbar-pink">
+										<li>
+											<a href="#">
+												<div class="clearfix">
+													<span class="pull-left">
+														<i class="btn btn-xs no-hover btn-pink fa fa-comment"></i>
+														New Comments
+													</span>
+													<span class="pull-right badge badge-info">+12</span>
+												</div>
+											</a>
+										</li>
+
+										<li>
+											<a href="#">
+												<i class="btn btn-xs btn-primary fa fa-user"></i>
+												Bob just signed up as an editor ...
+											</a>
+										</li>
+
+										<li>
+											<a href="#">
+												<div class="clearfix">
+													<span class="pull-left">
+														<i class="btn btn-xs no-hover btn-success fa fa-shopping-cart"></i>
+														New Orders
+													</span>
+													<span class="pull-right badge badge-success">+8</span>
+												</div>
+											</a>
+										</li>
+
+										<li>
+											<a href="#">
+												<div class="clearfix">
+													<span class="pull-left">
+														<i class="btn btn-xs no-hover btn-info fa fa-twitter"></i>
+														Followers
+													</span>
+													<span class="pull-right badge badge-info">+11</span>
+												</div>
+											</a>
+										</li>
+									</ul>
+								</li>
+
+								<li class="dropdown-footer">
+									<a href="#">
+										See all notifications
+										<i class="ace-icon fa fa-arrow-right"></i>
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<li class="green">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
+								<span class="badge badge-success">5</span>
+							</a>
+
+							<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+								<li class="dropdown-header">
+									<i class="ace-icon fa fa-envelope-o"></i>
+									5 Messages
+								</li>
+
+								<li class="dropdown-content">
+									<ul class="dropdown-menu dropdown-navbar">
+										<li>
+											<a href="#" class="clearfix">
+												<img src="../../resource/admin/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
+												<span class="msg-body">
+													<span class="msg-title">
+														<span class="blue">Alex:</span>
+														Ciao sociis natoque penatibus et auctor ...
+													</span>
+
+													<span class="msg-time">
+														<i class="ace-icon fa fa-clock-o"></i>
+														<span>a moment ago</span>
+													</span>
+												</span>
+											</a>
+										</li>
+
+										<li>
+											<a href="#" class="clearfix">
+												<img src="../../resource/admin/avatars/avatar3.png" class="msg-photo" alt="Susan's Avatar" />
+												<span class="msg-body">
+													<span class="msg-title">
+														<span class="blue">Susan:</span>
+														Vestibulum id ligula porta felis euismod ...
+													</span>
+
+													<span class="msg-time">
+														<i class="ace-icon fa fa-clock-o"></i>
+														<span>20 minutes ago</span>
+													</span>
+												</span>
+											</a>
+										</li>
+
+										<li>
+											<a href="#" class="clearfix">
+												<img src="../../resource/admin/avatars/avatar4.png" class="msg-photo" alt="Bob's Avatar" />
+												<span class="msg-body">
+													<span class="msg-title">
+														<span class="blue">Bob:</span>
+														Nullam quis risus eget urna mollis ornare ...
+													</span>
+
+													<span class="msg-time">
+														<i class="ace-icon fa fa-clock-o"></i>
+														<span>3:15 pm</span>
+													</span>
+												</span>
+											</a>
+										</li>
+
+										<li>
+											<a href="#" class="clearfix">
+												<img src="../../resource/admin/avatars/avatar2.png" class="msg-photo" alt="Kate's Avatar" />
+												<span class="msg-body">
+													<span class="msg-title">
+														<span class="blue">Kate:</span>
+														Ciao sociis natoque eget urna mollis ornare ...
+													</span>
+
+													<span class="msg-time">
+														<i class="ace-icon fa fa-clock-o"></i>
+														<span>1:33 pm</span>
+													</span>
+												</span>
+											</a>
+										</li>
+
+										<li>
+											<a href="#" class="clearfix">
+												<img src="../../resource/admin/avatars/avatar5.png" class="msg-photo" alt="Fred's Avatar" />
+												<span class="msg-body">
+													<span class="msg-title">
+														<span class="blue">Fred:</span>
+														Vestibulum id penatibus et auctor  ...
+													</span>
+
+													<span class="msg-time">
+														<i class="ace-icon fa fa-clock-o"></i>
+														<span>10:09 am</span>
+													</span>
+												</span>
+											</a>
+										</li>
+									</ul>
+								</li>
+
+								<li class="dropdown-footer">
+									<a href="inbox.html">
+										See all messages
+										<i class="ace-icon fa fa-arrow-right"></i>
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<!-- #section:basics/navbar.user_menu -->
+						<li class="light-blue">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+								<img class="nav-user-photo" src="../../resource/admin/avatars/user.jpg" alt="Jason's Photo" />
+								<span class="user-info">
+									<small>Welcome,</small>
+									Jason
+								</span>
+
+								<i class="ace-icon fa fa-caret-down"></i>
+							</a>
+
+							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+								<li>
+									<a href="#">
+										<i class="ace-icon fa fa-cog"></i>
+										Settings
+									</a>
+								</li>
+
+								<li>
+									<a href="profile.html">
+										<i class="ace-icon fa fa-user"></i>
+										Profile
+									</a>
+								</li>
+
+								<li class="divider"></li>
+
+								<li>
+									<a href="#">
+										<i class="ace-icon fa fa-power-off"></i>
+										Logout
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<!-- /section:basics/navbar.user_menu -->
+					</ul>
+				</div>
+
+				<!-- /section:basics/navbar.dropdown -->
+			</div><!-- /.navbar-container -->
+		</div>
+
+		<!-- /section:basics/navbar.layout -->
+		<div class="main-container" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+			</script>
+
+
+			<!-- /section:basics/sidebar -->
+			<div class="main-content">
+				<div class="main-content-inner">
+					<!-- /section:basics/content.breadcrumbs -->
+					<div class="page-content">
+						<div id="tip" class="alert alert-info alert-tip" style="">
+							提示消息
+						</div>
+					
+						<!-- /section:settings.box -->
+						<div class="page-header">
+							<h1>
+								jqGrid
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									Dynamic tables and grids using jqGrid plugin
+								</small>
+							</h1>
+						</div><!-- /.page-header -->
+
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="gridaction" style="margin:10px 0;text-align:right;">
+									<a data-action="add" class="btn btn-primary btn-xs white"><i class="ace-icon fa fa-plus-circle"></i>新建</a>
+									
+									<a data-action="edit" class="btn btn-primary btn-xs"><i class="ace-icon fa fa-pencil"></i>编辑</a>
+									
+									<a data-action="view" class="btn btn-primary btn-xs"><i class="ace-icon fa fa-search-plus"></i>查看</a>
+									
+									<a data-action="delete" class="btn btn-primary btn-xs"><i class="ace-icon fa fa-trash-o"></i>删除</a>
+									
+									<a data-action="search" class="btn btn-primary btn-xs"><i class="ace-icon fa fa-search"></i>搜索</a>
+									
+									<a data-action="refresh" class="btn btn-primary btn-xs"><i class="ace-icon fa fa-refresh"></i>刷新</a>
+								</div>
+								
+								<table id="gridview"></table>
+
+								<div id="gridpager"></div>
+								
+								
+								<div id="gridform" class="widget-box ui-sortable-handle" style="display:none;position:absolute;left:50%;top:50%;width:600px;margin-top:-200px;margin-left:-300px;">
+									<div class="widget-header">
+										<h5 class="widget-title">新增记录</h5>
+
+										<!-- #section:custom/widget-box.toolbar -->
+										<div class="widget-toolbar">
+											<a href="#" onclick="jQuery('#gridform').hide();">
+												<i class="ace-icon fa fa-times"></i>
+											</a>
+										</div>
+								
+									</div>
+
+									<div class="widget-body">
+										<div class="widget-main">
+											<form class="form-horizontal" role="form">
+												<div class="form-group">
+													<label class="col-sm-3 control-label no-padding-right" for="form-field-1">名称</label>
+
+													<div class="col-sm-9">
+														<input type="text" id="menuName" name="menuName" placeholder="名称" class="txt col-xs-10 col-sm-5">
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label no-padding-right" for="form-field-1">地址</label>
+
+													<div class="col-sm-9">
+														<input type="text" id="menuUrl" name="menuUrl" placeholder="地址" class="txt form-control">
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label no-padding-right" for="form-field-1">上级菜单</label>
+
+													<div class="col-sm-9">
+														<select class="select col-xs-10 col-sm-5" name="parentId">
+															<option value="0">请选择上级</option>
+															<option value="1">Alabama</option>
+															<option value="2">Alaska</option>
+															<option value="26">Arizona</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label no-padding-right" for="form-field-1">是否有效</label>
+
+													<div class="col-sm-9">
+														<input type="checkbox" checked="" value="1" offval="0" name="status" class="editable ace ace-switch ace-switch-5">
+														<span class="lbl"></span>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label no-padding-right" for="form-field-1">排序号</label>
+
+													<div class="col-sm-9">
+														<input type="text" name="sortOrder" placeholder="排序号" class="col-xs-2">
+													</div>
+												</div>
+												<div class="clearfix form-actions center">
+													<button class="btn btn-reset" type="reset">
+														<i class="ace-icon fa fa-undo bigger-110"></i>
+														重置
+													</button>
+													<button class="btn btn-primary btn-save" type="reset">
+														<i class="ace-icon fa fa-check bigger-110"></i>
+														提交
+													</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+								
+								<script type="text/javascript">
+									var $path_base = "..";//in Ace demo this will be used for editurl parameter
+								</script>
+
+								<!-- PAGE CONTENT ENDS -->
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content -->
+				</div>
+			</div><!-- /.main-content -->
+			
+			
+			<!--
+			<div id="info-box" class="widget-box widget-color-dark light-border ui-sortable-handle" style="display:none;width:300px;height:200px;left:40%;top:40%;position:absolute;">
+				<div class="widget-header">
+					<h5 class="widget-title smaller">提示</h5>
+				</div>
+
+				<div class="widget-body">
+					<div class="widget-main padding-6">
+						<div class="alert alert-info">保存菜单信息失败!</div>
+					</div>
+				</div>
+			</div>
+			-->
+			
+			
+			
+			
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+			</a>
+		</div><!-- /.main-container -->
+
+		<!-- basic scripts -->
+
+		<!--[if !IE]> -->
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='../../resource/admin/js/jquery.js'>"+"<"+"/script>");
+		</script>
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='../../resource/admin/js/jquery1x.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+		<script type="text/javascript">
+			if('ontouchstart' in document.documentElement) document.write("<script src='../../resource/admin/js/jquery.mobile.custom.js'>"+"<"+"/script>");
+		</script>
+		<script src="../../resource/admin/js/bootstrap.js"></script>
+
+		
+
+		<!-- ace scripts -->
+		<script src="../../resource/admin/js/ace/elements.scroller.js"></script>
+		<script src="../../resource/admin/js/ace/elements.colorpicker.js"></script>
+		<script src="../../resource/admin/js/ace/elements.fileinput.js"></script>
+		<script src="../../resource/admin/js/ace/elements.typeahead.js"></script>
+		<script src="../../resource/admin/js/ace/elements.wysiwyg.js"></script>
+		<script src="../../resource/admin/js/ace/elements.spinner.js"></script>
+		<script src="../../resource/admin/js/ace/elements.treeview.js"></script>
+		<script src="../../resource/admin/js/ace/elements.wizard.js"></script>
+		<script src="../../resource/admin/js/ace/elements.aside.js"></script>
+		<script src="../../resource/admin/js/ace/ace.js"></script>
+		<script src="../../resource/admin/js/ace/ace.ajax-content.js"></script>
+		<script src="../../resource/admin/js/ace/ace.touch-drag.js"></script>
+		<script src="../../resource/admin/js/ace/ace.sidebar.js"></script>
+		<script src="../../resource/admin/js/ace/ace.sidebar-scroll-1.js"></script>
+		<script src="../../resource/admin/js/ace/ace.submenu-hover.js"></script>
+		<script src="../../resource/admin/js/ace/ace.widget-box.js"></script>
+		<script src="../../resource/admin/js/ace/ace.settings.js"></script>
+		<script src="../../resource/admin/js/ace/ace.settings-rtl.js"></script>
+		<script src="../../resource/admin/js/ace/ace.settings-skin.js"></script>
+		<script src="../../resource/admin/js/ace/ace.widget-on-reload.js"></script>
+		<script src="../../resource/admin/js/ace/ace.searchbox-autocomplete.js"></script>
+		
+		
+		<!-- page specific plugin scripts -->
+		<script src="../../resource/admin/js/date-time/bootstrap-datepicker.js"></script>
+		<script src="../../resource/admin/js/jqGrid/jquery.jqGrid.src.js"></script>
+		<script src="../../resource/admin/js/jqGrid/i18n/grid.locale-cn.js"></script>
+
+		<!-- inline scripts related to this page -->
+		<script type="text/javascript">
+			jQuery(function($) {
+				var winWidth = jQuery(window).width(),
+					winHeight = jQuery(window).height(),
+					menuSelect = ":请选择上级;9:|-系统管理;1:|-系统管理;2:|-----用户管理;3:|-----菜单管理;4:|-----角色管理;5:|-----授权管理;6:|-----配置管理;7:|-----日志管理;8:|-系统管理;10:|-系统管理";
+				
+				jQuery(function($) {
+					$(window).on('resize.jqGrid', function () {
+						$("#gridview").jqGrid( 'setGridWidth', $(".row").width() - 20 )
+								.jqGrid( 'setGridHeight', $(window).height() - 260);
+					});
+					
+					jQuery("a[data-action='edit']").on("click", function(){
+						var grid = jQuery("#gridview");
+						var id = grid.jqGrid("getGridParam", 'selrow');
+						if(!!id){
+							
+							setFormData($("#gridform"), grid.jqGrid("getRowData", id));
+							$("#gridform").show();
+						}
+					});
+
+
+
+					 jQuery("#gridview").jqGrid({
+						datatype: "json",
+						treedatatype: "json",
+						url: 'http://localhost:9080/LianChe/admin/menu/list.do',
+						mtype: "POST",
+
+						colNames:['编号','名称','地址','上级菜单','是否有效','排序号', '操作'],
+						colModel:[
+							{name:'menuId',index:'menuId', width:60, fixed:true, resize:false, sortable:false, key: true, align:"center" },
+							{name:'menuName',index:'menuName', sortable:false, sorttype:"text", editable: true },
+							{name:'menuUrl',index:'menuUrl', sortable:false, sorttype:"text", editable: true  },
+							{name:'parentId',index:'parentId', text:'parentName', width:100, fixed:true, sortable:false, align:"center", editable: true, edittype:"select",editoptions:{value:menuSelect}},
+
+							{name:'status',index:'status', width:80, fixed:true, resize:false, sortable:false, align:"center", editable: true, edittype:"checkbox",editoptions: {value:"1:0"},
+
+								formatter: function(ts, opts, rdat, act){
+									return ts == 1 ? "是" : "否";
+								},
+
+								unformat: function(cellvalue, options, cell) {
+									setTimeout(function(){
+										$(cell) .find('input[type=checkbox]').addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
+										if(cellvalue == "是"){
+											$(cell) .find('input[type=checkbox]').attr("checked", true);
+										}
+									}, 0);
+								}
+							},
+							{name:'sortOrder',index:'sortOrder', width:60, fixed:true, resize:false, sortable:false, sorttype:"int", editable: true, align:"center" },
+							{name:'action',index:'', width:80, fixed:true, sortable:false, resize:false,
+
+								formatter:'actions',
+								formatoptions:{
+									keys:true,
+									delbutton: true,
+									delOptions:{
+										recreateForm: false,
+										bCancel: "取消",
+										bSubmit: "确定",
+										msg: "确定删除选择项?",
+										caption: "提示",
+										left: (($(window).width() - 240) / 2),
+										top: (($(window).height() - 140) / 2)
+									},
+									editbutton:true,
+									editOptions:{
+										recreateForm: true
+									},
+									afterSave: function(rowId, response){
+										$(this).trigger("reloadGrid");
+									},
+									onSuccess: function(response){
+										var result = jQuery.parseJSON(response.responseText);
+										if(result.code == 0){
+											showTip("保存菜单信息成功");
+											return [true, result.data];
+										}else{
+											showDialog("提示", "网络异常，请稍后重试！", [
+												{
+													html: "<i class='ace-icon fa fa-times bigger-110'></i>&nbsp; 确定",
+													"class" : "btn btn-xs",
+													click: function() {
+														$("#dialog").dialog("close");
+													}
+												}
+											])
+											return false;
+										}
+									},
+									onError: function(){
+										console.log("action onError");
+									}
+								}
+							}
+						],
+
+						autowidth: true,
+						width: ($("#row").width() - 20),
+						height: ($(window).height() - 260),
+						pager : '#gridpager',
+						treeGrid: true,
+						treeGridModel: 'adjacency',
+						ExpandColumn : 'menuName',
+						ExpandColClick: true,
+						treeIcons: {
+							leaf: 'ace-icon fa fa-book blue',
+							plus: 'icon-folder ace-icon fa fa-folder blue',
+							minus: 'icon-folder ace-icon fa fa-folder-open blue'
+						},
+						editurl:'http://localhost:9080/LianChe/admin/menu/action.do',
+						jsonReader: {
+							root: "data",
+							repeatitems : false,
+							id: "menuId"
+						},
+						loadtext: "正在加载...",
+						treeReader : {
+							level_field: "level",
+							parent_id_field: "parentId",
+							leaf_field: "isLeaf",
+							expanded_field: "expanded"
+						},
+						forceFit: true,
+						shrinkToFit: true,
+						loadComplete : function() {
+							var table = this;
+							setTimeout(function(){
+								styleCheckbox(table);
+
+								updateActionIcons(table);
+								updatePagerIcons(table);
+								enableTooltips(table);
+							}, 0);
+							var containerHeight = $(".ui-jqgrid-bdiv").height(),
+									gridHeight = $("#gridview").height();
+							if(containerHeight > gridHeight){
+								$(".ui-jqgrid-hbox").addClass("no-padding");
+							}
+						},
+						gridComplete: function(){
+							console.log("grid gridComplete");
+						},
+						afterComplete: function(response){
+							console.log("grid afterComplete");
+						},
+						prmNames:{ 
+							addoper:"create",
+							deloper:"delete", 
+							editoper:"update" 
+						}
+					});
+					
+
+					jQuery("#gridview").jqGrid('navGrid',"#gridpager",
+							{ 
+								edit: false,
+								editicon : 'ace-icon fa fa-pencil blue',
+								add: false,
+								addicon : 'ace-icon fa fa-plus-circle purple',
+								del: false,
+								delicon : 'ace-icon fa fa-trash-o red',
+								view: false,
+								viewicon : 'ace-icon fa fa-search-plus grey',
+								
+								search: false,
+								searchicon : 'ace-icon fa fa-search orange',
+								refresh: false,
+								refreshicon : 'ace-icon fa fa-refresh green'
+							},
+							{
+								//edit record form
+								closeAfterEdit: true,
+								width: 500,
+								left: ((winWidth - 500) / 2),
+								top: 200,
+								recreateForm: true,
+								beforeShowForm : function(e) {
+									var form = $(e[0]);
+									form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+									style_edit_form(form);
+								}
+							},
+							{
+								//new record form
+								width: 500,
+								left: ((winWidth - 500) / 2),
+								top: 200,
+								closeAfterAdd: true,
+								recreateForm: true,
+								viewPagerButtons: false,
+								beforeShowForm : function(e) {
+									var form = $(e[0]);
+									form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+											.wrapInner('<div class="widget-header" />')
+									style_edit_form(form);
+								}
+							},
+							{
+								//delete record form
+								width: 250,
+								recreateForm: true,
+								left: ((winWidth - 250) / 2),
+								top: 200,
+								beforeShowForm : function(e) {
+									var form = $(e[0]);
+									if(form.data('styled')) return false;
+
+									form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+									style_delete_form(form);
+
+									form.data('styled', true);
+								},
+								onClick : function(e) {
+									alert(1);
+								}
+							},
+							{
+								//view record form
+								recreateForm: true,
+								beforeShowForm: function(e){
+									var form = $(e[0]);
+									form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+								}
+							}
+					)
+
+
+
+					//it causes some flicker when reloading or navigating grid
+					//it may be possible to have some custom formatter to do this as the grid is being created to prevent this
+					//or go back to default browser checkbox styles for the grid
+					function styleCheckbox(table) {
+						/**
+						 $(table).find('input:checkbox').addClass('ace')
+						 .wrap('<label />')
+						 .after('<span class="lbl align-top" />')
+
+
+						 $('.ui-jqgrid-labels th[id*="_cb"]:first-child')
+						 .find('input.cbox[type=checkbox]').addClass('ace')
+						 .wrap('<label />').after('<span class="lbl align-top" />');
+						 */
+					}
+
+
+					//unlike navButtons icons, action icons in rows seem to be hard-coded
+					//you can change them like this in here if you want
+					function updateActionIcons(table) {
+						/**
+						 var replacement =
+						 {
+							 'ui-ace-icon fa fa-pencil' : 'ace-icon fa fa-pencil blue',
+							 'ui-ace-icon fa fa-trash-o' : 'ace-icon fa fa-trash-o red',
+							 'ui-icon-disk' : 'ace-icon fa fa-check green',
+							 'ui-icon-cancel' : 'ace-icon fa fa-times red'
+						 };
+						 $(table).find('.ui-pg-div span.ui-icon').each(function(){
+								var icon = $(this);
+								var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+								if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+							})
+						 */
+					}
+
+					//replace icons with FontAwesome icons like above
+					function updatePagerIcons(table) {
+						var replacement =
+						{
+							'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
+							'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
+							'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
+							'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
+						};
+						$('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+							var icon = $(this);
+							var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+
+							if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+						})
+					}
+
+					function enableTooltips(table) {
+						$('.navtable .ui-pg-button').tooltip({container:'body'});
+						$(table).find('.ui-pg-div').tooltip({container:'body'});
+					}
+
+					$(document).one('ajaxloadstart.page', function(e) {
+						$("#gridview").jqGrid('GridUnload');
+						$('.ui-jqdialog').remove();
+					});
+				});
+				
+				
+			});
+			function showTip(msg){
+				if(!$("#tip").hasClass("disabled")){
+					$("#tip").html(msg).slideDown(200, function(){
+						setTimeout(function(){
+							$("#tip").slideUp(200);
+						}, 3000);
+					});
+				}
+			}
+			
+			function setFormData(form, data){
+				var fields = [];
+				form.find("input, select").each(function(){
+					var name = $(this).attr("name");
+					if(!!name && data[name]) {
+						if($.inArray(fields, name) == -1){
+							var tagName = this.tagName.toLowerCase();
+							if (tagName == "input") {
+								var type = $(this).attr("type").toLowerCase();
+								if(type == "text" || type == "hidden"){
+									$(this).val(data[name]);
+								}
+								else if(type == "checkbox" || type == "radio"){
+									var values = data[name].split(",");
+									$("input[name='" + name + "']").each(function(){
+										if($.inArray(values, $(this).val()) > -1){
+											$(this).attr("checked", true);
+										}
+									});
+								}
+							} else if (tagName == "select") {
+								$(this).val(data[name]);
+							} else if (tagName == "textarea") {
+								$(this).val(data[name]);
+							}
+							fields.push(name);
+						}
+					}
+				});
+			}
+		</script>
+
+		<!-- the following scripts are used in demo only for onpage help and you don't need them -->
+		<link rel="stylesheet" href="../../resource/admin/css/ace.onpage-help.css" />
+		<link rel="stylesheet" href="../docs/assets/js/themes/sunburst.css" />
+
+		<script type="text/javascript"> ace.vars['base'] = '..'; </script>
+		<script src="../../resource/admin/js/ace/elements.onpage-help.js"></script>
+		<script src="../../resource/admin/js/ace/ace.onpage-help.js"></script>
+		<script src="../docs/assets/js/rainbow.js"></script>
+		<script src="../docs/assets/js/language/generic.js"></script>
+		<script src="../docs/assets/js/language/html.js"></script>
+		<script src="../docs/assets/js/language/css.js"></script>
+		<script src="../docs/assets/js/language/javascript.js"></script>
+	</body>
+</html>

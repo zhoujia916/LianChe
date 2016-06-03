@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{include file="/inc/head.html"}}
+</head>
+
+<body class="no-skin">
+{{include file="/inc/page_navbar.html"}}
+<div class="main-container main-container-fixed" id="main-container">
+<!--<script type="text/javascript">-->
+    <!--try{ace.settings.check('main-container' , 'fixed')}catch(e){}-->
+<!--</script>-->
+
+    {{include file="/inc/page_sidebar.html"}}
+
+<!-- /section:basics/sidebar -->
+<div class="main-content">
+    {{include file="/inc/page_breadcrumbs.html"}}
+
+    <div class="page-content">
+        <div class="page-content-area" data-ajax-content="true">
+            <!-- ajax content goes here -->
+        </div><!-- /.page-content-area -->
+    </div><!-- /.page-content -->
+</div><!-- /.main-content -->
+
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+
+{{include file="/inc/page_script_basic.html"}}
+
+<script type="text/javascript" src="{{$contextPath}}/resource/admin/js/bootstrap.js"></script>
+<!--[if lte IE 8]>
+<script type="text/javascript" src="{{$contextPath}}/resource/admin/js/excanvas.js"></script>
+<![endif]-->
+
+{{include file="/inc/page_script_plugin.html"}}
+
+<script type="text/javascript" src="{{$contextPath}}/resource/admin/js/page.js" defer="2"></script>
+
+</body>
+</html>

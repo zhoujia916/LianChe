@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SystemRoleMapper">
+    <resultMap id="SystemRole" type="puzzle.lianche.entity.SystemRole">
+    	<id column="role_id" property="roleId" /> 
+    	<result column="role_name" property="roleName" /> 
+    	<result column="role_type" property="roleType" /> 
+    	<result column="sort_order" property="sortOrder" /> 
+    </resultMap>
+
+    <sql id="allColumn">
+    	role_id, role_name, role_type, sort_order
+    </sql>
+
+    <insert id="insert" parameterType="SystemRole" useGeneratedKeys="true" keyProperty="roleId">
+        insert into system_role 
+        (
+        	
+        	<if test="roleName != null">role_name, </if>
+        	<if test="roleType != null">role_type, </if>
+        	<if test="sortOrder != null">sort_order</if>
+        )
+        values 
+        (
+        	
+        	<if test="roleName != null">#{roleName}, </if>
+        	<if test="roleType != null">#{roleType}, </if>
+        	<if test="sortOrder != null">#{sortOrder}</if>
+       	)
+    </insert>
+
+    <insert id="insertBatch" parameterType="List" useGeneratedKeys="true" keyProperty="roleId">
+        insert into system_role
+        (
+
+        <if test="roleName != null">role_name, </if>
+        <if test="roleType != null">role_type, </if>
+        <if test="sortOrder != null">sort_order</if>
+        )
+        values
+        (
+
+        <if test="roleName != null">#{roleName}, </if>
+        <if test="roleType != null">#{roleType}, </if>
+        <if test="sortOrder != null">#{sortOrder}</if>
+        )
+    </insert>
+
+    <update id="update" parameterType="SystemRole">
+        update system_role
+        <set>
+        	<if test="roleName != null">  
+        		role_name = #{roleName},
+        	</if>
+        	<if test="roleType != null">  
+        		role_type = #{roleType},
+        	</if>
+        	<if test="sortOrder != null">  
+        		sort_order = #{sortOrder},
+        	</if>
+        </set>
+        where role_id = #{roleId}
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from system_role
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="roleId > 0">
+	                role_id = #{roleId}
+	            </if>
+                <if test="roleIds!=null and roleIds.length>0">
+                    role_id in
+                    <foreach collection="roleIds" item="roleId" open="(" separator="," close=")">
+                        #{roleId}
+                    </foreach>
+                </if>
+	        	<if test="roleName != null">
+	                role_name = #{roleName}
+	            </if>
+	        	<if test="roleType > 0">
+	                role_type = #{roleType}
+	            </if>
+	        	<if test="sortOrder > 0">
+	                sort_order = #{sortOrder}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="SystemRole">
+        select <include refid="allColumn"/> from system_role
+        <where>  
+        	<if test="roleId > 0">
+                and role_id = #{roleId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="SystemRole">
+        select <include refid="allColumn"/> from system_role
+        <where>
+            <if test="roleType > 0">
+                and role_type = #{roleType}
+            </if>
+            <if test="roleName!=null and roleName!=''">
+                and role_name like concat('%',#{roleName},'%')
+            </if>
+        </where>
+        order by sort_order desc,role_id desc
+    </select>
+</mapper>

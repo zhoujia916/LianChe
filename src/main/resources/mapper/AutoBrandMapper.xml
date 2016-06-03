@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoBrandMapper">
+    <resultMap id="AutoBrand" type="puzzle.lianche.entity.AutoBrand">
+    	<id column="brand_id" property="brandId" /> 
+    	<result column="brand_name" property="brandName" /> 
+    	<result column="brand_logo" property="brandLogo" />
+        <result column="brand_logo" property="brandLogo2"/>
+    	<result column="sort_order" property="sortOrder" /> 
+    </resultMap>
+
+    <sql id="allColumn">
+    	brand_id, brand_name, brand_logo, brand_logo2, sort_order
+    </sql>
+
+    <insert id="insert" parameterType="AutoBrand" useGeneratedKeys="true" keyProperty="brandId">
+        insert into auto_brand 
+        (
+        	
+        	<if test="brandName != null">brand_name, </if>
+        	<if test="brandLogo != null">brand_logo, </if>
+            <if test="brandLogo2 !=null">brand_logo2</if>
+        	<if test="sortOrder != null">sort_order</if>
+        )
+        values 
+        (
+        	
+        	<if test="brandName != null">#{brandName}, </if>
+        	<if test="brandLogo != null">#{brandLogo}, </if>
+            <if test="brandLogo2 != null">#{brandLogo2}, </if>
+        	<if test="sortOrder != null">#{sortOrder}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoBrand">
+        update auto_brand
+        <set>
+        	<if test="brandName != null">  
+        		brand_name = #{brandName},
+        	</if>
+        	<if test="brandLogo != null">  
+        		brand_logo = #{brandLogo},
+        	</if>
+            <if test="brandLogo2 != null">
+                brand_logo2 = #{brandLogo2},
+            </if>
+        	<if test="sortOrder != null">  
+        		sort_order = #{sortOrder},
+        	</if>
+        </set>
+        where brand_id = #{brandId}
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_brand
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="brandId > 0">
+	                brand_id = #{brandId}
+	            </if>
+                <if test="brandIds!=null and brandIds.length>0">
+                    brand_id in
+                    <foreach collection="brandIds" item="brandId" open="(" separator="," close=")">
+                        #{brandId}
+                    </foreach>
+                </if>
+	        	<if test="brandName != null">
+	                brand_name = #{brandName}
+	            </if>
+	        	<if test="brandLogo != null">
+	                brand_logo = #{brandLogo}
+	            </if>
+                <if test="brandLogo2 != null">
+                    brand_logo2 = #{brandLogo2}
+                </if>
+	        	<if test="sortOrder > 0">
+	                sort_order = #{sortOrder}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoBrand">
+        select <include refid="allColumn"/> from auto_brand
+        <where>  
+        	<if test="brandId > 0">
+                brand_id = #{brandId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoBrand">
+        select <include refid="allColumn"/> from auto_brand
+        <where>
+	        <trim prefixOverrides="and | or">
+                <if test="brandId!=null and brandId!=''">
+                    and brand_id in (${brandId})
+                </if>
+                <if test="brandName!=null and brandName!=''">
+                    and brand_name like concat('%',#{brandName},'%')
+                </if>
+	        </trim>
+        </where>
+        order by sort_order desc,brand_id desc
+    </select>
+</mapper>

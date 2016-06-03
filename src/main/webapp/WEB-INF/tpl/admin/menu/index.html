@@ -1,0 +1,283 @@
+<title>Puzzle Admin-菜单管理</title>
+<div class="page-header">
+    <h1>
+        <i class="glyphicon glyphicon-signal"></i>
+        菜单管理
+    </h1>
+</div>
+
+<div id="gridview" class="gridview">
+    <!--
+    <div class="grid-filter">
+        <input type="text input-sm" style="height: 29px" class="txt" name="menuName" placeholder="菜单名称" />
+        <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
+    </div>
+    -->
+
+    {{include file="/inc/module_action.html"}}
+
+    <div class="grid-table">
+        <table class="table table-striped table-bordered table-hover table-list table-tree">
+            <thead>
+            <tr>
+                <th style="width:50px;">
+                    <label class="position-relative">
+                        <input type="checkbox" class="ace grid-cb-all" />
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th>编号</th>
+                <th>名称</th>
+                <th>菜单地址</th>
+
+                <th>
+                    <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+                    上级菜单
+                </th>
+                <th>菜单操作</th>
+                <th>状态</th>
+                <th>排序号</th>
+
+                <th>操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td colspan="8">
+                    <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="pagination-box">
+
+        </div>
+    </div>
+
+    <!--save form-->
+    <div class="grid-form save-form">
+        <div class="overlay"></div>
+        <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+            <div class="widget-header">
+                <h5 class="widget-title smaller"></h5>
+
+                <div class="widget-toolbar">
+                    <a href="#" class="btn-action" data-action="hide">
+                        <i class="ace-icon fa fa-close white"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div class="alert-info red"></div>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                名称
+                            </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="menuName" placeholder="名称" class="txt input-sm col-sm-5 ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                地址
+                            </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="menuUrl" placeholder="地址" class="txt input-sm col-sm-8">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                上级菜单
+                            </label>
+
+                            <div class="col-sm-9">
+                                <select id="sltParent" name="parentId" class="select" data-init="0" >
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                有效状态
+                            </label>
+
+                            <div class="col-sm-9">
+                                <input type="checkbox" data-init="1" value="1" offval="0" name="status" role="checkbox" class="editable ace ace-switch ace-switch-5">
+                                <span class="lbl"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                排序号
+                            </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" data-init="0"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
+                            </div>
+                        </div>
+                        <div class="clearfix form-actions">
+                            <input type="hidden" name="menuId" value="" />
+                            <a class="btn btn-sm btn-action" data-action="reset">
+                                <i class="ace-icon fa fa-undo"></i>
+                                重置
+                            </a>
+                            &nbsp; &nbsp; &nbsp;
+                            <a class="btn btn-sm btn-primary btn-action" data-action="save">
+                                <i class="ace-icon fa fa-check"></i>
+                                提交
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-form set-form" style="width:600px;margin-left:-250px;"></div>
+
+    <div class="grid-form search-form "></div>
+</div>
+
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+	$('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $(".btn-action[data-action='setting']").click(function(){
+            var key = $("#gridview").gridview("getKey");
+            if(!key){
+                showAlert("请选择记录！");
+                return;
+            }
+            changeHash("admin/menuaction/index/"+ key);
+        });
+
+        $("#gridview").gridview({
+            url: "menu/list.do",
+            pagination:{
+                show: false
+            },
+            jsonReader:{
+                key_field: "menuId"
+            },
+            treeReader:{
+                show: true,
+                expand_column: 'menuName'
+            },
+            form:{
+                url: "menu/action.do"
+            },
+            onLoadSuccess: function(data){
+                changeParent(data);
+            },
+            columns:[{
+                name: "checkbox"
+            },{
+                name: "menuId"
+            },{
+                name: "menuName"
+            },{
+                name: "menuUrl",
+                style: "text-align:left"
+            },{
+                name: "parentId",
+                value: "parentName"
+            },{
+                name: "actionName",
+                format: function(opts, column, row){
+                    var text = "";
+                    if(row['actions'] != null || row['actions'].length > 0){
+                        $.each(row['actions'], function(index){
+                            if(index > 0){
+                                text += ",";
+                            }
+                            text += "[" + this["actionName"] + "]"
+                        });
+                    }
+                    return "<td>" + text + "</td>";
+                }
+            },{
+                name: "status",
+                format: function(opts, column, row){
+                    var text = ["<span class='label label-sm label-warning'>无效</span>", "<span class='label label-sm label-success'>有效</span>"];
+                    return "<td>" + text[row[column.name]] + "</td>";
+                }
+            },{
+                name: "sortOrder",
+                format: function(opts, column, row){
+                    return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                }
+            },{
+                name: "actions",
+                buttons:{
+                    "setting": {
+                        tooltip: "设置",
+                        clazz: "btn-success btn-xs white",
+                        icon: "fa fa-cog",
+                        handler: function(){
+
+                        }
+                    }
+                },
+                list: ["edit", "delete", "view"]
+            }]
+        });
+
+        function changeParent(data){
+            function showOption(list, row){
+                var html = "";
+                html += "<option value=" + row.menuId + ">" + getOptionName(list, row) + "</option>";
+                $.each(list, function () {
+                    if(this.parentId == row.menuId){
+                        html += showOption(list, this);
+                    }
+                });
+                return html;
+            }
+
+            function getOptionName(list, row){
+                var level = getLevel(list, row);
+                var name = "|-";
+                var len = level * 4;
+                while(len > 0){
+                    name += "-";
+                    len--;
+                }
+                return name + row.menuName;
+            }
+
+            function getLevel(list, row){
+                if(row.parentId == 0)
+                    return 0;
+                var level = 0;
+                var hasParent = true;
+                while(hasParent){
+                    hasParent = false;
+                    $.each(list, function(){
+                        if(this.menuId == row.parentId){
+                            hasParent = true;
+                            level++;
+                            row = this;
+                            return false;
+                        }
+                    });
+                }
+                return level;
+            }
+
+            var options = "<option value='0' selected='selected'>请选择上级</option>";
+            if(data != null && data.length > 0) {
+                $.each(data, function () {
+                    if (this.parentId == 0) {
+                        options += showOption(data, this);
+                    }
+                });
+            }
+            $("#sltParent").html(options);
+        }
+
+	});
+</script>

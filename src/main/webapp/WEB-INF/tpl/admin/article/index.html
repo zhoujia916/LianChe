@@ -1,0 +1,298 @@
+<div class="page-header">
+    <h1>
+        <i class="glyphicon glyphicon-signal"></i>
+        文章管理
+    </h1>
+</div>
+
+<div class="row" id="">
+    <div class="col-xs-12">
+        <div id="user-gridview" class="gridview">
+            <div class="grid-filter">
+                <input type="text input-sm" style="height: 29px" class="txt" name="title" placeholder="标题" />
+                <input type="text input-sm" style="height: 29px" class="txt" name="name" placeholder="发布者" />
+                <select multiple="" data-init="0" name="statusString" class="select2" data-placeholder=" 请选择状态">
+                    <option value="">&nbsp;</option>
+                    <option value="0">已保存</option>
+                    <option value="1">已提交</option>
+                    <option value="2">已审核</option>
+                </select>
+                <select multiple="" data-init="0" name="catName" class="select2" data-placeholder=" 请选择类型">
+                    <option value="">&nbsp;</option>
+                    {{foreach from=$autoArticleCatList item=autoArticleCat}}
+                    <option value="{{$autoArticleCat.catId}}">{{$autoArticleCat.catName}}</option>
+                    {{/foreach}}
+                </select>
+                <input type="text input-sm" style="height: 29px" id="datepicker1" class="txt" name="beginTimeString" placeholder="开始时间" />
+                <input type="text input-sm" style="height: 29px" id="datepicker2" class="txt" name="endTimeString" placeholder="结束时间" />
+                <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
+            </div>
+            {{include file="/inc/module_action.html"}}
+
+            <div class="grid-table">
+                <table class="table table-striped table-bordered table-hover table-list table-tree">
+                    <thead>
+                    <tr>
+                        <th width="50">
+                            <label class="position-relative">
+                                <input type="checkbox" class="ace grid-cb-all" />
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th width="100">编号</th>
+                        <th>标题</th>
+                        <th>副标题</th>
+                        <th>类型</th>
+                        <th>发布时间</th>
+                        <th>发布者</th>
+                        <th>发布者类型</th>
+                        <th>状态</th>
+                        <th>排序号</th>
+                        <th width="120">操作</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td colspan="10">
+                            <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="pagination-box">
+
+                </div>
+            </div>
+            <!--
+            <div style="position: fixed;width:100%;height:100%;top:0;z-index:1000;">
+                <div style="background:#000;opacity:0.1;width:100%;height:100%;"></div>
+            </div>
+            -->
+            <!--edit form-->
+            <div class="grid-form save-form" style="">
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                    <div class="widget-header">
+                        <h5 class="widget-title smaller"></h5>
+
+                        <div class="widget-toolbar">
+                            <a href="#" class="btn-action" data-action="hide">
+                                <i class="ace-icon fa fa-close white"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="alert-info red"></div>
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        标题
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="title" name="title" placeholder="标题" class="txt input-sm col-sm-5 ">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        副标题
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="title2" name="title2" placeholder="副标题" class="txt input-sm col-sm-5 ">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        类型
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select id="catId" name="catId" data-init="0">
+                                            <option value="0">请选择类型</option>
+                                            {{foreach from=$autoArticleCatList item=autoArticleCat}}
+                                                <option value="{{$autoArticleCat.catId}}">{{$autoArticleCat.catName}}</option>
+                                            {{/foreach}}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        内容
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <textarea id="content" name="content" placeholder="文章内容"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        来源地址
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text"  id="sourceUrl"  name="sourceUrl" placeholder="来源地址" class="txt input-sm col-sm-5">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        排序号
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" data-init="0" id="sortOrder"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
+                                    </div>
+                                </div>
+                                <div class="clearfix form-actions">
+                                    <input type="hidden" name="articleId" value="" />
+                                    <input type="hidden" name="cover" value="" />
+                                    <a class="btn btn-sm btn-action" data-action="reset">
+                                        <i class="ace-icon fa fa-undo"></i>
+                                        重置
+                                    </a>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <a class="btn btn-sm btn-primary btn-action" data-action="save">
+                                        <i class="ace-icon fa fa-check"></i>
+                                        提交
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-form search-form "></div>
+
+        </div>
+
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+    $('.select2').css('width','160px').select2({allowClear:true})
+    $('#select2-multiple-style .btn').on('click', function(e){
+        var target = $(this).find('input[type=radio]');
+        var which = parseInt(target.val());
+        if(which == 2) $('.select2').addClass('tag-input-style');
+        else $('.select2').removeClass('tag-input-style');
+    });
+
+    $(document).one('ajaxloadstart.page', function(e) {
+        $('[class*=select2]').remove();
+    });
+
+    $( "#datepicker1" ).datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: false
+    });
+
+    $( "#datepicker2" ).datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: false
+    });
+
+    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $(function(){
+            $("#user-gridview").gridview({
+                debug: true,
+                url: "article/list.do",
+                form:{
+                    url: "article/action.do",
+                    check:function(){
+                        var title=$("#title").val();
+                        var catId=$("#catId").val();
+                        var content=$("#content").val();
+                        var sourceUrl=$("#sourceUrl").val();
+                        var sortOrder=$("#sortOrder").val();
+                        var urlFormant = new RegExp(
+                                        "^" +
+                                    // protocol identifier
+                                        "(?:(?:https?|ftp)://)" +
+                                    // user:pass authentication
+                                        "(?:\\S+(?::\\S*)?@)?" +
+                                        "(?:" +
+                                    // IP address dotted notation octets
+                                    // excludes loopback network 0.0.0.0
+                                    // excludes reserved space >= 224.0.0.0
+                                    // excludes network & broacast addresses
+                                    // (first & last IP address of each class)
+                                        "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
+                                        "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
+                                        "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
+                                        "|" +
+                                    // host name
+                                        "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+                                    // domain name
+                                        "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+                                    // TLD identifier
+                                        "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+                                        ")" +
+                                    // port number
+                                        "(?::\\d{2,5})?" +
+                                    // resource path
+                                        "(?:/\\S*)?" +
+                                        "$", "i"
+                        );
+                        if(!title){
+                            console.log("check form");
+                            $("#title").focus();
+                            return "请输入标题";
+                        }else if(catId=="0"){
+                            console.log("check form");
+                            return "请选择文章类型";
+                        }else if(!content){
+                            console.log("check form");
+                            $("#content").focus();
+                            return "文章内容不能为空";
+                        }else if(content.length<20){
+                            console.log("check form");
+                            $("#content").focus();
+                            return "文章内容必须大于20个字";
+                        }else if(sourceUrl && !urlFormant.test(sourceUrl)){
+                            console.log("check form");
+                            $("#sourceUrl").focus();
+                            return "URL格式出错";
+                        }else if(sortOrder<0 || isNaN(sortOrder)){
+                            console.log("check form");
+                            $("#sortOrder").focus();
+                            return "排序号必须大于等于0且必须为数字";
+                        }else{
+                            return true;
+                        }
+                    }
+                },
+                jsonReader:{
+                    key_field: 'articleId'
+                },
+                columns:[{
+                    name:"checkbox"
+                },{
+                    name:"articleId"
+                },{
+                    name:"title"
+                },{
+                    name:"title2"
+                },{
+                    name:"catName"
+                },{
+                    name:"addTime"
+                },{
+                    name:"name"
+                },{
+                    name:"addUserType"
+                },{
+                    name:"status"
+                },{
+                    name: "sortOrder",
+                    format: function(opts, column, row){
+                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                    }
+                },{
+                    name:"actions",
+                    list:["edit", "delete", "view"]
+                }]
+            });
+        });
+    });
+</script>

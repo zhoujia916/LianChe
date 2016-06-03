@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoPayMapper">
+    <resultMap id="AutoPay" type="puzzle.lianche.entity.AutoPay">
+    	<id column="pay_id" property="payId" /> 
+    	<result column="amount" property="amount" /> 
+    	<result column="from_account" property="fromAccount" /> 
+    	<result column="from_user_id" property="fromUserId" /> 
+    	<result column="from_account_type" property="fromAccountType" /> 
+    	<result column="to_account" property="toAccount" /> 
+    	<result column="to_user_id" property="toUserId" /> 
+    	<result column="to_account_type" property="toAccountType" /> 
+    	<result column="type" property="type" /> 
+    	<result column="status" property="status" /> 
+    	<result column="add_time" property="addTime" /> 
+    </resultMap>
+
+    <sql id="allColumn">
+    	pay_id, amount, from_account, from_user_id, from_account_type, to_account, to_user_id, to_account_type, type, status, add_time
+    </sql>
+
+    <insert id="insert" parameterType="AutoPay" useGeneratedKeys="true" keyProperty="payId">
+        insert into auto_pay 
+        (
+        	
+        	<if test="amount != null">amount, </if>
+        	<if test="fromAccount != null">from_account, </if>
+        	<if test="fromUserId != null">from_user_id, </if>
+        	<if test="fromAccountType != null">from_account_type, </if>
+        	<if test="toAccount != null">to_account, </if>
+        	<if test="toUserId != null">to_user_id, </if>
+        	<if test="toAccountType != null">to_account_type, </if>
+        	<if test="type != null">type, </if>
+        	<if test="status != null">status, </if>
+        	<if test="addTime != null">add_time</if>
+        )
+        values 
+        (
+        	
+        	<if test="amount != null">#{amount}, </if>
+        	<if test="fromAccount != null">#{fromAccount}, </if>
+        	<if test="fromUserId != null">#{fromUserId}, </if>
+        	<if test="fromAccountType != null">#{fromAccountType}, </if>
+        	<if test="toAccount != null">#{toAccount}, </if>
+        	<if test="toUserId != null">#{toUserId}, </if>
+        	<if test="toAccountType != null">#{toAccountType}, </if>
+        	<if test="type != null">#{type}, </if>
+        	<if test="status != null">#{status}, </if>
+        	<if test="addTime != null">#{addTime}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoPay">
+        update auto_pay set 
+        <set>
+        	<if test="amount != null">  
+        		amount = #{amount}
+        	</if>
+        	<if test="fromAccount != null">  
+        		from_account = #{fromAccount}
+        	</if>
+        	<if test="fromUserId != null">  
+        		from_user_id = #{fromUserId}
+        	</if>
+        	<if test="fromAccountType != null">  
+        		from_account_type = #{fromAccountType}
+        	</if>
+        	<if test="toAccount != null">  
+        		to_account = #{toAccount}
+        	</if>
+        	<if test="toUserId != null">  
+        		to_user_id = #{toUserId}
+        	</if>
+        	<if test="toAccountType != null">  
+        		to_account_type = #{toAccountType}
+        	</if>
+        	<if test="type != null">  
+        		type = #{type}
+        	</if>
+        	<if test="status != null">  
+        		status = #{status}
+        	</if>
+        	<if test="addTime != null">  
+        		add_time = #{addTime}
+        	</if>
+        </set>
+        <where> 
+        	<if test="payId > 0">
+                pay_id = #{payId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_pay
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="payId > 0">
+	                pay_id = #{payId}
+	            </if>
+	        	<if test="fromAccount != null">
+	                from_account = #{fromAccount}
+	            </if>
+	        	<if test="fromUserId > 0">
+	                from_user_id = #{fromUserId}
+	            </if>
+	        	<if test="fromAccountType > 0">
+	                from_account_type = #{fromAccountType}
+	            </if>
+	        	<if test="toAccount != null">
+	                to_account = #{toAccount}
+	            </if>
+	        	<if test="toUserId > 0">
+	                to_user_id = #{toUserId}
+	            </if>
+	        	<if test="toAccountType > 0">
+	                to_account_type = #{toAccountType}
+	            </if>
+	        	<if test="type > 0">
+	                type = #{type}
+	            </if>
+	        	<if test="status > 0">
+	                status = #{status}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoPay">
+        select <include refid="allColumn"/> from auto_pay
+        <where>  
+        	<if test="payId > 0">
+                pay_id = #{payId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoPay">
+        select <include refid="allColumn"/> from auto_pay
+        <where>
+	        <trim prefixOverrides="and | or">
+	        	<if test="payId > 0">
+	                pay_id = #{payId}
+	            </if>
+	        	<if test="fromAccount != null">
+	                from_account = #{fromAccount}
+	            </if>
+	        	<if test="fromUserId > 0">
+	                from_user_id = #{fromUserId}
+	            </if>
+	        	<if test="fromAccountType > 0">
+	                from_account_type = #{fromAccountType}
+	            </if>
+	        	<if test="toAccount != null">
+	                to_account = #{toAccount}
+	            </if>
+	        	<if test="toUserId > 0">
+	                to_user_id = #{toUserId}
+	            </if>
+	        	<if test="toAccountType > 0">
+	                to_account_type = #{toAccountType}
+	            </if>
+	        	<if test="type > 0">
+	                type = #{type}
+	            </if>
+	        	<if test="status > 0">
+	                status = #{status}
+	            </if>
+	        </trim>
+        </where>
+    </select>
+
+</mapper>

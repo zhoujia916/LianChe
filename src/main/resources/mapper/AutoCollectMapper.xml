@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoCollectMapper">
+    <resultMap id="AutoCollect" type="puzzle.lianche.entity.AutoCollect">
+    	<id column="collect_id" property="collectId" /> 
+    	<result column="user_id" property="userId" /> 
+    	<result column="target_type" property="targetType" /> 
+    	<result column="target_id" property="targetId" /> 
+    	<result column="add_time" property="addTime" /> 
+    	<result column="status" property="status" />
+        <result column="carName" property="carName"/>
+        <result column="userName" property="userName"/>
+        <result column="realName" property="realName"/>
+    </resultMap>
+
+    <sql id="allColumn">
+    	collect_id, user_id, target_type, target_id, add_time, status
+    </sql>
+
+    <insert id="insert" parameterType="AutoCollect" useGeneratedKeys="true" keyProperty="collectId">
+        insert into auto_collect 
+        (
+        	
+        	<if test="userId != null">user_id, </if>
+        	<if test="targetType != null">target_type, </if>
+        	<if test="targetId != null">target_id, </if>
+        	<if test="addTime != null">add_time, </if>
+        	<if test="status != null">status</if>
+        )
+        values 
+        (
+        	
+        	<if test="userId != null">#{userId}, </if>
+        	<if test="targetType != null">#{targetType}, </if>
+        	<if test="targetId != null">#{targetId}, </if>
+        	<if test="addTime != null">#{addTime}, </if>
+        	<if test="status != null">#{status}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoCollect">
+        update auto_collect set 
+        <set>
+        	<if test="userId != null">  
+        		user_id = #{userId}
+        	</if>
+        	<if test="targetType != null">  
+        		target_type = #{targetType}
+        	</if>
+        	<if test="targetId != null">  
+        		target_id = #{targetId}
+        	</if>
+        	<if test="addTime != null">  
+        		add_time = #{addTime}
+        	</if>
+        	<if test="status != null">  
+        		status = #{status}
+        	</if>
+        </set>
+        <where> 
+        	<if test="collectId > 0">
+                collect_id = #{collectId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_collect
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="collectId > 0">
+	                collect_id = #{collectId}
+	            </if>
+	        	<if test="userId > 0">
+	                user_id = #{userId}
+	            </if>
+                <if test="userIds !=null and userIds.length > 0">
+                    user_id in
+                    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                        #{userId}
+                    </foreach>
+                </if>
+	        	<if test="targetType > 0">
+	                target_type = #{targetType}
+	            </if>
+	        	<if test="targetId > 0">
+	                target_id = #{targetId}
+	            </if>
+	        	<if test="status > 0">
+	                status = #{status}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoCollect">
+        select <include refid="allColumn"/> from auto_collect
+        <where>  
+        	<if test="collectId > 0">
+                collect_id = #{collectId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoCollect">
+        select acl.*,ac.car_name as carName,au.user_name as userName,aup.real_name as realName
+        from auto_collect as acl
+        inner join auto_car as ac on acl.target_id=ac.car_id
+        inner join auto_user au on acl.user_id=au.user_id
+        inner join auto_user_profile as aup on au.user_id=aup.user_id
+        <where>
+            <if test="carName!=null and carName!=''">
+                and ac.car_name like concat('%',#{carName},'%')
+            </if>
+            <if test="userName!=null and userName!=''">
+                and au.user_name like concat('%',#{userName},'%')
+            </if>
+            <if test="userId!=null and userId!=''">
+                and acl.user_id in (${userId})
+            </if>
+        </where>
+    </select>
+</mapper>

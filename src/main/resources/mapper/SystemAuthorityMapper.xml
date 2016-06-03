@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SystemAuthorityMapper">
+    <resultMap id="SystemAuthority" type="puzzle.lianche.entity.SystemAuthority">
+    	<id column="authority_id" property="authorityId" /> 
+    	<result column="source_id" property="sourceId" /> 
+    	<result column="source_type" property="sourceType" /> 
+    	<result column="target_id" property="targetId" /> 
+    	<result column="target_type" property="targetType" />
+        <result column="menu_url" property="menuUrl" />
+        <result column="menu_link" property="menuLink" />
+        <result column="action_link" property="actionLink" />
+    </resultMap>
+
+    <sql id="allColumn">
+    	authority_id, source_id, source_type, target_id, target_type
+    </sql>
+
+    <insert id="insert" parameterType="SystemAuthority" useGeneratedKeys="true" keyProperty="authorityId">
+        insert into system_authority
+        (
+            source_id,
+            source_type,
+            target_id,
+            target_type
+        )
+        values
+        (
+            #{sourceId},
+            #{sourceType},
+            #{targetId},
+            #{targetType}
+        );
+    </insert>
+
+    <insert id="insertBatch" parameterType="List">
+        insert into system_authority
+        (
+            source_id, source_type, target_id, target_type
+        )
+        values
+        <foreach collection="list" item ="item" index ="index" separator =",">
+        (
+            #{item.sourceId}, #{item.sourceType}, #{item.targetId}, #{item.targetType}
+        )
+        </foreach>
+    </insert>
+
+    <insert id="save" parameterType="SystemAuthority">
+        insert into system_authority
+        (
+            source_id,
+            source_type,
+            target_id,
+            target_type
+        )
+        select #{sourceId},  #{sourceType}, #{targetId}, #{targetType} from DUAL where not exists(
+            select authority_id from system_authority
+            where source_id = #{sourceId} and source_type = #{sourceType}
+            and target_id = #{targetId} and target_type = #{targetType});
+    </insert>
+
+    <update id="update" parameterType="SystemAuthority">
+        update system_authority set 
+        <set>
+        	<if test="sourceId != null">  
+        		source_id = #{sourceId}
+        	</if>
+        	<if test="sourceType != null">  
+        		source_type = #{sourceType}
+        	</if>
+        	<if test="targetId != null">  
+        		target_id = #{targetId}
+        	</if>
+        	<if test="targetType != null">  
+        		target_type = #{targetType}
+        	</if>
+        </set>
+        <where> 
+        	<if test="authorityId > 0">
+                authority_id = #{authorityId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from system_authority
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="authorityId > 0">
+                    and authority_id = #{authorityId}
+	            </if>
+                <if test="authorityIds != null">
+                    and authority_id in
+                    <foreach item="item" index="index" collection="authorityIds" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+	        	<if test="sourceId > 0">
+                    and source_id = #{sourceId}
+	            </if>
+	        	<if test="sourceType > 0">
+                    and source_type = #{sourceType}
+	            </if>
+	        	<if test="targetId > 0">
+                    and target_id = #{targetId}
+	            </if>
+	        	<if test="targetType > 0">
+                    and target_type = #{targetType}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="SystemAuthority">
+        select <include refid="allColumn"/> from system_authority
+        <where>  
+        	<if test="authorityId > 0">
+                authority_id = #{authorityId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="SystemAuthority">
+        select sa.*, sm.menu_url, sm.link_url as menu_link, sma.link_url as action_link
+        from system_authority as sa
+        left join system_menu as sm on sm.menu_id = sa.target_id and sa.target_type = 1
+        left join system_menu_action as sma on sma.action_id = sa.target_id and sa.target_type = 2
+        <where>
+	        <trim prefixOverrides="and | or">
+                <if test="authorityIds != null">
+                    and sa.authority_id in
+                    <foreach item="item" index="index" collection="authorityIds" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+	        	<if test="sourceId > 0">
+                    and sa.source_id = #{sourceId}
+	            </if>
+	        	<if test="sourceType > 0">
+                    and sa.source_type = #{sourceType}
+	            </if>
+	        	<if test="targetId > 0">
+                    and sa.target_id = #{targetId}
+	            </if>
+	        	<if test="targetType > 0">
+                    and sa.target_type = #{targetType}
+	            </if>
+                <if test="userId != null and userId > 0">
+                    sa.source_id = #{userId} and sa.source_type = 1
+                    or (
+                        exists(
+                            select map_id from system_user_map as sum
+                            where sum.target_id = sa.source_id and sum.user_id = #{userId} and sum.target_type = 1
+                        ) and sa.source_type = 2
+                    )
+                    or (
+                        exists(
+                            select map_id from system_user_map as sum
+                            where sum.target_id = sa.source_id and sum.user_id = #{userId} and sum.target_type = 2
+                        ) and sa.source_type = 3
+                    )
+
+                    or (
+                        exists(
+                            select map_id from system_user_map as sum
+                            where sum.target_id = sa.source_id and sum.user_id = #{userId} and sum.target_type = 3
+                        ) and sa.source_type = 4
+                    )
+                </if>
+	        </trim>
+        </where>
+    </select>
+
+</mapper>

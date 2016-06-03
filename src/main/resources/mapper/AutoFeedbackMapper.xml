@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoFeedbackMapper">
+    <resultMap id="AutoFeedback" type="puzzle.lianche.entity.AutoFeedback">
+    	<id column="feedback_id" property="feedbackId" /> 
+    	<result column="content" property="content" /> 
+    	<result column="pic" property="pic" /> 
+    	<result column="add_time" property="addTime" /> 
+    	<result column="add_user_id" property="addUserId" />
+        <result column="userName" property="userName"/>
+        <result column="realName" property="realName"/>
+    </resultMap>
+
+    <sql id="allColumn">
+    	feedback_id, content, pic, add_time, add_user_id
+    </sql>
+
+    <insert id="insert" parameterType="AutoFeedback" useGeneratedKeys="true" keyProperty="feedbackId">
+        insert into auto_feedback 
+        (
+        	
+        	<if test="content != null">content, </if>
+        	<if test="pic != null">pic, </if>
+        	<if test="addTime != null">add_time, </if>
+        	<if test="addUserId != null">add_user_id</if>
+        )
+        values 
+        (
+        	
+        	<if test="content != null">#{content}, </if>
+        	<if test="pic != null">#{pic}, </if>
+        	<if test="addTime != null">#{addTime}, </if>
+        	<if test="addUserId != null">#{addUserId}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoFeedback">
+        update auto_feedback set 
+        <set>
+        	<if test="content != null">  
+        		content = #{content}
+        	</if>
+        	<if test="pic != null">  
+        		pic = #{pic}
+        	</if>
+        	<if test="addTime != null">  
+        		add_time = #{addTime}
+        	</if>
+        	<if test="addUserId != null">  
+        		add_user_id = #{addUserId}
+        	</if>
+        </set>
+        <where> 
+        	<if test="feedbackId > 0">
+                feedback_id = #{feedbackId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_feedback
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="feedbackId > 0">
+	                feedback_id = #{feedbackId}
+	            </if>
+                <if test="feedbackIds!=null and feedbackIds.length>0">
+                    feedback_id in
+                    <foreach collection="feedbackIds" item="feedbackId" open="(" separator="," close=")">
+                        #{feedbackId}
+                    </foreach>
+                </if>
+	        	<if test="content != null">
+	                content = #{content}
+	            </if>
+	        	<if test="pic != null">
+	                pic = #{pic}
+	            </if>
+	        	<if test="addUserId > 0">
+	                add_user_id = #{addUserId}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoFeedback">
+        select <include refid="allColumn"/> from auto_feedback
+        <where>  
+        	<if test="feedbackId > 0">
+                feedback_id = #{feedbackId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoFeedback">
+        select af.*,au.user_name as userName,aup.real_name as realName from auto_feedback as af
+        left join auto_user as au on af.add_user_id=au.user_id
+        left join auto_user_profile as aup on af.add_user_id=aup.user_id
+        <where>
+            <if test="userName!=null and userName!=''">
+                and au.user_name like concat('%',#{userName},'%')
+            </if>
+        </where>
+        order by af.feedback_id desc
+    </select>
+</mapper>

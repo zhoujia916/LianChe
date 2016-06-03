@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AutoArticleMapper">
+    <resultMap id="AutoArticle" type="puzzle.lianche.entity.AutoArticle">
+    	<id column="article_id" property="articleId" /> 
+    	<result column="title" property="title" /> 
+    	<result column="title2" property="title2" /> 
+    	<result column="cat_id" property="catId" /> 
+    	<result column="cover" property="cover" /> 
+    	<result column="content" property="content" /> 
+    	<result column="source_url" property="sourceUrl" /> 
+    	<result column="add_time" property="addTime" /> 
+    	<result column="add_user_id" property="addUserId" />
+        <result column="add_user_type" property="addUserType"/>
+    	<result column="check_time" property="checkTime" /> 
+    	<result column="status" property="status" /> 
+    	<result column="check_user_id" property="checkUserId" /> 
+    	<result column="sort_order" property="sortOrder" />
+        <result column="catName" property="catName"/>
+        <result column="userName" property="userName"/>
+        <result column="adminName" property="adminName"/>
+    </resultMap>
+
+    <sql id="allColumn">
+    	article_id, title, title2, cat_id, cover, content, source_url, add_time, add_user_id, check_time, status, check_user_id, sort_order
+    </sql>
+
+    <insert id="insert" parameterType="AutoArticle" useGeneratedKeys="true" keyProperty="articleId">
+        insert into auto_article 
+        (
+        	
+        	<if test="title != null">title, </if>
+        	<if test="title2 != null">title2, </if>
+        	<if test="catId != null">cat_id, </if>
+        	<if test="cover != null">cover, </if>
+        	<if test="content != null">content, </if>
+        	<if test="sourceUrl != null">source_url, </if>
+        	<if test="addTime != null">add_time, </if>
+        	<if test="addUserId != null">add_user_id, </if>
+            <if test="addUserType != null">add_user_type,</if>
+        	<if test="checkTime != null">check_time, </if>
+        	<if test="status != null">status, </if>
+        	<if test="checkUserId != null">check_user_id, </if>
+        	<if test="sortOrder != null">sort_order</if>
+        )
+        values 
+        (
+        	
+        	<if test="title != null">#{title}, </if>
+        	<if test="title2 != null">#{title2}, </if>
+        	<if test="catId != null">#{catId}, </if>
+        	<if test="cover != null">#{cover}, </if>
+        	<if test="content != null">#{content}, </if>
+        	<if test="sourceUrl != null">#{sourceUrl}, </if>
+        	<if test="addTime != null">#{addTime}, </if>
+        	<if test="addUserId != null">#{addUserId}, </if>
+            <if test="addUserType != null">#{addUserType},</if>
+        	<if test="checkTime != null">#{checkTime}, </if>
+        	<if test="status != null">#{status}, </if>
+        	<if test="checkUserId != null">#{checkUserId}, </if>
+        	<if test="sortOrder != null">#{sortOrder}</if>
+       	)
+    </insert>
+
+    <update id="update" parameterType="AutoArticle">
+        update auto_article
+        <set>
+        	<if test="title != null">  
+        		title = #{title},
+        	</if>
+        	<if test="title2 != null">  
+        		title2 = #{title2},
+        	</if>
+        	<if test="catId != null">  
+        		cat_id = #{catId},
+        	</if>
+        	<if test="cover != null">  
+        		cover = #{cover},
+        	</if>
+        	<if test="content != null">  
+        		content = #{content},
+        	</if>
+        	<if test="sourceUrl != null">  
+        		source_url = #{sourceUrl},
+        	</if>
+        	<if test="addTime != null">  
+        		add_time = #{addTime},
+        	</if>
+        	<if test="addUserId != null">  
+        		add_user_id = #{addUserId},
+        	</if>
+        	<if test="checkTime != null">  
+        		check_time = #{checkTime},
+        	</if>
+        	<if test="status != null">  
+        		status = #{status},
+        	</if>
+        	<if test="checkUserId != null">  
+        		check_user_id = #{checkUserId},
+        	</if>
+        	<if test="sortOrder != null">  
+        		sort_order = #{sortOrder},
+        	</if>
+        </set>
+        where article_id = #{articleId}
+    </update>
+
+    <delete id="delete" parameterType="Map">
+        delete from auto_article
+        <where>
+	        <trim prefixOverrides="and | or">  
+	        	<if test="articleId > 0">
+	                article_id = #{articleId}
+	            </if>
+                <if test="articleIds!=null and articleIds.length>0">
+                    article_id in
+                    <foreach collection="articleIds" item="articleId" open="(" separator="," close=")">
+                        #{articleId}
+                    </foreach>
+                </if>
+	        	<if test="title != null">
+	                title = #{title}
+	            </if>
+	        	<if test="title2 != null">
+	                title2 = #{title2}
+	            </if>
+	        	<if test="catId > 0">
+	                cat_id = #{catId}
+	            </if>
+                <if test="catIds!=null and catIds.length>0">
+                    cat_id in
+                    <foreach collection="catIds" item="catId" open="(" separator="," close=")">
+                        #{catId}
+                    </foreach>
+                </if>
+	        	<if test="cover != null">
+	                cover = #{cover}
+	            </if>
+	        	<if test="content != null">
+	                content = #{content}
+	            </if>
+	        	<if test="sourceUrl != null">
+	                source_url = #{sourceUrl}
+	            </if>
+	        	<if test="addUserId > 0">
+	                add_user_id = #{addUserId}
+	            </if>
+	        	<if test="status > 0">
+	                status = #{status}
+	            </if>
+	        	<if test="checkUserId > 0">
+	                check_user_id = #{checkUserId}
+	            </if>
+	        	<if test="sortOrder > 0">
+	                sort_order = #{sortOrder}
+	            </if>
+	        </trim>
+        </where>
+    </delete>
+
+    <select id="query" parameterType="Map" resultMap="AutoArticle">
+        select <include refid="allColumn"/> from auto_article
+        <where>  
+        	<if test="articleId > 0">
+                article_id = #{articleId}
+            </if>
+        </where> 
+    </select>
+
+    <select id="queryList" parameterType="Map" resultMap="AutoArticle">
+        select aa.*,aac.cat_name as catName
+        ,(select user_name from system_user as su where su.user_id = aa.add_user_id and aa.add_user_type = 2
+        <if test="name!=null and name!=''">
+            and su.user_name like concat('%',#{name},'%')
+        </if>
+        ) as adminName
+        ,(select real_name from auto_user_profile as aup where aup.user_id = aa.add_user_id and aa.add_user_type = 1
+        <if test="name!=null and name!=''">
+            and aup.real_name like concat('%',#{name},'%')
+        </if>
+        ) as userName
+        from auto_article as aa
+        inner join auto_article_cat as aac on aa.cat_id=aac.cat_id
+        <where>
+            <if test="title!=null and title!=''">
+                and title like concat('%',#{title},'%')
+            </if>
+            <if test="beginTime!=null">
+                and add_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime!=null">
+                and add_time &lt;= #{endTime}
+            </if>
+            <if test="autoArticleStatus!=null and autoArticleStatus!=''">
+                and aa.status in (${autoArticleStatus})
+            </if>
+            <if test="catNames!=null and catNames!=''">
+                and aac.cat_id in (${catNames})
+                or aac.parent_id in (${catNames})
+            </if>
+        </where>
+        order by aa.sort_order desc,aa.article_id desc
+    </select>
+</mapper>
