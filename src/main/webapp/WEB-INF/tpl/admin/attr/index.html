@@ -12,11 +12,11 @@
                 <input type="text input-sm" style="height: 29px" class="txt" name="attrName" placeholder="名称" />
                 <select multiple="" data-init="0" name="typeString" class="select2" placeholder=" 请选择属性类型">
                     <option value="">&nbsp;</option>
-                    <option value="1">redio</option>
-                    <option value="2">checkbox</option>
-                    <option value="3">select</option>
-                    <option value="4">text</option>
-                    <option value="5">textarea</option>
+                    <option value="1">单选框</option>
+                    <option value="2">多选框</option>
+                    <option value="3">多选菜单</option>
+                    <option value="4">单行文本</option>
+                    <option value="5">多行文本</option>
                 </select>
                 <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
             </div>
@@ -87,11 +87,11 @@
                                     <div class="col-sm-9">
                                         <select data-init="0" id="attrInputType" name="attrInputType">
                                             <option value="0">请选择属性类型</option>
-                                            <option value="1">redio</option>
-                                            <option value="2">checkbox</option>
-                                            <option value="3">select</option>
-                                            <option value="4">text</option>
-                                            <option value="5">textarea</option>
+                                            <option value="1">单选框</option>
+                                            <option value="2">多选框</option>
+                                            <option value="3">多选菜单</option>
+                                            <option value="4">单行文本</option>
+                                            <option value="5">多行文本</option>
                                         </select>
                                     </div>
                                 </div>
@@ -141,84 +141,82 @@
     </div><!-- /.col -->
 </div><!-- /.row -->
 <script type="text/javascript">
-    $('.select2').css('width','160px').select2({allowClear:true})
-    $('#select2-multiple-style .btn').on('click', function(e){
-        var target = $(this).find('input[type=radio]');
-        var which = parseInt(target.val());
-        if(which == 2) $('.select2').addClass('tag-input-style');
-        else $('.select2').removeClass('tag-input-style');
-    });
-
-    $(document).one('ajaxloadstart.page', function(e) {
-        $('[class*=select2]').remove();
-    });
 
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#attr-gridview").gridview({
-                debug: true,
-                url: "attr/list.do",
-                form: {
-                    url: "attr/action.do",
-                    check:function(){
-                        var attrName=$("#attrName").val();
-                        var attrInputType=$("#attrInputType").val();
-                        var attrValues=$("#attrValues").val();
-                        var sortOrder=$("#sortOrder").val();
-                        if(!attrName){
-                            console.log("check form");
-                            $("#attrName").focus();
-                            return "请输入名称";
-                        }else if(attrInputType==0){
-                            console.log("check form");
-                            $("#attrInputType").focus();
-                            return "请选择属性类型";
-                        }else if(!attrValues){
-                            console.log("check form");
-                            $("#attrValues").focus();
-                            return "请输入内容";
-                        }else if(sortOrder<0 || isNaN(sortOrder)){
-                            console.log("check form");
-                            $("#sortOrder").focus();
-                            return "排序号必须大于等于0且必须为数字";
-                        }
-                        else{
-                            return true;
-                        }
+        $('.select2').css('width','160px').select2({allowClear:true})
+        $('#select2-multiple-style .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('.select2').addClass('tag-input-style');
+            else $('.select2').removeClass('tag-input-style');
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('[class*=select2]').remove();
+        });
+
+        $("#attr-gridview").gridview({
+            url: "attr/list.do",
+            form: {
+                url: "attr/action.do",
+                check:function(){
+                    var attrName=$("#attrName").val();
+                    var attrInputType=$("#attrInputType").val();
+                    var attrValues=$("#attrValues").val();
+                    var sortOrder=$("#sortOrder").val();
+                    if(!attrName){
+                        console.log("check form");
+                        $("#attrName").focus();
+                        return "请输入名称";
+                    }else if(attrInputType==0){
+                        console.log("check form");
+                        $("#attrInputType").focus();
+                        return "请选择属性类型";
+                    }else if(!attrValues){
+                        console.log("check form");
+                        $("#attrValues").focus();
+                        return "请输入内容";
+                    }else if(sortOrder<0 || isNaN(sortOrder)){
+                        console.log("check form");
+                        $("#sortOrder").focus();
+                        return "排序号必须大于等于0且必须为数字";
+                    }
+                    else{
+                        return true;
+                    }
+                }
+            },
+            jsonReader: {
+                key_field: 'attrId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
+                },
+                {
+                    name: "attrId"
+                },
+                {
+                    name: "attrName"
+                },
+                {
+                    name: "attrInputType",
+                    value: "attrInputTypeName"
+                },
+                {
+                    name: "attrValues"
+                },
+                {
+                    name: "sortOrder",
+                    format: function(opts, column, row){
+                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
                     }
                 },
-                jsonReader: {
-                    key_field: 'attrId'
-                },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "attrId"
-                    },
-                    {
-                        name: "attrName"
-                    },
-                    {
-                        name: "attrInputType",
-                        value: "attrInputTypeName"
-                    },
-                    {
-                        name: "attrValues"
-                    },
-                    {
-                        name: "sortOrder",
-                        format: function(opts, column, row){
-                            return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
-                        }
-                    },
-                    {
-                        name: "actions",
-                        list: ["edit", "delete"]
-                    }
-                ]
-            });
+                {
+                    name: "actions",
+                    list: ["edit", "delete"]
+                }
+            ]
         });
     });
 </script>

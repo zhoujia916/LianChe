@@ -165,153 +165,150 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-    $('.multiselect').multiselect({
-        enableFiltering: true,
-        buttonClass: 'btn btn-white btn-primary',
-        templates: {
-            button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"></button>',
-            ul: '<ul class="multiselect-container dropdown-menu"></ul>',
-            filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
-            filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
-            li: '<li><a href="javascript:void(0);"><label></label></a></li>',
-            divider: '<li class="multiselect-item divider"></li>',
-            liGroup: '<li class="multiselect-item group"><label class="multiselect-group"></label></li>'
-        }
-    });
-
-    $(document).one('ajaxloadstart.page', function(e) {
-        $('.multiselect').multiselect('destroy');
-    });
-
-    $( "#datepicker1" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
-    $( "#datepicker2" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#msg-gridview").gridview({
-                debug: true,
-                url: "msg/list.do",
-                form: {
-                    url: "msg/action.do",
-                    check:function(){
-                        var msgTitle=$("#msgTitle").val();
-                        var msgContentType=$("#msgContentType").val();
-                        var msgContent=$("#msgContent").val();
-                        var urlFormant = new RegExp(
-                                        "^" +
-                                    // protocol identifier
-                                        "(?:(?:https?|ftp)://)" +
-                                    // user:pass authentication
-                                        "(?:\\S+(?::\\S*)?@)?" +
-                                        "(?:" +
-                                    // IP address dotted notation octets
-                                    // excludes loopback network 0.0.0.0
-                                    // excludes reserved space >= 224.0.0.0
-                                    // excludes network & broacast addresses
-                                    // (first & last IP address of each class)
-                                        "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
-                                        "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
-                                        "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
-                                        "|" +
-                                    // host name
-                                        "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
-                                    // domain name
-                                        "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
-                                    // TLD identifier
-                                        "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
-                                        ")" +
-                                    // port number
-                                        "(?::\\d{2,5})?" +
-                                    // resource path
-                                        "(?:/\\S*)?" +
-                                        "$", "i"
-                        );
-                        var toUserIds=$("#toUserIds").val();
-                        if(!msgTitle){
-                            console.log("check form");
-                            $("#msgTitle").focus();
-                            return "请输入标题";
-                        }else if(msgContentType==0){
-                            console.log("check form");
-                            $("#msgContentType").focus();
-                            return "请选择消息内容信息";
-                        }else if(!msgContent){
-                            console.log("check form");
-                            $("#msgContent").focus();
-                            return "请输入消息内容";
-                        }else if(msgContentType==1 && msgContent.length<6){
-                            console.log("check form");
-                            $("#msgContent").focus();
-                            return "消息内容必须大于6个字";
-                        }
-                        else if(msgContentType==2 && !urlFormant.test(msgContent)){
-                            console.log("check form");
-                            $("#msgContent").focus();
-                            return "请输入正确的URL链接";
-                        }
-                        else if(toUserIds=="null" || toUserIds==null){
-                            console.log("check form");
-                            $("#toUserIds").focus();
-                            return "请选择相关接收方";
-                        }else {
-                            return true;
-                        }
+        $('.multiselect').multiselect({
+            enableFiltering: true,
+            buttonClass: 'btn btn-white btn-primary',
+            templates: {
+                button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"></button>',
+                ul: '<ul class="multiselect-container dropdown-menu"></ul>',
+                filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
+                filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
+                li: '<li><a href="javascript:void(0);"><label></label></a></li>',
+                divider: '<li class="multiselect-item divider"></li>',
+                liGroup: '<li class="multiselect-item group"><label class="multiselect-group"></label></li>'
+            }
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('.multiselect').multiselect('destroy');
+        });
+
+        $( "#datepicker1" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $( "#datepicker2" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $("#msg-gridview").gridview({
+            url: "msg/list.do",
+            form: {
+                url: "msg/action.do",
+                check:function(){
+                    var msgTitle=$("#msgTitle").val();
+                    var msgContentType=$("#msgContentType").val();
+                    var msgContent=$("#msgContent").val();
+                    var urlFormant = new RegExp(
+                                    "^" +
+                                // protocol identifier
+                                    "(?:(?:https?|ftp)://)" +
+                                // user:pass authentication
+                                    "(?:\\S+(?::\\S*)?@)?" +
+                                    "(?:" +
+                                // IP address dotted notation octets
+                                // excludes loopback network 0.0.0.0
+                                // excludes reserved space >= 224.0.0.0
+                                // excludes network & broacast addresses
+                                // (first & last IP address of each class)
+                                    "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
+                                    "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
+                                    "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
+                                    "|" +
+                                // host name
+                                    "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+                                // domain name
+                                    "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+                                // TLD identifier
+                                    "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+                                    ")" +
+                                // port number
+                                    "(?::\\d{2,5})?" +
+                                // resource path
+                                    "(?:/\\S*)?" +
+                                    "$", "i"
+                    );
+                    var toUserIds=$("#toUserIds").val();
+                    if(!msgTitle){
+                        console.log("check form");
+                        $("#msgTitle").focus();
+                        return "请输入标题";
+                    }else if(msgContentType==0){
+                        console.log("check form");
+                        $("#msgContentType").focus();
+                        return "请选择消息内容信息";
+                    }else if(!msgContent){
+                        console.log("check form");
+                        $("#msgContent").focus();
+                        return "请输入消息内容";
+                    }else if(msgContentType==1 && msgContent.length<6){
+                        console.log("check form");
+                        $("#msgContent").focus();
+                        return "消息内容必须大于6个字";
+                    }
+                    else if(msgContentType==2 && !urlFormant.test(msgContent)){
+                        console.log("check form");
+                        $("#msgContent").focus();
+                        return "请输入正确的URL链接";
+                    }
+                    else if(toUserIds=="null" || toUserIds==null){
+                        console.log("check form");
+                        $("#toUserIds").focus();
+                        return "请选择相关接收方";
+                    }else {
+                        return true;
+                    }
+                }
+            },
+            jsonReader: {
+                key_field: 'msgId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
+                },
+                {
+                    name: "msgId"
+                },
+                {
+                    name: "msgTitle"
+                },
+                {
+                    name: "msgType"
+                },
+                {
+                    name: "addTime"
+                },
+                {
+                    name: "fromUserName"
+                },
+                {
+                    name: "fromRealName"
+                },
+                {
+                    name : "toUserName"
+                },
+                {
+                    name : "toRealName"
+                },
+                {
+                    name : "viewCount"
+                },
+                {
+                    name: "status",
+                    format: function(opts, column, row){
+                        var text = ["<span class='label label-sm label-warning'>待阅读</span>", "<span class='label label-sm label-success'>已阅读</span>"];
+                        return "<td>" + text[row[column.name]] + "</td>";
                     }
                 },
-                jsonReader: {
-                    key_field: 'msgId'
-                },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "msgId"
-                    },
-                    {
-                        name: "msgTitle"
-                    },
-                    {
-                        name: "msgType"
-                    },
-                    {
-                        name: "addTime"
-                    },
-                    {
-                        name: "fromUserName"
-                    },
-                    {
-                        name: "fromRealName"
-                    },
-                    {
-                        name : "toUserName"
-                    },
-                    {
-                        name : "toRealName"
-                    },
-                    {
-                        name : "viewCount"
-                    },
-                    {
-                        name: "status",
-                        format: function(opts, column, row){
-                            var text = ["<span class='label label-sm label-warning'>待阅读</span>", "<span class='label label-sm label-success'>已阅读</span>"];
-                            return "<td>" + text[row[column.name]] + "</td>";
-                        }
-                    },
-                    {
-                        name: "actions",
-                        list:["delete", "view"]
-                    }
-                ]
-            });
+                {
+                    name: "actions",
+                    list:["delete", "view"]
+                }
+            ]
         });
     });
 </script>

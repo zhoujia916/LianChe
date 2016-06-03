@@ -150,160 +150,156 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-
-    $('.select2').css('width','160px').select2({allowClear:true})
-    $('#select2-multiple-style .btn').on('click', function(e){
-        var target = $(this).find('input[type=radio]');
-        var which = parseInt(target.val());
-        if(which == 2) $('.select2').addClass('tag-input-style');
-        else $('.select2').removeClass('tag-input-style');
-    });
-
-    $(document).one('ajaxloadstart.page', function(e) {
-        $('[class*=select2]').remove();
-    });
-
-    $( "#datepicker1" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
-    $( "#datepicker2" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
-    $( "#startDate" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
-    $( "#endDate" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#role-gridview").gridview({
-                debug: true,
-                url: "ad/list.do",
-                form: {
-                    url: "ad/action.do",
-                    check:function(){
-                        var adLink=$("#adLink").val();
-                        var adPositionId=$("#adPositionId").val();
-                        var startDate=$("#startDate").val();
-                        var endDate=$("#endDate").val();
-                        var urlFormant= new RegExp(
-                                        "^" +
-                                    // protocol identifier
-                                        "(?:(?:https?|ftp)://)" +
-                                    // user:pass authentication
-                                        "(?:\\S+(?::\\S*)?@)?" +
-                                        "(?:" +
-                                    // IP address dotted notation octets
-                                    // excludes loopback network 0.0.0.0
-                                    // excludes reserved space >= 224.0.0.0
-                                    // excludes network & broacast addresses
-                                    // (first & last IP address of each class)
-                                        "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
-                                        "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
-                                        "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
-                                        "|" +
-                                    // host name
-                                        "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
-                                    // domain name
-                                        "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
-                                    // TLD identifier
-                                        "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
-                                        ")" +
-                                    // port number
-                                        "(?::\\d{2,5})?" +
-                                    // resource path
-                                        "(?:/\\S*)?" +
-                                        "$", "i"
-                        );
-                        var dateFormat=/(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)/;
-                        var time1 = new Date(startDate).getTime();
-                        var time2 = new Date(endDate).getTime();
-                        if(!adLink){
-                            console.log("check form");
-                            $("#adLink").focus();
-                            return "请输入URL链接";
-                        }
-                        else if(!urlFormant.test(adLink)){
-                            console.log("check form");
-                            $("#adLink").focus();
-                            return "请输入正确的URL链接";
-                        }
-                        else if(adPositionId==0){
-                            console.log("check form");
-                            $("#adPositionId").focus();
-                            return "请选择位置";
-                        }else if(!startDate){
-                            console.log("check form");
-                            $("#startDate").focus();
-                            return "请输入开始时间";
-                        }else if(!dateFormat.test(startDate) && startDate){
-                            console.log("check form");
-                            $("#startDate").focus();
-                            return "日期格式应为yyyy-MM-dd,如:2001:05:10";
-                        }else if(!endDate){
-                            console.log("check form");
-                            $("#endDate").focus();
-                            return "请输入结束时间";
-                        }else if(!dateFormat.test(endDate) && endDate){
-                            console.log("check form");
-                            $("#endDate").focus();
-                            return "日期格式应为yyyy-MM-dd,如:2001:05:10";
-                        }else if(time1>time2 || time1==time2){
-                            console.log("check form");
-                            $("#endDate").focus();
-                            return "结束时间必须大于开始时间";
-                        }else{
-                            return true;
-                        }
+        $('.select2').css('width','160px').select2({allowClear:true})
+        $('#select2-multiple-style .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('.select2').addClass('tag-input-style');
+            else $('.select2').removeClass('tag-input-style');
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('[class*=select2]').remove();
+        });
+
+        $( "#datepicker1" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $( "#datepicker2" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $( "#startDate" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $( "#endDate" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $("#role-gridview").gridview({
+            url: "ad/list.do",
+            form: {
+                url: "ad/action.do",
+                check:function(){
+                    var adLink=$("#adLink").val();
+                    var adPositionId=$("#adPositionId").val();
+                    var startDate=$("#startDate").val();
+                    var endDate=$("#endDate").val();
+                    var urlFormant= new RegExp(
+                                    "^" +
+                                // protocol identifier
+                                    "(?:(?:https?|ftp)://)" +
+                                // user:pass authentication
+                                    "(?:\\S+(?::\\S*)?@)?" +
+                                    "(?:" +
+                                // IP address dotted notation octets
+                                // excludes loopback network 0.0.0.0
+                                // excludes reserved space >= 224.0.0.0
+                                // excludes network & broacast addresses
+                                // (first & last IP address of each class)
+                                    "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
+                                    "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
+                                    "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
+                                    "|" +
+                                // host name
+                                    "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+                                // domain name
+                                    "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+                                // TLD identifier
+                                    "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+                                    ")" +
+                                // port number
+                                    "(?::\\d{2,5})?" +
+                                // resource path
+                                    "(?:/\\S*)?" +
+                                    "$", "i"
+                    );
+                    var dateFormat=/(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)/;
+                    var time1 = new Date(startDate).getTime();
+                    var time2 = new Date(endDate).getTime();
+                    if(!adLink){
+                        console.log("check form");
+                        $("#adLink").focus();
+                        return "请输入URL链接";
+                    }
+                    else if(!urlFormant.test(adLink)){
+                        console.log("check form");
+                        $("#adLink").focus();
+                        return "请输入正确的URL链接";
+                    }
+                    else if(adPositionId==0){
+                        console.log("check form");
+                        $("#adPositionId").focus();
+                        return "请选择位置";
+                    }else if(!startDate){
+                        console.log("check form");
+                        $("#startDate").focus();
+                        return "请输入开始时间";
+                    }else if(!dateFormat.test(startDate) && startDate){
+                        console.log("check form");
+                        $("#startDate").focus();
+                        return "日期格式应为yyyy-MM-dd,如:2001:05:10";
+                    }else if(!endDate){
+                        console.log("check form");
+                        $("#endDate").focus();
+                        return "请输入结束时间";
+                    }else if(!dateFormat.test(endDate) && endDate){
+                        console.log("check form");
+                        $("#endDate").focus();
+                        return "日期格式应为yyyy-MM-dd,如:2001:05:10";
+                    }else if(time1>time2 || time1==time2){
+                        console.log("check form");
+                        $("#endDate").focus();
+                        return "结束时间必须大于开始时间";
+                    }else{
+                        return true;
+                    }
+                }
+            },
+            jsonReader: {
+                key_field: 'adId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
+                },
+                {
+                    name: "adId"
+                },
+                {
+                    name: "adLink"
+                },
+                {
+                    name: "positionName"
+                },
+                {
+                    name: "width"
+                },
+                {
+                    name: "height"
+                },
+                {
+                    name: "addTime"
+                },
+                {
+                    name: "status",
+                    format: function(opts, column, row){
+                        var text = ["<span class='label label-sm label-warning'>无效</span>", "<span class='label label-sm label-success'>有效</span>"];
+                        return "<td>" + text[row[column.name]] + "</td>";
                     }
                 },
-                jsonReader: {
-                    key_field: 'adId'
-                },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "adId"
-                    },
-                    {
-                        name: "adLink"
-                    },
-                    {
-                        name: "positionName"
-                    },
-                    {
-                        name: "width"
-                    },
-                    {
-                        name: "height"
-                    },
-                    {
-                        name: "addTime"
-                    },
-                    {
-                        name: "status",
-                        format: function(opts, column, row){
-                            var text = ["<span class='label label-sm label-warning'>无效</span>", "<span class='label label-sm label-success'>有效</span>"];
-                            return "<td>" + text[row[column.name]] + "</td>";
-                        }
-                    },
-                    {
-                        name: "actions",
-                        list: ["edit", "delete"]
-                    }
-                ]
-            });
+                {
+                    name: "actions",
+                    list: ["edit", "delete"]
+                }
+            ]
         });
     });
 </script>

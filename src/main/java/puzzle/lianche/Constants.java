@@ -141,11 +141,11 @@ public class Constants {
 
     public static final Map<Integer, String> AUTO_ATTR_TYPE = new HashMap<Integer, String>(){
         {
-            put(1,"radio");
-            put(2,"checkbox");
-            put(3,"select");
-            put(4,"text");
-            put(5,"textarea");
+            put(1,"单选框");
+            put(2,"复选框");
+            put(3,"多选菜单");
+            put(4,"单行文本");
+            put(5,"多行文本");
         }
     };
 

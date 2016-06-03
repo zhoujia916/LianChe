@@ -14,7 +14,7 @@
 
 <div class="row" id="">
     <div class="col-xs-12">
-        <div id="role-gridview" class="gridview">
+        <div id="collect-gridview" class="gridview">
             <div class="grid-filter">
                 <input type="hidden" id="userString" name="userString" value="{{$userId}}">
                 <input type="text input-sm" style="height: 29px" class="txt" name="carName" placeholder="商品名称" />
@@ -72,51 +72,48 @@
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#role-gridview").gridview({
-                debug: true,
-                url: "usercollect/list.do",
-                filter:{
-                    userString: $("#userString").val()
+        $("#collect-gridview").gridview({
+            url: "usercollect/list.do",
+            filter:{
+                userString: $("#userString").val()
+            },
+            form: {
+                url: "usercollect/action.do"
+            },
+            jsonReader: {
+                key_field: 'collectId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
                 },
-                form: {
-                    url: "usercollect/action.do"
+                {
+                    name: "collectId"
                 },
-                jsonReader: {
-                    key_field: 'collectId'
+                {
+                    name: "carName"
                 },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "collectId"
-                    },
-                    {
-                        name: "carName"
-                    },
-                    {
-                        name: "targetType"
-                    },
-                    {
-                        name: "userName"
-                    },
-                    {
-                        name: "realName"
-                    },
-                    {
-                        name: "status",
-                        format: function(opts, column, row){
-                            var text = ["<span class='label label-sm label-warning'>已删除</span>", "<span class='label label-sm label-success'>正常</span>"];
-                            return "<td>" + text[row[column.name]] + "</td>";
-                        }
-                    },
-                    {
-                        name: "actions",
-                        list: ["delete"]
+                {
+                    name: "targetType"
+                },
+                {
+                    name: "userName"
+                },
+                {
+                    name: "realName"
+                },
+                {
+                    name: "status",
+                    format: function(opts, column, row){
+                        var text = ["<span class='label label-sm label-warning'>已删除</span>", "<span class='label label-sm label-success'>正常</span>"];
+                        return "<td>" + text[row[column.name]] + "</td>";
                     }
-                ]
-            });
+                },
+                {
+                    name: "actions",
+                    list: ["delete"]
+                }
+            ]
         });
     });
 </script>

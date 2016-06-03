@@ -27,16 +27,7 @@
                 <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
             </div>
 
-            {{if $actions}}
-            <div class="grid-action" style="text-align: right">
-                {{foreach from=$actions item=actionItem}}
-                <a data-action="{{$actionItem.actionCode}}" class="btn btn-action btn-primary btn-xs white">
-                    {{if $actionItem.actionIco}}<i class="{{$actionItem.actionIco}}"></i>{{/if}}
-                    {{$actionItem.actionName}}
-                </a>
-                {{/foreach}}
-            </div>
-            {{/if}}
+            {{include file="/inc/module_action.html"}}
 
             <div class="grid-table">
                 <table class="table table-striped table-bordered table-hover table-list table-tree">
@@ -134,94 +125,91 @@
     </div><!-- /.col -->
 </div><!-- /.row -->
 <script type="text/javascript">
-
-    $('.select2').css('width','160px').select2({allowClear:true})
-    $('#select2-multiple-style .btn').on('click', function(e){
-        var target = $(this).find('input[type=radio]');
-        var which = parseInt(target.val());
-        if(which == 2) $('.select2').addClass('tag-input-style');
-        else $('.select2').removeClass('tag-input-style');
-    });
-
-    $(document).one('ajaxloadstart.page', function(e) {
-        $('[class*=select2]').remove();
-    });
-
-    $('.multiselect').multiselect({
-        enableFiltering: true,
-        buttonClass: 'btn btn-white btn-primary',
-        templates: {
-            button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"></button>',
-            ul: '<ul class="multiselect-container dropdown-menu"></ul>',
-            filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
-            filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
-            li: '<li><a href="javascript:void(0);"><label></label></a></li>',
-            divider: '<li class="multiselect-item divider"></li>',
-            liGroup: '<li class="multiselect-item group"><label class="multiselect-group"></label></li>'
-        }
-    });
-
-    $(document).one('ajaxloadstart.page', function(e) {
-        $('.multiselect').multiselect('destroy');
-    });
-
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#sms-gridview").gridview({
-                url: "sms/list.do",
-                form: {
-                    url: "sms/action.do",
-                    check:function(){
-                        var smsContent=$("#smsContent").val();
-                        var toUserId=$("#toUserId").val();
-                        if(!smsContent){
-                            console.log("check form");
-                            $("#smsContent").focus();
-                            return "请输入内容";
-                        }else if(smsContent.length>100){
-                            console.log("check form");
-                            $("#smsContent").focus();
-                            return "内容不能大于100个字";
-                        }else if(toUserId=="null" || toUserId==null){
-                            console.log("check form");
-                            $("#toUserId").focus();
-                            return "请选择相关接收方";
-                        }else{
-                            return true;
-                        }
+        $('.select2').css('width','160px').select2({allowClear:true})
+        $('#select2-multiple-style .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('.select2').addClass('tag-input-style');
+            else $('.select2').removeClass('tag-input-style');
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('[class*=select2]').remove();
+        });
+
+        $('.multiselect').multiselect({
+            enableFiltering: true,
+            buttonClass: 'btn btn-white btn-primary',
+            templates: {
+                button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"></button>',
+                ul: '<ul class="multiselect-container dropdown-menu"></ul>',
+                filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
+                filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
+                li: '<li><a href="javascript:void(0);"><label></label></a></li>',
+                divider: '<li class="multiselect-item divider"></li>',
+                liGroup: '<li class="multiselect-item group"><label class="multiselect-group"></label></li>'
+            }
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('.multiselect').multiselect('destroy');
+        });
+
+        $("#sms-gridview").gridview({
+            url: "sms/list.do",
+            form: {
+                url: "sms/action.do",
+                check:function(){
+                    var smsContent=$("#smsContent").val();
+                    var toUserId=$("#toUserId").val();
+                    if(!smsContent){
+                        console.log("check form");
+                        $("#smsContent").focus();
+                        return "请输入内容";
+                    }else if(smsContent.length>100){
+                        console.log("check form");
+                        $("#smsContent").focus();
+                        return "内容不能大于100个字";
+                    }else if(toUserId=="null" || toUserId==null){
+                        console.log("check form");
+                        $("#toUserId").focus();
+                        return "请选择相关接收方";
+                    }else{
+                        return true;
                     }
+                }
+            },
+            jsonReader: {
+                key_field: 'smsId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
                 },
-                jsonReader: {
-                    key_field: 'smsId'
+                {
+                    name: "smsId"
                 },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "smsId"
-                    },
-                    {
-                        name: "smsType"
-                    },
-                    {
-                        name: "smsContent"
-                    },
-                    {
-                        name: "code"
-                    },
-                    {
-                        name : "phone"
-                    },
-                    {
-                        name : "status"
-                    },
-                    {
-                        name: "actions",
-                        list: ["delete"]
-                    }
-                ]
-            });
+                {
+                    name: "smsType"
+                },
+                {
+                    name: "smsContent"
+                },
+                {
+                    name: "code"
+                },
+                {
+                    name : "phone"
+                },
+                {
+                    name : "status"
+                },
+                {
+                    name: "actions",
+                    list: ["delete"]
+                }
+            ]
         });
     });
 </script>

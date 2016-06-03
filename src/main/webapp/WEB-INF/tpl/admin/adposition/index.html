@@ -127,69 +127,66 @@
 </div><!-- /.row -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#position-gridview").gridview({
-                debug: true,
-                url: "position/list.do",
-                form: {
-                    url: "position/action.do",
-                    check:function(){
-                        var positionName=$("#positionName").val();
-                        var width=$("#width").val();
-                        var height=$("#height").val();
-                        var sortOrder=$("#sortOrder").val();
-                        if(positionName==""){
-                            console.log("check form");
-                            $("#positionName").focus();
-                            return "名称不能为空";
-                        }else if(width<=0 || isNaN(width)){
-                            console.log("check form");
-                            $("#width").focus();
-                            return "宽度必须大于0且必须为数字";
-                        }else if(height<=0 || isNaN(height)){
-                            console.log("check form");
-                            $("#height").focus();
-                            return "高度必须大于0且必须为数字";
-                        }else if(sortOrder<0 || isNaN(sortOrder)){
-                            console.log("check form");
-                            $("#sortOrder").focus();
-                            return "排序号必须大于等于0且必须为数字";
-                        }else{
-                            return true;
-                        }
+        $("#position-gridview").gridview({
+            url: "position/list.do",
+            form: {
+                url: "position/action.do",
+                check:function(){
+                    var positionName=$("#positionName").val();
+                    var width=$("#width").val();
+                    var height=$("#height").val();
+                    var sortOrder=$("#sortOrder").val();
+                    if(positionName==""){
+                        console.log("check form");
+                        $("#positionName").focus();
+                        return "名称不能为空";
+                    }else if(width<=0 || isNaN(width)){
+                        console.log("check form");
+                        $("#width").focus();
+                        return "宽度必须大于0且必须为数字";
+                    }else if(height<=0 || isNaN(height)){
+                        console.log("check form");
+                        $("#height").focus();
+                        return "高度必须大于0且必须为数字";
+                    }else if(sortOrder<0 || isNaN(sortOrder)){
+                        console.log("check form");
+                        $("#sortOrder").focus();
+                        return "排序号必须大于等于0且必须为数字";
+                    }else{
+                        return true;
+                    }
+                }
+            },
+            jsonReader: {
+                key_field: 'positionId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
+                },
+                {
+                    name: "positionId"
+                },
+                {
+                    name: "positionName"
+                },
+                {
+                    name: "width"
+                },
+                {
+                    name: "height"
+                },
+                {
+                    name: "sortOrder",
+                    format: function(opts, column, row){
+                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
                     }
                 },
-                jsonReader: {
-                    key_field: 'positionId'
-                },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "positionId"
-                    },
-                    {
-                        name: "positionName"
-                    },
-                    {
-                        name: "width"
-                    },
-                    {
-                        name: "height"
-                    },
-                    {
-                        name: "sortOrder",
-                        format: function(opts, column, row){
-                            return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
-                        }
-                    },
-                    {
-                        name: "actions",
-                        list: ["edit", "delete"]
-                    }
-                ]
-            });
+                {
+                    name: "actions",
+                    list: ["edit", "delete"]
+                }
+            ]
         });
     });
 </script>

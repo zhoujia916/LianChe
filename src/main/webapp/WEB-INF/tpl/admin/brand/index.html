@@ -13,23 +13,7 @@
                 <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
             </div>
 
-            {{if $actions}}
-            <div class="grid-action" style="text-align: right">
-                {{foreach from=$actions item=actionItem}}
-                    {{if $actionItem.actionCode=="null"}}
-                        <a id="btn-view" class="btn btn-action btn-primary btn-xs white">
-                            {{if $actionItem.actionIco}}<i class="{{$actionItem.actionIco}}"></i>{{/if}}
-                            {{$actionItem.actionName}}
-                        </a>
-                    {{else}}
-                        <a data-action="{{$actionItem.actionCode}}" class="btn btn-action btn-primary btn-xs white">
-                            {{if $actionItem.actionIco}}<i class="{{$actionItem.actionIco}}"></i>{{/if}}
-                            {{$actionItem.actionName}}
-                        </a>
-                    {{/if}}
-                {{/foreach}}
-            </div>
-            {{/if}}
+            {{include file="/inc/module_action.html"}}
 
             <div class="grid-table">
                 <table class="table table-striped table-bordered table-hover table-list table-tree">
@@ -129,16 +113,15 @@
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $("#btn-view").on("click", function(){
+        $(".btn-action[data-action='select']").click(function(){
             var keys = $("#brand-gridview").gridview("getKeys");
-            var hash = "#page/brandcat/";
+            var hash = "admin/brandcat/";
             if(keys.length > 0){
                 hash = hash + "index/" + keys.join(",");
             }
-            window.location.hash = hash;
+            changeHash(hash);
         });
         $("#brand-gridview").gridview({
-            debug: true,
             url: "brand/list.do",
             form: {
                 url: "brand/action.do",

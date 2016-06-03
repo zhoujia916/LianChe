@@ -114,85 +114,83 @@
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
 
-    $( "#datepicker1" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
-    $( "#datepicker2" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#car-gridview").gridview({
-                url: "car/list.do",
-                form: {
-                    url: "car/action.do"
+        $( "#datepicker1" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $( "#datepicker2" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $("#car-gridview").gridview({
+            url: "car/list.do",
+            form: {
+                url: "car/action.do"
+            },
+            jsonReader: {
+                key_field: 'carId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
                 },
-                jsonReader: {
-                    key_field: 'carId'
+                {
+                    name: "carId"
                 },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "carId"
-                    },
-                    {
-                        name: "carName"
-                    },
-                    {
-                        name: "carType"
-                    },
-                    {
-                        name: "brandName"
-                    },
-                    {
-                        name: "catName"
-                    },
-                    {
-                        name: "modelName"
-                    },
-                    {
-                        name: "officalPrice"
-                    },
-                    {
-                        name: "totalNumber"
-                    },
-                    {
-                        name: "lockNumber"
-                    },
-                    {
-                        name: "surplusNumber"
-                    },
-                    {
-                        name: "userName"
-                    },
-                    {
-                        name: "realName"
-                    },
-                    {
-                        name: "status",
-                        format: function(opts, column, row){
-                            var text = ["<span class='label label-sm label-warning'>下架</span>", "<span class='label label-sm label-success'>正常</span>"];
-                            return "<td>" + text[row[column.name]] + "</td>";
-                        }
-                    },
-                    {
-                        name: "sortOrder",
-                        format: function(opts, column, row){
-                            return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
-                        }
-                    },
-                    {
-                        name: "actions",
-                        list: ["edit", "delete"]
+                {
+                    name: "carName"
+                },
+                {
+                    name: "carType"
+                },
+                {
+                    name: "brandName"
+                },
+                {
+                    name: "catName"
+                },
+                {
+                    name: "modelName"
+                },
+                {
+                    name: "officalPrice"
+                },
+                {
+                    name: "totalNumber"
+                },
+                {
+                    name: "lockNumber"
+                },
+                {
+                    name: "surplusNumber"
+                },
+                {
+                    name: "userName"
+                },
+                {
+                    name: "realName"
+                },
+                {
+                    name: "status",
+                    format: function(opts, column, row){
+                        var text = ["<span class='label label-sm label-warning'>下架</span>", "<span class='label label-sm label-success'>正常</span>"];
+                        return "<td>" + text[row[column.name]] + "</td>";
                     }
-                ]
-            });
+                },
+                {
+                    name: "sortOrder",
+                    format: function(opts, column, row){
+                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                    }
+                },
+                {
+                    name: "actions",
+                    list: ["edit", "delete"]
+                }
+            ]
         });
     });
 </script>

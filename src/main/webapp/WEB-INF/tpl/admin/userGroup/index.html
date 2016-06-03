@@ -106,55 +106,52 @@
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#usergroup-gridview").gridview({
-                debug: true,
-                url: "usergroup/list.do",
-                form: {
-                    url: "usergroup/action.do",
-                    check:function(){
-                        var groupName=$("#groupName").val();
-                        var sortOrder=$("#sortOrder").val();
-                        if(groupName==""){
-                            console.log("check form");
-                            $("#groupName").focus();
-                            return "用户组名称不能为空";
-                        }
-                        else if(sortOrder<0 || isNaN(sortOrder)){
-                            console.log("check form");
-                            $("#sortOrder").focus();
-                            return "排序号必须大于等于0且必须为数字";
-                        }
-                        else{
-                            return true;
-                        }
+        $("#usergroup-gridview").gridview({
+            url: "usergroup/list.do",
+            form: {
+                url: "usergroup/action.do",
+                check:function(){
+                    var groupName=$("#groupName").val();
+                    var sortOrder=$("#sortOrder").val();
+                    if(groupName==""){
+                        console.log("check form");
+                        $("#groupName").focus();
+                        return "用户组名称不能为空";
+                    }
+                    else if(sortOrder<0 || isNaN(sortOrder)){
+                        console.log("check form");
+                        $("#sortOrder").focus();
+                        return "排序号必须大于等于0且必须为数字";
+                    }
+                    else{
+                        return true;
+                    }
+                }
+            },
+            jsonReader: {
+                key_field: 'groupId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
+                },
+                {
+                    name: "groupId"
+                },
+                {
+                    name: "groupName"
+                },
+                {
+                    name: "sortOrder",
+                    format: function(opts, column, row){
+                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
                     }
                 },
-                jsonReader: {
-                    key_field: 'groupId'
-                },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "groupId"
-                    },
-                    {
-                        name: "groupName"
-                    },
-                    {
-                        name: "sortOrder",
-                        format: function(opts, column, row){
-                            return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
-                        }
-                    },
-                    {
-                        name: "actions",
-                        list: ["edit", "delete"]
-                    }
-                ]
-            });
+                {
+                    name: "actions",
+                    list: ["edit", "delete"]
+                }
+            ]
         });
     });
 </script>

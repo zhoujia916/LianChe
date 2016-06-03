@@ -67,47 +67,44 @@
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#feedback-gridview").gridview({
-                debug: true,
-                url: "feedback/list.do",
-                form: {
-                    url: "feedback/action.do"
+        $("#feedback-gridview").gridview({
+            url: "feedback/list.do",
+            form: {
+                url: "feedback/action.do"
+            },
+            jsonReader: {
+                key_field: 'feedbackId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
                 },
-                jsonReader: {
-                    key_field: 'feedbackId'
+                {
+                    name: "feedbackId"
                 },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "feedbackId"
-                    },
-                    {
-                        name: "content"
-                    },
-                    {
-                        name: "pic",
-                        format: function(opts, column, row){
-                            return "<td>"+row[column.name]+"</td>";
-                        }
-                    },
-                    {
-                        name: "addTime"
-                    },
-                    {
-                        name: "userName"
-                    },
-                    {
-                        name: "realName"
-                    },
-                    {
-                        name: "actions",
-                        list: ["delete"]
+                {
+                    name: "content"
+                },
+                {
+                    name: "pic",
+                    format: function(opts, column, row){
+                        return "<td>"+row[column.name]+"</td>";
                     }
-                ]
-            });
+                },
+                {
+                    name: "addTime"
+                },
+                {
+                    name: "userName"
+                },
+                {
+                    name: "realName"
+                },
+                {
+                    name: "actions",
+                    list: ["delete"]
+                }
+            ]
         });
     });
 </script>

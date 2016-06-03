@@ -156,79 +156,77 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-    $('.select2').css('width','160px').select2({allowClear:true})
-    $('#select2-multiple-style .btn').on('click', function(e){
-        var target = $(this).find('input[type=radio]');
-        var which = parseInt(target.val());
-        if(which == 2) $('.select2').addClass('tag-input-style');
-        else $('.select2').removeClass('tag-input-style');
-    });
-
-    $(document).one('ajaxloadstart.page', function(e) {
-        $('[class*=select2]').remove();
-    });
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#brandmodel-gridview").gridview({
-                debug: true,
-                url: "brandmodel/list.do",
-                filter:{
-                    catString: $("#catString").val()
+        $('.select2').css('width','160px').select2({allowClear:true})
+        $('#select2-multiple-style .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('.select2').addClass('tag-input-style');
+            else $('.select2').removeClass('tag-input-style');
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('[class*=select2]').remove();
+        });
+
+        $("#brandmodel-gridview").gridview({
+            url: "brandmodel/list.do",
+            filter:{
+                catString: $("#catString").val()
+            },
+            form: {
+                url: "brandmodel/action.do",
+                check:function(){
+                    var modelName=$("#modelName").val();
+                    var brandCatId=$("#brandCatId").val();
+                    var sortOrder=$("#sortOrder").val();
+                    if(!modelName){
+                        console.log("check form");
+                        $("#modelName").focus();
+                        return "请输入车型名称";
+                    }else if(brandCatId==0){
+                        console.log("check form");
+                        $("#brandCatId").focus();
+                        return "请选择所属车系";
+                    }else if(sortOrder<0 || isNaN(sortOrder)){
+                        console.log("check form");
+                        $("#sortOrder").focus();
+                        return "排序号必须大于等于0且必须为数字";
+                    }else{
+                        return true;
+                    }
+                }
+            },
+            jsonReader: {
+                key_field: 'modelId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
                 },
-                form: {
-                    url: "brandmodel/action.do",
-                    check:function(){
-                        var modelName=$("#modelName").val();
-                        var brandCatId=$("#brandCatId").val();
-                        var sortOrder=$("#sortOrder").val();
-                        if(!modelName){
-                            console.log("check form");
-                            $("#modelName").focus();
-                            return "请输入车型名称";
-                        }else if(brandCatId==0){
-                            console.log("check form");
-                            $("#brandCatId").focus();
-                            return "请选择所属车系";
-                        }else if(sortOrder<0 || isNaN(sortOrder)){
-                            console.log("check form");
-                            $("#sortOrder").focus();
-                            return "排序号必须大于等于0且必须为数字";
-                        }else{
-                            return true;
-                        }
+                {
+                    name: "modelId"
+                },
+                {
+                    name: "modelName"
+                },
+                {
+                    name: "catName"
+                },
+                {
+                    name: "brandName"
+                },
+                {
+                    name: "sortOrder",
+                    format: function(opts, column, row){
+                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
                     }
                 },
-                jsonReader: {
-                    key_field: 'modelId'
-                },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "modelId"
-                    },
-                    {
-                        name: "modelName"
-                    },
-                    {
-                        name: "catName"
-                    },
-                    {
-                        name: "brandName"
-                    },
-                    {
-                        name: "sortOrder",
-                        format: function(opts, column, row){
-                            return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
-                        }
-                    },
-                    {
-                        name: "actions",
-                        list: ["edit", "delete"]
-                    }
-                ]
-            });
+                {
+                    name: "actions",
+                    list: ["edit", "delete"]
+                }
+            ]
         });
     });
 </script>
