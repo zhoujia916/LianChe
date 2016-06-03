@@ -29,9 +29,6 @@ public class AdController extends ModuleController {
     @Autowired
     private IAutoAdPositionService autoAdPositionService;
 
-    @Autowired
-    private ISystemMenuActionService systemMenuActionService;
-
     @RequestMapping (value = {"/","/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();

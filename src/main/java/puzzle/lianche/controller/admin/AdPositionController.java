@@ -28,37 +28,10 @@ public class AdPositionController extends ModuleController{
     @Autowired
     private IAutoAdPositionService autoAdPositionService;
 
-    @Autowired
-    private ISystemMenuActionService systemMenuActionService;
-
     @RequestMapping (value = {"/","/index"})
     public String index(){
-        if(getCurrentUser() != null){
-            SystemUser user = (SystemUser)getCurrentUser();
-            if(user.getAuthorities() != null) {
-                String url = request.getRequestURI().replace(request.getContextPath() + "/admin/", "");
-                int menuId = 0;
-                List<Integer> actionIds = new ArrayList<Integer>();
-                for (SystemAuthority authority : user.getAuthorities()) {
-                    if(authority.getMenuUrl()!=null && authority.getMenuUrl()!="null"){
-                        if(authority.getMenuUrl().equals(url) && authority.getTargetType() == 1){
-                            menuId = authority.getTargetId();
-                            break;
-                        }
-                    }
-                }
-                for (SystemAuthority item : user.getAuthorities()) {
-                    if(item.getTargetType() == 2){
-                        actionIds.add(item.getTargetId());
-                    }
-                }
-                Map<String,Object> map = new HashMap<String, Object>();
-                map.put("menuId", menuId);
-                map.put("actionIds", actionIds);
-                List<SystemMenuAction> actions = systemMenuActionService.queryList(map);
-                this.setModelAttribute("actions", actions);
-            }
-        }
+        List<SystemMenuAction> actions=getActions();
+        this.setModelAttribute("actions", actions);
         return Constants.UrlHelper.ADMIN_ADPOSITION;
     }
 

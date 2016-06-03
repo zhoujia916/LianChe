@@ -30,9 +30,6 @@ public class ArticleController extends ModuleController {
     @Autowired
     private IAutoArticleCatService autoArticleCatService;
 
-    @Autowired
-    private ISystemMenuActionService systemMenuActionService;
-
     @RequestMapping (value = {"/","/index"})
     public String index(){
 

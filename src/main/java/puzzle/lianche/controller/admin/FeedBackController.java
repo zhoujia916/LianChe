@@ -32,9 +32,6 @@ public class FeedBackController extends ModuleController {
     @Autowired
     private IAutoFeedbackService autoFeedbackService;
 
-    @Autowired
-    private ISystemMenuActionService systemMenuActionService;
-
     @RequestMapping (value = {"/","/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();

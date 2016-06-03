@@ -18,6 +18,8 @@
 
 <div id="gridview" class="gridview">
     <div class="grid-action">
+
+        <input type="hidden" id="menu" value="{{$menuId}}" />
         <a data-action="add" class="btn btn-action btn-primary btn-xs white"><i class="ace-icon fa fa-plus-circle"></i>新建</a>
 
         <a data-action="edit" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-pencil"></i>编辑</a>
@@ -58,7 +60,7 @@
     <!--save form-->
     <div class="grid-form save-form">
 
-        <div class="widget-box widget-color-blue light-border ui-sortable-handle">
+        <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
             <div class="widget-header">
                 <h5 class="widget-title smaller"></h5>
 
@@ -74,34 +76,52 @@
                     <div class="alert-info red"></div>
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
                                 名称
                             </label>
 
                             <div class="col-sm-9">
-                                <input type="text" name="actionName" placeholder="名称" class="txt input-sm col-sm-5 ">
+                                <input type="text" id="actionName" name="actionName" placeholder="名称" class="txt input-sm col-sm-5 ">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
                                 编码
                             </label>
 
                             <div class="col-sm-9">
-                                <input type="text" name="actionCode" placeholder="编码" class="txt input-sm col-sm-8">
+                                <input type="text" id="actionCode" name="actionCode" placeholder="编码" class="txt input-sm col-sm-8">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
+                                链接
+                            </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="linkUrl" placeholder="链接" class="txt input-sm col-sm-8">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                图标
+                            </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="actionIco" name="actionIco" placeholder="编码" class="txt input-sm col-sm-8">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
                                 配置信息
                             </label>
 
                             <div class="col-sm-9">
-                                <textarea name="actionConfig" class="txt input-sm col-sm-8"></textarea>
+                                <textarea name="actionConfig" placeholder="配置信息" class="txt input-sm col-sm-8"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
                                 排序号
                             </label>
 
@@ -111,7 +131,7 @@
                         </div>
                         <div class="clearfix form-actions">
                             <input type="hidden" name="actionId" value="" />
-                            <input type="hidden" name="menuId" value="" />
+                            <input type="hidden" id="menuId" name="menuId" value="{{$menuId}}" />
                             <a class="btn btn-sm btn-action" data-action="reset">
                                 <i class="ace-icon fa fa-undo"></i>
                                 重置
@@ -148,7 +168,29 @@
                     key_field: "actionId"
                 },
                 form:{
-                    url: "menuaction/action.do"
+                    url: "menuaction/action.do",
+                    check:function(){
+                        var actionName=$("#actionName").val();
+                        var actionCode=$("#actionCode").val();
+                        var actionIco=$("#actionIco").val();
+                        if(!actionName){
+                            console.log("check form");
+                            $("#actionName").focus();
+                            return "请输入名称";
+                        }else if(!actionCode){
+                            console.log("check form");
+                            $("#actionCode").focus();
+                            return "请输入编码";
+                        }else if(!actionIco){
+                            console.log("check form");
+                            $("#actionIco").focus();
+                            return "请输入图标";
+                        }else{
+                            var menuId=$("#menu").val();
+                            $("#menuId").attr("value",menuId);
+                            return true;
+                        }
+                    }
                 },
                 columns:[{
                     name: "checkbox"
