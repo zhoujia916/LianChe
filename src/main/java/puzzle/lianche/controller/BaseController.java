@@ -133,7 +133,7 @@ public class BaseController {
         return null;
     }
 
-    public void writeJson(Object object) throws IOException{
+    public void writeJson(Object object){
         write("application/json;charset=utf-8", JSONObject.fromObject(object).toString());
     }
 
@@ -141,13 +141,18 @@ public class BaseController {
         write("text/xml;charset=utf-8", xml);
     }
 
-    public void writeText(String text) throws IOException{
+    public void writeText(String text){
         write("text/plain;charset=utf-8", text);
     }
 
-    protected void write(String contentType, String content) throws IOException{
-        response.addHeader("Content-Type", contentType);
-        response.getWriter().write(content);
+    protected void write(String contentType, String content){
+        try {
+            response.addHeader("Content-Type", contentType);
+            response.getWriter().write(content);
+        }
+        catch (Exception e){
+            logger.error("write error:" + e.getMessage());
+        }
     }
 
 

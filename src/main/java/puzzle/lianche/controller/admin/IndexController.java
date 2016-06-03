@@ -113,12 +113,12 @@ public class IndexController extends ModuleController {
             password = password.trim();
             if(StringUtil.isNullOrEmpty(username) || StringUtil.isNullOrEmpty(password)){
                 result.setCode(-1);
-                result.setMsg("�û�������벻��Ϊ�գ�");
+                result.setMsg("用户名和密码不能为空！");
                 return result;
             }
             if(!StringUtil.isRangeLength(username, 2, 20) || !StringUtil.isRangeLength(password, 6, 20)){
                 result.setCode(-1);
-                result.setMsg("�û�������벻��ȷ��");
+                result.setMsg("用户名或密码不正确！");
                 return result;
             }
             Map<String, Object> map = new HashMap<String, Object>();
@@ -126,10 +126,20 @@ public class IndexController extends ModuleController {
             map.put("password", EncryptUtil.MD5(password));
             SystemUser user = systemUserService.query(map);
             if(user != null){
-                //region ����Ȩ��
+                //region Check User Status
+                if(user.getStatus() == Constants.SYSTEM_USER_STATUS_INVALID){
+                    result.setCode(-1);
+                    result.setMsg("该账户不能登录，请联系管理员！");
+                    return result;
+                }
+                //endregion
+
+                //region Check User Authority
                 List<SystemAuthority> authorities = systemUserService.queryAuthority(user.getUserId());
                 if(authorities != null){
-                    //region ����ɷ���URL
+                    user.setAuthorities(authorities);
+
+                    //region Set User All Authority URL
                     if(user.getUrls() == null){
                         user.setUrls(new ArrayList<String>());
                     }
@@ -154,10 +164,9 @@ public class IndexController extends ModuleController {
                             }
                         }
                     }
-                    user.setAuthorities(authorities);
                     //endregion
 
-                    //region ����˵��͹���Ȩ����
+                    //region Set User Authority Menu and Action
                     List<Integer> menuIds = new ArrayList<Integer>();
                     List<Integer> actionIds = new ArrayList<Integer>();
                     for (SystemAuthority item : authorities) {
@@ -190,25 +199,25 @@ public class IndexController extends ModuleController {
                     user.setMenus(CommonUtil.showMenuTree(menus, 0));
                     //endregion
                 }
-
                 //endregion
 
                 this.setCurrentUser(user);
 
-                //һ���º����
+                //
                 if(remember == 1) {
-                    String value = StringUtil.format("{\"user\":\"{0}\",\"remember\":1}", username);
-                    this.setCookie(Constants.COOKIE_ADMIN, value, 30 * 24 * 3600);
+                    JSONObject info = new JSONObject();
+                    info.put("user", username);
+                    info.put("remember", 1);
+                    this.setCookie(Constants.COOKIE_ADMIN, info.toString(), 30 * 24 * 3600);
                 }
                 result.setCode(0);
             }else{
                 result.setCode(1);
-                result.setMsg("不存在该用户");
+                result.setMsg("用户名或密码不正确！");
             }
         }catch(Exception e){
-            logger.error("��¼����" + e.getMessage());
+            logger.error("验证用户登录出错:" + e.getMessage());
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
         return result;
     }

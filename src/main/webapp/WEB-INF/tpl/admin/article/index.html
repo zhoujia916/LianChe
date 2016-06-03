@@ -64,14 +64,9 @@
 
                 </div>
             </div>
-            <!--
-            <div style="position: fixed;width:100%;height:100%;top:0;z-index:1000;">
-                <div style="background:#000;opacity:0.1;width:100%;height:100%;"></div>
-            </div>
-            -->
             <!--edit form-->
             <div class="grid-form save-form" style="">
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:1000px;height:700px;margin-left:-500px;margin-top:-350px">
                     <div class="widget-header">
                         <h5 class="widget-title smaller"></h5>
 
@@ -87,28 +82,28 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        标题
+                                    <label class="col-sm-2 control-label">
+                                        文章标题
                                     </label>
                                     <div class="col-sm-9">
-                                        <input type="text" id="title" name="title" placeholder="标题" class="txt input-sm col-sm-5 ">
+                                        <input type="text" id="title" name="title" placeholder="标题" class="txt input-sm col-sm-12 ">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        副标题
+                                    <label class="col-sm-2 control-label">
+                                        文章副标题
                                     </label>
                                     <div class="col-sm-9">
-                                        <input type="text" id="title2" name="title2" placeholder="副标题" class="txt input-sm col-sm-5 ">
+                                        <input type="text" id="title2" name="title2" placeholder="副标题" class="txt input-sm col-sm-12 ">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        类型
+                                    <label class="col-sm-2 control-label">
+                                        文章所属分类
                                     </label>
                                     <div class="col-sm-9">
                                         <select id="catId" name="catId" data-init="0">
-                                            <option value="0">请选择类型</option>
+                                            <option value="0">请选择分类</option>
                                             {{foreach from=$autoArticleCatList item=autoArticleCat}}
                                                 <option value="{{$autoArticleCat.catId}}">{{$autoArticleCat.catName}}</option>
                                             {{/foreach}}
@@ -116,15 +111,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        内容
+                                    <label class="col-sm-2 control-label">
+                                        文章内容
                                     </label>
                                     <div class="col-sm-9">
-                                        <textarea id="content" name="content" placeholder="文章内容"></textarea>
+                                        <textarea id="content" name="content" placeholder="文章内容" style="height:300px;max-height:300px;width:100%;"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         来源地址
                                     </label>
 
@@ -133,7 +128,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         排序号
                                     </label>
 
@@ -170,129 +165,138 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-    $('.select2').css('width','160px').select2({allowClear:true})
-    $('#select2-multiple-style .btn').on('click', function(e){
-        var target = $(this).find('input[type=radio]');
-        var which = parseInt(target.val());
-        if(which == 2) $('.select2').addClass('tag-input-style');
-        else $('.select2').removeClass('tag-input-style');
-    });
+    var scripts = [
+        null,
+        "{{$contextPath}}/ueditor/ueditor.config.js",
+        "{{$contextPath}}/ueditor/ueditor.all.min.js",
+        "{{$contextPath}}/ueditor/lang/zh-cn/zh-cn.js",
+         null
+    ];
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 
-    $(document).one('ajaxloadstart.page', function(e) {
-        $('[class*=select2]').remove();
-    });
+        var ueContent = UE.getEditor("content");
 
-    $( "#datepicker1" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
+        $('.select2').css('width','160px').select2({ allowClear:true })
+        $('#select2-multiple-style .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('.select2').addClass('tag-input-style');
+            else $('.select2').removeClass('tag-input-style');
+        });
 
-    $( "#datepicker2" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('[class*=select2]').remove();
+        });
 
-    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function(){
-            $("#user-gridview").gridview({
-                debug: true,
-                url: "article/list.do",
-                form:{
-                    url: "article/action.do",
-                    check:function(){
-                        var title=$("#title").val();
-                        var catId=$("#catId").val();
-                        var content=$("#content").val();
-                        var sourceUrl=$("#sourceUrl").val();
-                        var sortOrder=$("#sortOrder").val();
-                        var urlFormant = new RegExp(
-                                        "^" +
-                                    // protocol identifier
-                                        "(?:(?:https?|ftp)://)" +
-                                    // user:pass authentication
-                                        "(?:\\S+(?::\\S*)?@)?" +
-                                        "(?:" +
-                                    // IP address dotted notation octets
-                                    // excludes loopback network 0.0.0.0
-                                    // excludes reserved space >= 224.0.0.0
-                                    // excludes network & broacast addresses
-                                    // (first & last IP address of each class)
-                                        "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
-                                        "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
-                                        "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
-                                        "|" +
-                                    // host name
-                                        "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
-                                    // domain name
-                                        "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
-                                    // TLD identifier
-                                        "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
-                                        ")" +
-                                    // port number
-                                        "(?::\\d{2,5})?" +
-                                    // resource path
-                                        "(?:/\\S*)?" +
-                                        "$", "i"
-                        );
-                        if(!title){
-                            console.log("check form");
-                            $("#title").focus();
-                            return "请输入标题";
-                        }else if(catId=="0"){
-                            console.log("check form");
-                            return "请选择文章类型";
-                        }else if(!content){
-                            console.log("check form");
-                            $("#content").focus();
-                            return "文章内容不能为空";
-                        }else if(content.length<20){
-                            console.log("check form");
-                            $("#content").focus();
-                            return "文章内容必须大于20个字";
-                        }else if(sourceUrl && !urlFormant.test(sourceUrl)){
-                            console.log("check form");
-                            $("#sourceUrl").focus();
-                            return "URL格式出错";
-                        }else if(sortOrder<0 || isNaN(sortOrder)){
-                            console.log("check form");
-                            $("#sortOrder").focus();
-                            return "排序号必须大于等于0且必须为数字";
-                        }else{
-                            return true;
-                        }
+        $( "#datepicker1" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $( "#datepicker2" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $("#user-gridview").gridview({
+            debug: true,
+            url: "article/list.do",
+            form:{
+                url: "article/action.do",
+                check:function(){
+                    var title=$("#title").val();
+                    var catId=$("#catId").val();
+                    var content=$("#content").val();
+                    var sourceUrl=$("#sourceUrl").val();
+                    var sortOrder=$("#sortOrder").val();
+                    var urlFormant = new RegExp(
+                                    "^" +
+                                // protocol identifier
+                                    "(?:(?:https?|ftp)://)" +
+                                // user:pass authentication
+                                    "(?:\\S+(?::\\S*)?@)?" +
+                                    "(?:" +
+                                // IP address dotted notation octets
+                                // excludes loopback network 0.0.0.0
+                                // excludes reserved space >= 224.0.0.0
+                                // excludes network & broacast addresses
+                                // (first & last IP address of each class)
+                                    "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
+                                    "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
+                                    "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
+                                    "|" +
+                                // host name
+                                    "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+                                // domain name
+                                    "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+                                // TLD identifier
+                                    "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+                                    ")" +
+                                // port number
+                                    "(?::\\d{2,5})?" +
+                                // resource path
+                                    "(?:/\\S*)?" +
+                                    "$", "i"
+                    );
+                    if(!title){
+                        console.log("check form");
+                        $("#title").focus();
+                        return "请输入标题";
+                    }else if(catId=="0"){
+                        console.log("check form");
+                        return "请选择文章类型";
+                    }else if(!content){
+                        console.log("check form");
+                        $("#content").focus();
+                        return "文章内容不能为空";
+                    }else if(content.length<20){
+                        console.log("check form");
+                        $("#content").focus();
+                        return "文章内容必须大于20个字";
+                    }else if(sourceUrl && !urlFormant.test(sourceUrl)){
+                        console.log("check form");
+                        $("#sourceUrl").focus();
+                        return "URL格式出错";
+                    }else if(sortOrder<0 || isNaN(sortOrder)){
+                        console.log("check form");
+                        $("#sortOrder").focus();
+                        return "排序号必须大于等于0且必须为数字";
+                    }else{
+                        return true;
                     }
-                },
-                jsonReader:{
-                    key_field: 'articleId'
-                },
-                columns:[{
-                    name:"checkbox"
-                },{
-                    name:"articleId"
-                },{
-                    name:"title"
-                },{
-                    name:"title2"
-                },{
-                    name:"catName"
-                },{
-                    name:"addTime"
-                },{
-                    name:"name"
-                },{
-                    name:"addUserType"
-                },{
-                    name:"status"
-                },{
-                    name: "sortOrder",
-                    format: function(opts, column, row){
-                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
-                    }
-                },{
-                    name:"actions",
-                    list:["edit", "delete", "view"]
-                }]
-            });
+                }
+            },
+            jsonReader:{
+                key_field: 'articleId'
+            },
+            columns:[{
+                name:"checkbox"
+            },{
+                name:"articleId"
+            },{
+                name:"title"
+            },{
+                name:"title2"
+            },{
+                name:"catName"
+            },{
+                name:"addTime"
+            },{
+                name:"name"
+            },{
+                name:"addUserType"
+            },{
+                name:"status"
+            },{
+                name: "sortOrder",
+                format: function(opts, column, row){
+                    return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                }
+            },{
+                name:"actions",
+                list:["edit", "delete", "view"]
+            }]
         });
     });
+
 </script>

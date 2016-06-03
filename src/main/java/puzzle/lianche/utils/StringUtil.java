@@ -15,6 +15,29 @@ public class StringUtil {
 
     public static boolean isNotNullOrEmpty(String input){ return !isNullOrEmpty(input); }
 
+    public static boolean hasNullOrEmpty(String[] inputs){
+        for(String input : inputs){
+            if(input == null || input.trim().length() == 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean hasNullOrEmpty(Collection<String> list){
+        boolean has = false;
+        if(list != null && list.size() > 0){
+            Iterator<String> iterator = list.iterator();
+            while (iterator.hasNext()){
+                if(isNullOrEmpty(iterator.next())){
+                    has = true;
+                    break;
+                }
+            }
+        }
+        return has;
+    }
+
     public static String format(String input, Object...params){
         if(isNullOrEmpty(input))
             return Empty;

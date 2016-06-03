@@ -220,6 +220,19 @@ public class Constants {
     //endregion
 
 
+    //region System User Status
+    public static final Integer SYSTEM_USER_STATUS_VALID = 1;
+    public static final Integer SYSTEM_USER_STATUS_INVALID = 2;
+    public static final Map<Integer, String> MAP_SYSTEM_USER_STATUS = new HashMap<Integer, String>(){
+        {
+            put(1,"有效");
+            put(2,"无效");
+        }
+    };
+    //endregion
+
+
+
     public class UrlHelper{
         public static final String RETURN_URL = "ReturnUrl";
 
