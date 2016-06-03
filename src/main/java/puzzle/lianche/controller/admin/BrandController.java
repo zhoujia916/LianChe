@@ -33,17 +33,18 @@ public class BrandController extends ModuleController {
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result list(AutoBrand autoBrand){
+    public Result list(){
         Result result=new Result();
         try{
+            Map map=new HashMap();
+            String pageIndex=request.getParameter("pageIndex");
+            String pageSize=request.getParameter("pageSize");
+            String brandName=request.getParameter("brandName");
             Page page = new Page();
-            if(StringUtil.isNotNullOrEmpty(request.getParameter("pageIndex")) && StringUtil.isNumber(request.getParameter("pageIndex"))){
-                page.setPageIndex(ConvertUtil.toInt(request.getParameter("pageIndex")));
-            }
-            if(StringUtil.isNotNullOrEmpty(request.getParameter("pageSize")) && StringUtil.isNumber(request.getParameter("pageSize"))){
-                page.setPageSize(ConvertUtil.toInt(request.getParameter("pageSize")));
-            }
-            List<AutoBrand> list = autoBrandService.queryList(autoBrand, page);
+            page.setPageIndex(ConvertUtil.toInt(pageIndex));
+            page.setPageSize(ConvertUtil.toInt(pageSize));
+            map.put("brandName",brandName);
+            List<AutoBrand> list=autoBrandService.queryList(map,page);
             if(list!=null && list.size()>0){
                 JSONArray array=new JSONArray();
                 for(AutoBrand brand:list){
@@ -51,6 +52,7 @@ public class BrandController extends ModuleController {
                     array.add(jsonObject);
                 }
                 result.setData(array);
+                result.setTotal(page.getTotal());
             }
         }catch(Exception e){
             result.setCode(1);

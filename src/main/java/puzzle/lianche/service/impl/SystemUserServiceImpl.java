@@ -34,16 +34,18 @@ public class SystemUserServiceImpl extends BaseServiceImpl implements ISystemUse
 
     /**
      * 修改用户信息时比较查看role、group、dept
-     * @param systemUser
+     * @param userId
      * @param targetIds
      * @param targetType
      */
-    public void updateSystemUserMap(SystemUser systemUser,String[] targetIds,Integer targetType) {
+    public void updateSystemUserMap(Integer userId,String[] targetIds,Integer targetType) {
         try {
             List<SystemUserMap> addList = new ArrayList<SystemUserMap>();
             List<Integer> delList = new ArrayList<Integer>();
             Map<String, Object> map = new HashMap<String, Object>();
             //region handle role
+            map.put("userId",userId);
+            map.put("targetType",targetType);
             List<SystemUserMap> oldList = systemUserMapService.queryList(map);
             for (String targetId : targetIds) {
                 boolean find = false;
@@ -58,7 +60,7 @@ public class SystemUserServiceImpl extends BaseServiceImpl implements ISystemUse
                     SystemUserMap systemUserMap = new SystemUserMap();
                     systemUserMap.setTargetId(ConvertUtil.toInt(targetId));
                     systemUserMap.setTargetType(targetType);
-                    systemUserMap.setUserId(systemUser.getUserId());
+                    systemUserMap.setUserId(userId);
                     addList.add(systemUserMap);
                 }
             }
@@ -175,15 +177,15 @@ public class SystemUserServiceImpl extends BaseServiceImpl implements ISystemUse
             if(sqlMapper.update("SystemUserMapper.update", entity)){
                 if(entity.getRoleId()!=null && entity.getRoleId()!=""){
                     String[] roles=entity.getRoleId().split(",");
-                    updateSystemUserMap(entity,roles,Constants.USER_MAP_TARGET_TYPE_ROLE);
+                    updateSystemUserMap(entity.getUserId(),roles,Constants.USER_MAP_TARGET_TYPE_ROLE);
                 }
                 if(entity.getGroupId()!=null && entity.getGroupId()!=""){
                     String[] groups=entity.getGroupId().split(",");
-                    updateSystemUserMap(entity,groups,Constants.USER_MAP_TARGET_TYPE_GROUP);
+                    updateSystemUserMap(entity.getUserId(),groups,Constants.USER_MAP_TARGET_TYPE_GROUP);
                 }
                 if(entity.getDeptId()!=null && entity.getDeptId()!="") {
                     String[] depts=entity.getDeptId().split(",");
-                    updateSystemUserMap(entity,depts,Constants.USER_MAP_TARGET_TYPE_DEPT);
+                    updateSystemUserMap(entity.getUserId(),depts,Constants.USER_MAP_TARGET_TYPE_DEPT);
                 }
                 return true;
             }

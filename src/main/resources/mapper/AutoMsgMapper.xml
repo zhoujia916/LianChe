@@ -206,7 +206,7 @@
             </if>
             <if test="fromUserName==null">
                 and am.msg_type=0
-            </if>z
+            </if>
             <if test="msgType>-1 and msgType!=null">
                 and am.msg_type=#{msgType}
             </if>
