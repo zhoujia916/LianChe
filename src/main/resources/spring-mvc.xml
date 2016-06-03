@@ -122,10 +122,11 @@
     <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             <props>
-                <prop key="java.sql.SQLException">error-500</prop>
-                <prop key="java.io.IOException">error-500</prop>
-                <prop key="java.lang.NullPointerException">error-500</prop>
-                <prop key="java.lang.Exception">error-500</prop>
+                <prop key="java.sql.SQLException">/admin/error-500</prop>
+                <prop key="java.io.IOException">/admin/error-500</prop>
+                <prop key="java.lang.NullPointerException">/admin/error-500</prop>
+                <prop key="java.lang.Exception">/admin/error-500</prop>
+                <prop key="java.lang.FileNotFoundException">/admin/error-400</prop>
             </props>
         </property>
     </bean>

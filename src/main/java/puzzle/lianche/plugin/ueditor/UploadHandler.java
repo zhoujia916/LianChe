@@ -1,7 +1,6 @@
 package puzzle.lianche.plugin.ueditor;
 
 import net.sf.json.JSONObject;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -69,8 +68,7 @@ public class UploadHandler extends UHandler {
     public UploadFile getUploadFile(){ return  this.uploadFile; }
     public void setUploadFile(UploadFile uploadFile){ this.uploadFile = uploadFile; }
 
-    public UploadHandler(HttpServletRequest request, HttpServletResponse response, UploadConfig config, UploadFile file)
-    {
+    public UploadHandler(HttpServletRequest request, HttpServletResponse response, UploadConfig config, UploadFile file){
         super(request, response);
         this.config = config;
         this.uploadFile = file;
@@ -78,31 +76,35 @@ public class UploadHandler extends UHandler {
         this.result.setUploadState(Unknown);
     }
 
-    public void process()
-    {
+    public void process(){
         byte[] uploadFileBytes = null;
         String uploadFileName = uploadFile.getFileName();
 
-        if (!checkFileType())
-        {
+        if (!checkFileType()){
             this.result.setUploadState(TypeNotAllow);
             writeResult();
             return;
         }
-        if (!checkFileSize())
-        {
+        if (!checkFileSize()){
             this.result.setUploadState(SizeLimitExceed);
             writeResult();
             return;
         }
-        uploadFileBytes = new byte[(int)uploadFile.getFile().length()];
-        try
-        {
-            FileInputStream fis = new FileInputStream(uploadFile.getFile());
-            fis.read(uploadFileBytes, 0, uploadFileBytes.length);
+        int size = (int)uploadFile.getFileSize();
+        if(size == 0){
+            size = (int)uploadFile.getFile().length();
         }
-        catch (Exception e)
-        {
+        uploadFileBytes = new byte[size];
+        try{
+
+            if(uploadFile.getFile() == null){
+                uploadFile.getInputStream().read(uploadFileBytes, 0, size);
+            }else{
+                FileInputStream fis = new FileInputStream(uploadFile.getFile());
+                fis.read(uploadFileBytes, 0, uploadFileBytes.length);
+            }
+        }
+        catch (Exception e){
             this.result.setUploadState(NetworkError);
             writeResult();
         }
@@ -110,8 +112,7 @@ public class UploadHandler extends UHandler {
         result.setOriginFileName(uploadFileName);
 
         String saveName = PathFormatter.format(uploadFileName, config.getPathFormat());
-        try
-        {
+        try{
             String dirName = uploadFile.getSavePath() + "/" + saveName.substring(0, saveName.lastIndexOf('/'));
             File dir = new File(dirName);
             if(!dir.exists()){
@@ -131,19 +132,16 @@ public class UploadHandler extends UHandler {
             }
             this.result.setUploadState(Success);
         }
-        catch (Exception e)
-        {
+        catch (Exception e){
             this.result.setUploadState(FileAccessError);
             this.result.setErrorMessage(e.getMessage());
         }
-        finally
-        {
+        finally{
             writeResult();
         }
     }
 
-    private void writeResult()
-    {
+    private void writeResult(){
         JSONObject object = new JSONObject();
         object.put("state", getStateMessage(result.getUploadState()));
         object.put("url", result.getUrl());
@@ -153,10 +151,8 @@ public class UploadHandler extends UHandler {
         this.writeJson(object);
     }
 
-    private String getStateMessage(int state)
-    {
-        switch (state)
-        {
+    private String getStateMessage(int state){
+        switch (state){
             case Success:
                 return "SUCCESS";
             case FileAccessError:
@@ -172,8 +168,7 @@ public class UploadHandler extends UHandler {
     }
 
 
-    private boolean checkFileType()
-    {
+    private boolean checkFileType(){
         String fileName = uploadFile.getFileName();
         String fileExtension = fileName.substring(fileName.lastIndexOf('.') );
         for(String ext : config.getAllowExtensions()){
@@ -184,8 +179,8 @@ public class UploadHandler extends UHandler {
         return  false;
     }
 
-    private boolean checkFileSize()
-    {
-        return uploadFile.getFile().length() < config.getSizeLimit();
+    private boolean checkFileSize(){
+        return uploadFile.getFileSize() > 0 ? uploadFile.getFileSize() < config.getSizeLimit() :
+                                              uploadFile.getFile().length() < config.getSizeLimit();
     }
 }

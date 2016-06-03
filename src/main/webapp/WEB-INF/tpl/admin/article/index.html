@@ -64,14 +64,9 @@
 
                 </div>
             </div>
-            <!--
-            <div style="position: fixed;width:100%;height:100%;top:0;z-index:1000;">
-                <div style="background:#000;opacity:0.1;width:100%;height:100%;"></div>
-            </div>
-            -->
             <!--edit form-->
             <div class="grid-form save-form" style="">
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:1000px;height:700px;margin-left:-500px;margin-top:-350px">
                     <div class="widget-header">
                         <h5 class="widget-title smaller"></h5>
 
@@ -87,28 +82,28 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        标题
+                                    <label class="col-sm-2 control-label">
+                                        文章标题
                                     </label>
                                     <div class="col-sm-9">
-                                        <input type="text" id="title" name="title" placeholder="标题" class="txt input-sm col-sm-5 ">
+                                        <input type="text" id="title" name="title" placeholder="标题" class="txt input-sm col-sm-12 ">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        副标题
+                                    <label class="col-sm-2 control-label">
+                                        文章副标题
                                     </label>
                                     <div class="col-sm-9">
-                                        <input type="text" id="title2" name="title2" placeholder="副标题" class="txt input-sm col-sm-5 ">
+                                        <input type="text" id="title2" name="title2" placeholder="副标题" class="txt input-sm col-sm-12 ">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        类型
+                                    <label class="col-sm-2 control-label">
+                                        文章所属分类
                                     </label>
                                     <div class="col-sm-9">
                                         <select id="catId" name="catId" data-init="0">
-                                            <option value="0">请选择类型</option>
+                                            <option value="0">请选择分类</option>
                                             {{foreach from=$autoArticleCatList item=autoArticleCat}}
                                                 <option value="{{$autoArticleCat.catId}}">{{$autoArticleCat.catName}}</option>
                                             {{/foreach}}
@@ -116,15 +111,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        内容
+                                    <label class="col-sm-2 control-label">
+                                        文章内容
                                     </label>
                                     <div class="col-sm-9">
-                                        <textarea id="content" name="content" placeholder="文章内容"></textarea>
+                                        <textarea id="content" name="content" placeholder="文章内容" style="height:300px;max-height:300px;width:100%;"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         来源地址
                                     </label>
 
@@ -133,7 +128,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         排序号
                                     </label>
 
@@ -172,12 +167,12 @@
 <script type="text/javascript">
     var scripts = [
         null,
-        "${contextPath}/ueditor/ueditor.config.js",
-        "${contextPath}/ueditor/ueditor.config.js",
-        "${contextPath}/ueditor/ueditor.config.js",
+        "{{$contextPath}}/ueditor/ueditor.config.js",
+        "{{$contextPath}}/ueditor/ueditor.all.min.js",
+        "{{$contextPath}}/ueditor/lang/zh-cn/zh-cn.js",
          null
     ];
-    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+    $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 
         var ueContent = UE.getEditor("content");
 

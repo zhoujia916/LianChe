@@ -1,18 +1,10 @@
-package puzzle.lianche.controller;
+package puzzle.lianche.controller.plugin;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import puzzle.lianche.Constants;
-import puzzle.lianche.entity.SystemAuthority;
-import puzzle.lianche.entity.SystemLog;
-import puzzle.lianche.entity.SystemMenuAction;
-import puzzle.lianche.entity.SystemUser;
-import puzzle.lianche.service.ISystemLogService;
-import puzzle.lianche.service.ISystemMenuActionService;
-import puzzle.lianche.utils.CommonUtil;
-import puzzle.lianche.utils.ConvertUtil;
+import puzzle.lianche.controller.BaseController;
 import puzzle.lianche.utils.EncryptUtil;
 import puzzle.lianche.utils.StringUtil;
 
@@ -23,9 +15,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+@Controller(value = "pluginWeiXinController")
 public class WeiXinController extends BaseController {
 
-    @RequestMapping(value = {"/wx/index"})
+    @RequestMapping(value = {"/weixin"})
     public void index(){
         String signature = this.getParameter("signature");
 

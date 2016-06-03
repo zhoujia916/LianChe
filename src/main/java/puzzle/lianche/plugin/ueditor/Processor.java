@@ -13,8 +13,7 @@ public class Processor {
     private static final String ListFile = "listfile";
     private static final String CatchImage = "catchimage";
 
-    public void process(HttpServletRequest request, HttpServletResponse response, UploadFile file)
-    {
+    public void process(HttpServletRequest request, HttpServletResponse response, UploadFile file){
         UHandler action = null;
         String actionName = request.getParameter("action");
         if(actionName.equals(GetConfig)){

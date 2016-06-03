@@ -22,8 +22,7 @@ public class CrawlerHandler extends UHandler
         super(request, response);
     }
 
-    private class Crawler
-    {
+    private class Crawler{
         public String sourceUrl;
         public String getSourceUrl(){ return  this.sourceUrl; }
         public void setSourceUrl(String sourceUrl){ this.sourceUrl = sourceUrl; }
@@ -39,8 +38,7 @@ public class CrawlerHandler extends UHandler
             this.sourceUrl = sourceUrl;
         }
 
-        public Crawler fetch()
-        {
+        public Crawler fetch(){
             int statusCode = 0;
             String statusMessage = null;
             StringBuffer result = new StringBuffer();
@@ -72,8 +70,7 @@ public class CrawlerHandler extends UHandler
                     state = "Url returns " + statusCode + ", " + statusMessage;
                     return this;
                 }
-                if (map != null || map.get("Content-Type").indexOf("image") == -1)
-                {
+                if (map != null || map.get("Content-Type").indexOf("image") == -1){
                     state = "Url is not an image";
                     return this;
                 }
@@ -122,11 +119,9 @@ public class CrawlerHandler extends UHandler
         }
     }
 
-    public void process()
-    {
+    public void process(){
         sources = request.getParameter("source").split(",");
-        if (sources == null || sources.length == 0)
-        {
+        if (sources == null || sources.length == 0){
             JSONObject object = new JSONObject();
             object.put("state", "参数错误：没有指定抓取源");
             writeJson(object);

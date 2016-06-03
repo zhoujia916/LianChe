@@ -1,6 +1,7 @@
 package puzzle.lianche.plugin.ueditor;
 
 import java.io.File;
+import java.io.InputStream;
 
 public class UploadFile {
     private File file;
@@ -18,4 +19,24 @@ public class UploadFile {
     private String url;
     public void setUrl(String url){ this.url = url;}
     public String getUrl(){ return this.url; }
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
+
+    private InputStream inputStream;
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    private long fileSize;
 }
