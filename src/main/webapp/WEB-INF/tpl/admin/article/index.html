@@ -170,129 +170,138 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-    $('.select2').css('width','160px').select2({allowClear:true})
-    $('#select2-multiple-style .btn').on('click', function(e){
-        var target = $(this).find('input[type=radio]');
-        var which = parseInt(target.val());
-        if(which == 2) $('.select2').addClass('tag-input-style');
-        else $('.select2').removeClass('tag-input-style');
-    });
-
-    $(document).one('ajaxloadstart.page', function(e) {
-        $('[class*=select2]').remove();
-    });
-
-    $( "#datepicker1" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
-    $( "#datepicker2" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
+    var scripts = [
+        null,
+        "${contextPath}/ueditor/ueditor.config.js",
+        "${contextPath}/ueditor/ueditor.config.js",
+        "${contextPath}/ueditor/ueditor.config.js",
+         null
+    ];
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function(){
-            $("#user-gridview").gridview({
-                debug: true,
-                url: "article/list.do",
-                form:{
-                    url: "article/action.do",
-                    check:function(){
-                        var title=$("#title").val();
-                        var catId=$("#catId").val();
-                        var content=$("#content").val();
-                        var sourceUrl=$("#sourceUrl").val();
-                        var sortOrder=$("#sortOrder").val();
-                        var urlFormant = new RegExp(
-                                        "^" +
-                                    // protocol identifier
-                                        "(?:(?:https?|ftp)://)" +
-                                    // user:pass authentication
-                                        "(?:\\S+(?::\\S*)?@)?" +
-                                        "(?:" +
-                                    // IP address dotted notation octets
-                                    // excludes loopback network 0.0.0.0
-                                    // excludes reserved space >= 224.0.0.0
-                                    // excludes network & broacast addresses
-                                    // (first & last IP address of each class)
-                                        "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
-                                        "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
-                                        "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
-                                        "|" +
-                                    // host name
-                                        "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
-                                    // domain name
-                                        "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
-                                    // TLD identifier
-                                        "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
-                                        ")" +
-                                    // port number
-                                        "(?::\\d{2,5})?" +
-                                    // resource path
-                                        "(?:/\\S*)?" +
-                                        "$", "i"
-                        );
-                        if(!title){
-                            console.log("check form");
-                            $("#title").focus();
-                            return "请输入标题";
-                        }else if(catId=="0"){
-                            console.log("check form");
-                            return "请选择文章类型";
-                        }else if(!content){
-                            console.log("check form");
-                            $("#content").focus();
-                            return "文章内容不能为空";
-                        }else if(content.length<20){
-                            console.log("check form");
-                            $("#content").focus();
-                            return "文章内容必须大于20个字";
-                        }else if(sourceUrl && !urlFormant.test(sourceUrl)){
-                            console.log("check form");
-                            $("#sourceUrl").focus();
-                            return "URL格式出错";
-                        }else if(sortOrder<0 || isNaN(sortOrder)){
-                            console.log("check form");
-                            $("#sortOrder").focus();
-                            return "排序号必须大于等于0且必须为数字";
-                        }else{
-                            return true;
-                        }
+
+        var ueContent = UE.getEditor("content");
+
+        $('.select2').css('width','160px').select2({ allowClear:true })
+        $('#select2-multiple-style .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('.select2').addClass('tag-input-style');
+            else $('.select2').removeClass('tag-input-style');
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('[class*=select2]').remove();
+        });
+
+        $( "#datepicker1" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $( "#datepicker2" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $("#user-gridview").gridview({
+            debug: true,
+            url: "article/list.do",
+            form:{
+                url: "article/action.do",
+                check:function(){
+                    var title=$("#title").val();
+                    var catId=$("#catId").val();
+                    var content=$("#content").val();
+                    var sourceUrl=$("#sourceUrl").val();
+                    var sortOrder=$("#sortOrder").val();
+                    var urlFormant = new RegExp(
+                                    "^" +
+                                // protocol identifier
+                                    "(?:(?:https?|ftp)://)" +
+                                // user:pass authentication
+                                    "(?:\\S+(?::\\S*)?@)?" +
+                                    "(?:" +
+                                // IP address dotted notation octets
+                                // excludes loopback network 0.0.0.0
+                                // excludes reserved space >= 224.0.0.0
+                                // excludes network & broacast addresses
+                                // (first & last IP address of each class)
+                                    "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
+                                    "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
+                                    "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
+                                    "|" +
+                                // host name
+                                    "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+                                // domain name
+                                    "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+                                // TLD identifier
+                                    "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+                                    ")" +
+                                // port number
+                                    "(?::\\d{2,5})?" +
+                                // resource path
+                                    "(?:/\\S*)?" +
+                                    "$", "i"
+                    );
+                    if(!title){
+                        console.log("check form");
+                        $("#title").focus();
+                        return "请输入标题";
+                    }else if(catId=="0"){
+                        console.log("check form");
+                        return "请选择文章类型";
+                    }else if(!content){
+                        console.log("check form");
+                        $("#content").focus();
+                        return "文章内容不能为空";
+                    }else if(content.length<20){
+                        console.log("check form");
+                        $("#content").focus();
+                        return "文章内容必须大于20个字";
+                    }else if(sourceUrl && !urlFormant.test(sourceUrl)){
+                        console.log("check form");
+                        $("#sourceUrl").focus();
+                        return "URL格式出错";
+                    }else if(sortOrder<0 || isNaN(sortOrder)){
+                        console.log("check form");
+                        $("#sortOrder").focus();
+                        return "排序号必须大于等于0且必须为数字";
+                    }else{
+                        return true;
                     }
-                },
-                jsonReader:{
-                    key_field: 'articleId'
-                },
-                columns:[{
-                    name:"checkbox"
-                },{
-                    name:"articleId"
-                },{
-                    name:"title"
-                },{
-                    name:"title2"
-                },{
-                    name:"catName"
-                },{
-                    name:"addTime"
-                },{
-                    name:"name"
-                },{
-                    name:"addUserType"
-                },{
-                    name:"status"
-                },{
-                    name: "sortOrder",
-                    format: function(opts, column, row){
-                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
-                    }
-                },{
-                    name:"actions",
-                    list:["edit", "delete", "view"]
-                }]
-            });
+                }
+            },
+            jsonReader:{
+                key_field: 'articleId'
+            },
+            columns:[{
+                name:"checkbox"
+            },{
+                name:"articleId"
+            },{
+                name:"title"
+            },{
+                name:"title2"
+            },{
+                name:"catName"
+            },{
+                name:"addTime"
+            },{
+                name:"name"
+            },{
+                name:"addUserType"
+            },{
+                name:"status"
+            },{
+                name: "sortOrder",
+                format: function(opts, column, row){
+                    return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                }
+            },{
+                name:"actions",
+                list:["edit", "delete", "view"]
+            }]
         });
     });
+
 </script>

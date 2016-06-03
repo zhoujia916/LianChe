@@ -140,6 +140,7 @@
     <!-- 存放静态资源文件  如：图片、CSS等 放其他地方、系统将无法识别-->
     <mvc:resources mapping="/resource/**" location="/WEB-INF/resource/" />
     <mvc:resources mapping="/ace/**" location="/WEB-INF/ace/" />
+    <mvc:resources mapping="/ueditor/**" location="/ueditor/" />
 
     <!-- 权限设置 -->
     <mvc:interceptors>
