@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.BaseController;
+import puzzle.lianche.entity.AutoSms;
 import puzzle.lianche.entity.AutoUser;
+import puzzle.lianche.entity.AutoUserProfile;
 import puzzle.lianche.push.SmsPush;
+import puzzle.lianche.service.IAutoSmsService;
+import puzzle.lianche.service.IAutoUserProfileService;
 import puzzle.lianche.service.IAutoUserService;
-import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.EncryptUtil;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
@@ -25,6 +28,13 @@ public class AutoUserController extends BaseController {
 
     @Autowired
     private IAutoUserService autoUserService;
+
+    @Autowired
+    private IAutoUserProfileService autoUserProfileService;
+
+    @Autowired
+    private IAutoSmsService autoSmsService;
+
     /**
      * 注册会员信息
      * @param autoUser
@@ -35,7 +45,50 @@ public class AutoUserController extends BaseController {
     public Result register(AutoUser autoUser){
         Result result = new Result();
         try{
-
+            if(StringUtil.isNullOrEmpty(autoUser.getUserName())){
+                result.setCode(-1);
+                result.setMsg("用户名不能为空！");
+            }else if(StringUtil.isNullOrEmpty(autoUser.getPassword())){
+                result.setCode(-1);
+                result.setMsg("密码不能为空！");
+            }else if(StringUtil.isNullOrEmpty(autoUser.getCode())){
+                result.setCode(-1);
+                result.setMsg("验证码不能为空！");
+            }else{
+                Map<String,Object> map=new HashMap<String, Object>();
+                map.put("username",autoUser.getUserName());
+                AutoUser user=autoUserService.query(map);
+                if(user!=null){
+                    result.setCode(1);
+                    result.setMsg("该账户已被注册！");
+                }else{
+                    map.clear();
+                    map.put("smsType",Constants.SMS_TYPE_REGISTER);
+                    map.put("phone",autoUser.getUserName());
+                    map.put("status",Constants.SMS_STATUS_TRUE);
+                    AutoSms sms=autoSmsService.query(map);
+                    if(!sms.getCode().equalsIgnoreCase(autoUser.getCode())){
+                        result.setCode(-1);
+                        result.setMsg("验证码错误");
+                    }else{
+                        autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
+                        autoUser.setUserAvatar("../resource/admin/avatars/profile-pic.jpg");
+                        autoUser.setPoint(100);
+                        autoUser.setPhone(autoUser.getUserName());
+                        autoUser.setSortOrder(0);
+                        if(autoUserService.insert(autoUser)){
+                            JSONArray array=new JSONArray();
+                            JSONObject jsonObject=JSONObject.fromObject(autoUser);
+                            jsonObject.put("isAuthenticate",false);
+                            array.add(jsonObject);
+                            result.setData(array);
+                        }else{;
+                            result.setCode(1);
+                            result.setMsg("注册失败");
+                        }
+                    }
+                }
+            }
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("注册会员信息出错");
@@ -59,27 +112,86 @@ public class AutoUserController extends BaseController {
             password = password.trim();
             if(StringUtil.isNullOrEmpty(username)){
                 result.setCode(-1);
-                result.setMsg("手机号不能为空！");
-            }
-            if(StringUtil.isNullOrEmpty(password)){
+                result.setMsg("用户名不能为空！");
+            }else if(StringUtil.isNullOrEmpty(password)){
                 result.setCode(-1);
                 result.setMsg("密码不能为空！");
-            }
-
-            Map<String,Object> map = new HashMap<String, Object>();
-            map.put("username", username);
-            map.put("password", EncryptUtil.MD5(password));
-            AutoUser user = autoUserService.query(map);
-            if(user != null){
-                //加载个人资料
-                result.setData(user);
             }else{
-                result.setCode(1);
-                result.setMsg("用户名或密码不正确！");
+                Map<String,Object> map = new HashMap<String, Object>();
+                map.put("username", username);
+                map.put("password", EncryptUtil.MD5(password));
+                AutoUser user = autoUserService.query(map);
+                if(user != null){
+                    //加载个人资料
+                    JSONArray array=new JSONArray();
+                    JSONObject jsonObject=JSONObject.fromObject(user);
+                    map.clear();
+                    map.put("userId",user.getUserId());
+                    AutoUserProfile profile=autoUserProfileService.query(map);
+                    if(profile!=null){
+                        jsonObject.put("isAuthenticate",true);
+                        jsonObject.put("profile",profile);
+                    }
+                    array.add(jsonObject);
+                    result.setData(array);
+                }else{
+                    result.setCode(1);
+                    result.setMsg("用户名或密码不正确！");
+                }
             }
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("会员登录验证出错");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 找回密码
+     * @param autoUser
+     * @return
+     */
+    @RequestMapping(value = "/retrieve.do")
+    @ResponseBody
+    public Result retrieve(AutoUser autoUser){
+        Result result=new Result();
+        try{
+            if(StringUtil.isNullOrEmpty(autoUser.getUserName())){
+                result.setCode(-1);
+                result.setMsg("用户名不能为空！");
+            }else if(StringUtil.isNullOrEmpty(autoUser.getPassword())){
+                result.setCode(-1);
+                result.setMsg("密码不能为空！");
+            }else if(StringUtil.isNullOrEmpty(autoUser.getCode())){
+                result.setCode(-1);
+                result.setMsg("验证码不能为空！");
+            }else{
+                Map<String,Object> map=new HashMap<String, Object>();
+                map.put("smsType",Constants.SMS_TYPE_RETRIEVE);
+                map.put("phone",autoUser.getUserName());
+                map.put("status",Constants.SMS_STATUS_TRUE);
+                AutoSms sms=autoSmsService.query(map);
+                System.out.println("-----1");
+                if(!sms.getCode().equalsIgnoreCase(autoUser.getCode())){
+                    result.setCode(-1);
+                    result.setMsg("验证码错误");
+                }else{
+//                    autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
+
+                    System.out.println("-----2");
+                    if(autoUserService.update(autoUser)){
+                        System.out.println("-----3");
+                    }else{
+                        result.setCode(1);
+                        result.setMsg("修改新密码失败");
+                    }
+                    System.out.println("-----4");
+                }
+            }
+        }catch (Exception e){
+            result.setCode(1);
+            result.setMsg("操作找回密码时失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
@@ -99,23 +211,34 @@ public class AutoUserController extends BaseController {
             if(StringUtil.isNullOrEmpty(phone)){
                 result.setCode(-1);
                 result.setMsg("手机号不能为空！");
-            }
-            if(StringUtil.isNullOrEmpty(keyword)){
+            }else if(StringUtil.isNullOrEmpty(keyword)){
                 result.setCode(-1);
                 result.setMsg("请求参数错误！");
-            }
-
-            String code = "";
-
-            Map<String,Object> map = new HashMap<String, Object>();
-
-            map.put("code", code);
-            String response = SmsPush.send(phone, 1, map);
-            if(SmsPush.isSuccess(response)){
-                result.setData(code);
             }else{
-                result.setCode(1);
-                result.setMsg(SmsPush.getError(response));
+                String code = "123456";
+                Map<String,Object> map = new HashMap<String, Object>();
+                map.put("code", code);
+                String response = SmsPush.send(phone, 1, map);
+                if(SmsPush.isSuccess(response)){
+                    AutoSms sms=new AutoSms();
+                    sms.setSmsType(Constants.DEFAULT_SMS_TYPE);
+                    sms.setSmsContent("发送验证码："+code);
+                    sms.setCode(code);
+                    sms.setPhone(phone);
+                    sms.setStatus(Constants.SMS_STATUS_TRUE);
+                    autoSmsService.insert(sms);
+                    result.setData(code);
+                }else{
+                    AutoSms sms=new AutoSms();
+                    sms.setSmsType(Constants.DEFAULT_SMS_TYPE);
+                    sms.setSmsContent("发送验证码："+code);
+                    sms.setCode(code);
+                    sms.setPhone(phone);
+                    sms.setStatus(Constants.SMS_STATUS_FALSE);
+                    autoSmsService.insert(sms);
+                    result.setCode(1);
+                    result.setMsg(SmsPush.getError(response));
+                }
             }
         }catch (Exception e){
             result.setCode(1);

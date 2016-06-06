@@ -27,7 +27,7 @@
     <insert id="insert" parameterType="AutoUser" useGeneratedKeys="true" keyProperty="userId">
         insert into auto_user 
         (
-        	
+
         	<if test="userName != null">user_name, </if>
         	<if test="password != null">password, </if>
         	<if test="birth != null">birth, </if>
@@ -43,7 +43,7 @@
         )
         values 
         (
-        	
+
         	<if test="userName != null">#{userName}, </if>
         	<if test="password != null">#{password}, </if>
         	<if test="birth != null">#{birth}, </if>
@@ -89,14 +89,14 @@
         	<if test="remark != null and remark !=''">
         		remark = #{remark},
         	</if>
-        	<if test="addTime != null">  
+        	<if test="addTime != null">
         		add_time = #{addTime},
         	</if>
-        	<if test="authenticateTime != null">  
+        	<if test="authenticateTime != null">
         		authenticate_time = #{authenticateTime},
         	</if>
         	<if test="sortOrder > 0">
-        		sort_order = #{sortOrder},
+        		sort_order = #{sortOrder}
         	</if>
         </set>
         where user_id = #{userId}
@@ -150,7 +150,13 @@
         select <include refid="allColumn"/> from auto_user
         <where>  
         	<if test="userId > 0">
-                user_id = #{userId}
+                and user_id = #{userId}
+            </if>
+            <if test="username!=null and username!=''">
+                and user_name = #{username}
+            </if>
+            <if test="password!=null and password!=''">
+                and password = #{password}
             </if>
         </where> 
     </select>

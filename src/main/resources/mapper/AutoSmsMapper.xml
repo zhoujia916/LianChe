@@ -110,9 +110,19 @@
         select <include refid="allColumn"/> from auto_sms
         <where>  
         	<if test="smsId > 0">
-                sms_id = #{smsId}
+                and sms_id = #{smsId}
             </if>
-        </where> 
+            <if test="smsType > 0">
+                and sms_type = ${smsType}
+            </if>
+            <if test="phone!=null and phone!=''">
+                and phone = #{phone}
+            </if>
+            <if test="status > 0">
+                and status = ${status}
+            </if>
+        </where>
+        order by sms_id desc LIMIT 0,1
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoSms">

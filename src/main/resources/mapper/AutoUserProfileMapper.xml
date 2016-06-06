@@ -118,12 +118,12 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoUserProfile">
-        select <include refid="allColumn"/> from auto_user_profile
-        <where>  
+        select * from auto_user_profile
+        <where>
         	<if test="userId > 0">
-                user_id = #{userId}
+                user_id = ${userId}
             </if>
-        </where> 
+        </where>
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoUserProfile">

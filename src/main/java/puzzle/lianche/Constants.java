@@ -55,6 +55,10 @@ public class Constants {
     public static final Integer SMS_TYPE_CONTENT = 2;
     public static final Integer SMS_STATUS_TRUE=1;
     public static final Integer SMS_STATUS_FALSE=2;
+    public static final Integer SMS_TYPE_REGISTER = 1;
+    public static final Integer SMS_TYPE_RETRIEVE = 2;
+    public static final Integer SMS_TYPE_MODIFY=3;
+    public static final Integer SMS_TYPE_NOTICE=4;
     public static final Integer USER_MAP_TARGET_TYPE_ROLE = 1;
     public static final Integer USER_MAP_TARGET_TYPE_GROUP = 2;
     public static final Integer USER_MAP_TARGET_TYPE_DEPT = 3;

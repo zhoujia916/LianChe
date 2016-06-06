@@ -64,7 +64,7 @@ public class ControllerTest {
     }
 
     @Test
-//    @Rollback(false)  //有些单元测试你不希望回滚
+    @Rollback(false)  //有些单元测试你不希望回滚
     public void testAdminLogin() throws Exception{
 //        mockMvc.perform((get("/admin/"))).andExpect(status().isOk())
 //                .andDo(print());
@@ -74,6 +74,8 @@ public class ControllerTest {
 //
 //        mockMvc.perform((get("/admin/index"))).andExpect(status().is3xxRedirection())
 //                .andDo(print());
+        mockMvc.perform((post("/phone/autouser/retrieve.do").param("userName", "15123849097").param("password","123").param("code","123456")))
+                .andExpect(status().isOk()).andDo(print());
     }
 
     @Test
