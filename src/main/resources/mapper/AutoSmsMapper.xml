@@ -135,6 +135,7 @@
                 and status = ${status}
             </if>
         </where>
+        order by sms_id desc
     </select>
 
 </mapper>

@@ -38,7 +38,7 @@ public class AutoUserProfile implements Serializable{
         sb.append(", shopType=").append(shopType);
         sb.append(", shopDesc=").append(shopDesc);
         sb.append(", shopBrands=").append(shopBrands);
-        sb.append(", shiopBase=").append(shiopBase);
+        sb.append(", shopBase=").append(shopBase);
         sb.append("}").append(System.getProperty("line.separator"));
         return sb.toString();
 	}
@@ -59,11 +59,11 @@ public class AutoUserProfile implements Serializable{
 	@Column(name="shop_type", nullable=true)
 	private Integer shopType;
 	@Column(name="shop_desc", nullable=true)
-	private Integer shopDesc;
+	private String shopDesc;
 	@Column(name="shop_brands", nullable=true, length=200)
 	private String shopBrands;
-	@Column(name="shiop_base", nullable=true, length=300)
-	private String shiopBase;
+	@Column(name="shop_base", nullable=true, length=300)
+	private String shopBase;
 	
 	
 	/**
@@ -117,11 +117,11 @@ public class AutoUserProfile implements Serializable{
 		this.shopType = shopType;
 	}
 		
-	public Integer getShopDesc(){
+	public String getShopDesc(){
 		return shopDesc;
 	}
 	
-	public void setShopDesc(Integer shopDesc){
+	public void setShopDesc(String shopDesc){
 		this.shopDesc = shopDesc;
 	}
 		
@@ -133,12 +133,12 @@ public class AutoUserProfile implements Serializable{
 		this.shopBrands = shopBrands;
 	}
 		
-	public String getShiopBase(){
-		return shiopBase;
+	public String getShopBase(){
+		return shopBase;
 	}
 	
-	public void setShiopBase(String shiopBase){
-		this.shiopBase = shiopBase;
+	public void setShopBase(String shopBase){
+		this.shopBase = shopBase;
 	}
 		
 }

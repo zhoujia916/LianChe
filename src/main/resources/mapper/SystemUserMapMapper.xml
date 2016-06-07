@@ -106,22 +106,20 @@
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="SystemUserMap">
-        select <include refid="allColumn"/> from system_user_map
+        select * from system_user_map
         <where>
-	        <trim prefixOverrides="and | or">
-	        	<if test="mapId > 0">
-	                map_id = #{mapId}
-	            </if>
-	        	<if test="userId > 0">
-	                user_id = #{userId}
-	            </if>
-	        	<if test="targetId > 0">
-	                target_id = #{targetId}
-	            </if>
-	        	<if test="targetType > 0">
-	                target_type = #{targetType}
-	            </if>
-	        </trim>
+	        <if test="mapId > 0">
+	            and map_id = #{mapId}
+	        </if>
+	        <if test="userId > 0">
+	            and user_id = #{userId}
+	        </if>
+            <if test="targetId > 0">
+	            and target_id = #{targetId}
+	        </if>
+        	<if test="targetType > 0">
+                and target_type = #{targetType}
+	        </if>
         </where>
     </select>
 

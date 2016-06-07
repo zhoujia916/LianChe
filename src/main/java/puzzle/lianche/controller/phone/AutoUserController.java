@@ -15,10 +15,7 @@ import puzzle.lianche.push.SmsPush;
 import puzzle.lianche.service.IAutoSmsService;
 import puzzle.lianche.service.IAutoUserProfileService;
 import puzzle.lianche.service.IAutoUserService;
-import puzzle.lianche.utils.CommonUtil;
-import puzzle.lianche.utils.EncryptUtil;
-import puzzle.lianche.utils.Result;
-import puzzle.lianche.utils.StringUtil;
+import puzzle.lianche.utils.*;
 
 import java.util.*;
 import java.lang.Object;
@@ -293,6 +290,70 @@ public class AutoUserController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("发送短信验证码出错");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 完善个人信息
+     * @param autoUserProfile
+     * @return
+     */
+    @RequestMapping(value = "/prefectUser.do")
+    @ResponseBody
+    public Result prefectUser(AutoUserProfile autoUserProfile){
+        Result result=new Result();
+        try{
+            if(StringUtil.isNullOrEmpty(autoUserProfile.getRealName())){
+                result.setCode(-1);
+                result.setMsg("姓名不能为空！");
+            }else if(StringUtil.isNullOrEmpty(autoUserProfile.getPhone())){
+                result.setCode(-1);
+                result.setMsg("手机号不能为空！");
+            }else if(!StringUtil.isPhone(autoUserProfile.getPhone())){
+                result.setCode(-1);
+                result.setMsg("手机号格式错误！");
+            }else if(autoUserProfile.getShopType()==0){
+                result.setCode(-1);
+                result.setMsg("请选择商家性质！");
+            }else if(StringUtil.isNullOrEmpty(autoUserProfile.getShopName())){
+                result.setCode(-1);
+                result.setMsg("商家名称不能为空！");
+            }else if(StringUtil.isNullOrEmpty(autoUserProfile.getShopDesc())){
+                result.setCode(-1);
+                result.setMsg("详细信息不能为空！");
+            }else if(autoUserProfile.getShopDesc().length()<10){
+                result.setCode(-1);
+                result.setMsg("详细信息描述必须小于10个字！");
+            }else if(StringUtil.isNullOrEmpty(autoUserProfile.getShopBrands())){
+                result.setCode(-1);
+                result.setMsg("主营品牌不能为空！");
+            }else if(StringUtil.isNullOrEmpty(autoUserProfile.getShopBase())){
+                result.setCode(-1);
+                result.setMsg("仓库信息不能为空！");
+            }else{
+                autoUserProfile.setPhone(null);
+                Map<String,Object> map=new HashMap<String, Object>();
+                map.put("userId",6);
+                AutoUserProfile userProfile=autoUserProfileService.query(map);
+                if(userProfile==null){
+                    autoUserProfile.setUserId(6);
+                    if(!autoUserProfileService.insert(autoUserProfile)){
+                        result.setCode(1);
+                        result.setMsg("完善个人信息出错！");
+                    }
+                }else{
+                    autoUserProfile.setUserId(userProfile.getUserId());
+                    if(!autoUserProfileService.update(autoUserProfile)){
+                        result.setCode(1);
+                        result.setMsg("完善个人信息出错！");
+                    }
+                }
+            }
+        }catch (Exception e){
+            result.setCode(1);
+            result.setMsg("操作完善个人时信息出错！");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
