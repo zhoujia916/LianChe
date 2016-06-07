@@ -2,13 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dc27f1ad-2cd9-47c4-afe2-87bf3e7fcf4e" name="Default" comment="Merge remote-tracking branch 'origin/master'&#10;">
-      <change type="DELETED" beforePath="D:\Projects\LianChe\.idea\artifacts\LianChe_war.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\LianChe\.idea\artifacts\LianChe_war_exploded.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/phone/AutoUserController.java" afterPath="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/phone/AutoUserController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/AutoUserMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/AutoUserMapper.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/puzzle/lianche/utils/CommonUtil.java" afterPath="$PROJECT_DIR$/src/main/java/puzzle/lianche/utils/CommonUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/puzzle/lianche/ControllerTest.java" afterPath="$PROJECT_DIR$/src/test/java/puzzle/lianche/ControllerTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/tpl/admin/autoUser/index.html" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/tpl/admin/autoUser/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="b85d0da9-c273-4691-b074-8e95104f81f4" name="Rejected commit: Default" comment="Merge remote-tracking branch 'origin/master'&#10;" />
@@ -1211,7 +1204,7 @@
       <workItem from="1465201437059" duration="10083000" />
       <workItem from="1465211747816" duration="231000" />
       <workItem from="1465262964110" duration="4730000" />
-      <workItem from="1465267892408" duration="8077000" />
+      <workItem from="1465267892408" duration="8172000" />
     </task>
     <task id="LOCAL-00001" summary="Merge remote-tracking branch 'origin/master'&#10;">
       <created>1460974818260</created>
@@ -1229,7 +1222,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="779926000" />
+    <option name="totallyTimeSpent" value="780021000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
