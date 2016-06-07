@@ -80,7 +80,7 @@ public class UserController extends ModuleController {
                 JSONArray array=new JSONArray();
                 for(SystemUser user:list){
                     JSONObject jsonObject=JSONObject.fromObject(user);
-                    jsonObject.put("sex",Constants.USER_SEX.get(user.getSex()));
+                    jsonObject.put("sexName",Constants.USER_SEX.get(user.getSex()));
                     if(user.getRoles().size()>0){
                         for(int i=0;i<user.getRoles().size();i++){
                             str.append(user.getRoles().get(i).getRoleName());

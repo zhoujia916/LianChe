@@ -71,7 +71,7 @@
 	        	<if test="mapId > 0">
 	                map_id = #{mapId}
 	            </if>
-                <if test="mapIds != null and mapIds.length > 0">
+                <if test="mapIds != null and mapIds.size()>0">
                     map_id in
                     <foreach collection="mapIds" item="mapId" open="(" separator="," close=")">
                         #{mapId}

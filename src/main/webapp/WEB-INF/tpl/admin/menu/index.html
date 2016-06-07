@@ -74,16 +74,16 @@
                     <div class="alert-info red"></div>
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
                                 名称
                             </label>
 
                             <div class="col-sm-9">
-                                <input type="text" name="menuName" placeholder="名称" class="txt input-sm col-sm-5 ">
+                                <input type="text" id="menuName" name="menuName" placeholder="名称" class="txt input-sm col-sm-5 ">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
                                 地址
                             </label>
 
@@ -92,7 +92,25 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
+                                相关链接
+                            </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="linkUrl" placeholder="相关链接" class="txt input-sm col-sm-8">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                图标
+                            </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="menuIco" placeholder="图标" class="txt input-sm col-sm-8">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
                                 上级菜单
                             </label>
 
@@ -102,7 +120,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
                                 有效状态
                             </label>
 
@@ -112,7 +130,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
                                 排序号
                             </label>
 
@@ -168,7 +186,17 @@
                 expand_column: 'menuName'
             },
             form:{
-                url: "menu/action.do"
+                url: "menu/action.do",
+                check:function(){
+                    var menuName=$("#menuName").val();
+                    if(!menuName){
+                        console.log("check form");
+                        $("#menuName").focus();
+                        return "请输入菜单名称";
+                    }else{
+                        return true;
+                    }
+                }
             },
             onLoadSuccess: function(data){
                 changeParent(data);

@@ -38,7 +38,7 @@
 
             <tbody>
             <tr>
-                <td colspan="12">
+                <td colspan="6">
                     <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
                 </td>
             </tr>
@@ -66,7 +66,7 @@
                     <div class="alert-info red"></div>
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
                                 名称
                             </label>
 
@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
                                 上级部门
                             </label>
 
@@ -85,7 +85,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
+                            <label class="col-sm-2 control-label">
                                 排序号
                             </label>
 
@@ -117,108 +117,106 @@
 <script type="text/javascript">
 
 	$('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-		$(function($) {
-			$("#dept-gridview").gridview({
-                url: "dept/list.do",
-                pagination:{
-                    show: false
-                },
-                jsonReader:{
-                    key_field: "deptId"
-                },
-                treeReader:{
-                    show: true,
-                    expand_column: 'deptName',
-                    leaf_field: function(row){
-                        return row["menuUrl"] != null  && row["menuUrl"] != "";
+        $("#dept-gridview").gridview({
+            url: "dept/list.do",
+            pagination:{
+                show: false
+            },
+            jsonReader:{
+                key_field: "deptId"
+            },
+            treeReader:{
+                show: true,
+                expand_column: 'deptName',
+                leaf_field: function(row){
+                    return row["menuUrl"] != null  && row["menuUrl"] != "";
+                }
+            },
+            form:{
+                url: "dept/action.do",
+                check:function(){
+                    var deptName = $.trim($("#txtDeptName").val());
+                    var sortOrder=$("#sortOrder").val();
+                    if(deptName == ""){
+                        return "部门名称不能为空！";
+                    }else if(sortOrder<0 || isNaN(sortOrder)){
+                        console.log("check form");
+                        $("#sortOrder").focus();
+                        return "排序号必须大于等于0且必须为数字";
+                    }else{
+                        return true;
                     }
-                },
-                form:{
-                    url: "dept/action.do",
-                    check:function(){
-                        var deptName = $.trim($("#txtDeptName").val());
-                        var sortOrder=$("#sortOrder").val();
-                        if(deptName == ""){
-                            return "部门名称不能为空！";
-                        }else if(sortOrder<0 || isNaN(sortOrder)){
-                            console.log("check form");
-                            $("#sortOrder").focus();
-                            return "排序号必须大于等于0且必须为数字";
-                        }else{
-                            return true;
+                }
+            },
+            onLoadSuccess: function(data){
+                function showOption(list, row) {
+                    var html = "";
+                    html += "<option value=" + row.deptId + ">" + getOptionName(list, row) + "</option>";
+                    $.each(list, function () {
+                        if (this.parentId == row.deptId) {
+                            html += showOption(list, this);
                         }
-                    }
-                },
-                onLoadSuccess: function(data){
-                        function showOption(list, row) {
-                            var html = "";
-                            html += "<option value=" + row.deptId + ">" + getOptionName(list, row) + "</option>";
-                            $.each(list, function () {
-                                if (this.parentId == row.deptId) {
-                                    html += showOption(list, this);
-                                }
-                            });
-                            return html;
-                        }
+                    });
+                    return html;
+                }
 
-                        function getOptionName(list, row) {
-                            var level = getLevel(list, row);
-                            var name = "|-";
-                            var len = level * 4;
-                            while (len > 0) {
-                                name += "-";
-                                len--;
-                            }
-                            return name + row.deptName;
-                        }
-
-                        function getLevel(list, row) {
-                            if (row.parentId == 0)
-                                return 0;
-                            var level = 0;
-                            var hasParent = true;
-                            while (hasParent) {
-                                hasParent = false;
-                                $.each(list, function () {
-                                    if (this.deptId == row.parentId) {
-                                        hasParent = true;
-                                        level++;
-                                        row = this;
-                                        return false;
-                                    }
-                                });
-                            }
-                        return level;
-                        }
-                        var options = "<option value='0' selected='selected'>请选择上级</option>";
-                        if(data!=null && data.length>0) {
-                            $.each(data, function () {
-                                if (this.parentId == 0) {
-                                    options += showOption(data, this);
-                                }
-                            });
-                        }
-                        $("#sltParent").html(options);
-                },
-                columns:[{
-                    name: "checkbox"
-                },{
-                    name: "deptId"
-                },{
-                    name: "deptName"
-                },{
-                    name: "parentId",
-                    value: "parentName"
-                },{
-                    name: "sortOrder",
-                    format: function(opts, column, row){
-                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                function getOptionName(list, row) {
+                    var level = getLevel(list, row);
+                    var name = "|-";
+                    var len = level * 4;
+                    while (len > 0) {
+                        name += "-";
+                        len--;
                     }
-                },{
-                    name: "actions",
-                    list: ["edit", "delete"]
-                }]
-            });
-		});
+                    return name + row.deptName;
+                }
+
+                function getLevel(list, row) {
+                    if (row.parentId == 0)
+                        return 0;
+                    var level = 0;
+                    var hasParent = true;
+                    while (hasParent) {
+                        hasParent = false;
+                        $.each(list, function () {
+                            if (this.deptId == row.parentId) {
+                                hasParent = true;
+                                level++;
+                                row = this;
+                                return false;
+                            }
+                        });
+                    }
+                    return level;
+                }
+                var options = "<option value='0' selected='selected'>请选择上级</option>";
+                if(data!=null && data.length>0) {
+                    $.each(data, function () {
+                        if (this.parentId == 0) {
+                            options += showOption(data, this);
+                        }
+                    });
+                }
+                $("#sltParent").html(options);
+            },
+            columns:[{
+                name: "checkbox"
+            },{
+                name: "deptId"
+            },{
+                name: "deptName"
+            },{
+                name: "parentId",
+                value: "parentName"
+            },{
+                name: "sortOrder",
+                format: function(opts, column, row){
+                    return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                }
+            },{
+                name: "actions",
+                list: ["edit", "delete"]
+            }]
+        });
 	});
 </script>

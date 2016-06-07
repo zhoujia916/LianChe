@@ -5,7 +5,11 @@
 
     <h1>
         <i class="glyphicon glyphicon-signal"></i>
-            车系管理
+            品牌管理
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            查看车系动作
+        </small>
         <a class="btn btn-xs orange pull-right btn-warning" onclick="goBack()">
             <i class="glyphicon glyphicon-arrow-left"></i>返回品牌管理</span></a>
     </h1>
@@ -71,12 +75,6 @@
 
                 </div>
             </div>
-            <!--
-            <div style="position: fixed;width:100%;height:100%;top:0;z-index:1000;">
-                <div style="background:#000;opacity:0.1;width:100%;height:100%;"></div>
-            </div>
-            -->
-            <!--edit form-->
             <div class="grid-form save-form" style="">
                 <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
                     <div class="widget-header">
@@ -94,7 +92,7 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         车系名称
                                     </label>
                                     <div class="col-sm-9">
@@ -102,7 +100,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         所属品牌
                                     </label>
                                     <div class="col-sm-9">
@@ -115,7 +113,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         排序号
                                     </label>
 
@@ -151,86 +149,83 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-
-    $('.select2').css('width','160px').select2({allowClear:true})
-    $('#select2-multiple-style .btn').on('click', function(e){
-        var target = $(this).find('input[type=radio]');
-        var which = parseInt(target.val());
-        if(which == 2) $('.select2').addClass('tag-input-style');
-        else $('.select2').removeClass('tag-input-style');
-    });
-
-    $(document).one('ajaxloadstart.page', function(e) {
-        $('[class*=select2]').remove();
-    });
-
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $('.select2').css('width','160px').select2({allowClear:true})
+        $('#select2-multiple-style .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('.select2').addClass('tag-input-style');
+            else $('.select2').removeClass('tag-input-style');
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('[class*=select2]').remove();
+        });
+
         $("#btn-view").on("click", function(){
             var keys = $("#brandcat-gridview").gridview("getKeys");
-            var hash = "#page/brandmodel/";
+            var hash = "admin/brandmodel/";
             if(keys.length > 0){
                 hash = hash + "index/" + keys.join(",");
             }
-            window.location.hash = hash;
+            changeHash(hash);
         });
-        $(function () {
-            $("#brandcat-gridview").gridview({
-                debug: true,
-                url: "brandcat/list.do",
-                filter:{
-                    brandString: $("#brandString").val()
+
+        $("#brandcat-gridview").gridview({
+            url: "brandcat/list.do",
+            filter:{
+                brandString: $("#brandString").val()
+            },
+            form: {
+                url: "brandcat/action.do",
+                check:function(){
+                    var catName=$("#catName").val();
+                    var brandId=$("#brandId").val();
+                    var sortOrder=$("#sortOrder").val();
+                    if(!catName){
+                        console.log("check form");
+                        $("#catName").focus();
+                        return "请输入车系名称";
+                    }else if(brandId==0){
+                        console.log("check form");
+                        $("#brandId").focus();
+                        return "请选择所属品牌";
+                    }else if(sortOrder<0 || isNaN(sortOrder)){
+                        console.log("check form");
+                        $("#sortOrder").focus();
+                        return "排序号必须大于等于0且必须为数字";
+                    }else{
+                        return true;
+                    }
+                }
+            },
+            jsonReader: {
+                key_field: 'catId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
                 },
-                form: {
-                    url: "brandcat/action.do",
-                    check:function(){
-                        var catName=$("#catName").val();
-                        var brandId=$("#brandId").val();
-                        var sortOrder=$("#sortOrder").val();
-                        if(!catName){
-                            console.log("check form");
-                            $("#catName").focus();
-                            return "请输入车系名称";
-                        }else if(brandId==0){
-                            console.log("check form");
-                            $("#brandId").focus();
-                            return "请选择所属品牌";
-                        }else if(sortOrder<0 || isNaN(sortOrder)){
-                            console.log("check form");
-                            $("#sortOrder").focus();
-                            return "排序号必须大于等于0且必须为数字";
-                        }else{
-                            return true;
-                        }
+                {
+                    name: "catId"
+                },
+                {
+                    name: "catName"
+                },
+                {
+                    name: "brandName"
+                },
+                {
+                    name: "sortOrder",
+                    format: function(opts, column, row){
+                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
                     }
                 },
-                jsonReader: {
-                    key_field: 'catId'
-                },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "catId"
-                    },
-                    {
-                        name: "catName"
-                    },
-                    {
-                        name: "brandName"
-                    },
-                    {
-                        name: "sortOrder",
-                        format: function(opts, column, row){
-                            return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
-                        }
-                    },
-                    {
-                        name: "actions",
-                        list: ["edit", "delete"]
-                    }
-                ]
-            });
+                {
+                    name: "actions",
+                    list: ["edit", "delete"]
+                }
+            ]
         });
     });
 </script>

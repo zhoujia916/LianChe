@@ -65,7 +65,7 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         名称
                                     </label>
 
@@ -74,7 +74,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         上级类型
                                     </label>
                                     <div class="col-sm-9">
@@ -121,106 +121,104 @@
 <script type="text/javascript">
 
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function($) {
-            $("#gridview").gridview({
-                url: "articlecat/list.do",
-                treeReader:{
-                    show: true,
-                    expand_column: 'catName'
-                },
-                form:{
-                    url: "articlecat/action.do",
-                    check:function(){
-                        var catName=$("#catName").val();
-                        var sortOrder=$("#sortOrder").val();
-                        if(!catName){
-                            console.log("check form");
-                            $("#catName").focus();
-                            return "名称";
-                        }else if(sortOrder<0 || isNaN(sortOrder)){
-                            console.log("check form");
-                            $("#sortOrder").focus();
-                            return "排序号必须大于等于0且必须为数字";
-                        }else{
-                            return true;
-                        }
+        $("#gridview").gridview({
+            url: "articlecat/list.do",
+            treeReader:{
+                show: true,
+                expand_column: 'catName'
+            },
+            form:{
+                url: "articlecat/action.do",
+                check:function(){
+                    var catName=$("#catName").val();
+                    var sortOrder=$("#sortOrder").val();
+                    if(!catName){
+                        console.log("check form");
+                        $("#catName").focus();
+                        return "名称";
+                    }else if(sortOrder<0 || isNaN(sortOrder)){
+                        console.log("check form");
+                        $("#sortOrder").focus();
+                        return "排序号必须大于等于0且必须为数字";
+                    }else{
+                        return true;
                     }
-                },
-                onLoadSuccess: function(data){
-                        function showOption(list, row){
-                            var html = "";
-                            html += "<option value=" + row.catId + ">" + getOptionName(list, row) + "</option>";
-                            $.each(list, function () {
-                                if(this.parentId == row.catId){
-                                    html += showOption(list, this);
-                                }
-                            });
-                            return html;
+                }
+            },
+            onLoadSuccess: function(data){
+                function showOption(list, row){
+                    var html = "";
+                    html += "<option value=" + row.catId + ">" + getOptionName(list, row) + "</option>";
+                    $.each(list, function () {
+                        if(this.parentId == row.catId){
+                            html += showOption(list, this);
                         }
+                    });
+                    return html;
+                }
 
-                        function getOptionName(list, row){
-                            var level = getLevel(list, row);
-                            var name = "|-";
-                            var len = level * 4;
-                            while(len > 0){
-                                name += "-";
-                                len--;
-                            }
-                            return name + row.catName;
-                        }
-
-                        function getLevel(list, row){
-                            if(row.parentId == 0)
-                                return 0;
-                            var level = 0;
-                            var hasParent = true;
-                            while(hasParent){
-                                hasParent = false;
-                                $.each(list, function(){
-                                    if(this.catId == row.parentId){
-                                        hasParent = true;
-                                        level++;
-                                        row = this;
-                                        return false;
-                                    }
-                                });
-                            }
-                            return level;
-                        }
-
-                        var options = "<option value='0' selected='selected'>请选择上级</option>";
-                        if(data!=null && data.length>0)
-                        {
-                            $.each(data, function(){
-                                if(this.parentId == 0){
-                                    options += showOption(data, this);
-                                }
-                            });
-                        }
-                        $("#sltParent").html(options);
-                },
-                jsonReader:{
-                    key_field: "catId"
-                },
-                columns:[{
-                    name: "checkbox"
-                },{
-                    name: "catId"
-                },{
-                    name: "catName"
-                },{
-                    name: "parentId",
-                    value: "parentName"
-                },{
-                    name: "sortOrder",
-                    format: function(opts, column, row){
-                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                function getOptionName(list, row){
+                    var level = getLevel(list, row);
+                    var name = "|-";
+                    var len = level * 4;
+                    while(len > 0){
+                        name += "-";
+                        len--;
                     }
-                },{
-                    name: "actions",
-                    list: ["edit", "delete"]
-                }]
-            });
+                    return name + row.catName;
+                }
+
+                function getLevel(list, row){
+                    if(row.parentId == 0)
+                        return 0;
+                    var level = 0;
+                    var hasParent = true;
+                    while(hasParent){
+                        hasParent = false;
+                        $.each(list, function(){
+                            if(this.catId == row.parentId){
+                                hasParent = true;
+                                level++;
+                                row = this;
+                                return false;
+                            }
+                        });
+                    }
+                    return level;
+                }
+
+                var options = "<option value='0' selected='selected'>请选择上级</option>";
+                if(data!=null && data.length>0)
+                {
+                    $.each(data, function(){
+                        if(this.parentId == 0){
+                            options += showOption(data, this);
+                        }
+                    });
+                }
+                $("#sltParent").html(options);
+            },
+            jsonReader:{
+                key_field: "catId"
+            },
+            columns:[{
+                name: "checkbox"
+            },{
+                name: "catId"
+            },{
+                name: "catName"
+            },{
+                name: "parentId",
+                value: "parentName"
+            },{
+                name: "sortOrder",
+                format: function(opts, column, row){
+                    return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                }
+            },{
+                name: "actions",
+                list: ["edit", "delete"]
+            }]
         });
     });
 </script>

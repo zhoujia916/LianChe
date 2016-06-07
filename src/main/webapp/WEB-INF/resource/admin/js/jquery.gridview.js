@@ -286,13 +286,13 @@
 					var value = (!!data && data[name] != undefined && data[name] != null) ? data[name].toString() : ($(this).attr("data-init") || "");
 					if (tagName == "input") {
 						var type = $(this).attr("type").toLowerCase();
-						if(type == "text" || type == "hidden"){
+						if(type == "text" || type == "hidden" || type == "password"){
 							$(this).val(value);
 						}
 						else if(type == "checkbox" || type == "radio"){
-							if($(this).hasClass("ace-switch")){
-								this.checked = $(this).val() == value;
-							}
+                            if($(this).hasClass("ace")){
+                                this.checked = $(this).val() == value;
+                            }
 							else{
 								var values = value.split(",");
 								$("input[name='" + name + "']:" + type).each(function(){

@@ -62,7 +62,7 @@
 
                     <tbody>
                     <tr>
-                        <td colspan="6">
+                        <td colspan="12">
                             <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
                         </td>
                     </tr>
@@ -91,7 +91,7 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         登录名
                                     </label>
 
@@ -100,7 +100,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                     用户名
                                     </label>
 
@@ -109,7 +109,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         密码
                                     </label>
 
@@ -118,19 +118,19 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         性别
                                     </label>
                                     <div class="col-sm-9">
-                                        <input type="radio" value="1" offval="2" name="sex" class="ace">
+                                        <input type="radio" data-init="1" value="1" offval="2" name="sex" class="ace" checked>
                                         <label class="lbl">男</label>
                                         &nbsp;&nbsp;
-                                        <input type="radio" value="2" offval="1" name="sex" class="ace">
+                                        <input type="radio" data-init="1" value="2" offval="1" name="sex" class="ace" checked>
                                         <label class="lbl">女</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         是否有效
                                     </label>
                                     <div class="col-sm-9">
@@ -139,7 +139,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         角色
                                     </label>
                                     <div class="col-sm-9">
@@ -152,7 +152,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         用户组
                                     </label>
                                     <div class="col-sm-9">
@@ -165,7 +165,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         部门
                                     </label>
                                     <div class="col-sm-9">
@@ -178,7 +178,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         职位
                                     </label>
 
@@ -187,7 +187,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         排序号
                                     </label>
 
@@ -217,113 +217,111 @@
     </div>
 </div>
 <script type="text/javascript">
-    $('.select2').css('width','160px').select2({allowClear:true})
-    $('#select2-multiple-style .btn').on('click', function(e){
-        var target = $(this).find('input[type=radio]');
-        var which = parseInt(target.val());
-        if(which == 2) $('.select2').addClass('tag-input-style');
-        else $('.select2').removeClass('tag-input-style');
-    });
-
-    $(document).one('ajaxloadstart.page', function(e) {
-        $('[class*=select2]').remove();
-    });
-
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function(){
-            $("#user-gridview").gridview({
-                debug: true,
-                url: "user/list.do",
-                form:{
-                    url: "user/action.do",
-                    check:function(){
-                        var loginName=$("#loginName").val();
-                        var userName=$("#userName").val();
-                        var password=$("#password").val();
-                        var title=$("#title").val();
-                        var sortOrder=$("#sortOrder").val();
-                        if(!loginName){
-                            console.log("check form");
-                            $("#loginName").focus();
-                            return "请输入登录名";
-                        }
-                        else if(loginName.length<6 || loginName.length>20){
-                            console.log("check form");
-                            $("#loginName").focus();
-                            return "登录名长度必须在6-20位之间";
-                        }
-                        else if(!userName){
-                            console.log("check form");
-                            $("#userName").focus();
-                            return "请输入用户名";
-                        }
-                        else if(userName.length<6 || userName.length>20){
-                            console.log("check form");
-                            $("#userName").focus();
-                            return "用户名长度必须在6-20位之间";
-                        }
-                        else if(!password){
-                            console.log("check form");
-                            $("#password").focus();
-                            return "请输入密码";
-                        }
-                        else if(password.length<6 || password.length>20){
-                            console.log("check form");
-                            $("#password").focus();
-                            return "密码长度必须在6-20位之间";
-                        }
-                        else if(!title){
-                            console.log("check form");
-                            $("#title").focus();
-                            return "请输入职位";
-                        }
-                        else if(sortOrder<0 || isNaN(sortOrder)){
-                            console.log("check form");
-                            $("#sortOrder").focus();
-                            return "排序号必须大于等于0且必须为数字";
-                        }
-                        else{
-                            return true;
-                        }
+        $('.select2').css('width','160px').select2({allowClear:true})
+        $('#select2-multiple-style .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('.select2').addClass('tag-input-style');
+            else $('.select2').removeClass('tag-input-style');
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('[class*=select2]').remove();
+        });
+
+        $("#user-gridview").gridview({
+            url: "user/list.do",
+            form:{
+                url: "user/action.do",
+                check:function(){
+                    var loginName=$("#loginName").val();
+                    var userName=$("#userName").val();
+                    var password=$("#password").val();
+                    var title=$("#title").val();
+                    var sortOrder=$("#sortOrder").val();
+                    if(!loginName){
+                        console.log("check form");
+                        $("#loginName").focus();
+                        return "请输入登录名";
                     }
-                },
-                jsonReader:{
-                    key_field: 'userId'
-                },
-                columns:[{
-                    name:"checkbox"
-                },{
-                    name:"userId"
-                },{
-                    name:"loginName"
-                },{
-                    name:"userName"
-                },{
-                    name:"sex"
-                },{
-                    name:"title"
-                },{
-                    name:"roleName"
-                },{
-                    name:"groupName"
-                },{
-                    name:"deptName"
-                },{
-                    name: "status",
-                    format: function(opts, column, row){
-                        var text = ["<span class='label label-sm label-warning'>无效</span>", "<span class='label label-sm label-success'>有效</span>"];
-                        return "<td>" + text[row[column.name]] + "</td>";
+                    else if(loginName.length<6 || loginName.length>20){
+                        console.log("check form");
+                        $("#loginName").focus();
+                        return "登录名长度必须在6-20位之间";
                     }
-                },{
-                    name: "sortOrder",
-                    format: function(opts, column, row){
-                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                    else if(!userName){
+                        console.log("check form");
+                        $("#userName").focus();
+                        return "请输入用户名";
                     }
-                },{
-                    name:"actions",
-                    list:["edit", "delete", "view"]
-                }]
-            });
+                    else if(userName.length<6 || userName.length>20){
+                        console.log("check form");
+                        $("#userName").focus();
+                        return "用户名长度必须在6-20位之间";
+                    }
+                    else if(!password){
+                        console.log("check form");
+                        $("#password").focus();
+                        return "请输入密码";
+                    }
+                    else if(password.length<6 || password.length>20){
+                        console.log("check form");
+                        $("#password").focus();
+                        return "密码长度必须在6-20位之间";
+                    }
+                    else if(!title){
+                        console.log("check form");
+                        $("#title").focus();
+                        return "请输入职位";
+                    }
+                    else if(sortOrder<0 || isNaN(sortOrder)){
+                        console.log("check form");
+                        $("#sortOrder").focus();
+                        return "排序号必须大于等于0且必须为数字";
+                    }
+                    else{
+                        return true;
+                    }
+                }
+            },
+            jsonReader:{
+                key_field: 'userId'
+            },
+            columns:[{
+                name:"checkbox"
+            },{
+                name:"userId"
+            },{
+                name:"loginName"
+            },{
+                name:"userName"
+            },{
+                name:"sex",
+                value: "sexName"
+            },{
+                name:"title"
+            },{
+                name:"roleName"
+            },{
+                name:"groupName"
+            },{
+                name:"deptName"
+            },{
+                name: "status",
+                format: function(opts, column, row){
+                    var text = ["<span class='label label-sm label-warning'>无效</span>", "<span class='label label-sm label-success'>有效</span>"];
+                    return "<td>" + text[row[column.name]] + "</td>";
+                }
+            },{
+                name: "sortOrder",
+                format: function(opts, column, row){
+                    return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
+                }
+            },{
+                name:"actions",
+                list:["edit", "delete", "view"]
+            }]
         });
     });
 </script>

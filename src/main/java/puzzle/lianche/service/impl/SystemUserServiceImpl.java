@@ -43,6 +43,8 @@ public class SystemUserServiceImpl extends BaseServiceImpl implements ISystemUse
             List<SystemUserMap> addList = new ArrayList<SystemUserMap>();
             List<Integer> delList = new ArrayList<Integer>();
             Map<String, Object> map = new HashMap<String, Object>();
+            Integer i=0;
+            Integer j=0;
             //region handle role
             map.put("userId",userId);
             map.put("targetType",targetType);
@@ -57,13 +59,17 @@ public class SystemUserServiceImpl extends BaseServiceImpl implements ISystemUse
                     }
                 }
                 if (!find) {
-                    SystemUserMap systemUserMap = new SystemUserMap();
-                    systemUserMap.setTargetId(ConvertUtil.toInt(targetId));
-                    systemUserMap.setTargetType(targetType);
-                    systemUserMap.setUserId(userId);
-                    addList.add(systemUserMap);
+                    if(i!=ConvertUtil.toInt(targetId)){
+                        SystemUserMap systemUserMap = new SystemUserMap();
+                        systemUserMap.setTargetId(ConvertUtil.toInt(targetId));
+                        systemUserMap.setTargetType(targetType);
+                        systemUserMap.setUserId(userId);
+                        addList.add(systemUserMap);
+                        i=ConvertUtil.toInt(targetId);
+                    }
                 }
             }
+            //比较原来的和现在的，如果原来的跟现在的不相符就将原来的删除
             for (SystemUserMap systemUserMap : oldList) {
                 boolean find = false;
                 for (String role : targetIds) {
@@ -73,13 +79,16 @@ public class SystemUserServiceImpl extends BaseServiceImpl implements ISystemUse
                     }
                 }
                 if (!find) {
-                    delList.add(systemUserMap.getMapId());
+                    if(j!=systemUserMap.getMapId()){
+                        delList.add(systemUserMap.getMapId());
+                        j=systemUserMap.getMapId();
+                    }
                 }
             }
             //endregion
             //region 更新用户映射表
-            map.clear();
             if (delList.size() > 0) {
+                map.clear();
                 map.put("mapIds",delList);
                 systemUserMapService.delete(map);
             }

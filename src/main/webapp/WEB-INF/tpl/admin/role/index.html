@@ -43,7 +43,7 @@
 
                     <tbody>
                     <tr>
-                        <td colspan="12">
+                        <td colspan="6">
                             <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
                         </td>
                     </tr>
@@ -72,7 +72,7 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         名称
                                     </label>
                                     <div class="col-sm-9">
@@ -80,7 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">
+                                    <label class="col-sm-2 control-label">
                                         排序号
                                     </label>
 
@@ -115,58 +115,56 @@
 </div><!-- /.row -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#role-gridview").gridview({
-                debug: true,
-                url: "role/list.do",
-                form: {
-                    url: "role/action.do",
-                    check:function(){
-                        var roleName=$("#roleName").val();
-                        var sortOrder=$("#sortOrder").val();
-                        if(roleName==""){
-                            console.log("check form");
-                            $("#roleName").focus();
-                            return "角色名称不能为空";
-                        }
-                        else if(sortOrder<0 || isNaN(sortOrder)){
-                            console.log("check form");
-                            $("#sortOrder").focus();
-                            return "排序号必须大于等于0且必须为数字";
-                        }
-                        else{
-                            return true;
-                        }
+        $("#role-gridview").gridview({
+            url: "role/list.do",
+            form: {
+                url: "role/action.do",
+                check:function(){
+                    var roleName=$("#roleName").val();
+                    var sortOrder=$("#sortOrder").val();
+                    if(roleName==""){
+                        console.log("check form");
+                        $("#roleName").focus();
+                        return "角色名称不能为空";
+                    }
+                    else if(sortOrder<0 || isNaN(sortOrder)){
+                        console.log("check form");
+                        $("#sortOrder").focus();
+                        return "排序号必须大于等于0且必须为数字";
+                    }
+                    else{
+                        return true;
+                    }
+                }
+            },
+            jsonReader: {
+                key_field: 'roleId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
+                },
+                {
+                    name: "roleId"
+                },
+                {
+                    name: "roleName"
+                },
+                {
+                    name: "roleType",
+                    value: "roleTypeName"
+                },
+                {
+                    name: "sortOrder",
+                    format: function(opts, column, row){
+                        return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
                     }
                 },
-                jsonReader: {
-                    key_field: 'roleId'
-                },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "roleId"
-                    },
-                    {
-                        name: "roleName"
-                    },
-                    {
-                        name: "roleType"
-                    },
-                    {
-                        name: "sortOrder",
-                        format: function(opts, column, row){
-                            return "<td><span class='label label-sm label-info arrowed arrowed-righ'>" + row[column.name] + "</span></td>";
-                        }
-                    },
-                    {
-                        name: "actions",
-                        list: ["edit", "delete"]
-                    }
-                ]
-            });
+                {
+                    name: "actions",
+                    list: ["edit", "delete"]
+                }
+            ]
         });
     });
 </script>

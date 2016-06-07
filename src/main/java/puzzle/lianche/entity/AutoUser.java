@@ -192,6 +192,15 @@ public class AutoUser implements Serializable{
     private Integer shopType;
     private String shopTypeString;
     private String birthDay;
+    private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getBirthDay() {
         return birthDay;

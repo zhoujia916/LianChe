@@ -70,67 +70,64 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-    $('.select2').css('width','160px').select2({allowClear:true})
-    $('#select2-multiple-style .btn').on('click', function(e){
-        var target = $(this).find('input[type=radio]');
-        var which = parseInt(target.val());
-        if(which == 2) $('.select2').addClass('tag-input-style');
-        else $('.select2').removeClass('tag-input-style');
-    });
-
-    $(document).one('ajaxloadstart.page', function(e) {
-        $('[class*=select2]').remove();
-    });
-
-    $( "#datepicker1" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
-    $( "#datepicker2" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: false
-    });
-
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(function () {
-            $("#log-gridview").gridview({
-                debug: true,
-                url: "log/list.do",
-                form: {
-                    url: "log/action.do"
+        $('.select2').css('width','160px').select2({allowClear:true})
+        $('#select2-multiple-style .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('.select2').addClass('tag-input-style');
+            else $('.select2').removeClass('tag-input-style');
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('[class*=select2]').remove();
+        });
+
+        $( "#datepicker1" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $( "#datepicker2" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $("#log-gridview").gridview({
+            url: "log/list.do",
+            form: {
+                url: "log/action.do"
+            },
+            jsonReader: {
+                key_field: 'logId'
+            },
+            columns: [
+                {
+                    name: "checkbox"
                 },
-                jsonReader: {
-                    key_field: 'logId'
+                {
+                    name: "logId"
                 },
-                columns: [
-                    {
-                        name: "checkbox"
-                    },
-                    {
-                        name: "logId"
-                    },
-                    {
-                        name: "logType"
-                    },
-                    {
-                        name: "logTime"
-                    },
-                    {
-                        name: "logIp"
-                    },
-                    {
-                        name: "logMsg"
-                    },
-                    {
-                        name: "userName"
-                    },
-                    {
-                        name: "actions",
-                        list: [ "delete"]
-                    }
-                ]
-            });
+                {
+                    name: "logType"
+                },
+                {
+                    name: "logTime"
+                },
+                {
+                    name: "logIp"
+                },
+                {
+                    name: "logMsg"
+                },
+                {
+                    name: "userName"
+                },
+                {
+                    name: "actions",
+                    list: [ "delete"]
+                }
+            ]
         });
     });
 </script>
