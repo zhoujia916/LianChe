@@ -15,6 +15,7 @@ import puzzle.lianche.push.SmsPush;
 import puzzle.lianche.service.IAutoSmsService;
 import puzzle.lianche.service.IAutoUserProfileService;
 import puzzle.lianche.service.IAutoUserService;
+import puzzle.lianche.utils.CommonUtil;
 import puzzle.lianche.utils.EncryptUtil;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
@@ -48,12 +49,21 @@ public class AutoUserController extends BaseController {
             if(StringUtil.isNullOrEmpty(autoUser.getUserName())){
                 result.setCode(-1);
                 result.setMsg("用户名不能为空！");
+            }else if(!StringUtil.isPhone(autoUser.getUserName())){
+                result.setCode(-1);
+                result.setMsg("电话号码格式错误！");
             }else if(StringUtil.isNullOrEmpty(autoUser.getPassword())){
                 result.setCode(-1);
                 result.setMsg("密码不能为空！");
+            }else if(autoUser.getPassword().length()<6 || autoUser.getPassword().length()>20){
+                result.setCode(-1);
+                result.setMsg("密码长度必须在6-20范围内！");
             }else if(StringUtil.isNullOrEmpty(autoUser.getCode())){
                 result.setCode(-1);
                 result.setMsg("验证码不能为空！");
+            }else if(autoUser.getCode().length()!=6){
+                result.setCode(-1);
+                result.setMsg("验证码长度错误，应为6位！");
             }else{
                 Map<String,Object> map=new HashMap<String, Object>();
                 map.put("username",autoUser.getUserName());
@@ -113,9 +123,15 @@ public class AutoUserController extends BaseController {
             if(StringUtil.isNullOrEmpty(username)){
                 result.setCode(-1);
                 result.setMsg("用户名不能为空！");
+            }else if(!StringUtil.isPhone(username)){
+                result.setCode(-1);
+                result.setMsg("电话号码格式错误！");
             }else if(StringUtil.isNullOrEmpty(password)){
                 result.setCode(-1);
                 result.setMsg("密码不能为空！");
+            }else if(password.length()<6 || password.length()>20){
+                result.setCode(-1);
+                result.setMsg("密码长度必须在6-20范围内！");
             }else{
                 Map<String,Object> map = new HashMap<String, Object>();
                 map.put("username", username);
@@ -131,6 +147,8 @@ public class AutoUserController extends BaseController {
                     if(profile!=null){
                         jsonObject.put("isAuthenticate",true);
                         jsonObject.put("profile",profile);
+                    }else{
+                        jsonObject.put("isAuthenticate",false);
                     }
                     array.add(jsonObject);
                     result.setData(array);
@@ -160,33 +178,45 @@ public class AutoUserController extends BaseController {
             if(StringUtil.isNullOrEmpty(autoUser.getUserName())){
                 result.setCode(-1);
                 result.setMsg("用户名不能为空！");
+            }else if(!StringUtil.isPhone(autoUser.getUserName())){
+                result.setCode(-1);
+                result.setMsg("电话号码格式错误！");
             }else if(StringUtil.isNullOrEmpty(autoUser.getPassword())){
                 result.setCode(-1);
                 result.setMsg("密码不能为空！");
+            }else if(autoUser.getPassword().length()<6 || autoUser.getPassword().length()>20){
+                result.setCode(-1);
+                result.setMsg("密码长度必须在6-20范围内！");
             }else if(StringUtil.isNullOrEmpty(autoUser.getCode())){
                 result.setCode(-1);
                 result.setMsg("验证码不能为空！");
+            }else if(autoUser.getCode().length()!=6){
+                result.setCode(-1);
+                result.setMsg("验证码长度错误，应为6位！");
             }else{
-                Map<String,Object> map=new HashMap<String, Object>();
-                map.put("smsType",Constants.SMS_TYPE_RETRIEVE);
-                map.put("phone",autoUser.getUserName());
-                map.put("status",Constants.SMS_STATUS_TRUE);
-                AutoSms sms=autoSmsService.query(map);
-                System.out.println("-----1");
-                if(!sms.getCode().equalsIgnoreCase(autoUser.getCode())){
-                    result.setCode(-1);
-                    result.setMsg("验证码错误");
-                }else{
-//                    autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
-
-                    System.out.println("-----2");
-                    if(autoUserService.update(autoUser)){
-                        System.out.println("-----3");
+                Map<String,Object> map = new HashMap<String, Object>();
+                map.put("username", autoUser.getUserName());
+                AutoUser user = autoUserService.query(map);
+                if(user != null){
+                    map.clear();
+                    map.put("smsType",Constants.SMS_TYPE_RETRIEVE);
+                    map.put("phone",autoUser.getUserName());
+                    map.put("status",Constants.SMS_STATUS_TRUE);
+                    AutoSms sms=autoSmsService.query(map);
+                    if(!sms.getCode().equalsIgnoreCase(autoUser.getCode())){
+                        result.setCode(-1);
+                        result.setMsg("验证码错误");
                     }else{
-                        result.setCode(1);
-                        result.setMsg("修改新密码失败");
+                        autoUser.setUserId(user.getUserId());
+                        autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
+                        if(!autoUserService.update(autoUser)){
+                            result.setCode(1);
+                            result.setMsg("修改新密码失败");
+                        }
                     }
-                    System.out.println("-----4");
+                }else{
+                    result.setCode(1);
+                    result.setMsg("不存在该用户！");
                 }
             }
         }catch (Exception e){
@@ -211,17 +241,29 @@ public class AutoUserController extends BaseController {
             if(StringUtil.isNullOrEmpty(phone)){
                 result.setCode(-1);
                 result.setMsg("手机号不能为空！");
+            }else if(!StringUtil.isPhone(phone)){
+                result.setCode(-1);
+                result.setMsg("电话号码格式错误！");
             }else if(StringUtil.isNullOrEmpty(keyword)){
                 result.setCode(-1);
                 result.setMsg("请求参数错误！");
             }else{
-                String code = "123456";
+                //得到六位的随机数作为验证码
+                String code= CommonUtil.getCode(6);
                 Map<String,Object> map = new HashMap<String, Object>();
                 map.put("code", code);
                 String response = SmsPush.send(phone, 1, map);
                 if(SmsPush.isSuccess(response)){
                     AutoSms sms=new AutoSms();
-                    sms.setSmsType(Constants.DEFAULT_SMS_TYPE);
+                    if("register".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_REGISTER);
+                    }else if("retrieve".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
+                    }else if("modify".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_MODIFY);
+                    }else if("notice".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_NOTICE);
+                    }
                     sms.setSmsContent("发送验证码："+code);
                     sms.setCode(code);
                     sms.setPhone(phone);
@@ -230,7 +272,15 @@ public class AutoUserController extends BaseController {
                     result.setData(code);
                 }else{
                     AutoSms sms=new AutoSms();
-                    sms.setSmsType(Constants.DEFAULT_SMS_TYPE);
+                    if("register".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_REGISTER);
+                    }else if("retrieve".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
+                    }else if("modify".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_MODIFY);
+                    }else if("notice".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_NOTICE);
+                    }
                     sms.setSmsContent("发送验证码："+code);
                     sms.setCode(code);
                     sms.setPhone(phone);

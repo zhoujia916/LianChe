@@ -74,7 +74,8 @@ public class ControllerTest {
 //
 //        mockMvc.perform((get("/admin/index"))).andExpect(status().is3xxRedirection())
 //                .andDo(print());
-        mockMvc.perform((post("/phone/autouser/retrieve.do").param("userName", "15123849097").param("password","123").param("code","123456")))
+//        mockMvc.perform(((post("/phone/autouser/retrieve.do").param("userName", "13658473085").param("password","111111")).param("code","837147")))
+        mockMvc.perform(((post("/phone/autouser/sendCode.do").param("phone", "13658473085").param("keyword","retrieve"))))
                 .andExpect(status().isOk()).andDo(print());
     }
 
