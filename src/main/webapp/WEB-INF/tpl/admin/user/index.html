@@ -144,7 +144,6 @@
                                     </label>
                                     <div class="col-sm-9">
                                         <select multiple="" data-init="0" id="roleId" name="roleId" class="select2" data-placeholder="请选择角色">
-                                            <option value="">&nbsp;</option>
                                             {{foreach from=$roleList item=roleItem}}
                                                 <option value="{{$roleItem.roleId}}">{{$roleItem.roleName}}</option>
                                             {{/foreach}}
@@ -157,7 +156,6 @@
                                     </label>
                                     <div class="col-sm-9">
                                         <select multiple="" data-init="0" name="groupId" id="groupId" class="select2" placeholder="请选择用户组">
-                                            <option value="">&nbsp;</option>
                                             {{foreach from=$userGroupList item=userGroupItem}}
                                                 <option value="{{$userGroupItem.groupId}}">{{$userGroupItem.groupName}}</option>
                                             {{/foreach}}
@@ -170,7 +168,6 @@
                                     </label>
                                     <div class="col-sm-9">
                                         <select multiple="" data-init="0" name="deptId" id="deptId" class="select2" placeholder="请选择部门">
-                                            <option value="">&nbsp;</option>
                                             {{foreach from=$deptList item=deptItem}}
                                                 <option value="{{$deptItem.deptId}}">{{$deptItem.deptName}}</option>
                                             {{/foreach}}

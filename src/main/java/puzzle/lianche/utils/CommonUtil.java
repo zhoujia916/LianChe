@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.rmi.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class CommonUtil {
     public static List<SystemMenu> showMenuTree(List<SystemMenu> list, int parentId){
@@ -118,5 +119,15 @@ public class CommonUtil {
             }
         }
         return ipAddress;
+    }
+
+    //得到随机数
+    public static String getCode(int number){
+        Random random=new Random();
+        StringBuffer code=new StringBuffer();
+        for(int i=0;i<number;i++){
+            code.append(random.nextInt(10));
+        }
+        return code.toString();
     }
 }

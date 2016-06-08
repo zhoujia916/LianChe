@@ -197,7 +197,7 @@
             $('[class*=select2]').remove();
         });
 
-        $( "#datepicker" ).datepicker({
+        $("#datepicker").datepicker({
             showOtherMonths: true,
             selectOtherMonths: false
         });
@@ -231,10 +231,10 @@
                         console.log("check form");
                         $("#userName").focus();
                         return "请输入用户名";
-                    }else if(userName.length<6 || userName.length>20){
+                    }else if(!phoneFormat1.test(userName) && !phoneFormat2.test(userName)){
                         console.log("check form");
                         $("#userName").focus();
-                        return "用户名长度必须在6-20位之间";
+                        return "电话号码格式错误";
                     }else if(!password){
                         console.log("check form");
                         $("#password").focus();

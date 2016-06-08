@@ -64,7 +64,7 @@ public class ControllerTest {
     }
 
     @Test
-    @Rollback(false)  //有些单元测试你不希望回滚
+//    @Rollback(false)  //有些单元测试你不希望回滚
     public void testAdminLogin() throws Exception{
 //        mockMvc.perform((get("/admin/"))).andExpect(status().isOk())
 //                .andDo(print());
@@ -74,8 +74,6 @@ public class ControllerTest {
 //
 //        mockMvc.perform((get("/admin/index"))).andExpect(status().is3xxRedirection())
 //                .andDo(print());
-        mockMvc.perform((post("/phone/autouser/retrieve.do").param("userName", "15123849097").param("password","123").param("code","123456")))
-                .andExpect(status().isOk()).andDo(print());
     }
 
     @Test
@@ -96,4 +94,14 @@ public class ControllerTest {
 //        mockMvc.perform((post("/spring/post.do").param("abc", "def")))
 //                .andExpect(status().isOk()).andDo(print());
 //    }
+
+    @Test
+    @Rollback(false)
+    public void testPhoneUser() throws Exception {
+//        mockMvc.perform(((post("/phone/autouser/register.do").param("userName", "13658473085").param("password","111111")).param("code","743996")))
+//        mockMvc.perform(((post("/phone/autouser/sendCode.do").param("phone", "13658473085").param("keyword","register"))))
+//        mockMvc.perform(((post("/phone/autouser/login.do").param("username", "13658473085").param("password","111111"))))
+        mockMvc.perform(((post("/phone/autouser/prefectUser.do").param("realName", "李建生").param("phone","13658473085")).param("shopType","1").param("shopName","铜仁土特产代购").param("shopDesc","zxczxczxca").param("shopBrands","asdsad").param("shopBase","asdsad")))
+                .andExpect(status().isOk()).andDo(print());
+    }
 }

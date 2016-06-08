@@ -19,10 +19,7 @@ import puzzle.lianche.service.IAutoUserService;
 import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.service.impl.AutoUserServiceImpl;
 import puzzle.lianche.service.impl.SystemUserServiceImpl;
-import puzzle.lianche.utils.ConvertUtil;
-import puzzle.lianche.utils.Page;
-import puzzle.lianche.utils.Result;
-import puzzle.lianche.utils.StringUtil;
+import puzzle.lianche.utils.*;
 
 import java.util.*;
 
@@ -101,6 +98,7 @@ public class AutoUserController extends ModuleController {
         Map map=new HashMap();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
+                autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
                 autoUser.setUserAvatar("../resource/admin/avatars/profile-pic.jpg");
                 autoUser.setStatus(Constants.AUTO_USER_STATUS_REGISTERORADD);
                 autoUser.setAddTime(ConvertUtil.toLong(new Date()));
@@ -115,6 +113,7 @@ public class AutoUserController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"添加会员信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
+                autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
                 if(autoUser.getBirthDay() != null && autoUser.getBirthDay() != ""){
                     autoUser.setBirth(ConvertUtil.toLong(ConvertUtil.toDate(autoUser.getBirthDay()+" 00:00:00")));
                 }

@@ -71,13 +71,13 @@
         	<if test="birth != null">
         		birth = #{birth},
         	</if>
-        	<if test="phone != null and phone > 0">
+        	<if test="phone != null and phone !=''">
         		phone = #{phone},
         	</if>
-        	<if test="email != null and email > 0">
+        	<if test="email != null and email !=''">
         		email = #{email},
         	</if>
-        	<if test="userAvatar != null userAvatar > 0">
+        	<if test="userAvatar != null and userAvatar !=''">
         		user_avatar = #{userAvatar},
         	</if>
         	<if test="status > 0">
@@ -99,7 +99,7 @@
         		sort_order = #{sortOrder}
         	</if>
         </set>
-        where user_id = #{userId}
+        where user_id = ${userId}
     </update>
 
     <delete id="delete" parameterType="Map">
