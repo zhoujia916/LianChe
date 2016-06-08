@@ -3,7 +3,8 @@
 <mapper namespace="AutoUserProfileMapper">
     <resultMap id="AutoUserProfile" type="puzzle.lianche.entity.AutoUserProfile">
     	<id column="profile_id" property="profileId" /> 
-    	<result column="user_id" property="userId" /> 
+    	<result column="user_id" property="userId" />
+        <result column="id_number" property="idNumber"/>
     	<result column="real_name" property="realName" /> 
     	<result column="shop_name" property="shopName" /> 
     	<result column="phone" property="phone" /> 
@@ -14,7 +15,7 @@
     </resultMap>
 
     <sql id="allColumn">
-    	profile_id, user_id, real_name, shop_name, phone, shop_type, shop_desc, shop_brands, shiop_base
+    	profile_id, user_id, id_number ,real_name, shop_name, phone, shop_type, shop_desc, shop_brands, shiop_base
     </sql>
 
     <insert id="insert" parameterType="AutoUserProfile" useGeneratedKeys="true" keyProperty="profileId">
@@ -22,6 +23,7 @@
         (
         	
         	<if test="userId > 0">user_id, </if>
+            <if test="idNumber != null">id_number, </if>
         	<if test="realName != null">real_name, </if>
         	<if test="shopName != null">shop_name, </if>
         	<if test="phone != null">phone, </if>
@@ -34,6 +36,7 @@
         (
         	
         	<if test="userId  > 0">#{userId}, </if>
+            <if test="idNumber != null">#{idNumber}, </if>
         	<if test="realName != null">#{realName}, </if>
         	<if test="shopName != null">#{shopName}, </if>
         	<if test="phone != null">#{phone}, </if>
@@ -47,6 +50,9 @@
     <update id="update" parameterType="AutoUserProfile">
         update auto_user_profile
         <set>
+            <if test="idNumber != null">
+                id_number = #{idNumber},
+            </if>
         	<if test="realName != null">  
         		real_name = #{realName},
         	</if>
@@ -66,10 +72,10 @@
         		shop_brands = #{shopBrands},
         	</if>
         	<if test="shopBase != null">
-        		shop_base = #{shopBase},
+        		shop_base = #{shopBase}
         	</if>
         </set>
-        where user_id = #{userId}
+        where profile_id = ${profileId}
     </update>
 
     <delete id="delete" parameterType="Map">
@@ -107,7 +113,7 @@
 	                shop_brands = #{shopBrands}
 	            </if>
 	        	<if test="shopBase != null">
-	                shiop_base = #{shopBase}
+	                shop_base = #{shopBase}
 	            </if>
 	        </trim>
         </where>
@@ -151,7 +157,7 @@
 	                shop_brands = #{shopBrands}
 	            </if>
 	        	<if test="shopBase != null">
-	                shiop_base = #{shopBase}
+	                shop_base = #{shopBase}
 	            </if>
 	        </trim>
         </where>

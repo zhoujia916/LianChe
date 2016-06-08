@@ -167,5 +167,10 @@ public class StringUtil {
         String pattern = "^\\d{11,11}$";
         return isMatch(input, pattern);
     }
+
+    public static boolean isIdNumber(String input){
+        String pattern = "(^\\d{18}$)|(^\\d{15}$)";
+        return isMatch(input, pattern);
+    }
     //endregion
 }
