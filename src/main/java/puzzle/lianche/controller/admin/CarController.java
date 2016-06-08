@@ -66,11 +66,7 @@ public class CarController extends ModuleController {
                 JSONArray array=new JSONArray();
                 for(AutoCar car:list){
                     JSONObject jsonObject=JSONObject.fromObject(car);
-                    jsonObject.put("carType",Constants.AUTO_CAR_TYPE.get(car.getCarType()));
-                    if(car.getAddUserType()==1){
-                        jsonObject.put("userName","系统");
-                        jsonObject.put("realName","系统");
-                    }
+                    jsonObject.put("carType",Constants.MAP_AUTO_CAR_TYPE.get(car.getCarType()));
                     array.add(jsonObject);
                 }
                 result.setData(array);

@@ -40,9 +40,18 @@ public class ConvertUtil {
         return String.valueOf(value);
     }
 
-    public static Date toDate(String value) throws ParseException {
+    public static Date toDateTime(String value) throws ParseException {
         return toDate(value, Constants.DATETIME_FORMAT);
     }
+
+    public static Date toTime(String value) throws ParseException {
+        return toDate(value, Constants.TIME_FORMAT);
+    }
+
+    public static Date toDate(String value) throws ParseException {
+        return toDate(value, Constants.DATE_FORMAT);
+    }
+
 
     public static Date toDate(String value, String format) throws ParseException {
         if(StringUtil.isNullOrEmpty(value) || StringUtil.isNullOrEmpty(format)){

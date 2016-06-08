@@ -10,10 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import puzzle.lianche.entity.AutoBrand;
 import puzzle.lianche.entity.AutoCar;
-import puzzle.lianche.service.IAutoCarAttrService;
-import puzzle.lianche.service.IAutoCarPicService;
-import puzzle.lianche.service.IAutoCarService;
+import puzzle.lianche.service.*;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.mapper.SqlMapper;
 
@@ -24,10 +23,19 @@ public class AutoCarServiceImpl implements IAutoCarService {
 	private SqlMapper sqlMapper;
 
     @Autowired
+    private IAutoCarPicService autoCarPicService;
+
+    @Autowired
     private IAutoCarAttrService autoCarAttrService;
 
     @Autowired
-    private IAutoCarPicService autoCarPicService;
+    private IAutoBrandService autoBrandService;
+
+    @Autowired
+    private IAutoBrandCatService autoBrandCatService;
+
+    @Autowired
+    private IAutoBrandModelService autoBrandModelService;
 
     private static Logger logger = LoggerFactory.getLogger(AutoCarServiceImpl.class);
 
@@ -41,7 +49,27 @@ public class AutoCarServiceImpl implements IAutoCarService {
 	*/
 	@Override
 	public boolean insert(AutoCar entity){
-		return sqlMapper.insert("AutoCarMapper.insert", entity);
+        try {
+            if (sqlMapper.insert("AutoCarMapper.insert", entity)) {
+                if (entity.getAttrs() != null && entity.getAttrs().size() > 0) {
+                    for (int i = 0; i < entity.getAttrs().size(); i++) {
+                        entity.getAttrs().get(i).setCarId(entity.getCarId());
+                    }
+                    autoCarAttrService.insertBatch(entity.getAttrs());
+                }
+                if(entity.getPics() != null && entity.getPics().size() > 0){
+                    for (int i = 0; i < entity.getPics().size(); i++) {
+                        entity.getPics().get(i).setCarId(entity.getCarId());
+                    }
+                    autoCarPicService.insertBatch(entity.getPics());
+                }
+            }
+            return true;
+        }
+        catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return false;
 	}
 
 	/**

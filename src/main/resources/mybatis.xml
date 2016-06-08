@@ -4,13 +4,12 @@
     <!-- mybatis配置 -->
     <settings>
         <setting name="cacheEnabled" value="true"/>
-        <setting name="lazyLoadingEnabled" value="true"/>
         <setting name="multipleResultSetsEnabled" value="true"/>
         <setting name="useColumnLabel" value="true"/>
         <setting name="useGeneratedKeys" value="true"/>
         <setting name="autoMappingBehavior" value="PARTIAL"/>
         <setting name="defaultExecutorType" value="SIMPLE"/>
-        <setting name="defaultStatementTimeout" value="25"/>
+        <setting name="defaultStatementTimeout" value="30"/>
         <setting name="safeRowBoundsEnabled" value="false"/>
         <setting name="mapUnderscoreToCamelCase" value="false"/>
         <setting name="localCacheScope" value="SESSION"/>

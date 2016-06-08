@@ -6,8 +6,12 @@
     	<result column="car_name" property="carName" /> 
     	<result column="brand_id" property="brandId" /> 
     	<result column="brand_cat_id" property="brandCatId" /> 
-    	<result column="brand_model_id" property="brandModelId" /> 
-    	<result column="offical_price" property="officalPrice" /> 
+    	<result column="brand_model_id" property="brandModelId" />
+        <result column="offical_price" property="officalPrice" />
+        <result column="quote_type" property="quoteType" />
+        <result column="sale_price_type" property="salePriceType" />
+        <result column="sale_amount" property="saleAmount" />
+        <result column="shop_price" property="shopPrice" />
     	<result column="total_number" property="totalNumber" /> 
     	<result column="lock_number" property="lockNumber" />
         <result column="surplus_number" property="surplusNumber"/>
@@ -18,22 +22,27 @@
         <result column="parts" property="parts"/>
         <result column="parts_price" property="partsPrice"/>
     	<result column="add_time" property="addTime" />
-        <result column="add_user_type" property="addUserType"/>
     	<result column="add_user_id" property="addUserId" /> 
     	<result column="start_date" property="startDate" /> 
     	<result column="end_date" property="endDate" /> 
     	<result column="car_type" property="carType" /> 
-    	<result column="status" property="status" /> 
-    	<result column="sort_order" property="sortOrder" />
-        <result column="brandName" property="brandName"/>
-        <result column="catName" property="catName"/>
-        <result column="modelName" property="modelName"/>
-        <result column="userName" property="userName"/>
-        <result column="realName" property="realName"/>
+    	<result column="status" property="status" />
+        <result column="invoice_type" property="invoiceType" />
+        <result column="sort_order" property="sortOrder" />
+        <result column="remark" property="remark" />
+        <result column="brand_name" property="brandName"/>
+        <result column="cat_name" property="catName"/>
+        <result column="model_name" property="modelName"/>
+        <result column="usre_name" property="userName"/>
+        <result column="real_name" property="realName"/>
+        <result column="pic" property="pic"/>
+        <result column="collect_id" property="collectId"/>
     </resultMap>
 
     <sql id="allColumn">
-    	car_id, car_name, brand_id, brand_cat_id, brand_model_id, offical_price, total_number, lock_number, surplus_number, province, city, area, has_parts , parts , parts_price, add_time, add_user_id, start_date, end_date, car_type, status, sort_order
+    	car_id, car_name, brand_id, brand_cat_id, brand_model_id, offical_price, quote_type, sale_price_type, sale_amount, shop_price,
+    	total_number, lock_number, surplus_number, province, city, area, has_parts , parts , parts_price,
+    	add_time, add_user_id, start_date, end_date, car_type, status, invoice_type, sort_order, remark
     </sql>
 
     <insert id="insert" parameterType="AutoCar" useGeneratedKeys="true" keyProperty="carId">
@@ -45,18 +54,28 @@
         	<if test="brandCatId != null">brand_cat_id, </if>
         	<if test="brandModelId != null">brand_model_id, </if>
         	<if test="officalPrice != null">offical_price, </if>
+            <if test="quoteType != null">quote_type, </if>
+            <if test="salePriceType != null">sale_price_type, </if>
+            <if test="saleAmount != null">sale_amount, </if>
+            <if test="shopPrice != null">shop_price, </if>
         	<if test="totalNumber != null">total_number, </if>
         	<if test="lockNumber != null">lock_number, </if>
+            <if test="surplusNumber != null">surplus_number, </if>
         	<if test="province != null">province, </if>
         	<if test="city != null">city, </if>
         	<if test="area != null">area, </if>
+            <if test="hasParts != null">has_parts, </if>
+            <if test="parts != null">parts, </if>
+            <if test="partsPrice != null">parts_price, </if>
         	<if test="addTime != null">add_time, </if>
         	<if test="addUserId != null">add_user_id, </if>
         	<if test="startDate != null">start_date, </if>
         	<if test="endDate != null">end_date, </if>
         	<if test="carType != null">car_type, </if>
         	<if test="status != null">status, </if>
+            <if test="invoiceType != null">invoice_type, </if>
         	<if test="sortOrder != null">sort_order</if>
+            <if test="remark != null">remark</if>
         )
         values 
         (
@@ -66,18 +85,28 @@
         	<if test="brandCatId != null">#{brandCatId}, </if>
         	<if test="brandModelId != null">#{brandModelId}, </if>
         	<if test="officalPrice != null">#{officalPrice}, </if>
+            <if test="quoteType != null">#{quoteType}, </if>
+            <if test="salePriceType != null">#{salePriceType}, </if>
+            <if test="saleAmount != null">#{saleAmount}, </if>
+            <if test="shopPrice != null">#{shopPrice}, </if>
         	<if test="totalNumber != null">#{totalNumber}, </if>
         	<if test="lockNumber != null">#{lockNumber}, </if>
+            <if test="surplusNumber != null">#{surplusNumber}, </if>
         	<if test="province != null">#{province}, </if>
         	<if test="city != null">#{city}, </if>
         	<if test="area != null">#{area}, </if>
+            <if test="hasParts != null">#{hasParts}, </if>
+            <if test="parts != null">#{parts}, </if>
+            <if test="partsPrice != null">#{partsPrice}, </if>
         	<if test="addTime != null">#{addTime}, </if>
         	<if test="addUserId != null">#{addUserId}, </if>
         	<if test="startDate != null">#{startDate}, </if>
         	<if test="endDate != null">#{endDate}, </if>
         	<if test="carType != null">#{carType}, </if>
         	<if test="status != null">#{status}, </if>
+            <if test="invoiceType != null">#{invoiceType}, </if>
         	<if test="sortOrder != null">#{sortOrder}</if>
+            <if test="remark != null">#{remark}</if>
        	)
     </insert>
 
@@ -99,12 +128,27 @@
         	<if test="officalPrice != null">  
         		offical_price = #{officalPrice},
         	</if>
+            <if test="quoteType != null">
+                quote_type = #{quoteType},
+            </if>
+            <if test="salePriceType != null">
+                sale_price_type = #{salePriceType},
+            </if>
+            <if test="saleAmount != null">
+                sale_amount = #{saleAmount},
+            </if>
+            <if test="shopPrice != null">
+                shop_price = #{shopPrice},
+            </if>
         	<if test="totalNumber != null">  
         		total_number = #{totalNumber},
         	</if>
         	<if test="lockNumber != null">  
         		lock_number = #{lockNumber},
         	</if>
+            <if test="surplusNumber != null">
+                surplus_number = #{surplusNumber},
+            </if>
         	<if test="province != null">  
         		province = #{province},
         	</if>
@@ -114,6 +158,15 @@
         	<if test="area != null">  
         		area = #{area},
         	</if>
+            <if test="hasParts != null">
+                has_parts = #{hasParts},
+            </if>
+            <if test="parts != null">
+                parts = #{parts},
+            </if>
+            <if test="partsPrice != null">
+                parts_price = #{partsPrice},
+            </if>
         	<if test="addTime != null">  
         		add_time = #{addTime},
         	</if>
@@ -135,6 +188,9 @@
         	<if test="sortOrder != null">  
         		sort_order = #{sortOrder}
         	</if>
+            <if test="remark != null">
+                remark = #{remark}
+            </if>
         </set>
         where car_id = #{carId}
     </update>
@@ -196,37 +252,59 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoCar">
-        select <include refid="allColumn"/> from auto_car
+        select ac.*, acp.path as pic
+        <if test="viewUserId != null and viewUserId > 0">
+        ,IFNULL(select collect_id auto_user_collect as auc where auc.user_id = #{viewUserId}, 0) as collect_id
+        </if>
+        from auto_car as ac
+        left join auto_car_pic as acp on acp.car_id = ac.car_id
         <where>  
         	<if test="carId > 0">
-                car_id = #{carId}
+                ac.car_id = #{carId}
             </if>
-        </where> 
+        </where>
+        limit 0, 1
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoCar">
-        select ac.*,ab.brand_name as brandName,abc.cat_name as catName,
-        abm.model_name as modelName,(select au.user_name from auto_user as au
-        where au.user_id=ac.add_user_id and ac.add_user_type=2) as userName,
-        (select aup.real_name from auto_user_profile as aup where
-        aup.user_id=ac.add_user_id and ac.add_user_type=2) as realName from auto_car as ac
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,au.status as add_user_status
+        from auto_car as ac
+        inner join auto_user as au on au.user_id = ac.add_user_id
         inner join auto_brand as ab on ac.brand_id=ab.brand_id
         inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
         inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
         <where>
-            <if test="carName!=null and carName!=''">
+            <if test="carName!= null and carName !='' ">
                 and ac.car_name like concat('%',#{carName},'%')
             </if>
-            <if test="carType!=null and carType>-1">
+            <if test="carType != null and carType > -1">
                 and ac.car_type=#{carType}
             </if>
-            <if test="startDate!=null">
+            <if test="brandId != null and brandId > 0">
+                and ac.brand_id = #{brandId}
+            </if>
+            <if test="brandIds != null and brands != ''">
+                and ac.brand_id in (${brandIds})
+            </if>
+            <if test="startPrice != null and startPrice > 0">
+                and ac.shop_price &gt;= #{startPrice}
+            </if>
+            <if test="endPrice != null and endPrice > 0">
+                and ac.shop_price &lt;= #{endPrice}
+            </if>
+            <if test="startDate != null">
                 and ac.start_date &gt;= #{startDate}
             </if>
-            <if test="endDate!=null">
+            <if test="endDate != null">
                 and ac.end_date &lt;= #{endDate}
             </if>
+            <if test="carType != null">
+                and ac.car_type = #{carType}
+            </if>
+            <if test="status != null">
+                and ac.status = #{status}
+            </if>
         </where>
-        order by ac.car_id desc
+        order by ${sort} ac.add_time desc, ac.car_id desc
     </select>
 </mapper>

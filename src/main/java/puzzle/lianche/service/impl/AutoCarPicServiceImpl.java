@@ -26,7 +26,16 @@ public class AutoCarPicServiceImpl implements IAutoCarPicService {
 		return sqlMapper.insert("AutoCarPicMapper.insert", entity);
 	}
 
-	/**
+    /**
+     * 批量插入记录
+     */
+    @Override
+    public boolean insertBatch(List<AutoCarPic> list){
+        return sqlMapper.insert("AutoCarPicMapper.insertBatch", list);
+    }
+
+
+    /**
 	* 更新单条记录
 	*/
 	@Override

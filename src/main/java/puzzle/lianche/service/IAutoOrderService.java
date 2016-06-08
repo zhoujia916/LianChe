@@ -19,5 +19,8 @@ public interface IAutoOrderService{
     public List<AutoOrder> queryList(Object param);
 
     public List<AutoOrder> queryList(Map<String, Object> map, Page page);
-    
+
+    public String createSn(String key);
+
+    public AutoOrder query(int orderId, String orderSn);
 }

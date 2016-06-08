@@ -85,6 +85,9 @@ public class SqlInterceptor implements Interceptor {
                 }
                 buffer.append("]");
 
+                System.out.println("prepare execute sql:" + originalSql.replaceAll("\\s+", " "));
+                System.out.println("prepare execute parameters:" + buffer.toString());
+
                 logger.debug("prepare execute sql:" + originalSql.replaceAll("\\s+", " "));
                 logger.debug("prepare execute parameters:" + buffer.toString());
 
@@ -93,6 +96,7 @@ public class SqlInterceptor implements Interceptor {
 //                ParameterHandler parameterHandler = new DefaultParameterHandler(mappedStatement, boundSql.getParameterObject(), boundSql);
 //
 //                parameterHandler.setParameters(preparedStatement);
+
 
             }
 

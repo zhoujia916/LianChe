@@ -26,7 +26,12 @@ public class AutoCarAttrServiceImpl implements IAutoCarAttrService {
 		return sqlMapper.insert("AutoCarAttrMapper.insert", entity);
 	}
 
-	/**
+    @Override
+    public boolean insertBatch(List<AutoCarAttr> list) {
+        return sqlMapper.insert("AutoCarAttrMapper.insertBatch", list);
+    }
+
+    /**
 	* 更新单条记录
 	*/
 	@Override

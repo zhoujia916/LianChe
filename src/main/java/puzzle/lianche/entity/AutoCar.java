@@ -1,17 +1,9 @@
 package puzzle.lianche.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.lang.StringBuilder;
-import javax.persistence.CascadeType;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -84,11 +76,9 @@ public class AutoCar implements Serializable{
     @Column(name="parts", nullable=true)
     private String parts;
     @Column(name="parts_price", nullable=true)
-    private Float partsPrice;
+    private double partsPrice;
 	@Column(name="add_time", nullable=true)
 	private Long addTime;
-    @Column(name="add_user_type", nullable = true)
-    private Integer addUserType;
     @Column(name="add_user_id", nullable=true)
 	private Integer addUserId;
 	@Column(name="start_date", nullable=true)
@@ -101,6 +91,8 @@ public class AutoCar implements Serializable{
 	private Integer status;
 	@Column(name="sort_order", nullable=true)
 	private Integer sortOrder;
+    @Column(name="remark", nullable=true)
+    private String remark;
 	
 	
 	/**
@@ -274,19 +266,20 @@ public class AutoCar implements Serializable{
         this.parts = parts;
     }
 
-    public Float getPartsPrice() {
+    public double getPartsPrice() {
         return partsPrice;
     }
 
-    public void setPartsPrice(Float partsPrice) {
+    public void setPartsPrice(double partsPrice) {
         this.partsPrice = partsPrice;
     }
-    public Integer getAddUserType() {
-        return addUserType;
+
+    public String getRemark() {
+        return remark;
     }
 
-    public void setAddUserType(Integer addUserType) {
-        this.addUserType = addUserType;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     //新增属性
@@ -353,4 +346,155 @@ public class AutoCar implements Serializable{
     public void setRealName(String realName) {
         this.realName = realName;
     }
+
+    public List<AutoCarAttr> getAttrs() {
+        return attrs;
+    }
+
+    public void setAttrs(List<AutoCarAttr> attrs) {
+        this.attrs = attrs;
+    }
+
+    private List<AutoCarAttr> attrs;
+
+    public List<AutoCarPic> getPics() {
+        return pics;
+    }
+
+    public void setPics(List<AutoCarPic> pics) {
+        this.pics = pics;
+    }
+
+    private List<AutoCarPic> pics;
+
+    public int getInvoiceType() {
+        return invoiceType;
+    }
+
+    public void setInvoiceType(int invoiceType) {
+        this.invoiceType = invoiceType;
+    }
+
+    private int invoiceType;
+
+    public int getQuoteType() {
+        return quoteType;
+    }
+
+    public void setQuoteType(int quoteType) {
+        this.quoteType = quoteType;
+    }
+
+    private int quoteType;
+
+    public int getSalePriceType() {
+        return salePriceType;
+    }
+
+    public void setSalePriceType(int salePriceType) {
+        this.salePriceType = salePriceType;
+    }
+
+    private int salePriceType;
+
+    public double getSaleAmount() {
+        return saleAmount;
+    }
+
+    public void setSaleAmount(double saleAmount) {
+        this.saleAmount = saleAmount;
+    }
+
+    private double saleAmount;
+
+    public double getShopPrice() {
+        return shopPrice;
+    }
+
+    public void setShopPrice(double shopPrice) {
+        this.shopPrice = shopPrice;
+    }
+
+    private double shopPrice;
+
+    public String getBrandIds() {
+        return brandIds;
+    }
+
+    public void setBrandIds(String brandIds) {
+        this.brandIds = brandIds;
+    }
+
+    private String brandIds;
+
+    public Double getStartPrice() {
+        return startPrice;
+    }
+
+    public void setStartPrice(double startPrice) {
+        this.startPrice = startPrice;
+    }
+
+    private Double startPrice;
+
+    public Double getEndPrice() {
+        return endPrice;
+    }
+
+    public void setEndPrice(double endPrice) {
+        this.endPrice = endPrice;
+    }
+
+    private double endPrice;
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
+
+    private Integer sort;
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
+    private String pic;
+
+    public AutoUser getUser() {
+        return user;
+    }
+
+    public void setUser(AutoUser user) {
+        this.user = user;
+    }
+
+    private AutoUser user;
+
+
+    public Integer getViewUserId() {
+        return viewUserId;
+    }
+
+    public void setViewUserId(Integer viewUserId) {
+        this.viewUserId = viewUserId;
+    }
+
+    private Integer viewUserId;
+
+    public Integer getCollectId() {
+        return collectId;
+    }
+
+    public void setCollectId(Integer collectId) {
+        this.collectId = collectId;
+    }
+
+    private Integer collectId;
 }

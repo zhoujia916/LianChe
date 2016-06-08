@@ -7,52 +7,95 @@
     	<result column="car_id" property="carId" /> 
     	<result column="car_attr_id" property="carAttrId" /> 
     	<result column="car_attr" property="carAttr" /> 
-    	<result column="car_price" property="carPrice" /> 
+    	<result column="car_price" property="carPrice" />
+        <result column="car_number" property="carNumber" />
+        <result column="send_number" property="sendNumber" />
+        <result column="has_parts" property="hasParts" />
     </resultMap>
 
     <sql id="allColumn">
-    	rec_id, order_id, car_id, car_attr_id, car_attr, car_price
+    	rec_id, order_id, car_id, car_attr_id, car_attr, car_price, car_number, send_number, has_parts
     </sql>
 
     <insert id="insert" parameterType="AutoOrderCar" useGeneratedKeys="true" keyProperty="recId">
         insert into auto_order_car 
         (
-        	
         	<if test="orderId != null">order_id, </if>
         	<if test="carId != null">car_id, </if>
         	<if test="carAttrId != null">car_attr_id, </if>
         	<if test="carAttr != null">car_attr, </if>
         	<if test="carPrice != null">car_price</if>
+            <if test="carNumber != null">car_number</if>
+            <if test="sendNumber != null">send_number</if>
+            <if test="hasParts != null">has_parts</if>
         )
         values 
         (
-        	
         	<if test="orderId != null">#{orderId}, </if>
         	<if test="carId != null">#{carId}, </if>
         	<if test="carAttrId != null">#{carAttrId}, </if>
         	<if test="carAttr != null">#{carAttr}, </if>
         	<if test="carPrice != null">#{carPrice}</if>
+            <if test="carNumber != null">#{carNumber}</if>
+            <if test="sendNumber != null">#{sendNumber}</if>
+            <if test="hasParts != null">#{hasParts}</if>
        	)
+    </insert>
+
+    <insert id="insertBatch" parameterType="AutoOrderCar" useGeneratedKeys="true" keyProperty="recId">
+        insert into auto_order_car
+        (
+            order_id,
+            car_id,
+            car_attr_id,
+            car_attr,
+            car_price
+            car_number
+            send_number
+            has_parts
+        )
+        values
+        <foreach collection="list" item="item" separator="," index="index">
+            (
+                #{orderId},
+                #{carId},
+                #{carAttrId},
+                #{carAttr},
+                #{carPrice},
+                #{carNumber},
+                #{sendNumber},
+                #{hasParts}
+            )
+        </foreach>
     </insert>
 
     <update id="update" parameterType="AutoOrderCar">
         update auto_order_car set 
         <set>
         	<if test="orderId != null">  
-        		order_id = #{orderId}
+        		order_id = #{orderId},
         	</if>
         	<if test="carId != null">  
-        		car_id = #{carId}
+        		car_id = #{carId},
         	</if>
         	<if test="carAttrId != null">  
-        		car_attr_id = #{carAttrId}
+        		car_attr_id = #{carAttrId},
         	</if>
         	<if test="carAttr != null">  
-        		car_attr = #{carAttr}
+        		car_attr = #{carAttr},
         	</if>
         	<if test="carPrice != null">  
-        		car_price = #{carPrice}
+        		car_price = #{carPrice},
         	</if>
+            <if test="carNumber != null">
+                car_number = #{carNumber},
+            </if>
+            <if test="sendNumber != null">
+                send_number = #{sendNumber},
+            </if>
+            <if test="hasParts != null">
+                has_parts = #{hasParts}
+            </if>
         </set>
         <where> 
         	<if test="recId > 0">
