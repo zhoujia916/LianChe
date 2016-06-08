@@ -56,6 +56,24 @@ public class AutoOrder implements Serializable{
 	private Integer shipStatus;
 	@Column(name="add_time", nullable=true)
 	private Long addTime;
+
+    public Integer getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(Integer sellerId) {
+        this.sellerId = sellerId;
+    }
+    @Column(name="seller_id", nullable=true)
+    private Integer sellerId;
+    @Column(name="buyer_id", nullable=true)
+    private Integer buyerId;
+
+    @Column(name="seller_deposit", nullable=true)
+    private double sellerDeposit;
+
+    @Column(name="buyer_deposit", nullable=true)
+    private double buyerDeposit;
 	
 	
 	/**
@@ -160,4 +178,30 @@ public class AutoOrder implements Serializable{
     }
 
     private String statusRemark;
+
+
+
+    public Integer getBuyerId() {
+        return buyerId;
+    }
+
+    public void setBuyerId(Integer buyerId) {
+        this.buyerId = buyerId;
+    }
+
+    public double getSellerDeposit() {
+        return sellerDeposit;
+    }
+
+    public void setSellerDeposit(double sellerDeposit) {
+        this.sellerDeposit = sellerDeposit;
+    }
+
+    public double getBuyerDeposit() {
+        return buyerDeposit;
+    }
+
+    public void setBuyerDeposit(double buyerDeposit) {
+        this.buyerDeposit = buyerDeposit;
+    }
 }

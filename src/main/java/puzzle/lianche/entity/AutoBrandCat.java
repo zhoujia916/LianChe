@@ -88,6 +88,14 @@ public class AutoBrandCat implements Serializable{
 	}
 
     //新增属性
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
     private String brandName;
     private String brandString;
     private String brands;
@@ -108,11 +116,4 @@ public class AutoBrandCat implements Serializable{
         this.brands = brands;
     }
 
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
-    }
-
-    public String getBrandName() {
-        return brandName;
-    }
 }

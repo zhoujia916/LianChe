@@ -6,7 +6,7 @@
     	<result column="brand_id" property="brandId" /> 
     	<result column="cat_name" property="catName" /> 
     	<result column="sort_order" property="sortOrder" />
-        <result column="brandName" property="brandName"/>
+        <result column="brand_name" property="brandName"/>
     </resultMap>
 
     <sql id="allColumn">
@@ -24,9 +24,9 @@
         values 
         (
         	
-        	<if test="brandId != null">#{brandId}, </if>
+        	<if test="brandId != null">${brandId}, </if>
         	<if test="catName != null">#{catName}, </if>
-        	<if test="sortOrder != null">#{sortOrder}</if>
+        	<if test="sortOrder != null">${sortOrder}</if>
        	)
     </insert>
 
@@ -34,7 +34,7 @@
         update auto_brand_cat
         <set>
         	<if test="brandId != null">  
-        		brand_id = #{brandId},
+        		brand_id = ${brandId},
         	</if>
         	<if test="catName != null">  
         		cat_name = #{catName},
@@ -43,7 +43,7 @@
         		sort_order = #{sortOrder},
         	</if>
         </set>
-        where cat_id = #{catId}
+        where cat_id = ${catId}
     </update>
 
     <delete id="delete" parameterType="Map">
@@ -51,55 +51,63 @@
         <where>
 	        <trim prefixOverrides="and | or">  
 	        	<if test="catId > 0">
-	                cat_id = #{catId}
+                    and cat_id = ${catId}
 	            </if>
                 <if test="catIds!=null and catIds.length>0">
-                    cat_id in
+                    and cat_id in
                     <foreach collection="catIds" item="catId" open="(" separator="," close=")">
-                        #{catId}
+                        ${catId}
                     </foreach>
                 </if>
 	        	<if test="brandId > 0">
-	                brand_id = #{brandId}
+                    and brand_id = ${brandId}
 	            </if>
-                <if test="brandIds!=null and brandIds.length>0">
-                    brand_id in
+                <if test="brandIds!=null and brandIds != ''">
+                    and brand_id in
                     <foreach collection="brandIds" item="brandId" open="(" separator="," close=")">
-                        #{brandId}
+                        ${brandId}
                     </foreach>
                 </if>
 	        	<if test="catName != null">
-	                cat_name = #{catName}
-	            </if>
-	        	<if test="sortOrder > 0">
-	                sort_order = #{sortOrder}
+                    and cat_name = #{catName}
 	            </if>
 	        </trim>
         </where>
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoBrandCat">
-        select <include refid="allColumn"/> from auto_brand_cat
-        <where>  
-        	<if test="catId > 0">
-                and cat_id = #{catId}
-            </if>
-        </where> 
+        select abc.*, ab.brand_name as brand_name from auto_brand_cat as abc
+        inner join auto_brand as ab on abc.brand_id =  ab.brand_id
+        <where>
+            <trim prefixOverrides="and | or">
+                <if test="catId > 0">
+                    and abc.cat_id = #{catId}
+                </if>
+            </trim>
+        </where>
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoBrandCat">
-        select abc.*,ab.brand_name as brandName from auto_brand_cat as abc
-        inner join auto_brand as ab on abc.brand_id=ab.brand_id
+        select abc.*, ab.brand_name as brand_name from auto_brand_cat as abc
+        inner join auto_brand as ab on abc.brand_id =  ab.brand_id
         <where>
-            <if test="brandId!=null and brandId!=''">
-                and abc.brand_id in (${brandId})
-            </if>
-            <if test="catName!=null and catName!=''">
-                and abc.cat_name like concat('%',#{catName},'%')
-            </if>
-            <if test="catId!=null and catId!=''">
-                and cat_id in (${catId})
-            </if>
+            <trim prefixOverrides="and | or">
+                <if test="brandId != null and brandId > 0">
+                    and abc.brand_id = #{brandId}
+                </if>
+                <if test="brandIds != null and brandIds != ''">
+                    and abc.brand_id in (${brandIds})
+                </if>
+                <if test="catName !=null and catName != ''">
+                    and abc.cat_name like concat('%',#{catName},'%')
+                </if>
+                <if test="catId != null and catId > 0">
+                    and abc.cat_id = #{catId}
+                </if>
+                <if test="catIds != null and catIds !=''">
+                    and abc.cat_id in (${catIds})
+                </if>
+            </trim>
         </where>
         order by abc.sort_order desc,abc.cat_id desc
     </select>

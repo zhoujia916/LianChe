@@ -10,6 +10,8 @@ public interface IAutoCarAttrService{
 
 	public boolean insert(AutoCarAttr entity);
 
+    public boolean insertBatch(List<AutoCarAttr> list);
+
     public boolean update(AutoCarAttr entity);
 
     public boolean delete(Map<String, Object> map);

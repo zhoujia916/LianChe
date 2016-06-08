@@ -249,4 +249,14 @@ public class AutoUser implements Serializable{
     public void setShopName(String shopName) {
         this.shopName = shopName;
     }
+
+    public AutoUserProfile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(AutoUserProfile profile) {
+        this.profile = profile;
+    }
+
+    public AutoUserProfile profile;
 }

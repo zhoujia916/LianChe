@@ -66,7 +66,7 @@ public class AutoBrandCatServiceImpl implements IAutoBrandCatService {
 	@Override
     public boolean delete(Map<String, Object> map){
         try{
-            List<AutoBrandCat> list=queryList(map);
+            List<AutoBrandCat> list = queryList(map);
             if(sqlMapper.delete("AutoBrandCatMapper.delete", map)){
                 deleteBrandModel(list);
                 return true;

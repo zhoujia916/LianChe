@@ -14,22 +14,41 @@
     </sql>
 
     <insert id="insert" parameterType="AutoCarAttr" useGeneratedKeys="true" keyProperty="carAttrId">
-        insert into auto_car_attr 
+        insert into auto_car_attr
         (
-        	
+
         	<if test="carId != null">car_id, </if>
         	<if test="attrId != null">attr_id, </if>
         	<if test="attrValue != null">attr_value, </if>
         	<if test="attrPrice != null">attr_price</if>
         )
-        values 
+        values
         (
-        	
+
         	<if test="carId != null">#{carId}, </if>
         	<if test="attrId != null">#{attrId}, </if>
         	<if test="attrValue != null">#{attrValue}, </if>
         	<if test="attrPrice != null">#{attrPrice}</if>
        	)
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into auto_car_attr
+        (
+            car_id,
+            attr_id,
+            attr_value,
+            attr_price
+        )
+        values
+        <foreach collection="list" item="attr" index="index" separator=",">
+            (
+                #{attr.carId},
+                #{attr.attrId},
+                #{attr.attrValue},
+                #{attr.attrPrice}
+            )
+        </foreach>
     </insert>
 
     <update id="update" parameterType="AutoCarAttr">
@@ -100,23 +119,25 @@
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoCarAttr">
-        select <include refid="allColumn"/> from auto_car_attr
+        select aca.*, aa.attr_name
+        from auto_car_attr as aca
+        inner join auto_attr as aa on aa.attr_id = aca.attr_id
         <where>
 	        <trim prefixOverrides="and | or">
 	        	<if test="carAttrId > 0">
-	                car_attr_id = #{carAttrId}
+                    and aca.car_attr_id = #{carAttrId}
 	            </if>
 	        	<if test="carId > 0">
-	                car_id = #{carId}
+                    and aca.car_id = #{carId}
 	            </if>
 	        	<if test="attrId > 0">
-	                attr_id = #{attrId}
+                    and aca.attr_id = #{attrId}
 	            </if>
 	        	<if test="attrValue != null">
-	                attr_value = #{attrValue}
+                    and aca.attr_value = #{attrValue}
 	            </if>
 	        	<if test="attrPrice > 0">
-	                attr_price = #{attrPrice}
+                    and aca.attr_price = #{attrPrice}
 	            </if>
 	        </trim>
         </where>

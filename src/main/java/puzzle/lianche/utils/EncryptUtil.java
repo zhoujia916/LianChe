@@ -84,6 +84,14 @@ public class EncryptUtil {
 		return "";
 	}
 
+    public static String MD5(String input, int length) {
+        input = MD5(input);
+        if(input.length() > 0 && length == 16){
+            input = input.substring(8, 24);
+        }
+        return input;
+    }
+
 	/**
 	 * 加密
 	 * 

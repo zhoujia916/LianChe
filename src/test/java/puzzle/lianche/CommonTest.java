@@ -6,6 +6,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import puzzle.lianche.entity.*;
+import puzzle.lianche.mapper.SqlMapper;
 import puzzle.lianche.service.*;
 import puzzle.lianche.service.impl.AutoBrandServiceImpl;
 import puzzle.lianche.utils.*;
@@ -35,6 +36,10 @@ public class CommonTest {
 
     private ISystemUserService systemUserService;
 
+    private IAutoCarService autoCarService;
+
+
+    private SqlMapper sqlMapper;
 
 
     //手动方式加载spring配置
@@ -50,7 +55,9 @@ public class CommonTest {
 
         autoBrandModelService = (IAutoBrandModelService)ctx.getBean("autoBrandModelService");
 
+        autoCarService = (IAutoCarService)ctx.getBean("autoCarService");
 
+        sqlMapper = (SqlMapper)ctx.getBean("sqlMapper");
 
     }
 
@@ -62,7 +69,7 @@ public class CommonTest {
 //        }
 //        logger.info(JSONArray.fromObject(list).toString());
 //    }
-
+//
 //    @Test
 //    public void testMemory(){
 //        System.gc();
@@ -130,8 +137,8 @@ public class CommonTest {
 //        }
 //    }
 
-    @Test
-    public void readBrandModel(){
+//    @Test
+//    public void readBrandModel(){
 //        final String url = "http://car.autohome.com.cn/duibi/ashx/SpecCompareHandler.ashx?type=2&isie6=0&seriesid=";
 //        List<AutoBrandCat> list = autoBrandCatService.queryList(null);
 //        HttpUtil http = new HttpUtil(HttpUtil.HTTP_GET);
@@ -161,8 +168,15 @@ public class CommonTest {
 //                System.out.println("process:" + finished + "/" + total);
 //            }
 //        }
+//    }
+
+    @Test
+    public void queryBrand(){
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("carId", 5);
+        AutoCar car = autoCarService.query(map);
+
+        System.out.println(car);
     }
-
-
 
 }

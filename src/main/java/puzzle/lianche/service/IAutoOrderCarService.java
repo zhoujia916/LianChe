@@ -10,6 +10,8 @@ public interface IAutoOrderCarService{
 
 	public boolean insert(AutoOrderCar entity);
 
+    public boolean insertBatch(List<AutoOrderCar> list);
+
     public boolean update(AutoOrderCar entity);
 
     public boolean delete(Map<String, Object> map);
@@ -19,5 +21,6 @@ public interface IAutoOrderCarService{
     public List<AutoOrderCar> queryList(Object param);
 
     public List<AutoOrderCar> queryList(Map<String, Object> map, Page page);
-    
+
+
 }

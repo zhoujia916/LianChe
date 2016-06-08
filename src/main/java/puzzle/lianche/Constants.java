@@ -136,12 +136,71 @@ public class Constants {
         }
     };
 
-    public static final Map<Integer, String> AUTO_CAR_TYPE = new HashMap<Integer, String>(){
+    //region AUTO_CAR_TYPE
+    public static final Integer AUTO_CAR_TYPE_COMMON = 0;
+    public static final Integer AUTO_CAR_TYPE_SALE = 1;
+    public static final Map<Integer, String> MAP_AUTO_CAR_TYPE = new HashMap<Integer, String>(){
         {
             put(0,"销车资源");
             put(1,"特卖会");
         }
     };
+    //endregion
+
+    //region AUTO_CAR_STATUS
+    public static final Integer AUTO_CAR_STATUS_OFF = 0;
+    public static final Integer AUTO_CAR_STATUS_ON = 1;
+    public static final Map<Integer, String> MAP_AUTO_CAR_STATUS = new HashMap<Integer, String>(){
+        {
+            put(0,"下架");
+            put(1,"正常");
+        }
+    };
+    //endregion
+
+    //region AUTO_CAR_TYPE
+    public static final Integer AUTO_CAR_HAS_PARTS_NO = 0;
+    public static final Integer AUTO_CAR_HAS_PARTS_YES = 1;
+    public static final Map<Integer, String> MAP_AUTO_CAR_HAS_PARTS = new HashMap<Integer, String>(){
+        {
+            put(0,"没有配件");
+            put(1,"有配件");
+        }
+    };
+    //endregion
+
+    //region AUTO_CAR_QUOTE_TYPE
+    public static final Integer AUTO_CAR_QUOTE_TYPE_UP = 1;
+    public static final Integer AUTO_CAR_QUOTE_TYPE_DOWN = 2;
+    public static final Map<Integer, String> MAP_AUTO_CAR_QUOTE_TYPE = new HashMap<Integer, String>(){
+        {
+            put(1,"高于指导价");
+            put(2,"低于指导价");
+        }
+    };
+    //endregion
+
+    //region AUTO_CAR_SALE_PRICE_TYPE
+    public static final Integer AUTO_CAR_SALE_PRICE_TYPE_MONEY = 1;
+    public static final Integer AUTO_CAR_SALE_PRICE_TYPE_PERCENT = 2;
+    public static final Map<Integer, String> MAP_AUTO_CAR_SALE_PRICE_TYPE = new HashMap<Integer, String>(){
+        {
+            put(1,"价格优惠");
+            put(2,"点数优惠");
+        }
+    };
+    //endregion
+
+    //region AUTO_CAR_TYPE
+    public static final Integer AUTO_CAR_INVOICE_TYPE_COMMON = 1;
+    public static final Integer AUTO_CAR_INVOICE_TYPE_VAT = 2;
+    public static final Map<Integer, String> MAP_AUTO_CAR_INVOICE_TYPE = new HashMap<Integer, String>(){
+        {
+            put(1,"普通发票");
+            put(2,"增值税发票");
+        }
+    };
+    //endregion
 
     public static final Map<Integer, String> AUTO_ATTR_TYPE = new HashMap<Integer, String>(){
         {
@@ -176,8 +235,8 @@ public class Constants {
 
     //region 订单
     /*
-        item_name   		order_status     		pay_status    		shipping_status
-    1. 	提交订单    			买家已提交订单			等待买家付订金        未提车
+        item_name   		order_status     		pay_status    		shipping_status           actions
+    1. 	提交订单    			买家已提交订单			等待买家付订金        未提车                     cancel
 
     2. 	买家支付     			买家已提交订单			买家已支付订金	    未提车
 

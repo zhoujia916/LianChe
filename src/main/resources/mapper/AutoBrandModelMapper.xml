@@ -6,15 +6,15 @@
     	<result column="brand_cat_id" property="brandCatId" /> 
     	<result column="model_name" property="modelName" /> 
     	<result column="sort_order" property="sortOrder" />
-        <result column="catName" property="catName"/>
-        <result column="brandName" property="brandName"/>
+        <result column="cat_name" property="catName"/>
+        <result column="brand_name" property="brandName"/>
     </resultMap>
 
     <sql id="allColumn">
     	model_id, brand_cat_id, model_name, sort_order
     </sql>
 
-    <insert id="insert" parameterType="AutoBrandModel" useGeneratedKeys="true" keyProperty="">
+    <insert id="insert" parameterType="AutoBrandModel" useGeneratedKeys="true" keyProperty="modelId">
         insert into auto_brand_model 
         (
         	<if test="modelId != null">model_id, </if>
@@ -52,53 +52,70 @@
         <where>
 	        <trim prefixOverrides="and | or">
 	        	<if test="modelId > 0">
-	                model_id = #{modelId}
+	                and model_id = #{modelId}
 	            </if>
                 <if test="modelIds!=null and modelIds.length>0">
-                    model_id in
+                    and model_id in
                     <foreach collection="modelIds" item="modelId" open="(" separator="," close=")">
                         #{modelId}
                     </foreach>
                 </if>
                 <if test="brandCatIds!=null and brandCatIds.size()>0">
-                    brand_cat_id in
+                    and brand_cat_id in
                     <foreach collection="brandCatIds" item="brandCatId" open="(" separator="," close=")">
                         #{brandCatId}
                     </foreach>
                 </if>
 	        	<if test="modelName != null">
-	                model_name = #{modelName}
+                    and model_name = #{modelName}
 	            </if>
 	        	<if test="sortOrder > 0">
-	                sort_order = #{sortOrder}
+                    and sort_order = #{sortOrder}
 	            </if>
 	        </trim>
         </where>
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoBrandModel">
-        select <include refid="allColumn"/> from auto_brand_model
-        <where>  
-        	<if test="modelId > 0">
-                model_id = #{modelId}
-            </if>
-        </where> 
+        select abm.*, abc.cat_name, ab.brand_name
+        from auto_brand_model as abm
+        inner join auto_brand_cat as abc on abc.cat_id = abm.brand_cat_id
+        inner join auto_brand as ab on ab.brand_id = abc.brand_id
+        <where>
+            <trim prefixOverrides="and | or">
+                <if test="modelId > 0">
+                    and abm.model_id = #{modelId}
+                </if>
+                <if test="catId > 0">
+                    and abc.cat_id = #{catId}
+                </if>
+                <if test="brandId > 0">
+                    and ab.brand_id = #{brandId}
+                </if>
+            </trim>
+        </where>
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoBrandModel">
-        select abm.*,abc.cat_name as catName,ab.brand_name as brandName from auto_brand_model as abm
-        inner join auto_brand_cat abc on abm.brand_cat_id=abc.cat_id
-        inner join auto_brand as ab on abc.brand_id=ab.brand_id
+        select abm.*, abc.cat_name, ab.brand_name
+        from auto_brand_model as abm
+        inner join auto_brand_cat as abc on abc.cat_id = abm.brand_cat_id
+        inner join auto_brand as ab on ab.brand_id = abc.brand_id
         <where>
-            <if test="brandId!=null and brandId!=''">
-                and ab.brand_id in (${brandId})
-            </if>
-            <if test="catId!=null and catId!=''">
-                and abc.cat_id in (${catId})
-            </if>
-            <if test="modelName != null and modelName!=''">
-                and abm.model_name like concat('%',#{modelName},'%')
-            </if>
+            <trim prefixOverrides="and | or">
+                <if test="modelId > 0">
+                    and abm.model_id = #{modelId}
+                </if>
+                <if test="catId > 0">
+                    and abc.cat_id = #{catId}
+                </if>
+                <if test="brandId > 0">
+                    and ab.brand_id = #{brandId}
+                </if>
+                <if test="modelName != null and modelName!=''">
+                    and abm.model_name like concat('%',#{modelName},'%')
+                </if>
+            </trim>
         </where>
         order by abm.sort_order desc,abm.model_id desc
     </select>
