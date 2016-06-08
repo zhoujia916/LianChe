@@ -167,14 +167,12 @@ public class StringUtil {
         String pattern = "^\\d{11,11}$";
         return isMatch(input, pattern);
     }
-
-<<<<<<< HEAD
-    public static boolean isIdNumber(String input){
+    public static boolean isIdNumber(String input) {
         String pattern = "(^\\d{18}$)|(^\\d{15}$)";
-=======
+        return isMatch(input, pattern);
+    }
     public static boolean isDate(String input){
         String pattern = "^\\d{4}-\\d{2}-\\d{2}$";
->>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         return isMatch(input, pattern);
     }
     //endregion
