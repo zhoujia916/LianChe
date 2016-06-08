@@ -98,20 +98,23 @@
         <where>
 	        <trim prefixOverrides="and | or">
 	        	<if test="orderId > 0">
-	                order_id = #{orderId}
+	                and order_id = #{orderId}
 	            </if>
 	        	<if test="orderSn != null">
-	                order_sn = #{orderSn}
+	                and order_sn = #{orderSn}
 	            </if>
 	        	<if test="orderStatus > 0">
-	                order_status = #{orderStatus}
+	                and order_status = #{orderStatus}
 	            </if>
 	        	<if test="payStatus > 0">
-	                pay_status = #{payStatus}
+	                and pay_status = #{payStatus}
 	            </if>
 	        	<if test="shipStatus > 0">
-	                ship_status = #{shipStatus}
+	                and ship_status = #{shipStatus}
 	            </if>
+                <if test="sellerId > 0">
+                    and seller_id = ${sellerId} or buyer_id = ${buyerId}
+                </if>
 	        </trim>
         </where>
     </select>

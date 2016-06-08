@@ -8,15 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.BaseController;
-import puzzle.lianche.entity.AutoSms;
-import puzzle.lianche.entity.AutoUser;
-import puzzle.lianche.entity.AutoUserProfile;
+import puzzle.lianche.entity.*;
 import puzzle.lianche.push.SmsPush;
-import puzzle.lianche.service.IAutoSmsService;
-import puzzle.lianche.service.IAutoUserProfileService;
-import puzzle.lianche.service.IAutoUserService;
+import puzzle.lianche.service.*;
 import puzzle.lianche.utils.*;
 
+import javax.swing.event.ListDataEvent;
 import java.util.*;
 import java.lang.Object;
 
@@ -32,6 +29,12 @@ public class AutoUserController extends BaseController {
 
     @Autowired
     private IAutoSmsService autoSmsService;
+
+    @Autowired
+    private IAutoOrderService autoOrderService;
+
+    @Autowired
+    private IAutoCarService autoCarService;
 
     /**
      * 发送短信验证码用于注册和找回密码
@@ -404,6 +407,13 @@ public class AutoUserController extends BaseController {
         return result;
     }
 
+    /**
+     * 查看会员中心
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/memberCenter.do")
+    @ResponseBody
     public Result memberCenter(Integer userId){
         Result result=new Result();
         try{
@@ -422,6 +432,23 @@ public class AutoUserController extends BaseController {
                 AutoUserProfile profile=autoUserProfileService.query(map);
                 if(profile!=null){
                     jsonObject.put("profile",profile);
+                }
+                map.clear();
+                map.put("sellerId", userId);
+                map.put("buyerId",userId);
+                List<AutoOrder> orderList=autoOrderService.queryList(map);
+                if(orderList!=null && orderList.size()>0){
+                    jsonObject.put("orderNumber",orderList.size());
+                }else{
+                    jsonObject.put("orderNumber",0);
+                }
+                map.clear();
+                map.put("addUserId",userId);
+                List<AutoCar> carList=autoCarService.queryList(map);
+                if(carList!=null && carList.size()>0){
+                    jsonObject.put("carNumber",carList.size());
+                }else{
+                    jsonObject.put("carNumber",0);
                 }
                 array.add(jsonObject);
                 result.setData(array);
