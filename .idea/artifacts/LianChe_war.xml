@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="LianChe:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="LianChe.war">
-      <element id="artifact" artifact-name="LianChe:war exploded" />
-    </root>
-  </artifact>
-</component>
