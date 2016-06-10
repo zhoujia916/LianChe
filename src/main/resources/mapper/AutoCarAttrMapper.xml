@@ -127,6 +127,9 @@
 	        	<if test="carAttrId > 0">
                     and aca.car_attr_id = #{carAttrId}
 	            </if>
+                <if test="carAttrIds != null and carAttrIds != ''">
+                    and aca.car_attr_id in (${carAttrIds})
+                </if>
 	        	<if test="carId > 0">
                     and aca.car_id = #{carId}
 	            </if>

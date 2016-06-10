@@ -24,9 +24,9 @@
         	<if test="carId != null">car_id, </if>
         	<if test="carAttrId != null">car_attr_id, </if>
         	<if test="carAttr != null">car_attr, </if>
-        	<if test="carPrice != null">car_price</if>
-            <if test="carNumber != null">car_number</if>
-            <if test="sendNumber != null">send_number</if>
+        	<if test="carPrice != null">car_price, </if>
+            <if test="carNumber != null">car_number, </if>
+            <if test="sendNumber != null">send_number, </if>
             <if test="hasParts != null">has_parts</if>
         )
         values 
@@ -35,9 +35,9 @@
         	<if test="carId != null">#{carId}, </if>
         	<if test="carAttrId != null">#{carAttrId}, </if>
         	<if test="carAttr != null">#{carAttr}, </if>
-        	<if test="carPrice != null">#{carPrice}</if>
-            <if test="carNumber != null">#{carNumber}</if>
-            <if test="sendNumber != null">#{sendNumber}</if>
+        	<if test="carPrice != null">#{carPrice}, </if>
+            <if test="carNumber != null">#{carNumber}, </if>
+            <if test="sendNumber != null">#{sendNumber}, </if>
             <if test="hasParts != null">#{hasParts}</if>
        	)
     </insert>

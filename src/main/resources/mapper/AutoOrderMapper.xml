@@ -7,11 +7,22 @@
     	<result column="order_status" property="orderStatus" /> 
     	<result column="pay_status" property="payStatus" /> 
     	<result column="ship_status" property="shipStatus" /> 
-    	<result column="add_time" property="addTime" /> 
+    	<result column="seller_id" property="sellerId" />
+        <result column="buyer_id" property="buyerId" />
+        <result column="pay_method" property="payMethod" />
+        <result column="seller_deposit" property="sellerDeposit" />
+        <result column="buyer_deposit" property="buyerDeposit" />
+        <result column="ship_time" property="shipTime" />
+        <result column="order_remark" property="orderRemark" />
+        <result column="status_remark" property="statusRemark" />
+        <result column="amount" property="amount" />
+        <result column="remark" property="remark" />
+        <result column="add_time" property="addTime" />
     </resultMap>
 
     <sql id="allColumn">
-    	order_id, order_sn, order_status, pay_status, ship_status, add_time
+    	order_id, order_sn, order_status, pay_status, ship_status, seller_id, buyer_id, pay_method,
+    	seller_deposit, buyer_deposit, ship_time, order_remark, status_remark, amount, remark, add_time
     </sql>
 
     <insert id="insert" parameterType="AutoOrder" useGeneratedKeys="true" keyProperty="orderId">
@@ -21,6 +32,16 @@
         	<if test="orderStatus != null">order_status, </if>
         	<if test="payStatus != null">pay_status, </if>
         	<if test="shipStatus != null">ship_status, </if>
+            <if test="sellerId != null">seller_id, </if>
+            <if test="buyerId != null">buyer_id, </if>
+            <if test="payMethod != null">pay_method, </if>
+            <if test="sellerDeposit != null">seller_deposit, </if>
+            <if test="buyerDeposit != null">buyer_deposit, </if>
+            <if test="shipTime != null">ship_time, </if>
+            <if test="orderRemark != null">order_remark, </if>
+            <if test="statusRemark != null">status_remark, </if>
+            <if test="amount != null">amount, </if>
+            <if test="remark != null">remark, </if>
         	<if test="addTime != null">add_time</if>
         )
         values 
@@ -29,6 +50,16 @@
         	<if test="orderStatus != null">#{orderStatus}, </if>
         	<if test="payStatus != null">#{payStatus}, </if>
         	<if test="shipStatus != null">#{shipStatus}, </if>
+            <if test="sellerId != null">#{sellerId}, </if>
+            <if test="buyerId != null">#{buyerId}, </if>
+            <if test="payMethod != null">#{payMethod}, </if>
+            <if test="sellerDeposit != null">#{sellerDeposit}, </if>
+            <if test="buyerDeposit != null">#{buyerDeposit}, </if>
+            <if test="shipTime != null">#{shipTime}, </if>
+            <if test="orderRemark != null">#{orderRemark}, </if>
+            <if test="statusRemark != null">#{statusRemark}, </if>
+            <if test="amount != null">#{amount}, </if>
+            <if test="remark != null">#{remark}, </if>
         	<if test="addTime != null">#{addTime}</if>
        	)
     </insert>
@@ -36,16 +67,34 @@
     <update id="update" parameterType="AutoOrder">
         update auto_order set 
         <set>
-        	<if test="orderStatus != null">  
+        	<if test="orderStatus != null">
         		order_status = #{orderStatus}
         	</if>
-        	<if test="payStatus != null">  
+        	<if test="payStatus != null">
         		pay_status = #{payStatus}
         	</if>
-        	<if test="shipStatus != null">  
+        	<if test="shipStatus != null">
         		ship_status = #{shipStatus}
         	</if>
-        	<if test="addTime != null">  
+            <if test="sellerDeposit != null and sellerDeposit > 0">
+                #{sellerDeposit},
+            </if>
+            <if test="buyerDeposit != null and buyerDeposit > 0">
+                #{buyerDeposit},
+            </if>
+            <if test="shipTime != null and shipTime > 0">
+                #{shipTime},
+            </if>
+            <if test="orderRemark != null and orderRemark != ''">
+                #{orderRemark},
+            </if>
+            <if test="statusRemark != null and statusRemark != ''">
+                #{statusRemark},
+            </if>
+            <if test="remark != null and remark != ''">
+                #{remark}
+            </if>
+        	<if test="addTime != null">
         		add_time = #{addTime}
         	</if>
         </set>
@@ -60,20 +109,11 @@
         delete from auto_order
         <where>
 	        <trim prefixOverrides="and | or">  
-	        	<if test="orderId > 0">
+	        	<if test="orderId != null and orderId > 0">
 	                order_id = #{orderId}
 	            </if>
-	        	<if test="orderSn != null">
+	        	<if test="orderSn != null and orderSn != ''">
 	                order_sn = #{orderSn}
-	            </if>
-	        	<if test="orderStatus > 0">
-	                order_status = #{orderStatus}
-	            </if>
-	        	<if test="payStatus > 0">
-	                pay_status = #{payStatus}
-	            </if>
-	        	<if test="shipStatus > 0">
-	                ship_status = #{shipStatus}
 	            </if>
 	        </trim>
         </where>
@@ -107,8 +147,20 @@
 	        	<if test="shipStatus > 0">
 	                and ship_status = #{shipStatus}
 	            </if>
-                <if test="sellerId > 0">
-                    and seller_id = ${sellerId} or buyer_id = ${buyerId}
+                <if test="orderStatusList != null and orderStatusList != ''">
+                    and order_status in (#{orderStatusList})
+                </if>
+                <if test="payStatusList != null and payStatusList != ''">
+                    and pay_status in (#{payStatusList})
+                </if>
+                <if test="shipStatusList != null and shipStatusList != ''">
+                    and ship_status in (#{shipStatusList})
+                </if>
+                <if test="sellerId != null and sellerId > 0">
+                    and seller_id = ${sellerId}
+                </if>
+                <if test="buyerId != null and buyerId > 0">
+                    and seller_id = ${buyerId}
                 </if>
 	        </trim>
         </where>

@@ -24,5 +24,15 @@ public interface IAutoOrderService{
 
     public AutoOrder query(int orderId, String orderSn);
 
-    public boolean cancel(AutoOrder order);
+    public boolean doCancel(AutoOrder order);
+
+    public boolean doAccept(AutoOrder order);
+
+    public boolean doReject(AutoOrder order);
+
+    public boolean doReceive(AutoOrder order);
+
+    public boolean doNotify(AutoOrder order);
+
+    public boolean doDeposit(AutoOrder order);
 }

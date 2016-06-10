@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import puzzle.lianche.Constants;
+import puzzle.lianche.entity.AutoCar;
 import puzzle.lianche.entity.AutoOrder;
 import puzzle.lianche.entity.AutoOrderCar;
+import puzzle.lianche.service.IAutoCarService;
 import puzzle.lianche.service.IAutoOrderCarService;
 import puzzle.lianche.service.IAutoOrderService;
 import puzzle.lianche.utils.ConvertUtil;
@@ -24,6 +26,9 @@ public class AutoOrderServiceImpl implements IAutoOrderService {
 
     @Autowired
     private IAutoOrderCarService autoOrderCarService;
+
+    @Autowired
+    private IAutoCarService autoCarService;
 	
 	/**
 	* 插入单条记录
@@ -31,18 +36,26 @@ public class AutoOrderServiceImpl implements IAutoOrderService {
 	@Override
 	public boolean insert(AutoOrder entity){
         try{
+            //插入订单信息
             if(sqlMapper.insert("AutoOrderMapper.insert", entity)){
                 if(entity.getCars() != null && entity.getCars().size() > 0){
-                    for(int i = 0; i < entity.getCars().size(); i++){
-                        entity.getCars().get(i).setOrderId(entity.getOrderId());
-                    }
-                    autoOrderCarService.insertBatch(entity.getCars());
+                    //插入预定车源
+                    AutoOrderCar orderCar = entity.getCars().get(0);
+                    orderCar.setOrderId(entity.getOrderId());
+                    autoOrderCarService.insert(orderCar);
+
+                    //更新锁定数量
+                    AutoCar car = autoCarService.query(orderCar.getCarId());
+                    car.setLockNumber(car.getLockNumber() + orderCar.getCarNumber());
+                    car.setSurplusNumber(car.getTotalNumber() - car.getLockNumber());
+                    autoCarService.update(car);
                 }
+
             }
             return true;
         }
         catch (Exception e){
-
+            System.out.println(e.getMessage());
         }
         return false;
 
@@ -143,23 +156,74 @@ public class AutoOrderServiceImpl implements IAutoOrderService {
      * @param order
      * @return
      */
-    public boolean cancel(AutoOrder order){
+    public boolean doCancel(AutoOrder order){
         try {
-            if (order.getOrderStatus() == Constants.OS_SUBMIT) {
-                order.setOrderStatus(Constants.OS_CANCEL);
-                
-            }
-            else if(order.getOrderStatus() == Constants.OS_REJECT){
-                order.setOrderStatus(Constants.OS_CANCEL);
-            }
-            else if(order.getOrderStatus() == Constants.OS_EXECUTE){
-                order.setOrderStatus(Constants.OS_CANCEL);
-            }
-            return true;
+            order.setOrderStatus(Constants.OS_CANCEL);
+            return sqlMapper.update("AutoOrderMapper.update", order);
         }
         catch (Exception e){
 
         }
         return false;
+    }
+
+    /**
+     * 卖家拒绝订单
+     * @param order
+     * @return
+     */
+    @Override
+    public boolean doReject(AutoOrder order) {
+        order.setShipStatus(Constants.OS_CANCEL);
+        return sqlMapper.update("AutoOrderMapper.update", order);
+    }
+
+    /**
+     * 卖家同意订单
+     * @param order
+     * @return
+     */
+    @Override
+    public boolean doAccept(AutoOrder order) {
+        order.setOrderStatus(Constants.OS_ACCEPT);
+        return sqlMapper.update("AutoOrderMapper.update", order);
+    }
+
+    /**
+     * 确认收货
+     * @param order
+     * @return
+     */
+    @Override
+    public boolean doReceive(AutoOrder order) {
+        order.setShipStatus(Constants.SS_SHIPED);
+        return sqlMapper.update("AutoOrderMapper.update", order);
+    }
+
+    /**
+     * 通知收货
+     * @param order
+     * @return
+     */
+    @Override
+    public boolean doNotify(AutoOrder order) {
+        order.setShipStatus(Constants.SS_SHIPED);
+        return sqlMapper.update("AutoOrderMapper.update", order);
+    }
+
+    /**
+     * 支付订金
+     * @param order
+     * @return
+     */
+    @Override
+    public boolean doDeposit(AutoOrder order) {
+        if(order.getBuyerId() > 0){
+            order.setPayStatus(Constants.PS_BUYER_PAY_DEPOSIT);
+        }
+        else if(order.getSellerId() > 0){
+            order.setPayStatus(Constants.PS_SELLER_PAY_DEPOSIT);
+        }
+        return sqlMapper.update("AutoOrderMapper.update", order);
     }
 }

@@ -56,11 +56,9 @@ public class AutoOrder implements Serializable{
 	private Integer shipStatus;
 	@Column(name="add_time", nullable=true)
 	private Long addTime;
-
     public Integer getSellerId() {
         return sellerId;
     }
-
     public void setSellerId(Integer sellerId) {
         this.sellerId = sellerId;
     }
@@ -68,12 +66,42 @@ public class AutoOrder implements Serializable{
     private Integer sellerId;
     @Column(name="buyer_id", nullable=true)
     private Integer buyerId;
-
     @Column(name="seller_deposit", nullable=true)
     private double sellerDeposit;
-
     @Column(name="buyer_deposit", nullable=true)
     private double buyerDeposit;
+    public Integer getPayMethod() {
+        return payMethod;
+    }
+    public void setPayMethod(Integer payMethod) {
+        this.payMethod = payMethod;
+    }
+    @Column(name="pay_method", nullable=true)
+    private Integer payMethod;
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    @Column(name="remark", nullable=true)
+    private String remark;
+    public String getStatusRemark() {
+        return statusRemark;
+    }
+    public void setStatusRemark(String statusRemark) {
+        this.statusRemark = statusRemark;
+    }
+    @Column(name="status_remark", nullable=true)
+    private String statusRemark;
+    public String getOrderRemark() {
+        return orderRemark;
+    }
+    public void setOrderRemark(String orderRemark) {
+        this.orderRemark = orderRemark;
+    }
+    @Column(name="order_remark", nullable=true)
+    private String orderRemark;
 	
 	
 	/**
@@ -158,29 +186,6 @@ public class AutoOrder implements Serializable{
 
     private long shipTime;
 
-
-    public String getOrderRemark() {
-        return orderRemark;
-    }
-
-    public void setOrderRemark(String orderRemark) {
-        this.orderRemark = orderRemark;
-    }
-
-    private String orderRemark;
-
-    public String getStatusRemark() {
-        return statusRemark;
-    }
-
-    public void setStatusRemark(String statusRemark) {
-        this.statusRemark = statusRemark;
-    }
-
-    private String statusRemark;
-
-
-
     public Integer getBuyerId() {
         return buyerId;
     }
@@ -204,4 +209,16 @@ public class AutoOrder implements Serializable{
     public void setBuyerDeposit(double buyerDeposit) {
         this.buyerDeposit = buyerDeposit;
     }
+
+    public Integer getClientStatus() {
+        return clientStatus;
+    }
+
+    public void setClientStatus(Integer clientStatus) {
+        this.clientStatus = clientStatus;
+    }
+
+    private Integer clientStatus;
+
+
 }
