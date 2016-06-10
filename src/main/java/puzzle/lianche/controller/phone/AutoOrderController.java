@@ -177,7 +177,13 @@ public class AutoOrderController extends BaseController {
                 result.setMsg("您没有取消该订单的权限!");
                 return result;
             }
-//            if(order.getOrderStatus() == Constants.AUT)
+            if(order.getOrderStatus() != Constants.OS_SUBMIT && order.getOrderStatus() != Constants.OS_ACCEPT &&
+               order.getOrderStatus() != Constants.OS_EXECUTE){
+                result.setCode(-1);
+                result.setMsg("该订单不能取消！");
+                return result;
+            }
+
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("取消订单出错");

@@ -23,4 +23,6 @@ public interface IAutoOrderService{
     public String createSn(String key);
 
     public AutoOrder query(int orderId, String orderSn);
+
+    public boolean cancel(AutoOrder order);
 }

@@ -17,7 +17,6 @@
     <insert id="insert" parameterType="AutoOrder" useGeneratedKeys="true" keyProperty="orderId">
         insert into auto_order 
         (
-        	
         	<if test="orderSn != null">order_sn, </if>
         	<if test="orderStatus != null">order_status, </if>
         	<if test="payStatus != null">pay_status, </if>
@@ -26,7 +25,6 @@
         )
         values 
         (
-        	
         	<if test="orderSn != null">#{orderSn}, </if>
         	<if test="orderStatus != null">#{orderStatus}, </if>
         	<if test="payStatus != null">#{payStatus}, </if>
@@ -38,9 +36,6 @@
     <update id="update" parameterType="AutoOrder">
         update auto_order set 
         <set>
-        	<if test="orderSn != null">  
-        		order_sn = #{orderSn}
-        	</if>
         	<if test="orderStatus != null">  
         		order_status = #{orderStatus}
         	</if>

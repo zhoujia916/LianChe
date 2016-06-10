@@ -5,6 +5,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import puzzle.lianche.Constants;
 import puzzle.lianche.entity.AutoOrder;
 import puzzle.lianche.entity.AutoOrderCar;
 import puzzle.lianche.service.IAutoOrderCarService;
@@ -135,5 +136,30 @@ public class AutoOrderServiceImpl implements IAutoOrderService {
             map.put("orderSn", orderSn);
         }
         return query(map);
+    }
+
+    /**
+     * 取消订单
+     * @param order
+     * @return
+     */
+    public boolean cancel(AutoOrder order){
+        try {
+            if (order.getOrderStatus() == Constants.OS_SUBMIT) {
+                order.setOrderStatus(Constants.OS_CANCEL);
+                
+            }
+            else if(order.getOrderStatus() == Constants.OS_REJECT){
+                order.setOrderStatus(Constants.OS_CANCEL);
+            }
+            else if(order.getOrderStatus() == Constants.OS_EXECUTE){
+                order.setOrderStatus(Constants.OS_CANCEL);
+            }
+            return true;
+        }
+        catch (Exception e){
+
+        }
+        return false;
     }
 }
