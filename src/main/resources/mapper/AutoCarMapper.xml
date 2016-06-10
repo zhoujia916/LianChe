@@ -304,6 +304,9 @@
             <if test="status != null">
                 and ac.status = #{status}
             </if>
+            <if test="addUserId > 0">
+                and ac.add_user_id = ${addUserId}
+            </if>
         </where>
         order by ${sort} ac.add_time desc, ac.car_id desc
     </select>

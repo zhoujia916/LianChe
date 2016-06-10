@@ -152,13 +152,13 @@
         left join auto_user_profile as aup on aup.user_id = au.user_id
         <where>  
         	<if test="userId > 0">
-                and user_id = #{userId}
+                and au.user_id = #{userId}
             </if>
             <if test="username !=null and username!='' ">
-                and user_name = #{username}
+                and au.user_name = #{username}
             </if>
             <if test="password !=null and password !='' ">
-                and password = #{password}
+                and au.password = #{password}
             </if>
         </where> 
     </select>

@@ -167,7 +167,10 @@ public class StringUtil {
         String pattern = "^\\d{11,11}$";
         return isMatch(input, pattern);
     }
-
+    public static boolean isIdNumber(String input) {
+        String pattern = "((^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$))";
+        return isMatch(input, pattern);
+    }
     public static boolean isDate(String input){
         String pattern = "^\\d{4}-\\d{2}-\\d{2}$";
         return isMatch(input, pattern);

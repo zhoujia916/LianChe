@@ -8,15 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.BaseController;
-import puzzle.lianche.entity.AutoSms;
-import puzzle.lianche.entity.AutoUser;
-import puzzle.lianche.entity.AutoUserProfile;
+import puzzle.lianche.entity.*;
 import puzzle.lianche.push.SmsPush;
-import puzzle.lianche.service.IAutoSmsService;
-import puzzle.lianche.service.IAutoUserProfileService;
-import puzzle.lianche.service.IAutoUserService;
+import puzzle.lianche.service.*;
 import puzzle.lianche.utils.*;
 
+import javax.swing.event.ListDataEvent;
 import java.util.*;
 import java.lang.Object;
 
@@ -32,6 +29,83 @@ public class AutoUserController extends BaseController {
 
     @Autowired
     private IAutoSmsService autoSmsService;
+
+    @Autowired
+    private IAutoOrderService autoOrderService;
+
+    @Autowired
+    private IAutoCarService autoCarService;
+
+    /**
+     * 发送短信验证码用于注册和找回密码
+     * @param phone
+     * @param keyword
+     * @return
+     */
+    @RequestMapping(value = "/sendCode.do")
+    @ResponseBody
+    public Result sendCode(String phone, String keyword){
+        Result result = new Result();
+        try{
+            if(StringUtil.isNullOrEmpty(phone)){
+                result.setCode(-1);
+                result.setMsg("手机号不能为空！");
+            }else if(!StringUtil.isPhone(phone)){
+                result.setCode(-1);
+                result.setMsg("电话号码格式错误！");
+            }else if(StringUtil.isNullOrEmpty(keyword)){
+                result.setCode(-1);
+                result.setMsg("请求参数错误！");
+            }else{
+                //得到六位的随机数作为验证码
+                String code= CommonUtil.getCode(6);
+                Map<String,Object> map = new HashMap<String, Object>();
+                map.put("code", code);
+                String response = SmsPush.send(phone, 1, map);
+                if(SmsPush.isSuccess(response)){
+                    AutoSms sms=new AutoSms();
+                    if("register".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_REGISTER);
+                    }else if("retrieve".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
+                    }else if("modify".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_MODIFY);
+                    }else if("notice".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_NOTICE);
+                    }
+                    sms.setSmsContent("发送验证码："+code);
+                    sms.setCode(code);
+                    sms.setPhone(phone);
+                    sms.setStatus(Constants.SMS_STATUS_TRUE);
+                    autoSmsService.insert(sms);
+                    result.setData(code);
+                }else{
+                    AutoSms sms=new AutoSms();
+                    if("register".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_REGISTER);
+                    }else if("retrieve".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
+                    }else if("modify".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_MODIFY);
+                    }else if("notice".equalsIgnoreCase(keyword)){
+                        sms.setSmsType(Constants.SMS_TYPE_NOTICE);
+                    }
+                    sms.setSmsContent("发送验证码："+code);
+                    sms.setCode(code);
+                    sms.setPhone(phone);
+                    sms.setStatus(Constants.SMS_STATUS_FALSE);
+                    autoSmsService.insert(sms);
+                    result.setCode(1);
+                    result.setMsg(SmsPush.getError(response));
+                }
+            }
+        }catch (Exception e){
+            result.setCode(1);
+            result.setMsg("发送短信验证码出错");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
 
     /**
      * 注册会员信息
@@ -89,7 +163,7 @@ public class AutoUserController extends BaseController {
                             jsonObject.put("isAuthenticate",false);
                             array.add(jsonObject);
                             result.setData(array);
-                        }else{;
+                        }else{
                             result.setCode(1);
                             result.setMsg("注册失败");
                         }
@@ -138,14 +212,16 @@ public class AutoUserController extends BaseController {
                     //加载个人资料
                     JSONArray array=new JSONArray();
                     JSONObject jsonObject=JSONObject.fromObject(user);
+                    if(user.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                        jsonObject.put("isAuthenticate",true);
+                    }else{
+                        jsonObject.put("isAuthenticate",false);
+                    }
                     map.clear();
                     map.put("userId",user.getUserId());
                     AutoUserProfile profile=autoUserProfileService.query(map);
                     if(profile!=null){
-                        jsonObject.put("isAuthenticate",true);
                         jsonObject.put("profile",profile);
-                    }else{
-                        jsonObject.put("isAuthenticate",false);
                     }
                     array.add(jsonObject);
                     result.setData(array);
@@ -225,77 +301,6 @@ public class AutoUserController extends BaseController {
     }
 
     /**
-     * 发送短信验证码用于注册和找回密码
-     * @param phone
-     * @param keyword
-     * @return
-     */
-    @RequestMapping(value = "/sendCode.do")
-    @ResponseBody
-    public Result sendCode(String phone, String keyword){
-        Result result = new Result();
-        try{
-            if(StringUtil.isNullOrEmpty(phone)){
-                result.setCode(-1);
-                result.setMsg("手机号不能为空！");
-            }else if(!StringUtil.isPhone(phone)){
-                result.setCode(-1);
-                result.setMsg("电话号码格式错误！");
-            }else if(StringUtil.isNullOrEmpty(keyword)){
-                result.setCode(-1);
-                result.setMsg("请求参数错误！");
-            }else{
-                //得到六位的随机数作为验证码
-                String code= CommonUtil.getCode(6);
-                Map<String,Object> map = new HashMap<String, Object>();
-                map.put("code", code);
-                String response = SmsPush.send(phone, 1, map);
-                if(SmsPush.isSuccess(response)){
-                    AutoSms sms=new AutoSms();
-                    if("register".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_REGISTER);
-                    }else if("retrieve".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
-                    }else if("modify".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_MODIFY);
-                    }else if("notice".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_NOTICE);
-                    }
-                    sms.setSmsContent("发送验证码："+code);
-                    sms.setCode(code);
-                    sms.setPhone(phone);
-                    sms.setStatus(Constants.SMS_STATUS_TRUE);
-                    autoSmsService.insert(sms);
-                    result.setData(code);
-                }else{
-                    AutoSms sms=new AutoSms();
-                    if("register".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_REGISTER);
-                    }else if("retrieve".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
-                    }else if("modify".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_MODIFY);
-                    }else if("notice".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_NOTICE);
-                    }
-                    sms.setSmsContent("发送验证码："+code);
-                    sms.setCode(code);
-                    sms.setPhone(phone);
-                    sms.setStatus(Constants.SMS_STATUS_FALSE);
-                    autoSmsService.insert(sms);
-                    result.setCode(1);
-                    result.setMsg(SmsPush.getError(response));
-                }
-            }
-        }catch (Exception e){
-            result.setCode(1);
-            result.setMsg("发送短信验证码出错");
-            logger.error(result.getMsg()+e.getMessage());
-        }
-        return result;
-    }
-
-    /**
      * 完善个人信息
      * @param autoUserProfile
      * @return
@@ -323,9 +328,6 @@ public class AutoUserController extends BaseController {
             }else if(StringUtil.isNullOrEmpty(autoUserProfile.getShopDesc())){
                 result.setCode(-1);
                 result.setMsg("详细信息不能为空！");
-            }else if(autoUserProfile.getShopDesc().length()<10){
-                result.setCode(-1);
-                result.setMsg("详细信息描述必须小于10个字！");
             }else if(StringUtil.isNullOrEmpty(autoUserProfile.getShopBrands())){
                 result.setCode(-1);
                 result.setMsg("主营品牌不能为空！");
@@ -335,16 +337,16 @@ public class AutoUserController extends BaseController {
             }else{
                 autoUserProfile.setPhone(null);
                 Map<String,Object> map=new HashMap<String, Object>();
-                map.put("userId",6);
+                map.put("userId",autoUserProfile.getUserId());
                 AutoUserProfile userProfile=autoUserProfileService.query(map);
                 if(userProfile==null){
-                    autoUserProfile.setUserId(6);
+                    autoUserProfile.setUserId(autoUserProfile.getUserId());
                     if(!autoUserProfileService.insert(autoUserProfile)){
                         result.setCode(1);
                         result.setMsg("完善个人信息出错！");
                     }
                 }else{
-                    autoUserProfile.setUserId(userProfile.getUserId());
+                    autoUserProfile.setProfileId(userProfile.getProfileId());
                     if(!autoUserProfileService.update(autoUserProfile)){
                         result.setCode(1);
                         result.setMsg("完善个人信息出错！");
@@ -354,6 +356,106 @@ public class AutoUserController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("操作完善个人时信息出错！");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 实名认证
+     * @param idNumber
+     * @return
+     */
+    @RequestMapping(value = "/certified.do")
+    @ResponseBody
+    public Result certified(String idNumber,Integer userId){
+        Result result=new Result();
+        try{
+            if(StringUtil.isNullOrEmpty(idNumber)){
+                result.setCode(-1);
+                result.setMsg("身份证号码不能为空！");
+            }else if(!StringUtil.isIdNumber(idNumber)){
+                result.setCode(-1);
+                result.setMsg("身份证号码格式出错！");
+            }else{
+                Map<String, Object> map=new HashMap<String, Object>();
+                map.put("userId",userId);
+                AutoUserProfile autoUserProfile=autoUserProfileService.query(map);
+                if(autoUserProfile==null){
+                    AutoUserProfile userProfile=new AutoUserProfile();
+                    userProfile.setUserId(userId);
+                    userProfile.setIdNumber(idNumber);
+                    if(!autoUserProfileService.insert(userProfile)){
+                        result.setCode(1);
+                        result.setMsg("操作实名认证失败");
+                    }
+                }else{
+                    AutoUserProfile userProfile=new AutoUserProfile();
+                    userProfile.setProfileId(autoUserProfile.getProfileId());
+                    userProfile.setIdNumber(idNumber);
+                    if(!autoUserProfileService.update(userProfile)){
+                        result.setCode(1);
+                        result.setMsg("操作实名认证失败");
+                    }
+                }
+            }
+        }catch (Exception e){
+            result.setCode(1);
+            result.setMsg("操作实名认证出错！");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 查看会员中心
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/memberCenter.do")
+    @ResponseBody
+    public Result memberCenter(Integer userId){
+        Result result=new Result();
+        try{
+            Map<String, Object> map=new HashMap<String, Object>();
+            map.put("userId",userId);
+            AutoUser autoUser=autoUserService.query(map);
+            if(autoUser!=null){
+                //加载个人资料
+                JSONArray array=new JSONArray();
+                JSONObject jsonObject=JSONObject.fromObject(autoUser);
+                if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                    jsonObject.put("isAuthenticate",true);
+                }else{
+                    jsonObject.put("isAuthenticate",false);
+                }
+                AutoUserProfile profile=autoUserProfileService.query(map);
+                if(profile!=null){
+                    jsonObject.put("profile",profile);
+                }
+                map.clear();
+                map.put("sellerId", userId);
+                map.put("buyerId",userId);
+                List<AutoOrder> orderList=autoOrderService.queryList(map);
+                if(orderList!=null && orderList.size()>0){
+                    jsonObject.put("orderNumber",orderList.size());
+                }else{
+                    jsonObject.put("orderNumber",0);
+                }
+                map.clear();
+                map.put("addUserId",userId);
+                List<AutoCar> carList=autoCarService.queryList(map);
+                if(carList!=null && carList.size()>0){
+                    jsonObject.put("carNumber",carList.size());
+                }else{
+                    jsonObject.put("carNumber",0);
+                }
+                array.add(jsonObject);
+                result.setData(array);
+            }
+        }catch (Exception e){
+            result.setCode(1);
+            result.setMsg("查看会员中心出错！");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

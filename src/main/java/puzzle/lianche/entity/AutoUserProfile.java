@@ -50,6 +50,7 @@ public class AutoUserProfile implements Serializable{
 	private Integer profileId;
 	@Column(name="user_id", unique=true)
 	private Integer userId;
+    private String idNumber;
 	@Column(name="real_name", nullable=true, length=20)
 	private String realName;
 	@Column(name="shop_name", nullable=true, length=50)
@@ -84,8 +85,16 @@ public class AutoUserProfile implements Serializable{
 	public void setUserId(Integer userId){
 		this.userId = userId;
 	}
-		
-	public String getRealName(){
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public String getRealName(){
 		return realName;
 	}
 	

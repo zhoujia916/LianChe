@@ -3,6 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="dc27f1ad-2cd9-47c4-afe2-87bf3e7fcf4e" name="Default" comment="Merge remote-tracking branch 'origin/master'&#10;">
 <<<<<<< HEAD
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/phone/AutoUserController.java" afterPath="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/phone/AutoUserController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/puzzle/lianche/entity/AutoUserProfile.java" afterPath="$PROJECT_DIR$/src/main/java/puzzle/lianche/entity/AutoUserProfile.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/AutoUserProfileMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/AutoUserProfileMapper.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/puzzle/lianche/utils/StringUtil.java" afterPath="$PROJECT_DIR$/src/main/java/puzzle/lianche/utils/StringUtil.java" />
+=======
+<<<<<<< HEAD
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/puzzle/lianche/entity/AutoBrandCat.java" afterPath="$PROJECT_DIR$/src/main/java/puzzle/lianche/entity/AutoBrandCat.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/AutoBrandCatMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/AutoBrandCatMapper.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/puzzle/lianche/service/impl/AutoBrandCatServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/puzzle/lianche/service/impl/AutoBrandCatServiceImpl.java" />
@@ -49,6 +55,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/tpl/admin/user/index.html" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/tpl/admin/user/index.html" />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
     </list>
     <list id="b85d0da9-c273-4691-b074-8e95104f81f4" name="Rejected commit: Default" comment="Merge remote-tracking branch 'origin/master'&#10;" />
     <ignored path="LianChe.iws" />
@@ -79,6 +86,9 @@
     <favorites_list name="LianChe" />
   </component>
   <component name="FileEditorManager">
+<<<<<<< HEAD
+    <leaf />
+=======
     <leaf>
 <<<<<<< HEAD
       <file leaf-file-name="AutoOrderController.java" pinned="false" current="true" current-in-tab="true">
@@ -225,6 +235,7 @@
         </entry>
       </file>
     </leaf>
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -245,7 +256,10 @@
       <list>
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
         <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/admin/UserGroupController.java" />
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/admin/CarController.java" />
         <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/admin/DeptController.java" />
         <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/admin/FeedBackController.java" />
@@ -291,10 +305,7 @@
         <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/service/impl/SystemUserServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/resources/mapper/SystemUserMapMapper.xml" />
         <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/Constants.java" />
-        <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/entity/AutoUserProfile.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/mapper/AutoUserProfileMapper.xml" />
         <option value="$PROJECT_DIR$/src/test/java/puzzle/lianche/ControllerTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/phone/AutoUserController.java" />
         <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/admin/AutoUserController.java" />
 <<<<<<< HEAD
         <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/service/impl/AutoCarAttrServiceImpl.java" />
@@ -335,7 +346,14 @@
         <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/phone/AutoOrderController.java" />
 =======
         <option value="$PROJECT_DIR$/src/main/resources/mapper/AutoSmsMapper.xml" />
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/entity/AutoUserProfile.java" />
+        <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/utils/StringUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/mapper/AutoUserProfileMapper.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/phone/AutoUserController.java" />
+=======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
       </list>
     </option>
   </component>
@@ -570,6 +588,9 @@
     </navigator>
     <panes>
 <<<<<<< HEAD
+      <pane id="ProjectPane">
+=======
+<<<<<<< HEAD
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -716,42 +737,7 @@
 =======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
       <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LianChe" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LianChe" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controller" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LianChe" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LianChe" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="admin" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         <subPane>
           <PATH>
             <PATH_ELEMENT>
@@ -824,6 +810,66 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="lianche" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LianChe" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LianChe" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lianche" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="utils" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LianChe" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LianChe" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lianche" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="entity" />
               <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -888,6 +934,76 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="phone" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LianChe" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LianChe" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lianche" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="admin" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LianChe" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LianChe" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LianChe" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LianChe" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="admin" />
               <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1518,7 +1634,11 @@
 =======
       <workItem from="1465262964110" duration="4730000" />
       <workItem from="1465267892408" duration="24330000" />
+<<<<<<< HEAD
+      <workItem from="1465349263406" duration="19218000" />
+=======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
     </task>
     <task id="LOCAL-00001" summary="Merge remote-tracking branch 'origin/master'&#10;">
       <created>1460974818260</created>
@@ -1537,10 +1657,14 @@
   </component>
   <component name="TimeTrackingManager">
 <<<<<<< HEAD
+    <option name="totallyTimeSpent" value="815397000" />
+=======
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="823802000" />
 =======
     <option name="totallyTimeSpent" value="796179000" />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -1564,12 +1688,22 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270525" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23200513" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="619" y="53" width="361" height="754" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904884" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3261745" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2169448" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23200513" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="619" y="53" width="361" height="754" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32974428" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47510093" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28590605" sideWeight="0.50120485" order="3" side_tool="false" content_ui="tabs" />
+=======
 <<<<<<< HEAD
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
@@ -1579,10 +1713,14 @@
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32974428" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.66890985" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.66890985" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7158177" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7158177" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+=======
 <<<<<<< HEAD
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7025572" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1601,23 +1739,21 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24903722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1966581" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
 =======
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32991013" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7025572" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32839838" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18806162" sideWeight="0.49879518" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25168237" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3261745" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904884" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47510093" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28590605" sideWeight="0.50120485" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3230148" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2866324" sideWeight="0.500998" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7025572" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24903722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
+=======
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13478819" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13478819" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32839838" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22721438" sideWeight="0.49879518" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25168237" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44186047" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1625,18 +1761,25 @@
 <<<<<<< HEAD
 =======
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32573727" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3230148" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
+=======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270525" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2169448" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23200513" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="619" y="53" width="361" height="754" />
+<<<<<<< HEAD
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2169448" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+=======
 <<<<<<< HEAD
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
 =======
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32974428" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
@@ -1652,7 +1795,7 @@
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7025572" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32839838" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18806162" sideWeight="0.49879518" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22721438" sideWeight="0.49879518" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25168237" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44186047" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
@@ -1663,13 +1806,13 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904884" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32573727" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.47510093" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47510093" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28590605" sideWeight="0.50120485" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3230148" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2866324" sideWeight="0.500998" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24903722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13478819" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13478819" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
@@ -1731,6 +1874,8 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD
     <entry file="jar://$MAVEN_REPOSITORY$/org/mybatis/mybatis/3.2.6/mybatis-3.2.6.jar!/org/apache/ibatis/plugin/Invocation.class">
       <provider selected="true" editor-type-id="text-editor">
@@ -1915,17 +2060,12 @@
         </state>
       </provider>
     </entry>
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
     <entry file="file://$PROJECT_DIR$/src/main/resources/mapper/AutoBrandCatMapper.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.17780939" vertical-offset="2901" max-vertical-offset="3808">
           <caret line="89" column="56" selection-start-line="89" selection-start-column="47" selection-end-line="89" selection-end-column="56" />
-          <folding>
-            <marker date="1464924505403" expanded="true" signature="-1:-1" placeholder="insert into ..." />
-            <marker date="1464924505403" expanded="true" signature="-1:-1" placeholder="update auto_..." />
-            <marker date="1464924505403" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1464924505403" expanded="true" signature="-1:-1" placeholder="select from ..auto_brand_cat..." />
-            <marker date="1464924505403" expanded="true" signature="-1:-1" placeholder="select abc.*..auto_brand_cat..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1933,8 +2073,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+=======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           <folding />
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -1948,8 +2091,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6181818" vertical-offset="2040" max-vertical-offset="15232">
           <caret line="72" column="63" selection-start-line="72" selection-start-column="57" selection-end-line="72" selection-end-column="63" />
+<<<<<<< HEAD
+=======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           <folding />
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2026,8 +2172,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.49682876" vertical-offset="4695" max-vertical-offset="11186">
           <caret line="145" column="141" selection-start-line="145" selection-start-column="141" selection-end-line="145" selection-end-column="141" />
+<<<<<<< HEAD
+=======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           <folding />
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2057,7 +2206,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="436" max-vertical-offset="6256">
           <caret line="186" column="71" selection-start-line="186" selection-start-column="71" selection-end-line="186" selection-end-column="71" />
           <folding>
-            <element signature="e#1379#1394#0" expanded="true" />
+            <element signature="e#1379#1394#0" expanded="false" />
             <element signature="method#insertUserMap#0;class#SystemUserServiceImpl#0" expanded="false" />
             <element signature="method#deleteUserRelated#0;class#SystemUserServiceImpl#0" expanded="false" />
             <element signature="method#insert#0;class#SystemUserServiceImpl#0" expanded="false" />
@@ -2069,6 +2218,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.4612403" vertical-offset="3326" max-vertical-offset="4488">
           <caret line="120" column="16" selection-start-line="120" selection-start-column="16" selection-end-line="120" selection-end-column="16" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1465281984532" expanded="true" signature="-1:-1" placeholder="insert into ..." />
             <marker date="1465281984532" expanded="true" signature="-1:-1" placeholder="insert into ..." />
@@ -2078,6 +2230,7 @@
             <marker date="1465281984532" expanded="true" signature="-1:-1" placeholder="select * fro..system_user_map..." />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           </folding>
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2140,7 +2293,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="714">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2148,8 +2300,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="9.55814" vertical-offset="411" max-vertical-offset="884">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+=======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           <folding />
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2163,8 +2318,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="918">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+=======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           <folding />
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2178,8 +2336,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1122">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+=======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           <folding />
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2193,6 +2354,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="7.116279" vertical-offset="306" max-vertical-offset="782">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+=======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           <folding />
         </state>
@@ -2225,6 +2388,7 @@
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           <folding />
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2238,8 +2402,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-8.158915" vertical-offset="4346" max-vertical-offset="4862">
           <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+<<<<<<< HEAD
+=======
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           <folding />
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2308,7 +2475,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="4788" max-vertical-offset="5304">
           <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2316,6 +2482,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.1860465" vertical-offset="612" max-vertical-offset="4012">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1464924505440" expanded="true" signature="-1:-1" placeholder="insert into ..." />
             <marker date="1464924505440" expanded="true" signature="-1:-1" placeholder="insert into ..." />
@@ -2325,6 +2494,7 @@
             <marker date="1464924505440" expanded="true" signature="-1:-1" placeholder="select from ..system_role..." />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           </folding>
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2396,7 +2566,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334" vertical-offset="1142" max-vertical-offset="2992">
           <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2404,7 +2573,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334" vertical-offset="6310" max-vertical-offset="8738">
           <caret line="220" column="0" selection-start-line="220" selection-start-column="0" selection-end-line="220" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2412,32 +2580,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.2057143" vertical-offset="1482" max-vertical-offset="4624">
           <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/entity/AutoUserProfile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.928375" vertical-offset="2741" max-vertical-offset="3536">
-          <caret line="40" column="40" selection-start-line="40" selection-start-column="40" selection-end-line="40" selection-end-column="40" />
-          <folding>
-            <element signature="e#3091#3092#0" expanded="true" />
-            <element signature="e#3113#3114#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/mapper/AutoUserProfileMapper.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.1593173" vertical-offset="4533" max-vertical-offset="5644">
-          <caret line="68" column="40" selection-start-line="68" selection-start-column="40" selection-end-line="68" selection-end-column="40" />
-          <folding>
-            <marker date="1465287562356" expanded="true" signature="-1:-1" placeholder="insert into ..." />
-            <marker date="1465287562356" expanded="true" signature="-1:-1" placeholder="update auto_..." />
-            <marker date="1465287562356" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1465287562356" expanded="true" signature="-1:-1" placeholder="select * fro..auto_user_profile..." />
-            <marker date="1465287562356" expanded="true" signature="-1:-1" placeholder="select from ..auto_user_profile..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2445,6 +2587,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.2537" vertical-offset="9285" max-vertical-offset="11186">
           <caret line="200" column="34" selection-start-line="200" selection-start-column="34" selection-end-line="200" selection-end-column="34" />
+<<<<<<< HEAD
+=======
           <folding>
             <marker date="1465275922606" expanded="false" signature="-1:-1" placeholder="..." />
           </folding>
@@ -2486,6 +2630,7 @@
         <state vertical-scroll-proportion="0.33333334" vertical-offset="1766" max-vertical-offset="11628">
           <caret line="58" column="32" selection-start-line="58" selection-start-column="32" selection-end-line="58" selection-end-column="32" />
           <folding />
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2511,6 +2656,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3088" max-vertical-offset="3808">
           <caret line="100" column="35" selection-start-line="100" selection-start-column="35" selection-end-line="100" selection-end-column="35" />
+<<<<<<< HEAD
+=======
           <folding>
             <element signature="imports" expanded="true" />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
@@ -2527,6 +2674,7 @@
             <element signature="e#635#636#0" expanded="true" />
             <element signature="e#702#703#0" expanded="true" />
           </folding>
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2553,6 +2701,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.379845" vertical-offset="3292" max-vertical-offset="3808">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
+          <folding />
+=======
           <folding>
             <marker date="1464924505413" expanded="true" signature="-1:-1" placeholder="insert into ..." />
             <marker date="1464924505413" expanded="true" signature="-1:-1" placeholder="update auto_..." />
@@ -2561,6 +2712,7 @@
             <marker date="1464924505413" expanded="true" signature="-1:-1" placeholder="select af.*,..auto_feedback..." />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           </folding>
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
@@ -2583,7 +2735,118 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7888">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/mapper/AutoSmsMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.86821705" vertical-offset="4210" max-vertical-offset="4998">
+          <caret line="137" column="28" selection-start-line="137" selection-start-column="28" selection-end-line="137" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/mapper/AutoUserPicMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4046">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <marker date="1465179959302" expanded="true" signature="-1:-1" placeholder="insert into ..." />
+            <marker date="1465179959302" expanded="true" signature="-1:-1" placeholder="update auto_..." />
+            <marker date="1465179959302" expanded="true" signature="-1:-1" placeholder="delete from ..." />
+            <marker date="1465179959302" expanded="true" signature="-1:-1" placeholder="select from ..auto_user_pic..." />
+            <marker date="1465179959302" expanded="true" signature="-1:-1" placeholder="select from ..auto_user_pic..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/utils/CommonUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.1422477" vertical-offset="3751" max-vertical-offset="4454">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/utils/ConvertUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.9018493" vertical-offset="1473" max-vertical-offset="2176">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/task/UploadUserTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32136106" vertical-offset="0" max-vertical-offset="612">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/plugin/ueditor/UploadFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.6927454" vertical-offset="623" max-vertical-offset="1326">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/plugin/ueditor/UploadHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19345662" vertical-offset="0" max-vertical-offset="5610">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/plugin/ueditor/UHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19345662" vertical-offset="0" max-vertical-offset="1428">
+          <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/plugin/ueditor/UploadConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.6927454" vertical-offset="555" max-vertical-offset="1258">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/phone/AutoOrderController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.6536312" vertical-offset="2820" max-vertical-offset="4352">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+          <folding>
+            <element signature="method#add#0;class#AutoOrderController#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/phone/AutoCarController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38975817" vertical-offset="1358" max-vertical-offset="3638">
+          <caret line="65" column="46" selection-start-line="65" selection-start-column="41" selection-end-line="65" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/mapper/AutoUserProfileMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.628734" vertical-offset="102" max-vertical-offset="5848">
+          <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
+          <folding>
+<<<<<<< HEAD
+            <marker date="1465363704935" expanded="true" signature="-1:-1" placeholder="insert into ..." />
+            <marker date="1465363704935" expanded="true" signature="-1:-1" placeholder="update auto_..." />
+            <marker date="1465363704935" expanded="true" signature="-1:-1" placeholder="delete from ..." />
+            <marker date="1465363704935" expanded="true" signature="-1:-1" placeholder="select * fro..auto_user_profile..." />
+            <marker date="1465363704935" expanded="true" signature="-1:-1" placeholder="select from ..auto_user_profile..." />
+=======
             <marker date="1464925722525" expanded="true" signature="-1:-1" placeholder="insert into ..." />
             <marker date="1464925722525" expanded="true" signature="-1:-1" placeholder="insert into ..." />
             <marker date="1464925722525" expanded="true" signature="-1:-1" placeholder="update auto_..." />
@@ -2595,10 +2858,29 @@
             <marker date="1464925722525" expanded="true" signature="-1:-1" placeholder="select user_..auto_user..." />
             <marker date="1464925722525" expanded="true" signature="-1:-1" placeholder="select real_..auto_user_profile..." />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/utils/StringUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.41963017" vertical-offset="4941" max-vertical-offset="5644">
+          <caret line="170" column="26" selection-start-line="170" selection-start-column="26" selection-end-line="170" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/entity/AutoUserProfile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.79457366" vertical-offset="1358" max-vertical-offset="3638">
+          <caret line="64" column="29" selection-start-line="64" selection-start-column="19" selection-end-line="64" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+=======
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/entity/AutoOrderCar.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -2618,13 +2900,13 @@
             <element signature="e#3167#3168#0" expanded="true" />
             <element signature="e#3207#3208#0" expanded="true" />
 =======
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
     <entry file="file://$PROJECT_DIR$/src/main/resources/mapper/AutoUserMapper.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3720931" vertical-offset="4108" max-vertical-offset="4624">
-          <caret line="100" column="14" selection-start-line="100" selection-start-column="14" selection-end-line="100" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.33854908" vertical-offset="3366" max-vertical-offset="5066">
+          <caret line="148" column="63" selection-start-line="148" selection-start-column="63" selection-end-line="148" selection-end-column="63" />
           <folding>
             <element signature="tag#delete#0;tag#mapper#0" expanded="false" />
-            <element signature="tag#select#0;tag#mapper#0" expanded="false" />
             <marker date="1465271788139" expanded="true" signature="-1:-1" placeholder="insert into ..." />
             <marker date="1465271788139" expanded="true" signature="-1:-1" placeholder="update auto_..." />
             <marker date="1465271788139" expanded="true" signature="-1:-1" placeholder="delete from ..." />
@@ -2635,6 +2917,9 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/phone/AutoUserController.java">
+=======
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/service/IAutoOrderService.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -2650,29 +2935,65 @@
           <caret line="240" column="63" selection-start-line="240" selection-start-column="63" selection-end-line="240" selection-end-column="63" />
 =======
     <entry file="file://$PROJECT_DIR$/src/main/resources/mapper/AutoSmsMapper.xml">
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.86821705" vertical-offset="4210" max-vertical-offset="4998">
-          <caret line="137" column="28" selection-start-line="137" selection-start-column="28" selection-end-line="137" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.76256984" vertical-offset="2548" max-vertical-offset="3672">
+          <caret line="424" column="17" selection-start-line="424" selection-start-column="17" selection-end-line="424" selection-end-column="17" />
           <folding>
-            <marker date="1465291542508" expanded="true" signature="-1:-1" placeholder="insert into ..." />
-            <marker date="1465291542508" expanded="true" signature="-1:-1" placeholder="insert into ..." />
-            <marker date="1465291542508" expanded="true" signature="-1:-1" placeholder="update auto_..." />
-            <marker date="1465291542508" expanded="true" signature="-1:-1" placeholder="delete from ..." />
-            <marker date="1465291542508" expanded="true" signature="-1:-1" placeholder="select from ..auto_sms..." />
-            <marker date="1465291542508" expanded="true" signature="-1:-1" placeholder="select * fro..auto_sms..." />
+            <element signature="method#sendCode#0;class#AutoUserController#0" expanded="false" />
+            <element signature="e#1971#1987#0" expanded="true" />
+            <element signature="method#register#0;class#AutoUserController#0" expanded="false" />
+            <element signature="e#5440#5456#0" expanded="true" />
+            <element signature="method#login#0;class#AutoUserController#0" expanded="false" />
+            <element signature="e#8293#8309#0" expanded="true" />
+            <element signature="method#retrieve#0;class#AutoUserController#0" expanded="false" />
+            <element signature="e#10855#10871#0" expanded="true" />
+            <element signature="method#prefectUser#0;class#AutoUserController#0" expanded="false" />
+            <element signature="e#13811#13827#0" expanded="true" />
+            <element signature="method#certified#0;class#AutoUserController#0" expanded="false" />
+            <element signature="e#15382#15398#0" expanded="true" />
+            <element signature="e#16719#16735#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34139404" vertical-offset="2344" max-vertical-offset="11628">
+          <caret line="77" column="68" selection-start-line="77" selection-start-column="32" selection-end-line="77" selection-end-column="68" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/admin/AutoUserController.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state vertical-scroll-proportion="0.3954481" vertical-offset="2476" max-vertical-offset="4590">
+          <caret line="102" column="67" selection-start-line="102" selection-start-column="67" selection-end-line="102" selection-end-column="67" />
+=======
         <state vertical-scroll-proportion="-5.337209" vertical-offset="3060" max-vertical-offset="4590">
           <caret line="30" column="16" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/entity/AutoOrder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.43527737" vertical-offset="510" max-vertical-offset="3808">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/entity/AutoOrderCar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.14509246" vertical-offset="306" max-vertical-offset="2754">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding />
+=======
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/puzzle/lianche/controller/phone/AutoOrderController.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -2696,6 +3017,7 @@
             <element signature="method#prefectUser#0;class#AutoUserController#0" expanded="false" />
 >>>>>>> 3c62c861dd2329a08ed7e62e45bb27958f97be6b
           </folding>
+>>>>>>> 11f6fa862aba39fb97bd205408d8dd8507635c07
         </state>
       </provider>
     </entry>
