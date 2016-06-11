@@ -235,18 +235,18 @@ public class Constants {
 
     //region 订单
     /*
-        item_name   		order_status     		pay_status    		shipping_status           actions
-    1. 	提交订单    			买家已提交订单			等待买家付订金        未提车                     cancel
+        item_name   		order_status     		pay_status    		shipping_status           buyer actions         seller_actions                      admin
+    1. 	提交订单    			买家已提交订单			等待买家付订金        未提车                     cancel  payment
 
-    2. 	买家支付     			买家已提交订单			买家已支付订金	    未提车
+    2. 	买家支付     			买家已提交订单			买家已支付订金	    未提车                     cancel                accept reject
 
     3. 	卖家同意订单         	卖家已同意交易            等待卖家付订金    	未提车
 
-    3A.	买家拒绝订单         	交易取消                 买家已支付订金        未提车
+    3A.	买家拒绝订单         	交易拒绝                 买家已支付订金        未提车
 
     4. 	卖家支付      		交易中	        		卖家已支付订金        未提车
 
-    5. 	买家确认收货         	交易成功                 等待系统退还定金       已提车
+    5. 	买家确认收货         	交易成功                 等待系统退还定金       已提车                    receive                notify(提醒买家确认收货)
 
     6. 	系统退还订金         	交易成功                 定金已经退还          已提车
 
@@ -259,10 +259,10 @@ public class Constants {
      */
     public static final Integer OS_SUBMIT = 1;
     public static final Integer OS_ACCEPT = 2;
-    public static final Integer OS_REJECT = 3;
-    public static final Integer OS_EXECUTE = 4;
-    public static final Integer OS_SUCCESS = 5;
-    public static final Integer OS_CANCEL = 0;
+    public static final Integer OS_EXECUTE = 3;
+    public static final Integer OS_SUCCESS = 4;
+    public static final Integer OS_CANCEL = -2;
+    public static final Integer OS_CLOSE = -1;
 
     /**
      * 支付状态(等待买家支付订金,买家已支付订金,等待卖家支付订金,卖家已支付订金,等待系统退还订金,系统已退还订金)
@@ -280,6 +280,13 @@ public class Constants {
     public static final Integer SS_UNSHIP = 1;
     public static final Integer SS_SHIPED = 2;
 
+    /**
+     * 客户端状态(未支付订金,已支付订金,已成交,已取消)
+     */
+    public static final Integer CS_UNDEPOSIT = 1;
+    public static final Integer CS_DEPOSIT = 2;
+    public static final Integer CS_SUCCESS = 3;
+    public static final Integer CS_CANCEL = 4;
     //endregion
 
 
