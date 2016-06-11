@@ -96,26 +96,27 @@
     <select id="queryList" parameterType="Map" resultMap="AutoOrder">
         select <include refid="allColumn"/> from auto_order
         <where>
-	        <trim prefixOverrides="and | or">
-	        	<if test="orderId > 0">
-	                and order_id = #{orderId}
-	            </if>
-	        	<if test="orderSn != null">
-	                and order_sn = #{orderSn}
-	            </if>
-	        	<if test="orderStatus > 0">
-	                and order_status = #{orderStatus}
-	            </if>
-	        	<if test="payStatus > 0">
-	                and pay_status = #{payStatus}
-	            </if>
-	        	<if test="shipStatus > 0">
-	                and ship_status = #{shipStatus}
-	            </if>
-                <if test="sellerId > 0">
-                    and seller_id = ${sellerId} or buyer_id = ${buyerId}
-                </if>
-	        </trim>
+            <if test="orderId > 0">
+                and order_id = #{orderId}
+            </if>
+            <if test="orderSn != null">
+                and order_sn = #{orderSn}
+            </if>
+            <if test="orderStatus > 0">
+                and order_status = #{orderStatus}
+            </if>
+            <if test="payStatus > 0">
+                and pay_status = #{payStatus}
+            </if>
+            <if test="shipStatus > 0">
+                and ship_status = #{shipStatus}
+            </if>
+            <if test="orderIdList!=null and orderIdList.size()>0">
+                and order_id in
+                <foreach collection="orderIdList" item="orderId" open="(" separator="," close=")">
+                    ${orderId}
+                </foreach>
+            </if>
         </where>
     </select>
 

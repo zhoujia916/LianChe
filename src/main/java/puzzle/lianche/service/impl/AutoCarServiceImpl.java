@@ -29,19 +29,14 @@ public class AutoCarServiceImpl implements IAutoCarService {
     private IAutoCarAttrService autoCarAttrService;
 
     @Autowired
-    private IAutoBrandService autoBrandService;
-
-    @Autowired
-    private IAutoBrandCatService autoBrandCatService;
-
-    @Autowired
-    private IAutoBrandModelService autoBrandModelService;
+    private IAutoCollectService autoCollectService;
 
     private static Logger logger = LoggerFactory.getLogger(AutoCarServiceImpl.class);
 
     public void deleteCarRelated(Map map){
         autoCarAttrService.delete(map);
         autoCarPicService.delete(map);
+        autoCarAttrService.delete(map);
     }
 
 	/**

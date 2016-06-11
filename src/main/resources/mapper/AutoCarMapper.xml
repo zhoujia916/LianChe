@@ -274,6 +274,12 @@
         inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
         inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
         <where>
+            <if test="carIdList!=null and carIdList.size()>0">
+                and ac.car_id in
+                <foreach collection="carIdList" item="catId" open="(" separator="," close=")">
+                    #{catId}
+                </foreach>
+            </if>
             <if test="carName!= null and carName !='' ">
                 and ac.car_name like concat('%',#{carName},'%')
             </if>

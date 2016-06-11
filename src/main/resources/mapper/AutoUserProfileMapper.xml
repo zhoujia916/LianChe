@@ -21,9 +21,9 @@
     <insert id="insert" parameterType="AutoUserProfile" useGeneratedKeys="true" keyProperty="profileId">
         insert into auto_user_profile 
         (
-        	
+
         	<if test="userId > 0">user_id, </if>
-            <if test="idNumber != null">id_number, </if>
+            <if test="idNumber != null">id_number</if>
         	<if test="realName != null">real_name, </if>
         	<if test="shopName != null">shop_name, </if>
         	<if test="phone != null">phone, </if>
@@ -34,9 +34,9 @@
         )
         values 
         (
-        	
+
         	<if test="userId  > 0">#{userId}, </if>
-            <if test="idNumber != null">#{idNumber}, </if>
+            <if test="idNumber != null">#{idNumber}</if>
         	<if test="realName != null">#{realName}, </if>
         	<if test="shopName != null">#{shopName}, </if>
         	<if test="phone != null">#{phone}, </if>

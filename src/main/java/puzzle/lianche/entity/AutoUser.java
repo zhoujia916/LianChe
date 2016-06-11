@@ -193,6 +193,24 @@ public class AutoUser implements Serializable{
     private String shopTypeString;
     private String birthDay;
     private String code;
+    private Integer orderNumber;
+    private Integer carNumber;
+
+    public Integer getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public Integer getCarNumber() {
+        return carNumber;
+    }
+
+    public void setCarNumber(Integer carNumber) {
+        this.carNumber = carNumber;
+    }
 
     public String getCode() {
         return code;

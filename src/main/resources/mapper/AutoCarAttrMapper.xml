@@ -123,23 +123,24 @@
         from auto_car_attr as aca
         inner join auto_attr as aa on aa.attr_id = aca.attr_id
         <where>
-	        <trim prefixOverrides="and | or">
-	        	<if test="carAttrId > 0">
-                    and aca.car_attr_id = #{carAttrId}
-	            </if>
-	        	<if test="carId > 0">
-                    and aca.car_id = #{carId}
-	            </if>
-	        	<if test="attrId > 0">
-                    and aca.attr_id = #{attrId}
-	            </if>
-	        	<if test="attrValue != null">
-                    and aca.attr_value = #{attrValue}
-	            </if>
-	        	<if test="attrPrice > 0">
-                    and aca.attr_price = #{attrPrice}
-	            </if>
-	        </trim>
+            <if test="carAttrId > 0">
+                and aca.car_attr_id = #{carAttrId}
+            </if>
+            <if test="carId > 0">
+                and aca.car_id = #{carId}
+            </if>
+            <if test="carAttrId > 0">
+                and aca.car_id = ${carAttrId} and aca.attr_id = 1
+            </if>
+            <if test="attrId > 0">
+                and aca.attr_id = #{attrId}
+            </if>
+            <if test="attrValue != null">
+                and aca.attr_value = #{attrValue}
+            </if>
+            <if test="attrPrice > 0">
+                and aca.attr_price = #{attrPrice}
+            </if>
         </where>
     </select>
 

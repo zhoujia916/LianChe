@@ -137,25 +137,18 @@
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoOrderCar">
-        select <include refid="allColumn"/> from auto_order_car
+        select aoc.* from auto_order_car as aoc
         <where>
-	        <trim prefixOverrides="and | or">
-	        	<if test="recId > 0">
-	                rec_id = #{recId}
-	            </if>
-	        	<if test="orderId > 0">
-	                order_id = #{orderId}
-	            </if>
-	        	<if test="carId > 0">
-	                car_id = #{carId}
-	            </if>
-	        	<if test="carAttrId != null">
-	                car_attr_id = #{carAttrId}
-	            </if>
-	        	<if test="carAttr != null">
-	                car_attr = #{carAttr}
-	            </if>
-	        </trim>
+	        <if test="userId > 0">
+                inner join auto_order as ao on aoc.order_id=ao.order_id
+                where ao.seller_id=${userId} and
+                <if test="payStatus > 0">
+                    ao.pay_status=${payStatus}
+                </if>
+                <if test="orderStatus > 0">
+                    ao.order_status=${orderStatus}
+                </if>
+	        </if>
         </where>
     </select>
 

@@ -31,8 +31,6 @@ public class AutoUserCollectController extends ModuleController {
 
     @RequestMapping (value = {"/","/index"})
     public String index(){
-        List<SystemMenuAction> actions = getActions();
-        this.setModelAttribute("actions", actions);
         return Constants.UrlHelper.ADMIN_AUTO_USER_COLLECTION;
     }
 
