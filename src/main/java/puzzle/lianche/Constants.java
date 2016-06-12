@@ -283,6 +283,7 @@ public class Constants {
     /**
      * 客户端状态(未支付订金,已支付订金,已成交,已取消)
      */
+    public static final Integer CS_ALL = 0;
     public static final Integer CS_UNDEPOSIT = 1;
     public static final Integer CS_DEPOSIT = 2;
     public static final Integer CS_SUCCESS = 3;

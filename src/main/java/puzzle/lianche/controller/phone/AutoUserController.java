@@ -578,6 +578,30 @@ public class AutoUserController extends BaseController {
     }
 
     /**
+     * 删除我的收藏
+     * @param carId
+     * @return
+     */
+    @RequestMapping(value = "/deleteCollection.do")
+    @ResponseBody
+    public Result deleteCollection(Integer carId){
+        Result result=new Result();
+        try{
+            Map<String, Object> map=new HashMap<String, Object>();
+            map.put("carId",carId);
+            if(!autoCollectService.delete(map)){
+                result.setCode(1);
+                result.setMsg("删除我的收藏失败！");
+            }
+        }catch(Exception e){
+            result.setCode(1);
+            result.setMsg("操作删除我的收藏出错！");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
      * 查看消息中心
      * @param user
      * @return
@@ -624,10 +648,18 @@ public class AutoUserController extends BaseController {
             if(msg!=null){
                 JSONArray array=new JSONArray();
                 JSONObject jsonObject=new JSONObject();
+                jsonObject.put("msgId",msg.getMsgId());
                 jsonObject.put("msgTitle",msg.getMsgTitle());
-                map.clear();
-
-//                jsonObject.put("formUserName")
+                if(msg.getFromUserName()==null && msg.getFromRealName()==null){
+                    jsonObject.put("formUserName","系统");
+                }else if(msg.getFromRealName()==null){
+                    jsonObject.put("formUserName",msg.getFromUserName());
+                }else if(msg.getFromUserName()!=null && msg.getFromRealName()!=null){
+                    jsonObject.put("formUserName",msg.getFromRealName());
+                }
+                jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(msg.getAddTime()),"MM-dd HH:mm:ss"));
+                jsonObject.put("viewCount",msg.getViewCount());
+                jsonObject.put("msgContent",msg.getMsgContent());
                 array.add(jsonObject);
                 result.setData(array);
             }
@@ -640,78 +672,110 @@ public class AutoUserController extends BaseController {
     }
 
     /**
-     * 查看我的车源
-     * @param user
+     * 查看我的销车
      * @param order
      * @param page
      * @return
      */
     @RequestMapping(value = "/carSource.do")
     @ResponseBody
-    public Result carSource(AutoUser user,AutoOrder order,Page page){
+    public Result carSource(AutoOrder order,Page page){
         Result result=new Result();
         try{
-            Map<String, Object> map=new HashMap<String, Object>();
-            map.put("userId",user.getUserId());
-            if(order.getPayStatus()!=null && order.getPayStatus()>0){
-                map.put("payStatus",order.getPayStatus());
-            }else if(order.getOrderStatus()!=null && order.getOrderStatus()>0){
-                map.put("orderStatus",order.getOrderStatus());
-            }
-            List<AutoOrderCar> orderCarList=autoOrderCarService.queryList(map);
-            if(orderCarList!=null && orderCarList.size()>0){
-                List<Integer> carIdList=new ArrayList<Integer>();
-                List<Integer> orderIdList=new ArrayList<Integer>();
-                for(AutoOrderCar orderCar:orderCarList ){
-                    carIdList.add(orderCar.getCarId());
-                    orderIdList.add(orderCar.getOrderId());
+            if(order==null){
+                result.setCode(-1);
+                result.setMsg("查看我的销车失败！");
+            }else if(page==null){
+                result.setCode(-1);
+                result.setMsg("查看我的销车失败！");
+            }else{
+                Map<String, Object> map=new HashMap<String, Object>();
+                map.put("userId",order.getSellerId());
+                if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
+                    String sql = " ao.order_id is null"
+                            + " or (ao.order_status = " + Constants.OS_SUBMIT
+                            + " and ao.pay_status = " + Constants.PS_WAIT_BUYER_DEPOSIT
+                            + " and ao.ship_status = " + Constants.SS_SHIPED + ")";
+                    map.put("filter", sql);
                 }
-                map.clear();
-                map.put("orderIdList",orderIdList);
-                List<AutoOrder> orderList=autoOrderService.queryList(map);
-                map.clear();
-                map.put("carIdList",carIdList);
-                List<AutoCar> carList=autoCarService.queryList(map,page);
+                else if(order.getClientStatus().equals(Constants.CS_DEPOSIT)){
+                    map.put("orderStatusList",
+                            Constants.OS_SUBMIT + "," +
+                                    Constants.OS_EXECUTE);
+                    map.put("payStatusList",
+                            Constants.PS_BUYER_PAY_DEPOSIT + "," +
+                                    Constants.PS_WAIT_SELLER_DEPOSIT + "," +
+                                    Constants.PS_SELLER_PAY_DEPOSIT);
+                    map.put("shipStatus", Constants.SS_UNSHIP);
+                }
+                else if(order.getClientStatus().equals(Constants.CS_SUCCESS)){
+                    map.put("orderStatus", Constants.OS_SUCCESS);
+                    map.put("payStatusList",
+                            Constants.PS_SELLER_PAY_DEPOSIT+ "," +
+                                    Constants.PS_WAIT_RETURN_DEPOSIT+ "," +
+                                    Constants.PS_SYSTEM_RETURN_DEPOSIT);
+                    map.put("shipStatus", Constants.SS_SHIPED);
+                }
+                else if(order.getClientStatus().equals(Constants.CS_CANCEL)){
+                    map.put("orderStatus", Constants.OS_CANCEL);
+                }
+                List<AutoCar> carList = autoCarService.queryOrderList(map, page);
                 if(carList!=null && carList.size()>0){
-                    JSONArray array=new JSONArray();
-                    for(int i=0;i<carList.size();i++){
-                        JSONObject jsonObject=new JSONObject();
-                        map.clear();
-                        map.put("carPicId", carList.get(i).getCarId());
-                        AutoCarPic carPic=autoCarPicService.query(map);
-                        map.clear();
-                        map.put("carAttrId",carList.get(i).getCarId());
-                        List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
-                        jsonObject.put("pic",carPic.getPath());
-                        if(carAttrList.size()>1){
-                            jsonObject.put("attrValue","多色");
-                        }else{
-                            jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
-                        }
-                        map.clear();
-                        map.put("userId",carList.get(i).getAddUserId());
-                        AutoUser autoUser=autoUserService.query(map);
-                        jsonObject.put("carId",carList.get(i).getCarId());
-                        jsonObject.put("carName",carList.get(i).getCarName());
-                        jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
-                        jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
-                        jsonObject.put("quoteType",carList.get(i).getQuoteType());
-                        jsonObject.put("quotePrice",10000);
-                        jsonObject.put("status",carList.get(i).getStatus());
-                        jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(orderList.get(i).getAddTime()),"MM-dd HH:mm"));
-                        if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
-                            jsonObject.put("isAuthenticate",true);
-                        }else{
-                            jsonObject.put("isAuthenticate",false);
-                        }
-                        array.add(jsonObject);
+                    List<Integer> carIdList=new ArrayList<Integer>();
+                    List<Integer> orderIdList=new ArrayList<Integer>();
+                    for(AutoCar car:carList ){
+                        carIdList.add(car.getCarId());
                     }
-                    result.setData(array);
+                    map.clear();
+                    map.put("carIdList",carIdList);
+                    List<AutoOrderCar> orderCarList=autoOrderCarService.queryList(map);
+                    for(AutoOrderCar orderCar:orderCarList){
+                        orderIdList.add(orderCar.getOrderId());
+                    }
+                    map.clear();
+                    map.put("orderIdList",orderIdList);
+                    List<AutoOrder> orderList=autoOrderService.queryList(map);
+                    if(carList!=null && carList.size()>0){
+                        JSONArray array=new JSONArray();
+                        for(int i=0;i<carList.size();i++){
+                            JSONObject jsonObject=new JSONObject();
+                            map.clear();
+                            map.put("carPicId", carList.get(i).getCarId());
+                            AutoCarPic carPic=autoCarPicService.query(map);
+                            map.clear();
+                            map.put("carAttrId",carList.get(i).getCarId());
+                            List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
+                            jsonObject.put("pic",carPic.getPath());
+                            if(carAttrList.size()>1){
+                                jsonObject.put("attrValue","多色");
+                            }else{
+                                jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
+                            }
+                            map.clear();
+                            map.put("userId",order.getSellerId());
+                            AutoUser autoUser=autoUserService.query(map);
+                            jsonObject.put("carId",carList.get(i).getCarId());
+                            jsonObject.put("carName",carList.get(i).getCarName());
+                            jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
+                            jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
+                            jsonObject.put("quoteType",carList.get(i).getQuoteType());
+                            jsonObject.put("quotePrice",10000);
+                            jsonObject.put("status",carList.get(i).getStatus());
+                            jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(orderList.get(i).getAddTime()),"MM-dd HH:mm"));
+                            if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                                jsonObject.put("isAuthenticate",true);
+                            }else{
+                                jsonObject.put("isAuthenticate",false);
+                            }
+                            array.add(jsonObject);
+                        }
+                        result.setData(array);
+                    }
                 }
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("查看我的车源出错！");
+            result.setMsg("查看我的销车出错！");
         }
         return result;
     }

@@ -316,4 +316,44 @@
         </where>
         order by ${sort} ac.add_time desc, ac.car_id desc
     </select>
+
+    <select id="queryOrderList" parameterType="Map" resultMap="AutoCar">
+        select ac.*,
+        ab.brand_name,abc.cat_name,abm.model_name,au.user_name,
+        au.status as add_user_status
+        from auto_car as ac
+        inner join auto_user as au on au.user_id = ac.add_user_id
+        inner join auto_brand as ab on ac.brand_id=ab.brand_id
+        inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
+        inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
+        left join auto_order_car as aoc on aoc.car_id = ac.car_id
+        left join auto_order as ao on ao.order_id = aoc.order_id
+        <where>
+            <if test="userId != null and userId > 0">
+                and ac.add_user_id = ${userId}
+            </if>
+            <if test="orderStatus != null and orderStatus > 0">
+                and ao.order_status = #{orderStatus}
+            </if>
+            <if test="payStatus != null and payStatus > 0">
+                and ao.pay_status = #{payStatus}
+            </if>
+            <if test="shipStatus != null and shipStatus > 0">
+                and ao.ship_status = #{shipStatus}
+            </if>
+            <if test="orderStatusList != null and orderStatusList != ''">
+                and ao.order_status in (${orderStatusList})
+            </if>
+            <if test="payStatusList != null and payStatusList != ''">
+                and ao.pay_status in (${payStatusList})
+            </if>
+            <if test="shipStatusList != null and shipStatusList != ''">
+                and ao.ship_status in (${shipStatusList})
+            </if>
+            <if test="filter != null and filter != ''">
+                and ${filter}
+            </if>
+        </where>
+        order by ${sort} ac.add_time desc, ac.car_id desc
+    </select>
 </mapper>

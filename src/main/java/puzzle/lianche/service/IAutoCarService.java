@@ -20,4 +20,6 @@ public interface IAutoCarService{
     public List<AutoCar> queryList(Object param);
 
     public List<AutoCar> queryList(Map<String, Object> map, Page page);
+
+    public List<AutoCar> queryOrderList(Map<String, Object> map, Page page);
 }

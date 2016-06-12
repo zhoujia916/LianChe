@@ -182,10 +182,15 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoMsg">
-        select <include refid="allColumn"/> from auto_msg
+        select am.*,
+        (select user_name from auto_user as au where au.user_id=am.from_user_id and am.msg_type=1 ) as fromUserName,
+        (select real_name from auto_user_profile as aup where aup.user_id=am.from_user_id and am.msg_type=1) as fromRealName,
+        (select user_name from auto_user as au where au.user_id=am.to_user_id) as toUserName,
+        (select real_name from auto_user_profile as aup where aup.user_id=am.to_user_id) as toRealName
+        from auto_msg as am
         <where>  
         	<if test="msgId > 0">
-                msg_id = #{msgId}
+                and msg_id = ${msgId}
             </if>
         </where> 
     </select>
