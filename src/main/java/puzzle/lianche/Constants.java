@@ -244,11 +244,11 @@ public class Constants {
 
     3A.	买家拒绝订单         	交易拒绝                 买家已支付订金        未提车
 
-    4. 	卖家支付      		交易中	        		卖家已支付订金        未提车
+    4. 	卖家支付      		交易中	        		卖家已支付订金        未提车                     request_cancel          contact_buyer(拨打电话)
 
-    5. 	买家确认收货         	交易成功                 等待系统退还定金       已提车                    receive                notify(提醒买家确认收货)
+    5. 	买家确认收货         	交易成功                 等待系统退还定金       已提车                     receive  contact_buyer  contact_buyer  notify(提醒买家确认收货)
 
-    6. 	系统退还订金         	交易成功                 定金已经退还          已提车
+    6. 	系统退还订金         	交易成功                 定金已经退还          已提车                     request_cancel          contact_buyer(拨打电话)
 
     7. 	管理员取消订单       	交易取消                 定金已经退还          未提车
     */
