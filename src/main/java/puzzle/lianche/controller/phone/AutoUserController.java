@@ -13,7 +13,6 @@ import puzzle.lianche.push.SmsPush;
 import puzzle.lianche.service.*;
 import puzzle.lianche.utils.*;
 
-import javax.swing.event.ListDataEvent;
 import java.util.*;
 import java.lang.Object;
 
@@ -31,10 +30,28 @@ public class AutoUserController extends BaseController {
     private IAutoSmsService autoSmsService;
 
     @Autowired
-    private IAutoOrderService autoOrderService;
+    private IAutoCollectService autoCollectService;
 
     @Autowired
     private IAutoCarService autoCarService;
+
+    @Autowired
+    private IAutoCarPicService autoCarPicService;
+
+    @Autowired
+    private IAutoCarAttrService autoCarAttrService;
+
+    @Autowired
+    private IAutoMsgService autoMsgService;
+
+    @Autowired
+    private IAutoOrderCarService autoOrderCarService;
+
+    @Autowired
+    private IAutoOrderService autoOrderService;
+
+    @Autowired
+    private IAutoFeedbackService autoFeedbackService;
 
     /**
      * 发送短信验证码用于注册和找回密码
@@ -101,7 +118,7 @@ public class AutoUserController extends BaseController {
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("发送短信验证码出错");
+            result.setMsg("发送短信验证码出错！");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
@@ -159,20 +176,20 @@ public class AutoUserController extends BaseController {
                         autoUser.setSortOrder(0);
                         if(autoUserService.insert(autoUser)){
                             JSONArray array=new JSONArray();
-                            JSONObject jsonObject=JSONObject.fromObject(autoUser);
-                            jsonObject.put("isAuthenticate",false);
+                            JSONObject jsonObject=new JSONObject();
+                            jsonObject.put("userId",autoUser.getUserId());
                             array.add(jsonObject);
                             result.setData(array);
                         }else{
                             result.setCode(1);
-                            result.setMsg("注册失败");
+                            result.setMsg("注册失败！");
                         }
                     }
                 }
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("注册会员信息出错");
+            result.setMsg("注册会员信息出错！");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
@@ -211,7 +228,12 @@ public class AutoUserController extends BaseController {
                 if(user != null){
                     //加载个人资料
                     JSONArray array=new JSONArray();
-                    JSONObject jsonObject=JSONObject.fromObject(user);
+                    JSONObject jsonObject=new JSONObject();
+                    jsonObject.put("userId",user.getUserId());
+                    jsonObject.put("userName",user.getUserName());
+                    jsonObject.put("userAvatar",user.getUserAvatar());
+                    jsonObject.put("points",user.getPoint());
+                    jsonObject.put("phone",user.getPhone());
                     if(user.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
                         jsonObject.put("isAuthenticate",true);
                     }else{
@@ -232,7 +254,7 @@ public class AutoUserController extends BaseController {
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("会员登录验证出错");
+            result.setMsg("会员登录验证出错！");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
@@ -245,7 +267,7 @@ public class AutoUserController extends BaseController {
      */
     @RequestMapping(value = "/retrieve.do")
     @ResponseBody
-    public Result retrieve(AutoUser autoUser){
+    public Result retrievePassWord(AutoUser autoUser){
         Result result=new Result();
         try{
             if(StringUtil.isNullOrEmpty(autoUser.getUserName())){
@@ -284,7 +306,7 @@ public class AutoUserController extends BaseController {
                         autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
                         if(!autoUserService.update(autoUser)){
                             result.setCode(1);
-                            result.setMsg("修改新密码失败");
+                            result.setMsg("修改新密码失败！");
                         }
                     }
                 }else{
@@ -294,7 +316,57 @@ public class AutoUserController extends BaseController {
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("操作找回密码时失败");
+            result.setMsg("操作找回密码时出错！");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 修改密码
+     * @param userId
+     * @param oldPassWord
+     * @param newPassWord
+     * @return
+     */
+    @RequestMapping(value = "/updatePassWord.do")
+    @ResponseBody
+    public Result updatePassWord(Integer userId,String oldPassWord,String newPassWord){
+        Result result=new Result();
+        try{
+            if(StringUtil.isNullOrEmpty(oldPassWord)){
+                result.setCode(-1);
+                result.setMsg("原密码不能为空！");
+            }else if(oldPassWord.length()<6 || oldPassWord.length()>20){
+                result.setCode(-1);
+                result.setMsg("原密码长度必须在6-20范围内！");
+            }else if(StringUtil.isNullOrEmpty(newPassWord)){
+                result.setCode(-1);
+                result.setMsg("新密码不能而空！");
+            }else if(newPassWord.length()<6 || newPassWord.length()>20) {
+                result.setCode(-1);
+                result.setMsg("新密码长度必须在6-20范围内！");
+            }else{
+                String password= EncryptUtil.MD5(oldPassWord);
+                Map<String, Object> map=new HashMap<String, Object>();
+                map.put("userId",userId);
+                AutoUser autoUser=autoUserService.query(map);
+                if(password.equalsIgnoreCase(autoUser.getPassword())){
+                    AutoUser user=new AutoUser();
+                    user.setPassword(EncryptUtil.MD5(newPassWord));
+                    user.setUserId(userId);
+                    if(!autoUserService.update(user)){
+                        result.setCode(1);
+                        result.setMsg("修改密码出错！");
+                    }
+                }else{
+                    result.setCode(1);
+                    result.setMsg("原密码错误！");
+                }
+            }
+        }catch(Exception e){
+            result.setCode(1);
+            result.setMsg("操作修改密码时出错！");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
@@ -343,13 +415,13 @@ public class AutoUserController extends BaseController {
                     autoUserProfile.setUserId(autoUserProfile.getUserId());
                     if(!autoUserProfileService.insert(autoUserProfile)){
                         result.setCode(1);
-                        result.setMsg("完善个人信息出错！");
+                        result.setMsg("完善个人信息失败！");
                     }
                 }else{
                     autoUserProfile.setProfileId(userProfile.getProfileId());
                     if(!autoUserProfileService.update(autoUserProfile)){
                         result.setCode(1);
-                        result.setMsg("完善个人信息出错！");
+                        result.setMsg("完善个人信息失败！");
                     }
                 }
             }
@@ -409,53 +481,260 @@ public class AutoUserController extends BaseController {
 
     /**
      * 查看会员中心
-     * @param userId
+     * @param user
      * @return
      */
     @RequestMapping(value = "/memberCenter.do")
     @ResponseBody
-    public Result memberCenter(Integer userId){
+    public Result memberCenter(AutoUser user){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("userId",userId);
+            System.out.println(user.getUserId());
+            map.put("userId",user.getUserId());
             AutoUser autoUser=autoUserService.query(map);
             if(autoUser!=null){
                 //加载个人资料
                 JSONArray array=new JSONArray();
-                JSONObject jsonObject=JSONObject.fromObject(autoUser);
-                if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
-                    jsonObject.put("isAuthenticate",true);
-                }else{
-                    jsonObject.put("isAuthenticate",false);
-                }
-                AutoUserProfile profile=autoUserProfileService.query(map);
-                if(profile!=null){
-                    jsonObject.put("profile",profile);
-                }
-                map.clear();
-                map.put("sellerId", userId);
-                map.put("buyerId",userId);
-                List<AutoOrder> orderList=autoOrderService.queryList(map);
-                if(orderList!=null && orderList.size()>0){
-                    jsonObject.put("orderNumber",orderList.size());
-                }else{
-                    jsonObject.put("orderNumber",0);
-                }
-                map.clear();
-                map.put("addUserId",userId);
-                List<AutoCar> carList=autoCarService.queryList(map);
-                if(carList!=null && carList.size()>0){
-                    jsonObject.put("carNumber",carList.size());
-                }else{
-                    jsonObject.put("carNumber",0);
-                }
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("points",autoUser.getPoint());
+                jsonObject.put("orderNumber",autoUser.getOrderNumber());
+                jsonObject.put("carNumber",autoUser.getCarNumber());
                 array.add(jsonObject);
                 result.setData(array);
             }
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("查看会员中心出错！");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 查看用户收藏
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/collection.do")
+    @ResponseBody
+    public Result collection(AutoUser user,Page page){
+        Result result=new Result();
+        try{
+            Map<String, Object> map=new HashMap<String, Object>();
+            map.put("userId",ConvertUtil.toString(user.getUserId()));
+            List<AutoCollect> autoCollectList=autoCollectService.queryList(map);
+            if(autoCollectList!=null && autoCollectList.size()>0){
+                List<Integer> carIdList=new ArrayList<Integer>();
+                for(AutoCollect autoCollect:autoCollectList ){
+                    carIdList.add(autoCollect.getTargetId());
+                }
+                map.clear();
+                map.put("carIdList",carIdList);
+                List<AutoCar> carList=autoCarService.queryList(map,page);
+                if(carList!=null && carList.size()>0){
+                    JSONArray array=new JSONArray();
+                    for(int i=0;i<carList.size();i++){
+                        JSONObject jsonObject=new JSONObject();
+                        map.clear();
+                        map.put("carPicId", carList.get(i).getCarId());
+                        AutoCarPic carPic=autoCarPicService.query(map);
+                        map.clear();
+                        map.put("carAttrId",carList.get(i).getCarId());
+                        List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
+                        jsonObject.put("pic",carPic.getPath());
+                        if(carAttrList.size()>1){
+                            jsonObject.put("attrValue","多色");
+                        }else{
+                            jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
+                        }
+                        map.clear();
+                        map.put("userId",carList.get(i).getAddUserId());
+                        AutoUser autoUser=autoUserService.query(map);
+                        jsonObject.put("carId",carList.get(i).getCarId());
+                        jsonObject.put("carName",carList.get(i).getCarName());
+                        jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
+                        jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
+                        jsonObject.put("quoteType",carList.get(i).getQuoteType());
+                        jsonObject.put("quotePrice",10000);
+                        jsonObject.put("status",carList.get(i).getStatus());
+                        jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(autoCollectList.get(i).getAddTime()),"MM-dd HH:mm"));
+                        if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                            jsonObject.put("isAuthenticate",true);
+                        }else{
+                            jsonObject.put("isAuthenticate",false);
+                        }
+                        array.add(jsonObject);
+                    }
+                    result.setData(array);
+                }
+            }
+        }catch(Exception e){
+            result.setCode(1);
+            result.setMsg("查看我的收藏出错！");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 查看消息中心
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/messageCount.do")
+    @ResponseBody
+    public Result messageCount(AutoUser user){
+        Result result=new Result();
+        try{
+            Map<String, Object> map=new HashMap<String, Object>();
+            map.put("toUserId",user.getUserId());
+            List<AutoMsg> msgList=autoMsgService.queryList(map);
+            if(msgList!=null && msgList.size()>0){
+                JSONArray array=new JSONArray();
+                for(AutoMsg msg:msgList){
+                    JSONObject jsonObject=new JSONObject();
+                    jsonObject.put("msgId",msg.getMsgId());
+                    jsonObject.put("msgTitle",msg.getMsgTitle());
+                    jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(msg.getAddTime()),Constants.DATE_FORMAT));
+                    array.add(jsonObject);
+                }
+                result.setData(array);
+            }
+        }catch (Exception e){
+            result.setCode(1);
+            result.setMsg("查看消息中心出错！");
+        }
+        return result;
+    }
+
+    /**
+     * 查看消息详细信息
+     * @param msgId
+     * @return
+     */
+    @RequestMapping(value = "/message.do")
+    @ResponseBody
+    public Result message(Integer msgId){
+        Result result=new Result();
+        try{
+            Map<String, Object> map=new HashMap<String, Object>();
+            map.put("msgId",msgId);
+            AutoMsg msg=autoMsgService.query(map);
+            if(msg!=null){
+                JSONArray array=new JSONArray();
+                JSONObject jsonObject=JSONObject.fromObject(msg);
+                array.add(jsonObject);
+                result.setData(array);
+            }
+        }catch(Exception e){
+            result.setCode(1);
+            result.setMsg("查看消息详细信息出错！");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 查看我的车源
+     * @param user
+     * @param order
+     * @param page
+     * @return
+     */
+    @RequestMapping(value = "/carSource.do")
+    @ResponseBody
+    public Result carSource(AutoUser user,AutoOrder order,Page page){
+        Result result=new Result();
+        try{
+            Map<String, Object> map=new HashMap<String, Object>();
+            map.put("userId",user.getUserId());
+            if(order.getPayStatus()!=null && order.getPayStatus()>0){
+                map.put("payStatus",order.getPayStatus());
+            }else if(order.getOrderStatus()!=null && order.getOrderStatus()>0){
+                map.put("orderStatus",order.getOrderStatus());
+            }
+            List<AutoOrderCar> orderCarList=autoOrderCarService.queryList(map);
+            if(orderCarList!=null && orderCarList.size()>0){
+                List<Integer> carIdList=new ArrayList<Integer>();
+                List<Integer> orderIdList=new ArrayList<Integer>();
+                for(AutoOrderCar orderCar:orderCarList ){
+                    carIdList.add(orderCar.getCarId());
+                    orderIdList.add(orderCar.getOrderId());
+                }
+                map.clear();
+                map.put("orderIdList",orderIdList);
+                List<AutoOrder> orderList=autoOrderService.queryList(map);
+                map.clear();
+                map.put("carIdList",carIdList);
+                List<AutoCar> carList=autoCarService.queryList(map,page);
+                if(carList!=null && carList.size()>0){
+                    JSONArray array=new JSONArray();
+                    for(int i=0;i<carList.size();i++){
+                        JSONObject jsonObject=new JSONObject();
+                        map.clear();
+                        map.put("carPicId", carList.get(i).getCarId());
+                        AutoCarPic carPic=autoCarPicService.query(map);
+                        map.clear();
+                        map.put("carAttrId",carList.get(i).getCarId());
+                        List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
+                        jsonObject.put("pic",carPic.getPath());
+                        if(carAttrList.size()>1){
+                            jsonObject.put("attrValue","多色");
+                        }else{
+                            jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
+                        }
+                        map.clear();
+                        map.put("userId",carList.get(i).getAddUserId());
+                        AutoUser autoUser=autoUserService.query(map);
+                        jsonObject.put("carId",carList.get(i).getCarId());
+                        jsonObject.put("carName",carList.get(i).getCarName());
+                        jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
+                        jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
+                        jsonObject.put("quoteType",carList.get(i).getQuoteType());
+                        jsonObject.put("quotePrice",10000);
+                        jsonObject.put("status",carList.get(i).getStatus());
+                        jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(orderList.get(i).getAddTime()),"MM-dd HH:mm"));
+                        if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                            jsonObject.put("isAuthenticate",true);
+                        }else{
+                            jsonObject.put("isAuthenticate",false);
+                        }
+                        array.add(jsonObject);
+                    }
+                    result.setData(array);
+                }
+            }
+        }catch (Exception e){
+            result.setCode(1);
+            result.setMsg("查看我的车源出错！");
+        }
+        return result;
+    }
+
+    /**
+     * 功能反馈
+     * @param feedback
+     * @return
+     */
+    @RequestMapping(value = "/feedback.do")
+    @ResponseBody
+    public Result feedback(AutoFeedback feedback){
+        Result result=new Result();
+        try{
+            if(StringUtil.isNullOrEmpty(feedback.getContent())){
+                result.setCode(-1);
+                result.setMsg("反馈意见不能为空！");
+            }else{
+                feedback.setAddTime(ConvertUtil.toLong(new Date()));
+                if(!autoFeedbackService.insert(feedback)){
+                    result.setCode(1);
+                    result.setMsg("功能反馈失败！");
+                }
+            }
+        }catch (Exception e){
+            result.setCode(1);
+            result.setMsg("操作功能反馈出错！");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

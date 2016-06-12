@@ -219,8 +219,14 @@
             <if test="endTime!=null">
                 and add_time &lt;= #{endTime}
             </if>
+            <if test="toUserId > 0">
+                and to_user_id = ${toUserId}
+            </if>
         </where>
         order by am.msg_id desc
+        <if test="toUserId > 0">
+            LIMIT 0,10
+        </if>
     </select>
 
 </mapper>

@@ -57,10 +57,13 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoCarPic">
-        select <include refid="allColumn"/> from auto_car_pic
+        select * from auto_car_pic
         <where>
             <if test="picId > 0">
-                pic_id = #{picId}
+                and pic_id = #{picId}
+            </if>
+            <if test="carPicId > 0">
+                and car_id = ${carPicId} LIMIT 0,1
             </if>
         </where>
     </select>

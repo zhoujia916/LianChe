@@ -65,7 +65,20 @@ public class AutoUserController extends ModuleController {
             if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
                 for(AutoUser user:list){
-                    JSONObject jsonObject=JSONObject.fromObject(user);
+                    JSONObject jsonObject=new JSONObject();
+                    jsonObject.put("userId",user.getUserId());
+                    jsonObject.put("userAvatar",user.getUserAvatar());
+                    jsonObject.put("userName",user.getUserName());
+                    jsonObject.put("realName",user.getRealName());
+                    jsonObject.put("shopName",user.getShopName());
+                    jsonObject.put("sortOrder",user.getSortOrder());
+                    jsonObject.put("password",user.getPassword());
+                    jsonObject.put("phone",user.getPhone());
+                    jsonObject.put("birthDay",ConvertUtil.toString(ConvertUtil.toDate(user.getBirth()),"yyyy-MM-dd"));
+                    jsonObject.put("email",user.getEmail());
+                    jsonObject.put("point",user.getPoint());
+                    jsonObject.put("sortOrder",user.getSortOrder());
+                    jsonObject.put("remark",user.getRemark());
                     jsonObject.put("status",Constants.AUTO_USER_STATUS.get(user.getStatus()));
                     if(user.getShopType() != null){
                         jsonObject.put("shopType",Constants.AUTO_USER_SHOP_TYPE.get(user.getShopType()));
