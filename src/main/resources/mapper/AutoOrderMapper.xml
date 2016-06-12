@@ -131,7 +131,6 @@
     <select id="queryList" parameterType="Map" resultMap="AutoOrder">
         select <include refid="allColumn"/> from auto_order
         <where>
-<<<<<<< HEAD
             <if test="orderId > 0">
                 and order_id = #{orderId}
             </if>
@@ -153,7 +152,6 @@
                     ${orderId}
                 </foreach>
             </if>
-=======
 	        <trim prefixOverrides="and | or">
 	        	<if test="orderId > 0">
 	                and order_id = #{orderId}
@@ -186,7 +184,6 @@
                     and seller_id = ${buyerId}
                 </if>
 	        </trim>
->>>>>>> b1b11c3dfd2dd0fa5a011cc369f879e4029e3002
         </where>
     </select>
 

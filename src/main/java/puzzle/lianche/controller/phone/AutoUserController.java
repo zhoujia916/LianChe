@@ -623,7 +623,11 @@ public class AutoUserController extends BaseController {
             AutoMsg msg=autoMsgService.query(map);
             if(msg!=null){
                 JSONArray array=new JSONArray();
-                JSONObject jsonObject=JSONObject.fromObject(msg);
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("msgTitle",msg.getMsgTitle());
+                map.clear();
+
+//                jsonObject.put("formUserName")
                 array.add(jsonObject);
                 result.setData(array);
             }
