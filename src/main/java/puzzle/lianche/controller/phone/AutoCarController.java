@@ -209,7 +209,7 @@ public class AutoCarController extends BaseController {
                 result.setMsg("车型不能为空！");
                 return result;
             }
-
+            System.out.println("-----1");
             if(car.getSaleAmount() == 0){
                 result.setCode(-1);
                 if(car.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
@@ -221,21 +221,19 @@ public class AutoCarController extends BaseController {
                 }
                 return result;
             }
-
-
-
+            System.out.println("-----2");
             if(car.getAttrs() == null || car.getAttrs().size() < 2 || car.getAttrs().size() %2 != 0){
                 result.setCode(-1);
                 result.setMsg("请输入内饰和外观颜色！");
                 return result;
             }
-
+            System.out.println("-----3");
             if(car.getTotalNumber() == 0){
                 result.setCode(-1);
                 result.setMsg("请输入数量！");
                 return result;
             }
-
+            System.out.println("-----4");
             if(StringUtil.isNullOrEmpty(car.getBeginTimeString())){
                 result.setCode(-1);
                 result.setMsg("开始时间不能为空！");
@@ -256,6 +254,7 @@ public class AutoCarController extends BaseController {
                 result.setMsg("结束时间不正确！");
                 return result;
             }
+            System.out.println("-----5");
             if(car.getHasParts().equals(Constants.AUTO_CAR_HAS_PARTS_YES) && StringUtil.isNullOrEmpty(car.getParts())){
                 result.setCode(-1);
                 result.setMsg("配件描述不能为空！");
@@ -266,10 +265,13 @@ public class AutoCarController extends BaseController {
                 result.setMsg("配件价格不能为空！");
                 return result;
             }
-
+            System.out.println("-----6");
             //endregion
 
             //region Init Attr Info
+            for(int i=0;i<car.getAttrs().size();i++){
+                car.getAttrs().get(i).setAttrPrice(0);
+            }
             car.setCarName(cat.getCatName() + model.getModelName());
             if(car.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
                 car.setShopPrice(car.getOfficalPrice() - car.getSaleAmount());
@@ -291,7 +293,7 @@ public class AutoCarController extends BaseController {
             car.setSortOrder(0);
 
             //endregion
-
+            System.out.println("-----");
             if(!autoCarService.insert(car)){
                 result.setCode(1);
                 result.setMsg("保存车源信息失败！");

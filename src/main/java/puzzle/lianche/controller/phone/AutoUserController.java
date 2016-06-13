@@ -173,6 +173,7 @@ public class AutoUserController extends BaseController {
                         autoUser.setUserAvatar("../resource/admin/avatars/profile-pic.jpg");
                         autoUser.setPoint(100);
                         autoUser.setPhone(autoUser.getUserName());
+                        autoUser.setBirth(ConvertUtil.toLong(new Date()));
                         autoUser.setSortOrder(0);
                         if(autoUserService.insert(autoUser)){
                             JSONArray array=new JSONArray();
@@ -490,7 +491,6 @@ public class AutoUserController extends BaseController {
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            System.out.println(user.getUserId());
             map.put("userId",user.getUserId());
             AutoUser autoUser=autoUserService.query(map);
             if(autoUser!=null){
@@ -539,24 +539,25 @@ public class AutoUserController extends BaseController {
                         map.clear();
                         map.put("carPicId", carList.get(i).getCarId());
                         AutoCarPic carPic=autoCarPicService.query(map);
-                        map.clear();
-                        map.put("carAttrId",carList.get(i).getCarId());
-                        List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
+//                        map.clear();
+//                        map.put("byCarId",carList.get(i).getCarId());
+//                        List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
                         jsonObject.put("pic",carPic.getPath());
-                        if(carAttrList.size()>1){
-                            jsonObject.put("attrValue","多色");
-                        }else{
-                            jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
-                        }
+//                        if(carAttrList.size()>1){
+//                            jsonObject.put("attrValue","多色");
+//                        }else{
+//                            jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
+//                        }
+                        jsonObject.put("attrValue","珍珠白");
                         map.clear();
                         map.put("userId",carList.get(i).getAddUserId());
                         AutoUser autoUser=autoUserService.query(map);
                         jsonObject.put("carId",carList.get(i).getCarId());
                         jsonObject.put("carName",carList.get(i).getCarName());
-                        jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
+                        jsonObject.put("titleName",carList.get(i).getCatName());
                         jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
                         jsonObject.put("quoteType",carList.get(i).getQuoteType());
-                        jsonObject.put("quotePrice",10000);
+                        jsonObject.put("quotePrice",carList.get(i).getSaleAmount());
                         jsonObject.put("status",carList.get(i).getStatus());
                         jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(autoCollectList.get(i).getAddTime()),"MM-dd HH:mm"));
                         if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
@@ -646,6 +647,8 @@ public class AutoUserController extends BaseController {
             map.put("msgId",msgId);
             AutoMsg msg=autoMsgService.query(map);
             if(msg!=null){
+                msg.setViewCount(msg.getViewCount()+1);
+                autoMsgService.update(msg);
                 JSONArray array=new JSONArray();
                 JSONObject jsonObject=new JSONObject();
                 jsonObject.put("msgId",msg.getMsgId());
@@ -742,15 +745,16 @@ public class AutoUserController extends BaseController {
                             map.clear();
                             map.put("carPicId", carList.get(i).getCarId());
                             AutoCarPic carPic=autoCarPicService.query(map);
-                            map.clear();
-                            map.put("carAttrId",carList.get(i).getCarId());
-                            List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
+//                            map.clear();
+//                            map.put("carAttrId",carList.get(i).getCarId());
+//                            List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
                             jsonObject.put("pic",carPic.getPath());
-                            if(carAttrList.size()>1){
-                                jsonObject.put("attrValue","多色");
-                            }else{
-                                jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
-                            }
+//                            if(carAttrList.size()>1){
+//                                jsonObject.put("attrValue","多色");
+//                            }else{
+//                                jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
+//                            }
+                            jsonObject.put("attrValue","珍珠白");
                             map.clear();
                             map.put("userId",order.getSellerId());
                             AutoUser autoUser=autoUserService.query(map);
@@ -759,9 +763,13 @@ public class AutoUserController extends BaseController {
                             jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
                             jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
                             jsonObject.put("quoteType",carList.get(i).getQuoteType());
-                            jsonObject.put("quotePrice",10000);
+                            jsonObject.put("quotePrice",carList.get(i).getSaleAmount());
                             jsonObject.put("status",carList.get(i).getStatus());
-                            jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(orderList.get(i).getAddTime()),"MM-dd HH:mm"));
+                            if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT) || order.getClientStatus().equals(Constants.CS_DEPOSIT) || order.getClientStatus().equals(Constants.CS_SUCCESS) || order.getClientStatus().equals(Constants.CS_CANCEL)){
+                                jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(orderList.get(i).getAddTime()),"MM-dd HH:mm"));
+                            }else{
+                                jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddTime()),"MM-dd HH:mm"));
+                            }
                             if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
                                 jsonObject.put("isAuthenticate",true);
                             }else{

@@ -116,7 +116,7 @@
         from auto_collect as acl
         inner join auto_car as ac on acl.target_id=ac.car_id
         inner join auto_user au on acl.user_id=au.user_id
-        inner join auto_user_profile as aup on au.user_id=aup.user_id
+        left join auto_user_profile as aup on au.user_id=aup.user_id
         <where>
             <if test="carName!=null and carName!=''">
                 and ac.car_name like concat('%',#{carName},'%')

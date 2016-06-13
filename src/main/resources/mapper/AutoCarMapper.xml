@@ -33,7 +33,7 @@
         <result column="brand_name" property="brandName"/>
         <result column="cat_name" property="catName"/>
         <result column="model_name" property="modelName"/>
-        <result column="usre_name" property="userName"/>
+        <result column="user_name" property="userName"/>
         <result column="real_name" property="realName"/>
         <result column="pic" property="pic"/>
         <result column="collect_id" property="collectId"/>
@@ -267,17 +267,18 @@
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoCar">
-        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,au.status as add_user_status
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as add_user_status
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
+        left join auto_user_profile as aup on aup.user_id=ac.add_user_id
         inner join auto_brand as ab on ac.brand_id=ab.brand_id
         inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
         inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
         <where>
             <if test="carIdList!=null and carIdList.size()>0">
                 and ac.car_id in
-                <foreach collection="carIdList" item="catId" open="(" separator="," close=")">
-                    #{catId}
+                <foreach collection="carIdList" item="carId" open="(" separator="," close=")">
+                    ${carId}
                 </foreach>
             </if>
             <if test="carName!= null and carName !='' ">
@@ -318,11 +319,10 @@
     </select>
 
     <select id="queryOrderList" parameterType="Map" resultMap="AutoCar">
-        select ac.*,
-        ab.brand_name,abc.cat_name,abm.model_name,au.user_name,
-        au.status as add_user_status
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as add_user_status
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
+        left join auto_user_profile as aup on aup.user_id=ac.add_user_id
         inner join auto_brand as ab on ac.brand_id=ab.brand_id
         inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
         inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
@@ -332,26 +332,20 @@
             <if test="userId != null and userId > 0">
                 and ac.add_user_id = ${userId}
             </if>
-            <if test="orderStatus != null and orderStatus > 0">
-                and ao.order_status = #{orderStatus}
+            <if test="filter != null and filter != ''">
+                and #{filter}
             </if>
-            <if test="payStatus != null and payStatus > 0">
-                and ao.pay_status = #{payStatus}
-            </if>
-            <if test="shipStatus != null and shipStatus > 0">
-                and ao.ship_status = #{shipStatus}
-            </if>
-            <if test="orderStatusList != null and orderStatusList != ''">
+            <if test="orderStatusList != null and orderStatusList !=''">
                 and ao.order_status in (${orderStatusList})
             </if>
-            <if test="payStatusList != null and payStatusList != ''">
+            <if test="payStatusList != null and payStatusList !=''">
                 and ao.pay_status in (${payStatusList})
             </if>
-            <if test="shipStatusList != null and shipStatusList != ''">
-                and ao.ship_status in (${shipStatusList})
+            <if test="shipStatus != null and shipStatus!=''">
+                and ao.ship_status = #{shipStatus}
             </if>
-            <if test="filter != null and filter != ''">
-                and ${filter}
+            <if test="orderStatus != null and orderStatus!=''">
+                and ao.order_status = #{orderStatus}
             </if>
         </where>
         order by ${sort} ac.add_time desc, ac.car_id desc

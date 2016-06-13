@@ -129,9 +129,6 @@
             <if test="carId > 0">
                 and aca.car_id = #{carId}
             </if>
-            <if test="carAttrId > 0">
-                and aca.car_id = ${carAttrId} and aca.attr_id = 1
-            </if>
             <if test="attrId > 0">
                 and aca.attr_id = #{attrId}
             </if>
