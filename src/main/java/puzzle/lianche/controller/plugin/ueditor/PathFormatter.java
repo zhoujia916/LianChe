@@ -1,4 +1,4 @@
-package puzzle.lianche.plugin.ueditor;
+package puzzle.lianche.controller.plugin.ueditor;
 
 import java.util.Date;
 import java.util.Calendar;

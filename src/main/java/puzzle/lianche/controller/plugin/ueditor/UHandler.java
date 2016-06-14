@@ -1,4 +1,4 @@
-package puzzle.lianche.plugin.ueditor;
+package puzzle.lianche.controller.plugin.ueditor;
 
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;

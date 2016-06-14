@@ -1,4 +1,4 @@
-package puzzle.lianche.plugin.ueditor;
+package puzzle.lianche.controller.plugin.ueditor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

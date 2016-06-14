@@ -27,18 +27,19 @@ public class AlipayConfig {
 	// 合作身份者ID，以2088开头由16位纯数字组成的字符串
 	public static String partner = "2088121255400017";
     // 买家帐号，一般就是合作者ID
-    public static String seller = "2088121255400017";
+    public static String seller = partner;
     // 支付宝账户
     public static String account = "xicheninfo@163.com";
     // 通知账户
     public static String notify_url = "http://test.one-auto.com/alipay/notify";
 
-
 	// 商户的私钥
 	public static String private_key = "";
+    public static String private_key_path = "key\\rsa_private_key.pem";
 	
 	// 支付宝的公钥，无需修改该值
-	public static String ali_public_key  = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB";
+	public static String public_key  = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB";
+    public static String public_key_path = "key\\rsa_public_key.pem";
 
 	//↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 	

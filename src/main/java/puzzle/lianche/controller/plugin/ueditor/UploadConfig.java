@@ -1,4 +1,4 @@
-package puzzle.lianche.plugin.ueditor;
+package puzzle.lianche.controller.plugin.ueditor;
 
 public class UploadConfig {
     // 文件命名规则

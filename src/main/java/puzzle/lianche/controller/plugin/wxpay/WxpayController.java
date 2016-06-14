@@ -1,4 +1,4 @@
-package puzzle.lianche.controller.plugin;
+package puzzle.lianche.controller.plugin.wxpay;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,13 +1,6 @@
 package puzzle.lianche;
 
-import java.awt.print.Printable;
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.util.Assert;
-import puzzle.lianche.controller.UserController;
-import puzzle.lianche.service.ISystemUserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
