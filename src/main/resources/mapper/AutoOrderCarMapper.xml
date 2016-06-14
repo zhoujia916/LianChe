@@ -139,16 +139,12 @@
     <select id="queryList" parameterType="Map" resultMap="AutoOrderCar">
         select aoc.* from auto_order_car as aoc
         <where>
-	        <if test="userId > 0">
-                inner join auto_order as ao on aoc.order_id=ao.order_id
-                where ao.seller_id=${userId} and
-                <if test="payStatus > 0">
-                    ao.pay_status=${payStatus}
-                </if>
-                <if test="orderStatus > 0">
-                    ao.order_status=${orderStatus}
-                </if>
-	        </if>
+            <if test="carIdList!=null and carIdList.size()>0">
+                and aoc.car_id in
+                <foreach collection="carIdList" item="carId" open="(" separator="," close=")">
+                    ${carId}
+                </foreach>
+            </if>
         </where>
     </select>
 

@@ -65,8 +65,21 @@ public class CarController extends ModuleController {
             if(list!=null && list.size()>0){
                 JSONArray array=new JSONArray();
                 for(AutoCar car:list){
-                    JSONObject jsonObject=JSONObject.fromObject(car);
+                    JSONObject jsonObject=new JSONObject();
+                    jsonObject.put("carId",car.getCarId());
+                    jsonObject.put("carName",car.getCarName());
                     jsonObject.put("carType",Constants.MAP_AUTO_CAR_TYPE.get(car.getCarType()));
+                    jsonObject.put("brandName",car.getBrandName());
+                    jsonObject.put("catName",car.getCatName());
+                    jsonObject.put("modelName",car.getModelName());
+                    jsonObject.put("officalPrice",car.getOfficalPrice());
+                    jsonObject.put("totalNumber",car.getTotalNumber());
+                    jsonObject.put("lockNumber",car.getLockNumber());
+                    jsonObject.put("surplusNumber",car.getSurplusNumber());
+                    jsonObject.put("userName",car.getUserName());
+                    jsonObject.put("realName",car.getRealName());
+                    jsonObject.put("status",car.getStatus());
+                    jsonObject.put("sortOrder",car.getSortOrder());
                     array.add(jsonObject);
                 }
                 result.setData(array);
