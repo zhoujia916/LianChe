@@ -49,8 +49,8 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
 
                     //更新锁定数量
                     AutoCar car = autoCarService.query(orderCar.getCarId());
-                    car.setLockNumber(car.getLockNumber() + orderCar.getCarNumber());
-                    car.setSurplusNumber(car.getTotalNumber() - car.getLockNumber());
+//                    car.setLockNumber(car.getLockNumber() + orderCar.getCarNumber());
+//                    car.setSurplusNumber(car.getTotalNumber() - car.getLockNumber());
                     autoCarService.update(car);
                 }
 

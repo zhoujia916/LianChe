@@ -72,10 +72,10 @@ public class CarController extends ModuleController {
                     jsonObject.put("brandName",car.getBrandName());
                     jsonObject.put("catName",car.getCatName());
                     jsonObject.put("modelName",car.getModelName());
-                    jsonObject.put("officalPrice",car.getOfficalPrice());
-                    jsonObject.put("totalNumber",car.getTotalNumber());
-                    jsonObject.put("lockNumber",car.getLockNumber());
-                    jsonObject.put("surplusNumber",car.getSurplusNumber());
+//                    jsonObject.put("officalPrice",car.getOfficalPrice());
+//                    jsonObject.put("totalNumber",car.getTotalNumber());
+//                    jsonObject.put("lockNumber",car.getLockNumber());
+//                    jsonObject.put("surplusNumber",car.getSurplusNumber());
                     jsonObject.put("userName",car.getUserName());
                     jsonObject.put("realName",car.getRealName());
                     jsonObject.put("status",car.getStatus());

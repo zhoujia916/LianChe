@@ -388,38 +388,38 @@ public class AutoOrderController extends BaseController {
             map.put("carId", orderCar.getCarId());
             map.put("carAttrIds", orderCar.getCarAttrId());
             List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
-            if(attrs == null || attrs.size() != 2){
+            if(attrs == null || attrs.size() == 0 || attrs.size() % 6 != 0){
                 result.setCode(-1);
                 result.setMsg("请选择外观和内饰！");
                 return result;
             }
-            if(orderCar.getCarNumber() == null || orderCar.getCarNumber() <= 0 || orderCar.getCarNumber() >= car.getSurplusNumber()){
-                result.setCode(-1);
-                result.setMsg("预订数量不正确！");
-                return result;
-            }
+//            if(orderCar.getCarNumber() == null || orderCar.getCarNumber() <= 0 || orderCar.getCarNumber() >= car.getSurplusNumber()){
+//                result.setCode(-1);
+//                result.setMsg("预订数量不正确！");
+//                return result;
+//            }
             //region Caculte price
-            double price = car.getOfficalPrice();
-            double salePrice = car.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY ?
-                    car.getSaleAmount() :
-                    (price * car.getSaleAmount() / 100);
-            if(car.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP){
-                price += salePrice;
-            }
-            else if(car.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
-                price -= salePrice;
-            }
-            if(orderCar.getHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
-                price += car.getPartsPrice();
-            }
-            price += attrs.get(0).getAttrPrice() + attrs.get(1).getAttrPrice();
+//            double price = car.getOfficalPrice();
+//            double salePrice = car.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY ?
+//                    car.getSaleAmount() :
+//                    (price * car.getSaleAmount() / 100);
+//            if(car.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP){
+//                price += salePrice;
+//            }
+//            else if(car.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
+//                price -= salePrice;
+//            }
+//            if(orderCar.getHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
+//                price += car.getPartsPrice();
+//            }
+//            price += attrs.get(0).getAttrPrice() + attrs.get(1).getAttrPrice();
 
             //endregion
-            if(price != orderCar.getCarPrice()){
-                result.setCode(-1);
-                result.setMsg("提交金额不正确！");
-                return result;
-            }
+//            if(price != orderCar.getCarPrice()){
+//                result.setCode(-1);
+//                result.setMsg("提交金额不正确！");
+//                return result;
+//            }
 
             //region Init Order Attr
             order.setOrderSn(autoOrderService.createSn(ConvertUtil.toString(order.getBuyerId())));
@@ -431,11 +431,11 @@ public class AutoOrderController extends BaseController {
             order.setSellerDeposit(0);
             order.setBuyerDeposit(0);
             order.setShipTime(0);
-            order.setAmount(price * orderCar.getCarNumber());
+//            order.setAmount(price * orderCar.getCarNumber());
             order.setAddTime(ConvertUtil.toLong(new Date()));
 
 
-            orderCar.setCarPrice(price);
+//            orderCar.setCarPrice(price);
             orderCar.setSendNumber(0);
             orderCar.setHasParts(Constants.AUTO_CAR_HAS_PARTS_NO);
             //endregion

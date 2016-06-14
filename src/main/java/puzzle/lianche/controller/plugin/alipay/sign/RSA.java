@@ -23,8 +23,7 @@ public class RSA{
 	* @param input_charset 编码格式
 	* @return 签名值
 	*/
-	public static String sign(String content, String privateKey, String input_charset)
-	{
+	public static String sign(String content, String privateKey, String input_charset){
         try 
         {
         	PKCS8EncodedKeySpec priPKCS8 	= new PKCS8EncodedKeySpec( Base64.decode(privateKey) ); 

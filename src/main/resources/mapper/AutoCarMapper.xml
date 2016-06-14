@@ -7,14 +7,6 @@
     	<result column="brand_id" property="brandId" /> 
     	<result column="brand_cat_id" property="brandCatId" /> 
     	<result column="brand_model_id" property="brandModelId" />
-        <result column="offical_price" property="officalPrice" />
-        <result column="quote_type" property="quoteType" />
-        <result column="sale_price_type" property="salePriceType" />
-        <result column="sale_amount" property="saleAmount" />
-        <result column="shop_price" property="shopPrice" />
-    	<result column="total_number" property="totalNumber" /> 
-    	<result column="lock_number" property="lockNumber" />
-        <result column="surplus_number" property="surplusNumber"/>
     	<result column="province" property="province" /> 
     	<result column="city" property="city" /> 
     	<result column="area" property="area" />
