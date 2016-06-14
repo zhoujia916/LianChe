@@ -83,11 +83,21 @@ public class AutoCar implements Serializable{
 	private Integer sortOrder;
     @Column(name="remark", nullable=true)
     private String remark;
-	
-	
-	/**
+    private Long refreshTime;
+
+
+    public Long getRefreshTime() {
+        return refreshTime;
+    }
+
+    public void setRefreshTime(Long refreshTime) {
+        this.refreshTime = refreshTime;
+    }
+
+    /**
 	* Getter and Setter
 	*/
+
 	public Integer getCarId(){
 		return carId;
 	}
@@ -248,6 +258,24 @@ public class AutoCar implements Serializable{
     private String realName;
     private String beginTimeString;
     private String endTimeString;
+    private Integer userStatus;
+    private Long collectAddTime;
+
+    public Integer getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(Integer userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public Long getCollectAddTime() {
+        return collectAddTime;
+    }
+
+    public void setCollectAddTime(Long collectAddTime) {
+        this.collectAddTime = collectAddTime;
+    }
 
     public String getBeginTimeString() {
         return beginTimeString;

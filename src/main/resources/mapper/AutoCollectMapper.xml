@@ -106,7 +106,10 @@
         select <include refid="allColumn"/> from auto_collect
         <where>  
         	<if test="collectId > 0">
-                collect_id = #{collectId}
+                and collect_id = #{collectId}
+            </if>
+            <if test="carId > 0">
+                and target_id = #{carId}
             </if>
         </where> 
     </select>

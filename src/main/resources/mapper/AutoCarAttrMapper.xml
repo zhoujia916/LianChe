@@ -150,7 +150,10 @@
         select <include refid="allColumn"/> from auto_car_attr
         <where>  
         	<if test="carAttrId > 0">
-                car_attr_id = #{carAttrId}
+                and car_attr_id = #{carAttrId}
+            </if>
+            <if test="attrCarId > 0">
+                and car_id = #{attrCarId} limit 0,1
             </if>
         </where>
         <if test="sort != null and sort != ''">

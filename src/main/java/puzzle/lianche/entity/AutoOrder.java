@@ -102,11 +102,21 @@ public class AutoOrder implements Serializable{
     }
     @Column(name="order_remark", nullable=true)
     private String orderRemark;
-	
-	
-	/**
+    private String payNumber;
+
+
+    public String getPayNumber() {
+        return payNumber;
+    }
+
+    public void setPayNumber(String payNumber) {
+        this.payNumber = payNumber;
+    }
+
+    /**
 	* Getter and Setter
 	*/
+
 	public Integer getOrderId(){
 		return orderId;
 	}

@@ -511,27 +511,31 @@ public class AutoUserController extends BaseController {
         return result;
     }
 
-    /**
-     * 查看用户收藏
-     * @param user
-     * @return
-     */
+
     @RequestMapping(value = "/collection.do")
     @ResponseBody
-    public Result collection(AutoUser user,Page page){
+    public Result collection(Integer userId,Integer markId,Integer carId){
         Result result=new Result();
         try{
-            Map<String, Object> map=new HashMap<String, Object>();
-            map.put("userId",ConvertUtil.toString(user.getUserId()));
-            List<AutoCollect> autoCollectList=autoCollectService.queryList(map);
-            if(autoCollectList!=null && autoCollectList.size()>0){
-                List<Integer> carIdList=new ArrayList<Integer>();
-                for(AutoCollect autoCollect:autoCollectList ){
-                    carIdList.add(autoCollect.getTargetId());
+            if(userId==null){
+                result.setCode(-1);
+                result.setMsg("查看参数错误！");
+            }else{
+                Map<String, Object> map=new HashMap<String, Object>();
+                if(markId!=null && markId>0 && carId!=null && carId>0){
+                    map.put("carId",carId);
+                    AutoCollect collect=autoCollectService.query(map);
+                    map.clear();
+                    if(collect!=null && markId==1){
+                        String collectSql="act.add_time>"+collect.getAddTime()+"";
+                        map.put("collectSql",collectSql);
+                    }else if(collect!=null && markId==2){
+                        String collectSql="act.add_time<"+collect.getAddTime()+"";
+                        map.put("collectSql",collectSql);
+                    }
                 }
-                map.clear();
-                map.put("carIdList",carIdList);
-                List<AutoCar> carList=autoCarService.queryList(map,page);
+                map.put("userId",userId);
+                List<AutoCar> carList=autoCarService.queryList(map);
                 if(carList!=null && carList.size()>0){
                     JSONArray array=new JSONArray();
                     for(int i=0;i<carList.size();i++){
@@ -549,18 +553,18 @@ public class AutoUserController extends BaseController {
 //                            jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
 //                        }
                         jsonObject.put("attrValue","珍珠白");
-                        map.clear();
-                        map.put("userId",carList.get(i).getAddUserId());
-                        AutoUser autoUser=autoUserService.query(map);
                         jsonObject.put("carId",carList.get(i).getCarId());
                         jsonObject.put("carName",carList.get(i).getCarName());
                         jsonObject.put("titleName",carList.get(i).getCatName());
-//                        jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
-//                        jsonObject.put("quoteType",carList.get(i).getQuoteType());
-//                        jsonObject.put("quotePrice",carList.get(i).getSaleAmount());
+                        map.clear();
+                        map.put("attrCarId",carList.get(i).getCarId());
+                        AutoCarAttr carAttr=autoCarAttrService.query(map);
+                        jsonObject.put("officalPrice",carAttr.getOfficalPrice());
+                        jsonObject.put("quoteType",carAttr.getQuoteType());
+                        jsonObject.put("quotePrice",carAttr.getSaleAmount());
                         jsonObject.put("status",carList.get(i).getStatus());
-                        jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(autoCollectList.get(i).getAddTime()),"MM-dd HH:mm"));
-                        if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                        jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddTime()),"MM-dd HH:mm"));
+                        if(carList.get(i).getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
                             jsonObject.put("isAuthenticate",true);
                         }else{
                             jsonObject.put("isAuthenticate",false);
@@ -694,6 +698,7 @@ public class AutoUserController extends BaseController {
             }else{
                 Map<String, Object> map=new HashMap<String, Object>();
                 map.put("userId",order.getSellerId());
+                map.put("sellerId",order.getSellerId());
                 if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
                     String sql = " ao.order_id is null"
                             + " or (ao.order_status = " + Constants.OS_SUBMIT
