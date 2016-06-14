@@ -765,10 +765,11 @@ public class AutoUserController extends BaseController {
 //                            jsonObject.put("quoteType",carList.get(i).getQuoteType());
 //                            jsonObject.put("quotePrice",carList.get(i).getSaleAmount());
                             jsonObject.put("status",carList.get(i).getStatus());
-                            if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT) || order.getClientStatus().equals(Constants.CS_DEPOSIT) || order.getClientStatus().equals(Constants.CS_SUCCESS) || order.getClientStatus().equals(Constants.CS_CANCEL)){
-                                jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(orderList.get(i).getAddTime()),"MM-dd HH:mm"));
-                            }else{
-                                jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddTime()),"MM-dd HH:mm"));
+                            for(int j=0;j<orderCarList.size();j++){
+                                if(carList.get(i).getCarId()==orderCarList.get(j).getCarId()) {
+                                    jsonObject.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(orderList.get(i).getAddTime()), "MM-dd HH:mm"));
+                                    break;
+                                }
                             }
                             if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
                                 jsonObject.put("isAuthenticate",true);

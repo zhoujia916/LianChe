@@ -27,6 +27,7 @@
         <result column="model_name" property="modelName"/>
         <result column="user_name" property="userName"/>
         <result column="real_name" property="realName"/>
+        <result column="userStatus" property="userStatus"/>
         <result column="pic" property="pic"/>
         <result column="collect_id" property="collectId"/>
     </resultMap>
@@ -262,7 +263,7 @@
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoCar">
-        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as add_user_status
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
         left join auto_user_profile as aup on aup.user_id=ac.add_user_id
@@ -313,11 +314,18 @@
         order by ${sort} ac.add_time desc, ac.car_id desc
     </select>
 
-    <select id="queryOrderList" parameterType="Map" resultMap="AutoCar">
-        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as add_user_status
+    <select id="queryUserCollect" parameterType="Map" resultMap="AutoCar">
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,au.status as userStatus
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
-        left join auto_user_profile as aup on aup.user_id=ac.add_user_id
+        inner join auto_brand as ab on ac.brand_id=ab.brand_id
+        inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
+        inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
+        inner join auto_collect as act on ac.car_id=act.target_id
+    </select>
+    <select id="queryOrderList" parameterType="Map" resultMap="AutoCar">
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name
+        from auto_car as ac
         inner join auto_brand as ab on ac.brand_id=ab.brand_id
         inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
         inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
