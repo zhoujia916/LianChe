@@ -310,6 +310,8 @@ public class Constants {
     };
     //endregion
 
+    public static final Integer AUTO_AUTHORITY_TARGET_TYPE_MENU = 1;
+    public static final Integer AUTO_AUTHORITY_TARGET_TYPE_ACTION = 2;
 
 
     public class UrlHelper{

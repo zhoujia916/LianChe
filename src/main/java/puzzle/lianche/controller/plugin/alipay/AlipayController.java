@@ -19,7 +19,6 @@ import puzzle.lianche.utils.FileUtil;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import javax.websocket.server.PathParam;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,8 +111,6 @@ public class AlipayController extends BaseController {
 
             String orderInfo = AlipayCore.createLinkString(payinfo);
 
-
-
             // 对订单做RSA 签名(目前缺少private_key)
             String sign = RSA.sign(orderInfo, getKey("private"), AlipayConfig.input_charset); //支付宝提供的Config.cs
             //仅需对sign做URL编码
@@ -153,15 +150,14 @@ public class AlipayController extends BaseController {
             }
         }
         catch (Exception e){
-
         }
     }
 
 
 
-    @RequestMapping(value = {"/alipay/query/{type}"})
-    public void query(@PathParam("type") String type){
-        String key = getKey(type);
+    @RequestMapping(value = {"/alipay/query"})
+    public void query(){
+        String key = getKey(this.getParameter("type"));
         if(StringUtil.isNotNullOrEmpty(key)){
             this.writeText(key);
         }
@@ -172,14 +168,18 @@ public class AlipayController extends BaseController {
         if(type.equals("private")){
             key = AlipayConfig.private_key;
             if(StringUtil.isNullOrEmpty(key)){
-                key = FileUtil.readFile(this.getClass().getResource("").getPath() + "\\" + AlipayConfig.private_key_path);
+                String path = "WEB-INF/classes/alipaykey/rsa_private_key.pem";
+                path = "D:\\Projects\\Java\\LianChe\\src\\main\\webapp\\WEB-INF\\classes\\alipaykey\\rsa_private_key.pem";
+                key = FileUtil.readFile(path);
                 AlipayConfig.private_key = key;
             }
         }
         else if(type.equals("public")){
             key = AlipayConfig.public_key;
             if(StringUtil.isNullOrEmpty(key)){
-                key = FileUtil.readFile(this.getClass().getResource("").getPath() + "\\" + AlipayConfig.public_key_path);
+                String path = "WEB-INF/classes/alipaykey/rsa_public_key.pem";
+                path = "D:\\Projects\\Java\\LianChe\\src\\main\\webapp\\WEB-INF\\classes\\alipaykey\\rsa_public_key.pem";
+                key = FileUtil.readFile(path);
                 AlipayConfig.public_key = key;
             }
 

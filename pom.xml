@@ -59,6 +59,7 @@
 
 
         <outputDirectory>${project.basedir}/src/main/webapp/WEB-INF/classes</outputDirectory>
+
         <testOutputDirectory>${project.basedir}/src/main/webapp/WEB-INF/test-classes</testOutputDirectory>
     </build>
 

@@ -7,6 +7,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import puzzle.lianche.entity.*;
 import puzzle.lianche.mapper.SqlMapper;
+import puzzle.lianche.push.SmsPush;
 import puzzle.lianche.service.*;
 import puzzle.lianche.service.impl.AutoBrandServiceImpl;
 import puzzle.lianche.utils.*;
@@ -170,13 +171,17 @@ public class CommonTest {
 //        }
 //    }
 
+//    @Test
+//    public void queryBrand(){
+//        Map<String,Object> map = new HashMap<String, Object>();
+//        map.put("carId", 5);
+//        AutoCar car = autoCarService.query(map);
+//
+//        System.out.println(car);
+//    }
+
     @Test
-    public void queryBrand(){
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("carId", 5);
-        AutoCar car = autoCarService.query(map);
+    public void testSMS(){
 
-        System.out.println(car);
     }
-
 }

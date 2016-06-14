@@ -77,5 +77,10 @@ public class AutoSmsServiceImpl implements IAutoSmsService {
         return sqlMapper.queryList("AutoSmsMapper.queryList", map, page);
     }
 
+    @Override
+    public boolean send(AutoSms sms) {
+        return false;
+    }
+
 }
 

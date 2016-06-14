@@ -67,54 +67,58 @@ public class AutoUserController extends BaseController {
             if(StringUtil.isNullOrEmpty(phone)){
                 result.setCode(-1);
                 result.setMsg("手机号不能为空！");
+                return result;
             }else if(!StringUtil.isPhone(phone)){
                 result.setCode(-1);
-                result.setMsg("电话号码格式错误！");
+                result.setMsg("手机号码格式不正确！");
+                return result;
             }else if(StringUtil.isNullOrEmpty(keyword)){
                 result.setCode(-1);
                 result.setMsg("请求参数错误！");
-            }else{
-                //得到六位的随机数作为验证码
-                String code= CommonUtil.getCode(6);
-                Map<String,Object> map = new HashMap<String, Object>();
-                map.put("code", code);
-                String response = SmsPush.send(SmsPush.CODE_SENDCODE, phone, code);
-                if(SmsPush.isSuccess(response)){
-                    AutoSms sms=new AutoSms();
-                    if("register".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_REGISTER);
-                    }else if("retrieve".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
-                    }else if("modify".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_MODIFY);
-                    }else if("notice".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_NOTICE);
-                    }
-                    sms.setSmsContent("发送验证码："+code);
-                    sms.setCode(code);
-                    sms.setPhone(phone);
-                    sms.setStatus(Constants.SMS_STATUS_TRUE);
-                    autoSmsService.insert(sms);
-                    result.setData(code);
-                }else{
-                    AutoSms sms=new AutoSms();
-                    if("register".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_REGISTER);
-                    }else if("retrieve".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
-                    }else if("modify".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_MODIFY);
-                    }else if("notice".equalsIgnoreCase(keyword)){
-                        sms.setSmsType(Constants.SMS_TYPE_NOTICE);
-                    }
-                    sms.setSmsContent("发送验证码："+code);
-                    sms.setCode(code);
-                    sms.setPhone(phone);
-                    sms.setStatus(Constants.SMS_STATUS_FALSE);
-                    autoSmsService.insert(sms);
-                    result.setCode(1);
-                    result.setMsg(SmsPush.getError(response));
+                return result;
+            }
+            //得到六位的随机数作为验证码
+            String code = CommonUtil.getCode(6);
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("code", code);
+            String response = SmsPush.send(SmsPush.CODE_SENDCODE, phone, code);
+
+
+            if(SmsPush.isSuccess(response)){
+                AutoSms sms=new AutoSms();
+                if("register".equalsIgnoreCase(keyword)){
+                    sms.setSmsType(Constants.SMS_TYPE_REGISTER);
+                }else if("retrieve".equalsIgnoreCase(keyword)){
+                    sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
+                }else if("modify".equalsIgnoreCase(keyword)){
+                    sms.setSmsType(Constants.SMS_TYPE_MODIFY);
+                }else if("notice".equalsIgnoreCase(keyword)){
+                    sms.setSmsType(Constants.SMS_TYPE_NOTICE);
                 }
+                sms.setSmsContent("发送验证码："+code);
+                sms.setCode(code);
+                sms.setPhone(phone);
+                sms.setStatus(Constants.SMS_STATUS_TRUE);
+                autoSmsService.insert(sms);
+                result.setData(code);
+            }else{
+                AutoSms sms=new AutoSms();
+                if("register".equalsIgnoreCase(keyword)){
+                    sms.setSmsType(Constants.SMS_TYPE_REGISTER);
+                }else if("retrieve".equalsIgnoreCase(keyword)){
+                    sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
+                }else if("modify".equalsIgnoreCase(keyword)){
+                    sms.setSmsType(Constants.SMS_TYPE_MODIFY);
+                }else if("notice".equalsIgnoreCase(keyword)){
+                    sms.setSmsType(Constants.SMS_TYPE_NOTICE);
+                }
+                sms.setSmsContent("发送验证码："+code);
+                sms.setCode(code);
+                sms.setPhone(phone);
+                sms.setStatus(Constants.SMS_STATUS_FALSE);
+                autoSmsService.insert(sms);
+                result.setCode(1);
+                result.setMsg(SmsPush.getError(response));
             }
         }catch (Exception e){
             result.setCode(1);
