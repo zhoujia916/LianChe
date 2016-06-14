@@ -19,7 +19,7 @@ import puzzle.lianche.utils.StringUtil;
 
 import java.util.*;
 
-@Controller (value = "/adminAdController")
+@Controller (value = "adminAdController")
 @RequestMapping (value = "/admin/ad")
 public class AdController extends ModuleController {
 

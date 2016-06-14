@@ -1,8 +1,7 @@
-package puzzle.lianche.plugin.ueditor;
+package puzzle.lianche.controller.plugin.ueditor;
 
 import net.sf.json.JSONObject;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

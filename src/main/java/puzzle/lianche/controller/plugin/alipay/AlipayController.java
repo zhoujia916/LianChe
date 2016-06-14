@@ -1,4 +1,4 @@
-package puzzle.lianche.controller.plugin;
+package puzzle.lianche.controller.plugin.alipay;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,17 @@ import puzzle.lianche.service.IAutoCarService;
 import puzzle.lianche.service.IAutoOrderCarService;
 import puzzle.lianche.service.IAutoOrderService;
 import puzzle.lianche.utils.ConvertUtil;
+import puzzle.lianche.utils.FileUtil;
+import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
+
+import javax.websocket.server.PathParam;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller(value = "pluginAlipayController")
+@RequestMapping(value = {"/plugin"})
 public class AlipayController extends BaseController {
 
     @Autowired
@@ -104,18 +109,37 @@ public class AlipayController extends BaseController {
 
     @RequestMapping(value = {"/alipay"})
     public void index(AutoOrder order){
-        if(order == null || order.getOrderId() == null || order.getOrderId() <= 0 || StringUtil.isNullOrEmpty(order.getOrderSn()))
-            return;
+        if(order == null || order.getOrderId() == null || order.getOrderId() <= 0 ||
+                StringUtil.isNullOrEmpty(order.getOrderSn())){
+            Result result = new Result();
+            result.setCode(-1);
+            result.setMsg("该订单不不存在！");
+            this.writeJson(result);
+        }
         Map<String, Object> map = new HashMap<String, Object>();
-
         try {
+            int buyerId = order.getBuyerId();
+            int sellerId = order.getSellerId();
             order = autoOrderService.query(order.getOrderId(), order.getOrderSn());
-            if(order == null)
+            if(order == null){
+                Result result = new Result();
+                result.setCode(-1);
+                result.setMsg("该订单不能支付订金！");
+                this.writeJson(result);
+                return;
+            }
+
+            if(order.getPayStatus() != Constants.PS_WAIT_BUYER_DEPOSIT || order.getPayStatus() != Constants.PS_WAIT_SELLER_DEPOSIT)
                 return;
             map.put("orderId", order.getOrderId());
             AutoCar car = autoCarService.query(map);
-            if(car == null)
+            if(car == null){
+                Result result = new Result();
+                result.setCode(-1);
+                result.setMsg("该订单没有预订车辆！");
+                this.writeJson(result);
                 return;
+            }
 
             Map<String, String> payinfo = new HashMap<String, String>();
             // 必填，接口名称，固定值
@@ -123,7 +147,7 @@ public class AlipayController extends BaseController {
             // 必填，合作商户号
             payinfo.put("partner", "\"" + AlipayConfig.partner + "\"");
             // 可选，买家ID
-            payinfo.put("seller_id", "\"" + AlipayConfig.seller + "\"");
+            payinfo.put("seller_id", "\"" + AlipayConfig.account + "\"");
             // 必填，商户网站唯一订单号
             payinfo.put("out_trade_no", "\"" + order.getOrderSn() + "\"");
             // 必填，商品名称
@@ -144,12 +168,13 @@ public class AlipayController extends BaseController {
             String orderInfo = AlipayCore.createLinkString(payinfo);
 
 
-            // 对订单做RSA 签名
-            String sign = RSA.sign(orderInfo, AlipayConfig.private_key, AlipayConfig.input_charset); //支付宝提供的Config.cs
+
+            // 对订单做RSA 签名(目前缺少private_key)
+            String sign = RSA.sign(orderInfo, getKey("private"), AlipayConfig.input_charset); //支付宝提供的Config.cs
             //仅需对sign做URL编码
             sign = URLEncoder.encode(sign, "utf-8");
 
-            String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + "sign_type=\"RSA\"";
+            String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + "sign_type=\"" + AlipayConfig.sign_type + "\"";
 
             this.writeText(payInfo);
         }
@@ -158,6 +183,7 @@ public class AlipayController extends BaseController {
         }
     }
 
+    //(一般情况下25小时内8次通知，频率一般是2m 10m 10m 1h 2h 6h 15h)
     @RequestMapping(value = {"/alipay/notify"})
     public void inform(){
         try {
@@ -182,5 +208,35 @@ public class AlipayController extends BaseController {
         catch (Exception e){
 
         }
+    }
+
+
+
+    @RequestMapping(value = {"/alipay/key/{type}"})
+    public void queryKey(@PathParam("type") String type){
+        String key = getKey(type);
+        if(StringUtil.isNotNullOrEmpty(key)){
+            this.writeText(key);
+        }
+    }
+
+    public String getKey(String type){
+        String key = null;
+        if(type.equals("private")){
+            key = AlipayConfig.private_key;
+            if(StringUtil.isNullOrEmpty(key)){
+                key = FileUtil.readFile(this.getClass().getResource("").getPath() + "\\" + AlipayConfig.private_key_path);
+                AlipayConfig.private_key = key;
+            }
+        }
+        else if(type.equals("public")){
+            key = AlipayConfig.public_key;
+            if(StringUtil.isNullOrEmpty(key)){
+                key = FileUtil.readFile(this.getClass().getResource("").getPath() + "\\" + AlipayConfig.public_key_path);
+                AlipayConfig.public_key = key;
+            }
+
+        }
+        return key;
     }
 }
