@@ -91,63 +91,56 @@ public class AutoOrderController extends BaseController {
     }
 
     /**
-     * 支付订金(买家支付订金)
+     * 通知系统买家已经支付订金
      * @param order
      * @return
      */
     @RequestMapping(value = "/deposit.do")
     @ResponseBody
-    public void deposit(AutoOrder order){
+    public Result deposit(AutoOrder order){
         Result result = new Result();
         try{
             //region Check Input
             if(order == null || (order.getOrderId() == null && StringUtil.isNullOrEmpty(order.getOrderSn())) ){
                 result.setCode(-1);
                 result.setMsg("订单不能为空！");
-                this.writeJson(result);
-                return;
+                return result;
             }
             if(order.getBuyerId() == null && order.getBuyerId() == 0){
                 result.setCode(-1);
                 result.setMsg("买家不能为空！");
-                this.writeJson(result);
-                return;
+                return result;
             }
             int buyerId = order.getBuyerId();
             order = autoOrderService.query(order.getOrderId(), null);
             if(order == null){
                 result.setCode(-1);
                 result.setMsg("该订单不存在！");
-                this.writeJson(result);
-                return;
+                return result;
             }
             if(order.getBuyerId() != buyerId){
                 result.setCode(-1);
                 result.setMsg("您不能支付该订单订金！");
-                this.writeJson(result);
-                return;
+                return result;
             }
             if(order.getOrderStatus() != Constants.OS_SUBMIT ||
                 order.getPayStatus() != Constants.PS_WAIT_BUYER_DEPOSIT ||
                 order.getShipStatus() != Constants.SS_UNSHIP){
                 result.setCode(-1);
                 result.setMsg("该订单不能支付订金！");
-                this.writeJson(result);
-                return;
+                return result;
             }
             //endregion
-            redirect("");
             if(!autoOrderService.doDeposit(order)){
                 result.setCode(1);
                 result.setMsg("支付订金操作失败！");
-                this.writeJson(result);
-                return;
             }
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("支付订金操作失败！");
             logger.error(result.getMsg()+e.getMessage());
         }
+        return result;
     }
 
 
