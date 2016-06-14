@@ -128,5 +128,6 @@
                 and acl.user_id in (${userId})
             </if>
         </where>
+        order by acl.add_time desc,acl.collect_id desc
     </select>
 </mapper>
