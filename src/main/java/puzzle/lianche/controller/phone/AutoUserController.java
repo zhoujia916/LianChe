@@ -78,7 +78,7 @@ public class AutoUserController extends BaseController {
                 String code= CommonUtil.getCode(6);
                 Map<String,Object> map = new HashMap<String, Object>();
                 map.put("code", code);
-                String response = SmsPush.send(phone, 1, map);
+                String response = SmsPush.send(SmsPush.CODE_SENDCODE, phone, code);
                 if(SmsPush.isSuccess(response)){
                     AutoSms sms=new AutoSms();
                     if("register".equalsIgnoreCase(keyword)){
