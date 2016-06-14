@@ -30,6 +30,7 @@
         <result column="userStatus" property="userStatus"/>
         <result column="pic" property="pic"/>
         <result column="collect_id" property="collectId"/>
+        <result column="collectAddTime" property="collectAddTime"/>
     </resultMap>
 
     <sql id="allColumn">
@@ -46,17 +47,10 @@
         	<if test="brandId != null">brand_id, </if>
         	<if test="brandCatId != null">brand_cat_id, </if>
         	<if test="brandModelId != null">brand_model_id, </if>
-        	<if test="officalPrice != null">offical_price, </if>
-            <if test="quoteType != null">quote_type, </if>
-            <if test="salePriceType != null">sale_price_type, </if>
-            <if test="saleAmount != null">sale_amount, </if>
-            <if test="shopPrice != null">shop_price, </if>
-        	<if test="totalNumber != null">total_number, </if>
-        	<if test="lockNumber != null">lock_number, </if>
-            <if test="surplusNumber != null">surplus_number, </if>
         	<if test="province != null">province, </if>
         	<if test="city != null">city, </if>
         	<if test="area != null">area, </if>
+            <if test="refreshTime != null">refresh_time,</if>
             <if test="hasParts != null">has_parts, </if>
             <if test="parts != null">parts, </if>
             <if test="partsPrice != null">parts_price, </if>
@@ -77,14 +71,7 @@
         	<if test="brandId != null">#{brandId}, </if>
         	<if test="brandCatId != null">#{brandCatId}, </if>
         	<if test="brandModelId != null">#{brandModelId}, </if>
-        	<if test="officalPrice != null">#{officalPrice}, </if>
-            <if test="quoteType != null">#{quoteType}, </if>
-            <if test="salePriceType != null">#{salePriceType}, </if>
-            <if test="saleAmount != null">#{saleAmount}, </if>
-            <if test="shopPrice != null">#{shopPrice}, </if>
-        	<if test="totalNumber != null">#{totalNumber}, </if>
-        	<if test="lockNumber != null">#{lockNumber}, </if>
-            <if test="surplusNumber != null">#{surplusNumber}, </if>
+        	<if test="refreshTime != null">#{refreshTime},</if>
         	<if test="province != null">#{province}, </if>
         	<if test="city != null">#{city}, </if>
         	<if test="area != null">#{area}, </if>
@@ -315,13 +302,23 @@
     </select>
 
     <select id="queryUserCollect" parameterType="Map" resultMap="AutoCar">
-        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,au.status as userStatus
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,
+        au.status as userStatus,act.add_time as collectAddTime
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
         inner join auto_brand as ab on ac.brand_id=ab.brand_id
         inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
         inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
         inner join auto_collect as act on ac.car_id=act.target_id
+        <where>
+            <if test="userId != null and userId >0">
+                and act.user_id=${userId}
+            </if>
+            <if test="collectSql != null and collectSql !=''">
+                and #{collectSql}
+            </if>
+        </where>
+        order by act.add_time desc,act.collect_id desc LIMIT 0,20
     </select>
     <select id="queryOrderList" parameterType="Map" resultMap="AutoCar">
         select ac.*, ab.brand_name,abc.cat_name,abm.model_name
@@ -334,6 +331,9 @@
         <where>
             <if test="userId != null and userId > 0">
                 and ac.add_user_id = ${userId}
+            </if>
+            <if test="sellerId !=null and sellerId > 0">
+                and ao.seller_id = ${sellerId}
             </if>
             <if test="filter != null and filter != ''">
                 and #{filter}

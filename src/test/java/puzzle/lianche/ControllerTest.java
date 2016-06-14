@@ -101,7 +101,7 @@ public class ControllerTest {
 //        mockMvc.perform(((post("/phone/autouser/register.do").param("userName", "13658473085").param("password","111111")).param("code","743996")))
 //        mockMvc.perform(((post("/phone/autouser/sendCode.do").param("phone", "13658473085").param("keyword","register"))))
 //        mockMvc.perform(((post("/phone/autouser/login.do").param("username", "13658473085").param("password","111111"))))
-        mockMvc.perform(((post("/phone/autouser/prefectUser.do").param("realName", "李建生").param("phone","13658473085")).param("shopType","1").param("shopName","铜仁土特产代购").param("shopDesc","zxczxczxca").param("shopBrands","asdsad").param("shopBase","asdsad")))
+        mockMvc.perform(((post("/phone/autouser/collection.do").param("userId", "29"))))
                 .andExpect(status().isOk()).andDo(print());
     }
 }
