@@ -15,9 +15,12 @@ public interface IAutoUserService{
     public boolean delete(Map<String, Object> map);
 
     public AutoUser query(Map<String, Object> map);
+
+    public AutoUser query(Integer userId, String userName);
     
     public List<AutoUser> queryList(Object param);
 
     public List<AutoUser> queryList(Map<String, Object> map, Page page);
+
     
 }

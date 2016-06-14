@@ -106,57 +106,34 @@ public class AutoOrderController extends BaseController {
                 result.setMsg("订单不能为空！");
                 return result;
             }
-            if(order.getBuyerId() != null && order.getBuyerId() > 0){
-                int buyerId = order.getBuyerId();
-                order = autoOrderService.query(order.getOrderId(), null);
-                if(order == null){
-                    result.setCode(-1);
-                    result.setMsg("该订单不存在！");
-                    return result;
-                }
-                if(order.getBuyerId() != buyerId){
-                    result.setCode(-1);
-                    result.setMsg("您不能支付该订单订金！");
-                    return result;
-                }
-                if(order.getOrderStatus() != Constants.OS_SUBMIT ||
-                   order.getPayStatus() != Constants.PS_WAIT_BUYER_DEPOSIT ||
-                   order.getShipStatus() != Constants.SS_UNSHIP){
-                    result.setCode(-1);
-                    result.setMsg("该订单不能支付订金！");
-                    return result;
-                }
-                if(!autoOrderService.doDeposit(order)){
-                    result.setCode(1);
-                    result.setMsg("支付订金操作失败！");
-                    return result;
-                }
+            if(order.getBuyerId() == null || order.getBuyerId() == 0){
+                result.setCode(-1);
+                result.setMsg("买家不能为空！");
+                return result;
             }
-            else if(order.getSellerId() != null && order.getSellerId() > 0){
-                int sellerId = order.getSellerId();
-                order = autoOrderService.query(order.getOrderId(), null);
-                if(order == null){
-                    result.setCode(-1);
-                    result.setMsg("该订单不存在！");
-                    return result;
-                }
-                if(order.getSellerId() != sellerId){
-                    result.setCode(-1);
-                    result.setMsg("您不能支付该订单订金！");
-                    return result;
-                }
-                if(order.getOrderStatus() != Constants.OS_SUBMIT ||
-                   order.getPayStatus() != Constants.PS_WAIT_SELLER_DEPOSIT ||
-                   order.getShipStatus() != Constants.SS_UNSHIP){
-                    result.setCode(-1);
-                    result.setMsg("该订单不能支付订金！");
-                    return result;
-                }
-                if(!autoOrderService.doDeposit(order)){
-                    result.setCode(1);
-                    result.setMsg("支付订金操作失败！");
-                    return result;
-                }
+            int buyerId = order.getBuyerId();
+            order = autoOrderService.query(order.getOrderId(), null);
+            if(order == null){
+                result.setCode(-1);
+                result.setMsg("该订单不存在！");
+                return result;
+            }
+            if(order.getBuyerId() != buyerId){
+                result.setCode(-1);
+                result.setMsg("您不能支付该订单订金！");
+                return result;
+            }
+            if(order.getOrderStatus() != Constants.OS_SUBMIT ||
+                order.getPayStatus() != Constants.PS_WAIT_BUYER_DEPOSIT ||
+                order.getShipStatus() != Constants.SS_UNSHIP){
+                result.setCode(-1);
+                result.setMsg("该订单不能支付订金！");
+                return result;
+            }
+            if(!autoOrderService.doDeposit(order)){
+                result.setCode(1);
+                result.setMsg("支付订金操作失败！");
+                return result;
             }
         }catch (Exception e){
             result.setCode(1);
@@ -221,31 +198,34 @@ public class AutoOrderController extends BaseController {
     public Result accept(AutoOrder order){
         Result result = new Result();
         try{
-            if(order.getSellerId() != null && order.getSellerId() > 0){
-                int sellerId = order.getSellerId();
-                order = autoOrderService.query(order.getOrderId(), null);
-                if(order == null){
-                    result.setCode(-1);
-                    result.setMsg("该订单不存在！");
-                    return result;
-                }
-                if(order.getSellerId() != sellerId){
-                    result.setCode(-1);
-                    result.setMsg("您不能同意该订单！");
-                    return result;
-                }
-                if(order.getOrderStatus() != Constants.OS_SUBMIT ||
-                        order.getPayStatus() != Constants.PS_BUYER_PAY_DEPOSIT ||
-                        order.getShipStatus() != Constants.SS_UNSHIP){
-                    result.setCode(-1);
-                    result.setMsg("该订单不能同意！");
-                    return result;
-                }
-                if(!autoOrderService.doAccept(order)){
-                    result.setCode(1);
-                    result.setMsg("同意订单操作失败！");
-                    return result;
-                }
+            if(order.getSellerId() == null || order.getSellerId() == 0){
+                result.setCode(-1);
+                result.setMsg("卖家不能为空！");
+                return result;
+            }
+            int sellerId = order.getSellerId();
+            order = autoOrderService.query(order.getOrderId(), null);
+            if(order == null){
+                result.setCode(-1);
+                result.setMsg("该订单不存在！");
+                return result;
+            }
+            if(order.getSellerId() != sellerId){
+                result.setCode(-1);
+                result.setMsg("您不能同意该订单！");
+                return result;
+            }
+            if(order.getOrderStatus() != Constants.OS_SUBMIT ||
+                    order.getPayStatus() != Constants.PS_BUYER_PAY_DEPOSIT ||
+                    order.getShipStatus() != Constants.SS_UNSHIP){
+                result.setCode(-1);
+                result.setMsg("该订单不能同意！");
+                return result;
+            }
+            if(!autoOrderService.doAccept(order)){
+                result.setCode(1);
+                result.setMsg("同意订单操作失败！");
+                return result;
             }
         }catch (Exception e){
             result.setCode(1);
@@ -508,13 +488,13 @@ public class AutoOrderController extends BaseController {
                     map.put("shipStatus", Constants.SS_UNSHIP);
                 }
                 else if(order.getClientStatus().equals(Constants.CS_DEPOSIT)){
-                    map.put("orderStatusList", new int[] { Constants.OS_SUBMIT, Constants.OS_ACCEPT, Constants.OS_EXECUTE});
-                    map.put("payStatusList", new int[] { Constants.PS_BUYER_PAY_DEPOSIT, Constants.PS_WAIT_SELLER_DEPOSIT, Constants.PS_SELLER_PAY_DEPOSIT } );
+                    map.put("orderStatusList", Constants.OS_SUBMIT + "," + Constants.OS_ACCEPT + "," + Constants.OS_EXECUTE);
+                    map.put("payStatusList", Constants.PS_BUYER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SELLER_DEPOSIT + "," + Constants.PS_SELLER_PAY_DEPOSIT);
                     map.put("shipStatus", Constants.SS_UNSHIP);
                 }
                 else if(order.getClientStatus().equals(Constants.CS_SUCCESS)){
-                    map.put("orderStatusList", new int[] { Constants.OS_SUCCESS });
-                    map.put("payStatusList", new int[] { Constants.PS_WAIT_RETURN_DEPOSIT, Constants.PS_SYSTEM_RETURN_DEPOSIT } );
+                    map.put("orderStatusList", Constants.OS_SUCCESS);
+                    map.put("payStatusList", Constants.PS_SELLER_PAY_DEPOSIT + "," + Constants.PS_WAIT_RETURN_DEPOSIT + "," + Constants.PS_SYSTEM_RETURN_DEPOSIT );
                     map.put("shipStatus", Constants.SS_SHIPED);
                 }
                 else if(order.getClientStatus().equals(Constants.CS_CANCEL)) {
@@ -534,14 +514,13 @@ public class AutoOrderController extends BaseController {
                     map.put("shipStatus", Constants.SS_UNSHIP);
                 }
                 else if(order.getClientStatus().equals(Constants.CS_SUCCESS)){
-                    map.put("orderStatusList", new int[] { Constants.OS_SUCCESS });
-                    map.put("payStatusList", new int[] { Constants.PS_WAIT_RETURN_DEPOSIT, Constants.PS_SYSTEM_RETURN_DEPOSIT } );
+                    map.put("orderStatusList", Constants.OS_SUCCESS);
+                    map.put("payStatusList", Constants.PS_WAIT_RETURN_DEPOSIT + "," + Constants.PS_SYSTEM_RETURN_DEPOSIT );
                     map.put("shipStatus", Constants.SS_SHIPED);
                 }
                 else if(order.getClientStatus().equals(Constants.CS_CANCEL)){
                     map.put("orderStatus", Constants.OS_CANCEL);
                 }
-
             }
             List<AutoOrder> orders = autoOrderService.queryList(map, page);
             result.setData(orders);

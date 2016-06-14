@@ -19,5 +19,4 @@ public interface IMapper {
 
     <T> List<T> queryList(String statement, Map<String, Object> map, Page page);
 
-
 }

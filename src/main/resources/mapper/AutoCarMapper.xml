@@ -259,8 +259,11 @@
         from auto_car as ac
         left join auto_car_pic as acp on acp.car_id = ac.car_id
         <where>  
-        	<if test="carId > 0">
+        	<if test="carId != null and carId > 0">
                 ac.car_id = #{carId}
+            </if>
+            <if test="orderId != null and orderId > 0">
+                ac.car_id = (select car_id from auto_order_car where order_id = #{orderId})
             </if>
         </where>
         limit 0, 1

@@ -17,6 +17,7 @@ import puzzle.lianche.service.IAutoUserProfileService;
 import puzzle.lianche.service.IAutoUserService;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.mapper.SqlMapper;
+import puzzle.lianche.utils.StringUtil;
 
 @Service("autoUserService")
 public class AutoUserServiceImpl implements IAutoUserService {
@@ -87,7 +88,22 @@ public class AutoUserServiceImpl implements IAutoUserService {
     	return sqlMapper.query("AutoUserMapper.query", map);
     }
 
-	/**
+    /**
+     * 根据用户ID和名称查询
+     */
+    @Override
+    public AutoUser query(Integer userId, String userName) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(userId != null && userId > 0){
+            map.put("userId", userId);
+        }
+        else if(StringUtil.isNotNullOrEmpty(userName)){
+            map.put("userName", userName);
+        }
+        return query(map);
+    }
+
+    /**
 	* 查询多条记录
 	*/
 	@Override

@@ -283,10 +283,19 @@ public class Constants {
     /**
      * 客户端状态(未支付订金,已支付订金,已成交,已取消)
      */
+    public static final Integer CS_ALL = 0;
     public static final Integer CS_UNDEPOSIT = 1;
     public static final Integer CS_DEPOSIT = 2;
     public static final Integer CS_SUCCESS = 3;
     public static final Integer CS_CANCEL = 4;
+
+    /**
+     * 交易用户(双方，买家，卖家)
+     */
+    public static final Integer ORDER_USER_ALL = 0;
+    public static final Integer ORDER_USER_BUYER = 1;
+    public static final Integer ORDER_USER_SELLER = 2;
+
     //endregion
 
 

@@ -169,13 +169,13 @@
 	                and ship_status = #{shipStatus}
 	            </if>
                 <if test="orderStatusList != null and orderStatusList != ''">
-                    and order_status in (#{orderStatusList})
+                    and order_status in (${orderStatusList})
                 </if>
                 <if test="payStatusList != null and payStatusList != ''">
-                    and pay_status in (#{payStatusList})
+                    and pay_status in (${payStatusList})
                 </if>
                 <if test="shipStatusList != null and shipStatusList != ''">
-                    and ship_status in (#{shipStatusList})
+                    and ship_status in (${shipStatusList})
                 </if>
                 <if test="sellerId != null and sellerId > 0">
                     and seller_id = ${sellerId}
