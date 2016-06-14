@@ -13,10 +13,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Arrays;
 
-@Controller(value = "pluginWeiXinController")
-public class WeiXinController extends BaseController {
+@Controller(value = "pluginWeiXinApiController")
+public class WeiXinApiController extends BaseController {
 
     @RequestMapping(value = {"/weixin"})
     public void index(){

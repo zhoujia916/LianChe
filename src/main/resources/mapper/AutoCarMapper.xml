@@ -7,14 +7,6 @@
     	<result column="brand_id" property="brandId" /> 
     	<result column="brand_cat_id" property="brandCatId" /> 
     	<result column="brand_model_id" property="brandModelId" />
-        <result column="offical_price" property="officalPrice" />
-        <result column="quote_type" property="quoteType" />
-        <result column="sale_price_type" property="salePriceType" />
-        <result column="sale_amount" property="saleAmount" />
-        <result column="shop_price" property="shopPrice" />
-    	<result column="total_number" property="totalNumber" /> 
-    	<result column="lock_number" property="lockNumber" />
-        <result column="surplus_number" property="surplusNumber"/>
     	<result column="province" property="province" /> 
     	<result column="city" property="city" /> 
     	<result column="area" property="area" />
@@ -260,8 +252,11 @@
         from auto_car as ac
         left join auto_car_pic as acp on acp.car_id = ac.car_id
         <where>  
-        	<if test="carId > 0">
+        	<if test="carId != null and carId > 0">
                 ac.car_id = #{carId}
+            </if>
+            <if test="orderId != null and orderId > 0">
+                ac.car_id = (select car_id from auto_order_car where order_id = #{orderId})
             </if>
         </where>
         limit 0, 1

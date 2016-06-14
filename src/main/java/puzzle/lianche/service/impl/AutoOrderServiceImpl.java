@@ -9,9 +9,12 @@ import puzzle.lianche.Constants;
 import puzzle.lianche.entity.AutoCar;
 import puzzle.lianche.entity.AutoOrder;
 import puzzle.lianche.entity.AutoOrderCar;
+import puzzle.lianche.entity.AutoUser;
+import puzzle.lianche.push.SmsPush;
 import puzzle.lianche.service.IAutoCarService;
 import puzzle.lianche.service.IAutoOrderCarService;
 import puzzle.lianche.service.IAutoOrderService;
+import puzzle.lianche.service.IAutoUserService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.EncryptUtil;
 import puzzle.lianche.utils.Page;
@@ -19,16 +22,16 @@ import puzzle.lianche.mapper.SqlMapper;
 import puzzle.lianche.utils.StringUtil;
 
 @Service("autoOrderService")
-public class AutoOrderServiceImpl implements IAutoOrderService {
-	
-	@Autowired
-	private SqlMapper sqlMapper;
+public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderService {
 
     @Autowired
     private IAutoOrderCarService autoOrderCarService;
 
     @Autowired
     private IAutoCarService autoCarService;
+
+    @Autowired
+    private IAutoUserService autoUserService;
 	
 	/**
 	* 插入单条记录
@@ -46,8 +49,8 @@ public class AutoOrderServiceImpl implements IAutoOrderService {
 
                     //更新锁定数量
                     AutoCar car = autoCarService.query(orderCar.getCarId());
-                    car.setLockNumber(car.getLockNumber() + orderCar.getCarNumber());
-                    car.setSurplusNumber(car.getTotalNumber() - car.getLockNumber());
+//                    car.setLockNumber(car.getLockNumber() + orderCar.getCarNumber());
+//                    car.setSurplusNumber(car.getTotalNumber() - car.getLockNumber());
                     autoCarService.update(car);
                 }
 
@@ -55,7 +58,7 @@ public class AutoOrderServiceImpl implements IAutoOrderService {
             return true;
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
         return false;
 
@@ -140,9 +143,9 @@ public class AutoOrderServiceImpl implements IAutoOrderService {
      * @param orderSn
      * @return
      */
-    public AutoOrder query(int orderId, String orderSn){
+    public AutoOrder query(Integer orderId, String orderSn){
         Map<String, Object> map = new HashMap<String, Object>();
-        if(orderId > 0){
+        if(orderId != null && orderId > 0){
             map.put("orderId", orderId);
         }
         if(StringUtil.isNotNullOrEmpty(orderSn)){
@@ -158,8 +161,14 @@ public class AutoOrderServiceImpl implements IAutoOrderService {
      */
     public boolean doCancel(AutoOrder order){
         try {
+            doReturnDeposit(order, Constants.ORDER_USER_ALL);
+
+            // 更新订单状态
             order.setOrderStatus(Constants.OS_CANCEL);
-            return sqlMapper.update("AutoOrderMapper.update", order);
+            sqlMapper.update("AutoOrderMapper.update", order);
+
+            //短信消息通知买家和卖家
+            return true;
         }
         catch (Exception e){
 
@@ -174,8 +183,20 @@ public class AutoOrderServiceImpl implements IAutoOrderService {
      */
     @Override
     public boolean doReject(AutoOrder order) {
-        order.setShipStatus(Constants.OS_CANCEL);
-        return sqlMapper.update("AutoOrderMapper.update", order);
+        try {
+            order.setShipStatus(Constants.OS_CANCEL);
+            //退回买家订金
+            sqlMapper.update("AutoOrderMapper.update", order);
+
+            //短信消息通知买家
+            AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
+            SmsPush.send(SmsPush.CODE_SENDMSG, buyer.getUserName(), "您有一笔订单卖家已拒绝交易，订单号为-" + order.getOrderSn());
+            return true;
+        }
+        catch (Exception e){
+
+        }
+        return false;
     }
 
     /**
@@ -185,8 +206,19 @@ public class AutoOrderServiceImpl implements IAutoOrderService {
      */
     @Override
     public boolean doAccept(AutoOrder order) {
+        // 验证支付信息
+
+        // 更新订单状态
         order.setOrderStatus(Constants.OS_ACCEPT);
-        return sqlMapper.update("AutoOrderMapper.update", order);
+        order.setPayStatus(Constants.PS_SELLER_PAY_DEPOSIT);
+        sqlMapper.update("AutoOrderMapper.update", order);
+
+        // 短信消息通知买家
+        AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
+
+        SmsPush.send(SmsPush.CODE_SENDMSG, buyer.getUserName(), "您有一笔订单卖家已接受交易，订单号为-" + order.getOrderSn());
+
+        return true;
     }
 
     /**
@@ -196,34 +228,104 @@ public class AutoOrderServiceImpl implements IAutoOrderService {
      */
     @Override
     public boolean doReceive(AutoOrder order) {
+        // 更新订单状态
+        order.setPayStatus(Constants.PS_WAIT_RETURN_DEPOSIT);
         order.setShipStatus(Constants.SS_SHIPED);
-        return sqlMapper.update("AutoOrderMapper.update", order);
+        sqlMapper.update("AutoOrderMapper.update", order);
+
+        //短信消息通知卖家
+        AutoUser seller = autoUserService.query(order.getSellerId(), null);
+        SmsPush.send(SmsPush.CODE_SENDMSG, seller.getUserName(), "您有一笔订单买家已确认收货，订单号为-" + order.getOrderSn());
+
+        return true;
     }
 
     /**
-     * 通知收货
+     * 通知确认收货
      * @param order
      * @return
      */
     @Override
     public boolean doNotify(AutoOrder order) {
-        order.setShipStatus(Constants.SS_SHIPED);
-        return sqlMapper.update("AutoOrderMapper.update", order);
+        //短信通知买家
+        AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
+
+        String response = SmsPush.send(SmsPush.CODE_SENDMSG, buyer.getUserName(), "您有一笔订单等待收货确认，订单号为-" + order.getOrderSn() + "，请尽快处理。");
+
+        return SmsPush.isSuccess(response);
     }
 
     /**
-     * 支付订金
+     * 买家支付订金
      * @param order
      * @return
      */
     @Override
     public boolean doDeposit(AutoOrder order) {
-        if(order.getBuyerId() > 0){
+        try{
+            // 验证支付信息
+            doCheckDeposit(order, Constants.ORDER_USER_BUYER);
+
+            // 更新订单状态
             order.setPayStatus(Constants.PS_BUYER_PAY_DEPOSIT);
+            sqlMapper.update("AutoOrderMapper.update", order);
+            // 短信通知卖家
+            AutoUser seller = autoUserService.query(order.getSellerId(), null);
+            SmsPush.send(SmsPush.CODE_SENDMSG, seller.getUserName(), "您有一笔订单买家已支付订金，订单号为-" + order.getOrderSn() + "，请尽快处理。");
+            return true;
         }
-        else if(order.getSellerId() > 0){
-            order.setPayStatus(Constants.PS_SELLER_PAY_DEPOSIT);
+        catch (Exception e){
+
         }
-        return sqlMapper.update("AutoOrderMapper.update", order);
+        return false;
+    }
+
+    /**
+     * 买家支付订金
+     * @param order
+     * @return
+     */
+    public boolean doReturnDeposit(AutoOrder order, Integer type){
+        try {
+            if (type == Constants.ORDER_USER_ALL) {
+                return doReturnDeposit(order, Constants.ORDER_USER_BUYER) && doReturnDeposit(order, Constants.ORDER_USER_SELLER);
+            } else{
+                if (type == Constants.ORDER_USER_BUYER && order.getBuyerDeposit() > 0) {
+                    // 支付宝 和 微信退款
+                    if(order.getPayMethod() == 1){
+
+                    }
+                    else if(order.getPayMethod() == 2){
+
+                    }
+                }
+                else if (type == Constants.ORDER_USER_SELLER && order.getSellerDeposit() > 0) {
+
+                }
+            }
+            return true;
+        }
+        catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return false;
+    }
+
+    /**
+     * 确认支付订金
+     * @param order
+     * @return
+     */
+    public boolean doCheckDeposit(AutoOrder order, Integer type){
+        if(type == Constants.ORDER_USER_ALL){
+            return doCheckDeposit(order, Constants.ORDER_USER_BUYER) && doCheckDeposit(order, Constants.ORDER_USER_SELLER);
+        }
+        else if(type == Constants.ORDER_USER_BUYER){
+
+        }
+        else if(type == Constants.ORDER_USER_SELLER){
+
+        }
+        return true;
     }
 }

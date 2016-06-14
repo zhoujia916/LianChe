@@ -288,6 +288,14 @@ public class Constants {
     public static final Integer CS_DEPOSIT = 2;
     public static final Integer CS_SUCCESS = 3;
     public static final Integer CS_CANCEL = 4;
+
+    /**
+     * 交易用户(双方，买家，卖家)
+     */
+    public static final Integer ORDER_USER_ALL = 0;
+    public static final Integer ORDER_USER_BUYER = 1;
+    public static final Integer ORDER_USER_SELLER = 2;
+
     //endregion
 
 

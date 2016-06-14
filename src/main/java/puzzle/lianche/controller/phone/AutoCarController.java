@@ -90,10 +90,10 @@ public class AutoCarController extends BaseController {
                     object.put("addTime", ConvertUtil.toString(new Date(item.getAddTime()),Constants.DATE_FORMAT));
 
                     object.put("pic", item.getPic());
-                    object.put("officalPrice", item.getOfficalPrice());
-                    object.put("quoteType", item.getQuoteType());
-                    object.put("salePriceType", item.getSalePriceType());
-                    object.put("saleAmount", item.getSaleAmount());
+//                    object.put("officalPrice", item.get());
+//                    object.put("quoteType", item.getQuoteType());
+//                    object.put("salePriceType", item.getSalePriceType());
+//                    object.put("saleAmount", item.getSaleAmount());
                     array.add(object);
 
                 }
@@ -179,82 +179,36 @@ public class AutoCarController extends BaseController {
                 result.setMsg("车型不能为空！");
                 return result;
             }
-            if(car.getOfficalPrice() == null || car.getOfficalPrice() <= 0){
-                result.setCode(-1);
-                result.setMsg("指导价不能为空！");
-                return result;
-            }
             map.put("brandId", car.getBrandId());
-            AutoBrand brand = autoBrandService.query(map);
-            if(brand == null){
-                result.setCode(-1);
-                result.setMsg("品牌不能为空！");
-                return result;
-            }
-
-            map.clear();
             map.put("catId", car.getBrandCatId());
-            AutoBrandCat cat = autoBrandCatService.query(map);
-            if(cat == null){
-                result.setCode(-1);
-                result.setMsg("车系不能为空！");
-                return result;
-            }
-
-            map.clear();
             map.put("modelId", car.getBrandModelId());
+
             AutoBrandModel model = autoBrandModelService.query(map);
             if(model == null){
                 result.setCode(-1);
-                result.setMsg("车型不能为空！");
+                result.setMsg("请选择车型相关信息！");
                 return result;
             }
-            System.out.println("-----1");
-            if(car.getSaleAmount() == 0){
+            if(car.getAttrs() == null || car.getAttrs().isEmpty()){
                 result.setCode(-1);
-                if(car.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
-                    result.setMsg("优惠价格不能为空！");
-                    return result;
-                }
-                else if(car.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
-                    result.setMsg("优惠点数不能为空！");
-                }
+                result.setMsg("请输入正确的配置信息！");
                 return result;
             }
-            System.out.println("-----2");
-            if(car.getAttrs() == null || car.getAttrs().size() < 2 || car.getAttrs().size() %2 != 0){
-                result.setCode(-1);
-                result.setMsg("请输入内饰和外观颜色！");
-                return result;
-            }
-            System.out.println("-----3");
-            if(car.getTotalNumber() == 0){
-                result.setCode(-1);
-                result.setMsg("请输入数量！");
-                return result;
-            }
-            System.out.println("-----4");
             if(StringUtil.isNullOrEmpty(car.getBeginTimeString())){
                 result.setCode(-1);
                 result.setMsg("开始时间不能为空！");
                 return result;
             }
-            if(!StringUtil.isDate(car.getBeginTimeString())){
+            if(!StringUtil.isDate(car.getBeginTimeString()) || !StringUtil.isDate(car.getBeginTimeString())){
                 result.setCode(-1);
                 result.setMsg("开始时间不正确！");
                 return result;
             }
-            if(StringUtil.isNullOrEmpty(car.getEndTimeString())){
+            if(StringUtil.isNullOrEmpty(car.getEndTimeString()) || !StringUtil.isDate(car.getEndTimeString())){
                 result.setCode(-1);
                 result.setMsg("结束时间不能为空！");
                 return result;
             }
-            if(!StringUtil.isDate(car.getEndTimeString())){
-                result.setCode(-1);
-                result.setMsg("结束时间不正确！");
-                return result;
-            }
-            System.out.println("-----5");
             if(car.getHasParts().equals(Constants.AUTO_CAR_HAS_PARTS_YES) && StringUtil.isNullOrEmpty(car.getParts())){
                 result.setCode(-1);
                 result.setMsg("配件描述不能为空！");
@@ -265,20 +219,11 @@ public class AutoCarController extends BaseController {
                 result.setMsg("配件价格不能为空！");
                 return result;
             }
-            System.out.println("-----6");
             //endregion
 
             //region Init Attr Info
-            for(int i=0;i<car.getAttrs().size();i++){
-                car.getAttrs().get(i).setAttrPrice(0);
-            }
-            car.setCarName(cat.getCatName() + model.getModelName());
-            if(car.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
-                car.setShopPrice(car.getOfficalPrice() - car.getSaleAmount());
-            }
-            else if(car.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
-                car.setShopPrice(car.getOfficalPrice() * (100 - car.getSaleAmount()) / 100);
-            }
+            car.setCarName(model.getBrandName() + model.getCatName() + model.getModelName());
+
             car.setAddTime(ConvertUtil.toLong(new Date()));
 
             car.setStartDate(ConvertUtil.toLong(ConvertUtil.toDate(car.getBeginTimeString())));
@@ -288,12 +233,31 @@ public class AutoCarController extends BaseController {
             car.setCarType(Constants.AUTO_CAR_TYPE_COMMON);
 
 
-            car.setLockNumber(0);
-            car.setSurplusNumber(car.getTotalNumber());
+            for(int i = 0; i < car.getAttrs().size(); i++){
+                AutoCarAttr carAttr = car.getAttrs().get(i);
+                car.getAttrs().get(i).setLockNumber(0);
+                car.getAttrs().get(i).setSurplusNumber(carAttr.getTotalNumber());
+                double price = carAttr.getOfficalPrice();
+                if(carAttr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP) {
+                    if (carAttr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY) {
+                        price += carAttr.getSaleAmount();
+                    } else if (carAttr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT) {
+                        price += price * carAttr.getSaleAmount() / 100;
+                    }
+                }
+                else if(carAttr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
+                    if (carAttr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY) {
+                        price -= carAttr.getSaleAmount();
+                    } else if (carAttr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT) {
+                        price -= price * carAttr.getSaleAmount() / 100;
+                    }
+                }
+                car.getAttrs().get(i).setPrice(price);
+            }
+
             car.setSortOrder(0);
 
             //endregion
-            System.out.println("-----");
             if(!autoCarService.insert(car)){
                 result.setCode(1);
                 result.setMsg("保存车源信息失败！");
