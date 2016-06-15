@@ -67,42 +67,13 @@ public class AutoUserController extends BaseController {
             if(StringUtil.isNullOrEmpty(phone)){
                 result.setCode(-1);
                 result.setMsg("手机号不能为空！");
-                return result;
             }else if(!StringUtil.isPhone(phone)){
                 result.setCode(-1);
-                result.setMsg("手机号码格式不正确！");
-                return result;
+                result.setMsg("电话号码格式错误！");
             }else if(StringUtil.isNullOrEmpty(keyword)){
                 result.setCode(-1);
                 result.setMsg("请求参数错误！");
-                return result;
-            }
-            //得到六位的随机数作为验证码
-            String code = CommonUtil.getCode(6);
-            Map<String,Object> map = new HashMap<String, Object>();
-            map.put("code", code);
-            String response = SmsPush.send(SmsPush.CODE_SENDCODE, phone, code);
-
-
-            if(SmsPush.isSuccess(response)){
-                AutoSms sms=new AutoSms();
-                if("register".equalsIgnoreCase(keyword)){
-                    sms.setSmsType(Constants.SMS_TYPE_REGISTER);
-                }else if("retrieve".equalsIgnoreCase(keyword)){
-                    sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
-                }else if("modify".equalsIgnoreCase(keyword)){
-                    sms.setSmsType(Constants.SMS_TYPE_MODIFY);
-                }else if("notice".equalsIgnoreCase(keyword)){
-                    sms.setSmsType(Constants.SMS_TYPE_NOTICE);
-                }
-                sms.setSmsContent("发送验证码："+code);
-                sms.setCode(code);
-                sms.setPhone(phone);
-                sms.setStatus(Constants.SMS_STATUS_TRUE);
-                autoSmsService.insert(sms);
-                result.setData(code);
             }else{
-<<<<<<< HEAD
                 //得到六位的随机数作为验证码
                 String code= CommonUtil.getCode(6);
                 Map<String,Object> map = new HashMap<String, Object>();
@@ -143,25 +114,7 @@ public class AutoUserController extends BaseController {
                     autoSmsService.insert(sms);
                     result.setCode(1);
                     result.setMsg(SmsPush.getError(response));
-=======
-                AutoSms sms=new AutoSms();
-                if("register".equalsIgnoreCase(keyword)){
-                    sms.setSmsType(Constants.SMS_TYPE_REGISTER);
-                }else if("retrieve".equalsIgnoreCase(keyword)){
-                    sms.setSmsType(Constants.SMS_TYPE_RETRIEVE);
-                }else if("modify".equalsIgnoreCase(keyword)){
-                    sms.setSmsType(Constants.SMS_TYPE_MODIFY);
-                }else if("notice".equalsIgnoreCase(keyword)){
-                    sms.setSmsType(Constants.SMS_TYPE_NOTICE);
->>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
                 }
-                sms.setSmsContent("发送验证码："+code);
-                sms.setCode(code);
-                sms.setPhone(phone);
-                sms.setStatus(Constants.SMS_STATUS_FALSE);
-                autoSmsService.insert(sms);
-                result.setCode(1);
-                result.setMsg(SmsPush.getError(response));
             }
         }catch (Exception e){
             result.setCode(1);
@@ -559,7 +512,6 @@ public class AutoUserController extends BaseController {
     }
 
 
-<<<<<<< HEAD
     /**
      * 查看我的收藏
      * @param userId
@@ -570,11 +522,6 @@ public class AutoUserController extends BaseController {
     @RequestMapping(value = "/collection.do")
     @ResponseBody
     public Result collection(Integer userId,Integer markId,Integer collectId){
-=======
-    @RequestMapping(value = "/collection.do")
-    @ResponseBody
-    public Result collection(Integer userId,Integer markId,Integer carId){
->>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
         Result result=new Result();
         try{
             if(userId==null){
@@ -582,33 +529,17 @@ public class AutoUserController extends BaseController {
                 result.setMsg("查看参数错误！");
             }else{
                 Map<String, Object> map=new HashMap<String, Object>();
-<<<<<<< HEAD
                 if(markId!=null && markId>0 && collectId!=null && collectId>0){
                     if(markId==1){
                         String collectSql="act.collect_id>"+collectId;
                         map.put("collectSql",collectSql);
                     }else if(markId==2){
                         String collectSql="act.collect_id<"+collectId;
-=======
-                if(markId!=null && markId>0 && carId!=null && carId>0){
-                    map.put("carId",carId);
-                    AutoCollect collect=autoCollectService.query(map);
-                    map.clear();
-                    if(collect!=null && markId==1){
-                        String collectSql="act.add_time>"+collect.getAddTime()+"";
-                        map.put("collectSql",collectSql);
-                    }else if(collect!=null && markId==2){
-                        String collectSql="act.add_time<"+collect.getAddTime()+"";
->>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
                         map.put("collectSql",collectSql);
                     }
                 }
                 map.put("userId",userId);
-<<<<<<< HEAD
                 List<AutoCar> carList=autoCarService.queryUserCollect(map);
-=======
-                List<AutoCar> carList=autoCarService.queryList(map);
->>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
                 if(carList!=null && carList.size()>0){
                     JSONArray array=new JSONArray();
                     for(int i=0;i<carList.size();i++){
@@ -620,7 +551,6 @@ public class AutoUserController extends BaseController {
                         map.clear();
                         map.put("carPicId", carList.get(i).getCarId());
                         AutoCarPic carPic=autoCarPicService.query(map);
-<<<<<<< HEAD
                         if(carPic!=null){
                             jsonObject.put("pic",carPic.getPath());
                         }
@@ -633,27 +563,6 @@ public class AutoUserController extends BaseController {
                             jsonObject.put("quoteType",carAttr.getQuoteType());
                             jsonObject.put("quotePrice",carAttr.getSaleAmount());
                         }
-=======
-//                        map.clear();
-//                        map.put("byCarId",carList.get(i).getCarId());
-//                        List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
-                        jsonObject.put("pic",carPic.getPath());
-//                        if(carAttrList.size()>1){
-//                            jsonObject.put("attrValue","多色");
-//                        }else{
-//                            jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
-//                        }
-                        jsonObject.put("attrValue","珍珠白");
-                        jsonObject.put("carId",carList.get(i).getCarId());
-                        jsonObject.put("carName",carList.get(i).getCarName());
-                        jsonObject.put("titleName",carList.get(i).getCatName());
-                        map.clear();
-                        map.put("attrCarId",carList.get(i).getCarId());
-                        AutoCarAttr carAttr=autoCarAttrService.query(map);
-                        jsonObject.put("officalPrice",carAttr.getOfficalPrice());
-                        jsonObject.put("quoteType",carAttr.getQuoteType());
-                        jsonObject.put("quotePrice",carAttr.getSaleAmount());
->>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
                         jsonObject.put("status",carList.get(i).getStatus());
                         jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddTime()),"MM-dd HH:mm"));
                         if(carList.get(i).getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
@@ -745,10 +654,7 @@ public class AutoUserController extends BaseController {
             AutoMsg msg=autoMsgService.query(map);
             if(msg!=null){
                 msg.setViewCount(msg.getViewCount()+1);
-<<<<<<< HEAD
                 msg.setStatus(1);
-=======
->>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
                 autoMsgService.update(msg);
                 JSONArray array=new JSONArray();
                 JSONObject jsonObject=new JSONObject();
@@ -842,7 +748,6 @@ public class AutoUserController extends BaseController {
                             map.clear();
                             map.put("carPicId", carList.get(i).getCarId());
                             AutoCarPic carPic=autoCarPicService.query(map);
-<<<<<<< HEAD
                             if(carPic!=null){
                                 jsonObject.put("pic",carPic.getPath());
                             }
@@ -857,35 +762,6 @@ public class AutoUserController extends BaseController {
                             jsonObject.put("status",carList.get(i).getStatus());
                             jsonObject.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddOrderTime()), "MM-dd HH:mm"));
                             if(carList.get(i).getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
-=======
-//                            map.clear();
-//                            map.put("carAttrId",carList.get(i).getCarId());
-//                            List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
-                            jsonObject.put("pic",carPic.getPath());
-//                            if(carAttrList.size()>1){
-//                                jsonObject.put("attrValue","多色");
-//                            }else{
-//                                jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
-//                            }
-                            jsonObject.put("attrValue","珍珠白");
-                            map.clear();
-                            map.put("userId",order.getSellerId());
-                            AutoUser autoUser=autoUserService.query(map);
-                            jsonObject.put("carId",carList.get(i).getCarId());
-                            jsonObject.put("carName",carList.get(i).getCarName());
-                            jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
-//                            jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
-//                            jsonObject.put("quoteType",carList.get(i).getQuoteType());
-//                            jsonObject.put("quotePrice",carList.get(i).getSaleAmount());
-                            jsonObject.put("status",carList.get(i).getStatus());
-                            for(int j=0;j<orderCarList.size();j++){
-                                if(carList.get(i).getCarId()==orderCarList.get(j).getCarId()) {
-                                    jsonObject.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(orderList.get(i).getAddTime()), "MM-dd HH:mm"));
-                                    break;
-                                }
-                            }
-                            if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
->>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
                                 jsonObject.put("isAuthenticate",true);
                             }else{
                                 jsonObject.put("isAuthenticate",false);

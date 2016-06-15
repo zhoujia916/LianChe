@@ -8,19 +8,19 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="auto_car")
-public class AutoCar implements Serializable{ 
-	/**
-	* Constructor
-	*/
-	public AutoCar(){
-	}
-	
-	/**
-	* Override toString method
-	*/
-	@Override
-	public String toString(){
-		StringBuffer sb = new StringBuffer();
+public class AutoCar implements Serializable{
+    /**
+     * Constructor
+     */
+    public AutoCar(){
+    }
+
+    /**
+     * Override toString method
+     */
+    @Override
+    public String toString(){
+        StringBuffer sb = new StringBuffer();
         sb.append("AutoCar{");
         sb.append("carId=").append(carId);
         sb.append(", carName=").append(carName);
@@ -40,47 +40,47 @@ public class AutoCar implements Serializable{
         sb.append(", sortOrder=").append(sortOrder);
         sb.append("}").append(System.getProperty("line.separator"));
         return sb.toString();
-	}
+    }
 
-	/**
-	* Fields
-	*/
-	@Column(name="car_id", unique=true)
-	private Integer carId;
-	@Column(name="car_name", nullable=true, length=255)
-	private String carName;
-	@Column(name="brand_id", nullable=true)
-	private Integer brandId;
-	@Column(name="brand_cat_id", nullable=true)
-	private Integer brandCatId;
-	@Column(name="brand_model_id", nullable=true)
-	private Integer brandModelId;
-	@Column(name="province", nullable=true)
-	private Integer province;
-	@Column(name="city", nullable=true)
-	private Integer city;
-	@Column(name="area", nullable=true)
-	private Integer area;
+    /**
+     * Fields
+     */
+    @Column(name="car_id", unique=true)
+    private Integer carId;
+    @Column(name="car_name", nullable=true, length=255)
+    private String carName;
+    @Column(name="brand_id", nullable=true)
+    private Integer brandId;
+    @Column(name="brand_cat_id", nullable=true)
+    private Integer brandCatId;
+    @Column(name="brand_model_id", nullable=true)
+    private Integer brandModelId;
+    @Column(name="province", nullable=true)
+    private Integer province;
+    @Column(name="city", nullable=true)
+    private Integer city;
+    @Column(name="area", nullable=true)
+    private Integer area;
     @Column(name="has_parts", nullable=true)
     private Integer hasParts;
     @Column(name="parts", nullable=true)
     private String parts;
     @Column(name="parts_price", nullable=true)
     private double partsPrice;
-	@Column(name="add_time", nullable=true)
-	private Long addTime;
+    @Column(name="add_time", nullable=true)
+    private Long addTime;
     @Column(name="add_user_id", nullable=true)
-	private Integer addUserId;
-	@Column(name="start_date", nullable=true)
-	private Long startDate;
-	@Column(name="end_date", nullable=true)
-	private Long endDate;
-	@Column(name="car_type", nullable=true)
-	private Integer carType;
-	@Column(name="status", nullable=true)
-	private Integer status;
-	@Column(name="sort_order", nullable=true)
-	private Integer sortOrder;
+    private Integer addUserId;
+    @Column(name="start_date", nullable=true)
+    private Long startDate;
+    @Column(name="end_date", nullable=true)
+    private Long endDate;
+    @Column(name="car_type", nullable=true)
+    private Integer carType;
+    @Column(name="status", nullable=true)
+    private Integer status;
+    @Column(name="sort_order", nullable=true)
+    private Integer sortOrder;
     @Column(name="remark", nullable=true)
     private String remark;
     private Long refreshTime;
@@ -95,128 +95,128 @@ public class AutoCar implements Serializable{
     }
 
     /**
-	* Getter and Setter
-	*/
+     * Getter and Setter
+     */
 
-	public Integer getCarId(){
-		return carId;
-	}
-	
-	public void setCarId(Integer carId){
-		this.carId = carId;
-	}
-		
-	public String getCarName(){
-		return carName;
-	}
-	
-	public void setCarName(String carName){
-		this.carName = carName;
-	}
-		
-	public Integer getBrandId(){
-		return brandId;
-	}
-	
-	public void setBrandId(Integer brandId){
-		this.brandId = brandId;
-	}
-		
-	public Integer getBrandCatId(){
-		return brandCatId;
-	}
-	
-	public void setBrandCatId(Integer brandCatId){
-		this.brandCatId = brandCatId;
-	}
-		
-	public Integer getBrandModelId(){
-		return brandModelId;
-	}
-	
-	public void setBrandModelId(Integer brandModelId){
-		this.brandModelId = brandModelId;
-	}
-		
-	public Integer getProvince(){
-		return province;
-	}
-	
-	public void setProvince(Integer province){
-		this.province = province;
-	}
-		
-	public Integer getCity(){
-		return city;
-	}
-	
-	public void setCity(Integer city){
-		this.city = city;
-	}
-		
-	public Integer getArea(){
-		return area;
-	}
-	
-	public void setArea(Integer area){
-		this.area = area;
-	}
-		
-	public Long getAddTime(){
-		return addTime;
-	}
-	
-	public void setAddTime(Long addTime){
-		this.addTime = addTime;
-	}
-		
-	public Integer getAddUserId(){
-		return addUserId;
-	}
-	
-	public void setAddUserId(Integer addUserId){
-		this.addUserId = addUserId;
-	}
-		
-	public Long getStartDate(){
-		return startDate;
-	}
-	
-	public void setStartDate(Long startDate){
-		this.startDate = startDate;
-	}
-		
-	public Long getEndDate(){
-		return endDate;
-	}
-	
-	public void setEndDate(Long endDate){
-		this.endDate = endDate;
-	}
-		
-	public Integer getCarType(){
-		return carType;
-	}
-	
-	public void setCarType(Integer carType){
-		this.carType = carType;
-	}
-		
-	public Integer getStatus(){
-		return status;
-	}
-	
-	public void setStatus(Integer status){
-		this.status = status;
-	}
-		
-	public Integer getSortOrder(){
-		return sortOrder;
-	}
-	
-	public void setSortOrder(Integer sortOrder){
-		this.sortOrder = sortOrder;
-	}
+    public Integer getCarId(){
+        return carId;
+    }
+
+    public void setCarId(Integer carId){
+        this.carId = carId;
+    }
+
+    public String getCarName(){
+        return carName;
+    }
+
+    public void setCarName(String carName){
+        this.carName = carName;
+    }
+
+    public Integer getBrandId(){
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId){
+        this.brandId = brandId;
+    }
+
+    public Integer getBrandCatId(){
+        return brandCatId;
+    }
+
+    public void setBrandCatId(Integer brandCatId){
+        this.brandCatId = brandCatId;
+    }
+
+    public Integer getBrandModelId(){
+        return brandModelId;
+    }
+
+    public void setBrandModelId(Integer brandModelId){
+        this.brandModelId = brandModelId;
+    }
+
+    public Integer getProvince(){
+        return province;
+    }
+
+    public void setProvince(Integer province){
+        this.province = province;
+    }
+
+    public Integer getCity(){
+        return city;
+    }
+
+    public void setCity(Integer city){
+        this.city = city;
+    }
+
+    public Integer getArea(){
+        return area;
+    }
+
+    public void setArea(Integer area){
+        this.area = area;
+    }
+
+    public Long getAddTime(){
+        return addTime;
+    }
+
+    public void setAddTime(Long addTime){
+        this.addTime = addTime;
+    }
+
+    public Integer getAddUserId(){
+        return addUserId;
+    }
+
+    public void setAddUserId(Integer addUserId){
+        this.addUserId = addUserId;
+    }
+
+    public Long getStartDate(){
+        return startDate;
+    }
+
+    public void setStartDate(Long startDate){
+        this.startDate = startDate;
+    }
+
+    public Long getEndDate(){
+        return endDate;
+    }
+
+    public void setEndDate(Long endDate){
+        this.endDate = endDate;
+    }
+
+    public Integer getCarType(){
+        return carType;
+    }
+
+    public void setCarType(Integer carType){
+        this.carType = carType;
+    }
+
+    public Integer getStatus(){
+        return status;
+    }
+
+    public void setStatus(Integer status){
+        this.status = status;
+    }
+
+    public Integer getSortOrder(){
+        return sortOrder;
+    }
+
+    public void setSortOrder(Integer sortOrder){
+        this.sortOrder = sortOrder;
+    }
 
     public Integer getHasParts() {
         return hasParts;
@@ -259,7 +259,6 @@ public class AutoCar implements Serializable{
     private String beginTimeString;
     private String endTimeString;
     private Integer userStatus;
-<<<<<<< HEAD
     private Long addOrderTime;
 
     public Long getAddOrderTime() {
@@ -269,9 +268,6 @@ public class AutoCar implements Serializable{
     public void setAddOrderTime(Long addOrderTime) {
         this.addOrderTime = addOrderTime;
     }
-=======
-    private Long collectAddTime;
->>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
 
     public Integer getUserStatus() {
         return userStatus;
@@ -280,17 +276,6 @@ public class AutoCar implements Serializable{
     public void setUserStatus(Integer userStatus) {
         this.userStatus = userStatus;
     }
-<<<<<<< HEAD
-=======
-
-    public Long getCollectAddTime() {
-        return collectAddTime;
-    }
-
-    public void setCollectAddTime(Long collectAddTime) {
-        this.collectAddTime = collectAddTime;
-    }
->>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
 
     public String getBeginTimeString() {
         return beginTimeString;

@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="AutoCarAttrMapper">
     <resultMap id="AutoCarAttr" type="puzzle.lianche.entity.AutoCarAttr">
-    	<id column="car_attr_id" property="carAttrId" /> 
-    	<result column="car_id" property="carId" /> 
-    	<result column="outside_color" property="outsideColor" />
-    	<result column="inside_color" property="insideColor" />
-    	<result column="offical_price" property="officalPrice" />
+        <id column="car_attr_id" property="carAttrId" />
+        <result column="car_id" property="carId" />
+        <result column="outside_color" property="outsideColor" />
+        <result column="inside_color" property="insideColor" />
+        <result column="offical_price" property="officalPrice" />
         <result column="quote_type" property="quoteType" />
         <result column="sale_price_type" property="salePriceType" />
         <result column="sale_amount" property="saleAmount" />
@@ -24,73 +24,73 @@
     <insert id="insert" parameterType="AutoCarAttr" useGeneratedKeys="true" keyProperty="carAttrId">
         insert into auto_car_attr
         (
-        	<if test="carId != null">car_id, </if>
-            <if test="outsideColor != null">outside_color, </if>
-            <if test="insideColor != null">inside_color, </if>
-            <if test="officalPrice != null">offical_price, </if>
-            <if test="quoteType != null">quote_type, </if>
-            <if test="salePriceType != null">sale_price_type, </if>
-            <if test="saleAmount != null">sale_amount, </if>
-            <if test="totalNumber != null">total_number, </if>
-            <if test="lockNumber != null">lock_number, </if>
-            <if test="surplusNumber != null">surplus_number, </if>
-            <if test="price != null">price </if>
+        <if test="carId != null">car_id, </if>
+        <if test="outsideColor != null">outside_color, </if>
+        <if test="insideColor != null">inside_color, </if>
+        <if test="officalPrice != null">offical_price, </if>
+        <if test="quoteType != null">quote_type, </if>
+        <if test="salePriceType != null">sale_price_type, </if>
+        <if test="saleAmount != null">sale_amount, </if>
+        <if test="totalNumber != null">total_number, </if>
+        <if test="lockNumber != null">lock_number, </if>
+        <if test="surplusNumber != null">surplus_number, </if>
+        <if test="price != null">price </if>
         )
         values
         (
-            <if test="carId != null">#{carId}}, </if>
-            <if test="outsideColor != null">#{outsideColor}, </if>
-            <if test="insideColor != null">#{insideColor}, </if>
-            <if test="officalPrice != null">#{officalPrice}, </if>
-            <if test="quoteType != null">#{quoteType}, </if>
-            <if test="salePriceType != null">#{salePriceType}, </if>
-            <if test="saleAmount != null">#{saleAmount}, </if>
-            <if test="totalNumber != null">#{totalNumber}, </if>
-            <if test="lockNumber != null">#{lockNumber}, </if>
-            <if test="surplusNumber != null">#{surplusNumber}, </if>
-            <if test="price != null">#{price}</if>
-       	)
+        <if test="carId != null">#{carId}}, </if>
+        <if test="outsideColor != null">#{outsideColor}, </if>
+        <if test="insideColor != null">#{insideColor}, </if>
+        <if test="officalPrice != null">#{officalPrice}, </if>
+        <if test="quoteType != null">#{quoteType}, </if>
+        <if test="salePriceType != null">#{salePriceType}, </if>
+        <if test="saleAmount != null">#{saleAmount}, </if>
+        <if test="totalNumber != null">#{totalNumber}, </if>
+        <if test="lockNumber != null">#{lockNumber}, </if>
+        <if test="surplusNumber != null">#{surplusNumber}, </if>
+        <if test="price != null">#{price}</if>
+        )
     </insert>
 
     <insert id="insertBatch" parameterType="java.util.List">
         insert into auto_car_attr
         (
-            car_id,
-            outside_color,
-            inside_color,
-            offical_price,
-            quote_type,
-            sale_price_type,
-            sale_amount,
-            total_number,
-            lock_number,
-            surplus_number,
-            price
+        car_id,
+        outside_color,
+        inside_color,
+        offical_price,
+        quote_type,
+        sale_price_type,
+        sale_amount,
+        total_number,
+        lock_number,
+        surplus_number,
+        price
         )
         values
         <foreach collection="list" item="attr" index="index" separator=",">
             (
-                #{attr.carId},
-                #{attr.outsideColor},
-                #{attr.insideColor},
-                #{attr.officalPrice},
-                #{attr.quoteType},
-                #{attr.salePriceType},
-                #{attr.saleAmount},
-                #{attr.totalNumber},
-                #{attr.lockNumber},
-                #{attr.surplusNumber},
-                #{attr.price}
+            #{attr.carId},
+            #{attr.outsideColor},
+            #{attr.insideColor},
+            #{attr.officalPrice},
+            #{attr.quoteType},
+            #{attr.salePriceType},
+            #{attr.saleAmount},
+            #{attr.totalNumber},
+            #{attr.lockNumber},
+            #{attr.surplusNumber},
+            #{attr.price}
             )
         </foreach>
     </insert>
 
     <update id="update" parameterType="AutoCarAttr">
-        update auto_car_attr set 
+        update auto_car_attr set
         <set>
-        	<if test="carId != null">  
-        		car_id = #{carId}
-        	</if>
+            <if test="carId != null">
+                car_id = #{carId}
+            </if>
             <if test="outsideColor != null">
                 outside_color = #{outsideColor},
             </if>
@@ -122,8 +122,8 @@
                 price = #{price}
             </if>
         </set>
-        <where> 
-        	<if test="carAttrId > 0">
+        <where>
+            <if test="carAttrId > 0">
                 car_attr_id = #{carAttrId}
             </if>
         </where>
@@ -132,32 +132,28 @@
     <delete id="delete" parameterType="Map">
         delete from auto_car_attr
         <where>
-	        <trim prefixOverrides="and | or">  
-	        	<if test="carAttrId > 0">
-	                car_attr_id = #{carAttrId}
-	            </if>
-	        	<if test="carId > 0">
-	                car_id = #{carId}
-	            </if>
+            <trim prefixOverrides="and | or">
+                <if test="carAttrId > 0">
+                    car_attr_id = #{carAttrId}
+                </if>
+                <if test="carId > 0">
+                    car_id = #{carId}
+                </if>
                 <if test="carIds != null and carIds != null">
                     car_id in ${carIds}
                 </if>
-	        </trim>
+            </trim>
         </where>
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoCarAttr">
         select * from auto_car_attr
-        <where>  
-        	<if test="carAttrId > 0">
+        <where>
+            <if test="carAttrId > 0">
                 and car_attr_id = #{carAttrId}
             </if>
             <if test="attrCarId > 0">
-<<<<<<< HEAD
                 and car_id = ${attrCarId} limit 0,1
-=======
-                and car_id = #{attrCarId} limit 0,1
->>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
             </if>
         </where>
         <if test="sort != null and sort != ''">
@@ -169,17 +165,17 @@
         select aca.*
         from auto_car_attr as aca
         <where>
-	        <trim prefixOverrides="and | or">
+            <trim prefixOverrides="and | or">
                 <if test="carAttrId > 0">
                     and aca.car_attr_id = #{carAttrId}
                 </if>
                 <if test="carId > 0">
                     and aca.car_id = #{carId}
                 </if>
-	        	<if test="carAttrId > 0">
+                <if test="carAttrId > 0">
                     and aca.car_attr_id = #{carAttrId}
-	            </if>
-	        </trim>
+                </if>
+            </trim>
         </where>
     </select>
 
