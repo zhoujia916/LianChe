@@ -123,11 +123,11 @@ public class CommonUtil {
 
     //得到随机数
     public static String getCode(int number){
-        Random random=new Random();
-        StringBuffer code=new StringBuffer();
-        for(int i=0;i<number;i++){
-            code.append(random.nextInt(10));
-        }
-        return code.toString();
+        Random random = new Random();
+        // 获得随机数
+        double pross = (1 + random.nextDouble()) * Math.pow(10, number);
+
+        // 返回固定的长度的随机数
+        return String.valueOf(pross).substring(1, number + 1);
     }
 }

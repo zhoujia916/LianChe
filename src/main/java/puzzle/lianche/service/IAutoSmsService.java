@@ -22,5 +22,6 @@ public interface IAutoSmsService{
     public List<AutoSms> queryList(Object param);
 
     public List<AutoSms> queryList(Map<String, Object> map, Page page);
-    
+
+    public boolean send(AutoSms sms);
 }

@@ -259,6 +259,7 @@ public class AutoCar implements Serializable{
     private String beginTimeString;
     private String endTimeString;
     private Integer userStatus;
+<<<<<<< HEAD
     private Long addOrderTime;
 
     public Long getAddOrderTime() {
@@ -268,6 +269,9 @@ public class AutoCar implements Serializable{
     public void setAddOrderTime(Long addOrderTime) {
         this.addOrderTime = addOrderTime;
     }
+=======
+    private Long collectAddTime;
+>>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
 
     public Integer getUserStatus() {
         return userStatus;
@@ -276,6 +280,17 @@ public class AutoCar implements Serializable{
     public void setUserStatus(Integer userStatus) {
         this.userStatus = userStatus;
     }
+<<<<<<< HEAD
+=======
+
+    public Long getCollectAddTime() {
+        return collectAddTime;
+    }
+
+    public void setCollectAddTime(Long collectAddTime) {
+        this.collectAddTime = collectAddTime;
+    }
+>>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
 
     public String getBeginTimeString() {
         return beginTimeString;

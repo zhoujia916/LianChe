@@ -94,7 +94,11 @@ public class ControllerTest {
 //        mockMvc.perform(((post("/phone/autouser/register.do").param("userName", "13658473085").param("password","111111")).param("code","743996")))
         mockMvc.perform(((post("/phone/autouser/sendCode.do").param("phone", "13658473085").param("keyword","register"))))
 //        mockMvc.perform(((post("/phone/autouser/login.do").param("username", "13658473085").param("password","111111"))))
+<<<<<<< HEAD
 //        mockMvc.perform(((post("/phone/autouser/collection.do").param("userId", "29").param("markId","1").param("carId","3"))))
+=======
+        mockMvc.perform(((post("/phone/autouser/collection.do").param("userId", "29"))))
+>>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
                 .andExpect(status().isOk()).andDo(print());
     }
 }

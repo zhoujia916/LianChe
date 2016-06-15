@@ -32,19 +32,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
-      <excludeFolder url="file://$MODULE_DIR$/jetty:run:" />
-      <excludeFolder url="file://$MODULE_DIR$/jetty:run:org." />
-      <excludeFolder url="file://$MODULE_DIR$/jetty:run:org.mortbay.jetty" />
-      <excludeFolder url="file://$MODULE_DIR$/jetty:run:org.mortbay.jetty:" />
-      <excludeFolder url="file://$MODULE_DIR$/jetty:run:org.mortbay.jetty:maven-jetty-plugin" />
-      <excludeFolder url="file://$MODULE_DIR$/jetty:run:org.mortbay.jetty:maven-jetty-plugin:" />
-      <excludeFolder url="file://$MODULE_DIR$/jetty:run:org.mortbay.jetty:maven-jetty-plugin:6.1.7 -Dfile=" />
-      <excludeFolder url="file://$MODULE_DIR$/jetty:run:org.mortbay.jetty:maven-jetty-plugin:6.1.7 -Dfile=utf-8" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/classes" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/test-classes" />
-      <excludeFolder url="file://$MODULE_DIR$/src/main/webapp/WEB-INFclasses" />
-      <excludeFolder url="file://$MODULE_DIR$/src/main/webapp/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/src/main/webapp/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -107,6 +96,7 @@
     <orderEntry type="library" name="Maven: com.gexin.platform:gexin-rp-sdk-base:4.0.0.7" level="project" />
     <orderEntry type="library" name="Maven: com.gexin.platform:gexin-rp-sdk-http:4.0.1.2" level="project" />
     <orderEntry type="library" name="Maven: com.gexin.platform:gexin-rp-sdk-template:4.0.0.5" level="project" />
+    <orderEntry type="library" name="Maven: commons-httpclient:commons-httpclient:3.0.1" level="project" />
   </component>
 </module>
 

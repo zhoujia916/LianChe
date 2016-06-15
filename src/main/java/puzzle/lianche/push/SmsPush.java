@@ -7,7 +7,11 @@ import puzzle.lianche.utils.HttpUtil;
 import puzzle.lianche.utils.StringUtil;
 
 public class SmsPush {
+<<<<<<< HEAD
     private static final String URL = "https://106.ihuyi.com/webservice/sms.php";
+=======
+    private static final String URL = "https://106.ihuyi.com/webservice/sms.php?method=Submit";
+>>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
     private static final String ACCOUNT = "cf_oneauto";
 
     private static final String PASSWORD = "oneauto12345";
@@ -30,7 +34,12 @@ public class SmsPush {
         long time = System.currentTimeMillis() / 1000;
         String content = null;
         if(type == CODE_SENDCODE){
+<<<<<<< HEAD
             content = "您在一车上获取的验证码是:[" + info + "],请勿泄露。【一车官网】";
+=======
+            content = "您的验证码是：" + info + "。请不要把验证码泄露给其他人。";
+//            content = "您在一车上获取的验证码是:[" + info + "],请勿泄露。【一车官网】";
+>>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
         }
         else if(type == CODE_SENDMSG){
             content = "一车提醒您:" + info + "【一车官网】";

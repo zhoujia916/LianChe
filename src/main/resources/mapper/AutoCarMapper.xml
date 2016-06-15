@@ -30,8 +30,12 @@
         <result column="userStatus" property="userStatus"/>
         <result column="pic" property="pic"/>
         <result column="collect_id" property="collectId"/>
+<<<<<<< HEAD
         <result column="addOrderTime" property="addOrderTime"/>
         <result column="collectId" property="collectId"/>
+=======
+        <result column="collectAddTime" property="collectAddTime"/>
+>>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
     </resultMap>
 
     <sql id="allColumn">
@@ -304,6 +308,7 @@
 
     <select id="queryUserCollect" parameterType="Map" resultMap="AutoCar">
         select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,
+<<<<<<< HEAD
         au.status as userStatus,act.collect_id as collectId
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
@@ -324,8 +329,28 @@
     <select id="queryOrderList" parameterType="Map" resultMap="AutoCar">
         select ac.*, ab.brand_name,abc.cat_name,abm.model_name,
         au.status as userStatus,ao.add_time as addOrderTime
+=======
+        au.status as userStatus,act.add_time as collectAddTime
+>>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
+        inner join auto_brand as ab on ac.brand_id=ab.brand_id
+        inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
+        inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
+        inner join auto_collect as act on ac.car_id=act.target_id
+        <where>
+            <if test="userId != null and userId >0">
+                and act.user_id=${userId}
+            </if>
+            <if test="collectSql != null and collectSql !=''">
+                and #{collectSql}
+            </if>
+        </where>
+        order by act.add_time desc,act.collect_id desc LIMIT 0,20
+    </select>
+    <select id="queryOrderList" parameterType="Map" resultMap="AutoCar">
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name
+        from auto_car as ac
         inner join auto_brand as ab on ac.brand_id=ab.brand_id
         inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
         inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
@@ -347,6 +372,7 @@
             <if test="payStatusList != null and payStatusList !=''">
                 and ao.pay_status in (${payStatusList})
             </if>
+<<<<<<< HEAD
             <if test="shipStatus != null and shipStatus >0">
                 and ao.ship_status = #{shipStatus}
             </if>
@@ -355,6 +381,13 @@
             </if>
             <if test="carSql != null and carSql !=''">
                 and ${carSql}
+=======
+            <if test="shipStatus != null and shipStatus!=''">
+                and ao.ship_status = #{shipStatus}
+            </if>
+            <if test="orderStatus != null and orderStatus!=''">
+                and ao.order_status = #{orderStatus}
+>>>>>>> d279ba7f555b6fec966990b5b4c0c4426c475129
             </if>
         </where>
         order by ${sort} ac.refresh_time desc, ac.car_id desc LIMIT 0,2
