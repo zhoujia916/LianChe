@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller(value = "admin/adposition")
+@Controller(value = "adminAdposition")
 @RequestMapping (value = "/admin/position")
 public class AdPositionController extends ModuleController{
     @Autowired

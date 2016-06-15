@@ -22,7 +22,7 @@
 
     <sql id="allColumn">
     	order_id, order_sn, order_status, pay_status, ship_status, seller_id, buyer_id, pay_method,
-    	seller_deposit, buyer_deposit, ship_time, order_remark, status_remark, amount, remark, add_time
+    	pay_number,seller_deposit, buyer_deposit, ship_time, order_remark, status_remark, amount, remark, add_time
     </sql>
 
     <insert id="insert" parameterType="AutoOrder" useGeneratedKeys="true" keyProperty="orderId">
@@ -35,6 +35,7 @@
             <if test="sellerId != null">seller_id, </if>
             <if test="buyerId != null">buyer_id, </if>
             <if test="payMethod != null">pay_method, </if>
+            <if test="payNumber != null">pay_number,</if>
             <if test="sellerDeposit != null">seller_deposit, </if>
             <if test="buyerDeposit != null">buyer_deposit, </if>
             <if test="shipTime != null">ship_time, </if>
@@ -53,6 +54,7 @@
             <if test="sellerId != null">#{sellerId}, </if>
             <if test="buyerId != null">#{buyerId}, </if>
             <if test="payMethod != null">#{payMethod}, </if>
+            <if test="payNumber != null">#{payNumber},</if>
             <if test="sellerDeposit != null">#{sellerDeposit}, </if>
             <if test="buyerDeposit != null">#{buyerDeposit}, </if>
             <if test="shipTime != null">#{shipTime}, </if>
@@ -169,13 +171,13 @@
 	                and ship_status = #{shipStatus}
 	            </if>
                 <if test="orderStatusList != null and orderStatusList != ''">
-                    and order_status in (#{orderStatusList})
+                    and order_status in (${orderStatusList})
                 </if>
                 <if test="payStatusList != null and payStatusList != ''">
-                    and pay_status in (#{payStatusList})
+                    and pay_status in (${payStatusList})
                 </if>
                 <if test="shipStatusList != null and shipStatusList != ''">
-                    and ship_status in (#{shipStatusList})
+                    and ship_status in (${shipStatusList})
                 </if>
                 <if test="sellerId != null and sellerId > 0">
                     and seller_id = ${sellerId}

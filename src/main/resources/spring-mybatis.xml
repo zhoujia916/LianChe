@@ -99,22 +99,23 @@
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <tx:method name="get*"	  propagation="SUPPORTS" read-only="true" />
-            <tx:method name="load*"	  propagation="SUPPORTS" read-only="true" />
-            <tx:method name="find*"	  propagation="SUPPORTS" read-only="true" />
+            <tx:method name="get*"	      propagation="SUPPORTS" read-only="true" />
+            <tx:method name="load*"	      propagation="SUPPORTS" read-only="true" />
+            <tx:method name="find*"	      propagation="SUPPORTS" read-only="true" />
             <tx:method name="query*"	  propagation="SUPPORTS" read-only="true" />
-            <tx:method name="logInsert"	  propagation="NOT_SUPPORTED" />
+            <tx:method name="logInsert"	  propagation="SUPPORTS" />
 
-            <tx:method name="execute*"	  propagation="SUPPORTS" read-only="true" />
-            <tx:method name="save*"	  propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="remove*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="sent*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="send*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="do*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="execute*"	  propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="create*"     propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="save*"	      propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="update*"     propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="remove*"     propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="delete*"     propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="sent*"       propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="send*"       propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="add*"        propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="insert*"     propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="do*"         propagation="REQUIRED" rollback-for="Exception" />
         </tx:attributes>
     </tx:advice>
     <aop:config>

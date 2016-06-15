@@ -32,9 +32,6 @@ public class AutoCarAttr implements Serializable{
         sb.append("AutoCarAttr{");
         sb.append("carAttrId=").append(carAttrId);
         sb.append(", carId=").append(carId);
-        sb.append(", attrId=").append(attrId);
-        sb.append(", attrValue=").append(attrValue);
-        sb.append(", attrPrice=").append(attrPrice);
         sb.append("}").append(System.getProperty("line.separator"));
         return sb.toString();
 	}
@@ -47,11 +44,25 @@ public class AutoCarAttr implements Serializable{
 	@Column(name="car_id", nullable=true)
 	private Integer carId;
 	@Column(name="attr_id", nullable=true)
-	private Integer attrId;
-	@Column(name="attr_value", nullable=true, length=200)
-	private String attrValue;
-	@Column(name="attr_price", nullable=true)
-	private Integer attrPrice;
+    private Integer outsideColor;
+    private Integer insideColor;
+    private Double officalPrice;
+    private Integer quoteType;
+    private Integer salePriceType;
+    private Double saleAmount;
+    private Integer totalNumber;
+
+    private Integer lockNumber;
+
+    private Integer surplusNumber;
+
+    private Double price;
+
+
+
+
+
+
 	
 	
 	/**
@@ -72,29 +83,95 @@ public class AutoCarAttr implements Serializable{
 	public void setCarId(Integer carId){
 		this.carId = carId;
 	}
-		
-	public Integer getAttrId(){
-		return attrId;
-	}
-	
-	public void setAttrId(Integer attrId){
-		this.attrId = attrId;
-	}
-		
-	public String getAttrValue(){
-		return attrValue;
-	}
-	
-	public void setAttrValue(String attrValue){
-		this.attrValue = attrValue;
-	}
-		
-	public Integer getAttrPrice(){
-		return attrPrice;
-	}
-	
-	public void setAttrPrice(Integer attrPrice){
-		this.attrPrice = attrPrice;
-	}
+
+    public Integer getOutsideColor() {
+        return outsideColor;
+    }
+
+    public void setOutsideColor(Integer outsideColor) {
+        this.outsideColor = outsideColor;
+    }
+
+    public Integer getInsideColor() {
+        return insideColor;
+    }
+
+    public void setInsideColor(Integer insideColor) {
+        this.insideColor = insideColor;
+    }
+
+
+    public Double getOfficalPrice() {
+        return officalPrice;
+    }
+
+    public void setOfficalPrice(Double officalPrice) {
+        this.officalPrice = officalPrice;
+    }
+
+    public Integer getQuoteType() {
+        return quoteType;
+    }
+
+    public void setQuoteType(Integer quoteType) {
+        this.quoteType = quoteType;
+    }
+
+
+
+    public Integer getSalePriceType() {
+        return salePriceType;
+    }
+
+    public void setSalePriceType(Integer salePriceType) {
+        this.salePriceType = salePriceType;
+    }
+
+
+
+    public Double getSaleAmount() {
+        return saleAmount;
+    }
+
+    public void setSaleAmount(Double saleAmount) {
+        this.saleAmount = saleAmount;
+    }
+
+
+
+    public Integer getTotalNumber() {
+        return totalNumber;
+    }
+
+    public void setTotalNumber(Integer totalNumber) {
+        this.totalNumber = totalNumber;
+    }
+
+
+
+    public Integer getLockNumber() {
+        return lockNumber;
+    }
+
+    public void setLockNumber(Integer lockNumber) {
+        this.lockNumber = lockNumber;
+    }
+
+    public Integer getSurplusNumber() {
+        return surplusNumber;
+    }
+
+    public void setSurplusNumber(Integer surplusNumber) {
+        this.surplusNumber = surplusNumber;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
 		
 }

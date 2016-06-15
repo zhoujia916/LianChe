@@ -7,14 +7,6 @@
     	<result column="brand_id" property="brandId" /> 
     	<result column="brand_cat_id" property="brandCatId" /> 
     	<result column="brand_model_id" property="brandModelId" />
-        <result column="offical_price" property="officalPrice" />
-        <result column="quote_type" property="quoteType" />
-        <result column="sale_price_type" property="salePriceType" />
-        <result column="sale_amount" property="saleAmount" />
-        <result column="shop_price" property="shopPrice" />
-    	<result column="total_number" property="totalNumber" /> 
-    	<result column="lock_number" property="lockNumber" />
-        <result column="surplus_number" property="surplusNumber"/>
     	<result column="province" property="province" /> 
     	<result column="city" property="city" /> 
     	<result column="area" property="area" />
@@ -33,10 +25,13 @@
         <result column="brand_name" property="brandName"/>
         <result column="cat_name" property="catName"/>
         <result column="model_name" property="modelName"/>
-        <result column="usre_name" property="userName"/>
+        <result column="user_name" property="userName"/>
         <result column="real_name" property="realName"/>
+        <result column="userStatus" property="userStatus"/>
         <result column="pic" property="pic"/>
         <result column="collect_id" property="collectId"/>
+        <result column="addOrderTime" property="addOrderTime"/>
+        <result column="collectId" property="collectId"/>
     </resultMap>
 
     <sql id="allColumn">
@@ -53,17 +48,10 @@
         	<if test="brandId != null">brand_id, </if>
         	<if test="brandCatId != null">brand_cat_id, </if>
         	<if test="brandModelId != null">brand_model_id, </if>
-        	<if test="officalPrice != null">offical_price, </if>
-            <if test="quoteType != null">quote_type, </if>
-            <if test="salePriceType != null">sale_price_type, </if>
-            <if test="saleAmount != null">sale_amount, </if>
-            <if test="shopPrice != null">shop_price, </if>
-        	<if test="totalNumber != null">total_number, </if>
-        	<if test="lockNumber != null">lock_number, </if>
-            <if test="surplusNumber != null">surplus_number, </if>
         	<if test="province != null">province, </if>
         	<if test="city != null">city, </if>
         	<if test="area != null">area, </if>
+            <if test="refreshTime != null">refresh_time,</if>
             <if test="hasParts != null">has_parts, </if>
             <if test="parts != null">parts, </if>
             <if test="partsPrice != null">parts_price, </if>
@@ -84,14 +72,7 @@
         	<if test="brandId != null">#{brandId}, </if>
         	<if test="brandCatId != null">#{brandCatId}, </if>
         	<if test="brandModelId != null">#{brandModelId}, </if>
-        	<if test="officalPrice != null">#{officalPrice}, </if>
-            <if test="quoteType != null">#{quoteType}, </if>
-            <if test="salePriceType != null">#{salePriceType}, </if>
-            <if test="saleAmount != null">#{saleAmount}, </if>
-            <if test="shopPrice != null">#{shopPrice}, </if>
-        	<if test="totalNumber != null">#{totalNumber}, </if>
-        	<if test="lockNumber != null">#{lockNumber}, </if>
-            <if test="surplusNumber != null">#{surplusNumber}, </if>
+        	<if test="refreshTime != null">#{refreshTime},</if>
         	<if test="province != null">#{province}, </if>
         	<if test="city != null">#{city}, </if>
         	<if test="area != null">#{area}, </if>
@@ -259,25 +240,29 @@
         from auto_car as ac
         left join auto_car_pic as acp on acp.car_id = ac.car_id
         <where>  
-        	<if test="carId > 0">
+        	<if test="carId != null and carId > 0">
                 ac.car_id = #{carId}
+            </if>
+            <if test="orderId != null and orderId > 0">
+                ac.car_id = (select car_id from auto_order_car where order_id = #{orderId})
             </if>
         </where>
         limit 0, 1
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoCar">
-        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,au.status as add_user_status
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
+        left join auto_user_profile as aup on aup.user_id=ac.add_user_id
         inner join auto_brand as ab on ac.brand_id=ab.brand_id
         inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
         inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
         <where>
             <if test="carIdList!=null and carIdList.size()>0">
                 and ac.car_id in
-                <foreach collection="carIdList" item="catId" open="(" separator="," close=")">
-                    #{catId}
+                <foreach collection="carIdList" item="carId" open="(" separator="," close=")">
+                    ${carId}
                 </foreach>
             </if>
             <if test="carName!= null and carName !='' ">
@@ -317,10 +302,28 @@
         order by ${sort} ac.add_time desc, ac.car_id desc
     </select>
 
+    <select id="queryUserCollect" parameterType="Map" resultMap="AutoCar">
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,
+        au.status as userStatus,act.collect_id as collectId
+        from auto_car as ac
+        inner join auto_user as au on au.user_id = ac.add_user_id
+        inner join auto_brand as ab on ac.brand_id=ab.brand_id
+        inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
+        inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
+        inner join auto_collect as act on ac.car_id=act.target_id
+        <where>
+            <if test="userId != null and userId >0">
+                and act.user_id=${userId}
+            </if>
+            <if test="collectSql != null and collectSql !=''">
+                and ${collectSql}
+            </if>
+        </where>
+        order by act.add_time desc,act.collect_id desc LIMIT 0,2
+    </select>
     <select id="queryOrderList" parameterType="Map" resultMap="AutoCar">
-        select ac.*,
-        ab.brand_name,abc.cat_name,abm.model_name,au.user_name,
-        au.status as add_user_status
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,
+        au.status as userStatus,ao.add_time as addOrderTime
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
         inner join auto_brand as ab on ac.brand_id=ab.brand_id
@@ -332,28 +335,28 @@
             <if test="userId != null and userId > 0">
                 and ac.add_user_id = ${userId}
             </if>
-            <if test="orderStatus != null and orderStatus > 0">
-                and ao.order_status = #{orderStatus}
-            </if>
-            <if test="payStatus != null and payStatus > 0">
-                and ao.pay_status = #{payStatus}
-            </if>
-            <if test="shipStatus != null and shipStatus > 0">
-                and ao.ship_status = #{shipStatus}
-            </if>
-            <if test="orderStatusList != null and orderStatusList != ''">
-                and ao.order_status in (${orderStatusList})
-            </if>
-            <if test="payStatusList != null and payStatusList != ''">
-                and ao.pay_status in (${payStatusList})
-            </if>
-            <if test="shipStatusList != null and shipStatusList != ''">
-                and ao.ship_status in (${shipStatusList})
+            <if test="sellerId !=null and sellerId > 0">
+                and ao.seller_id = ${sellerId}
             </if>
             <if test="filter != null and filter != ''">
-                and ${filter}
+                and #{filter}
+            </if>
+            <if test="orderStatusList != null and orderStatusList !=''">
+                and ao.order_status in (${orderStatusList})
+            </if>
+            <if test="payStatusList != null and payStatusList !=''">
+                and ao.pay_status in (${payStatusList})
+            </if>
+            <if test="shipStatus != null and shipStatus >0">
+                and ao.ship_status = #{shipStatus}
+            </if>
+            <if test="orderStatus != null and orderStatus >0">
+                and ao.order_status = #{orderStatus}
+            </if>
+            <if test="carSql != null and carSql !=''">
+                and ${carSql}
             </if>
         </where>
-        order by ${sort} ac.add_time desc, ac.car_id desc
+        order by ${sort} ac.refresh_time desc, ac.car_id desc LIMIT 0,2
     </select>
 </mapper>

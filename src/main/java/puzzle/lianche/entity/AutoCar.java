@@ -27,9 +27,7 @@ public class AutoCar implements Serializable{
         sb.append(", brandId=").append(brandId);
         sb.append(", brandCatId=").append(brandCatId);
         sb.append(", brandModelId=").append(brandModelId);
-        sb.append(", officalPrice=").append(officalPrice);
-        sb.append(", totalNumber=").append(totalNumber);
-        sb.append(", lockNumber=").append(lockNumber);
+
         sb.append(", province=").append(province);
         sb.append(", city=").append(city);
         sb.append(", area=").append(area);
@@ -57,14 +55,6 @@ public class AutoCar implements Serializable{
 	private Integer brandCatId;
 	@Column(name="brand_model_id", nullable=true)
 	private Integer brandModelId;
-	@Column(name="offical_price", nullable=true)
-	private Float officalPrice;
-	@Column(name="total_number", nullable=true)
-	private Integer totalNumber;
-	@Column(name="lock_number", nullable=true)
-	private Integer lockNumber;
-    @Column(name="surplus_number", nullable=true)
-    private Integer surplusNumber;
 	@Column(name="province", nullable=true)
 	private Integer province;
 	@Column(name="city", nullable=true)
@@ -93,11 +83,21 @@ public class AutoCar implements Serializable{
 	private Integer sortOrder;
     @Column(name="remark", nullable=true)
     private String remark;
-	
-	
-	/**
+    private Long refreshTime;
+
+
+    public Long getRefreshTime() {
+        return refreshTime;
+    }
+
+    public void setRefreshTime(Long refreshTime) {
+        this.refreshTime = refreshTime;
+    }
+
+    /**
 	* Getter and Setter
 	*/
+
 	public Integer getCarId(){
 		return carId;
 	}
@@ -136,30 +136,6 @@ public class AutoCar implements Serializable{
 	
 	public void setBrandModelId(Integer brandModelId){
 		this.brandModelId = brandModelId;
-	}
-		
-	public Float getOfficalPrice(){
-		return officalPrice;
-	}
-	
-	public void setOfficalPrice(Float officalPrice){
-		this.officalPrice = officalPrice;
-	}
-		
-	public Integer getTotalNumber(){
-		return totalNumber;
-	}
-	
-	public void setTotalNumber(Integer totalNumber){
-		this.totalNumber = totalNumber;
-	}
-		
-	public Integer getLockNumber(){
-		return lockNumber;
-	}
-	
-	public void setLockNumber(Integer lockNumber){
-		this.lockNumber = lockNumber;
 	}
 		
 	public Integer getProvince(){
@@ -242,14 +218,6 @@ public class AutoCar implements Serializable{
 		this.sortOrder = sortOrder;
 	}
 
-    public Integer getSurplusNumber() {
-        return surplusNumber;
-    }
-
-    public void setSurplusNumber(Integer surplusNumber) {
-        this.surplusNumber = surplusNumber;
-    }
-
     public Integer getHasParts() {
         return hasParts;
     }
@@ -290,6 +258,24 @@ public class AutoCar implements Serializable{
     private String realName;
     private String beginTimeString;
     private String endTimeString;
+    private Integer userStatus;
+    private Long addOrderTime;
+
+    public Long getAddOrderTime() {
+        return addOrderTime;
+    }
+
+    public void setAddOrderTime(Long addOrderTime) {
+        this.addOrderTime = addOrderTime;
+    }
+
+    public Integer getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(Integer userStatus) {
+        this.userStatus = userStatus;
+    }
 
     public String getBeginTimeString() {
         return beginTimeString;
@@ -347,16 +333,6 @@ public class AutoCar implements Serializable{
         this.realName = realName;
     }
 
-    public List<AutoCarAttr> getAttrs() {
-        return attrs;
-    }
-
-    public void setAttrs(List<AutoCarAttr> attrs) {
-        this.attrs = attrs;
-    }
-
-    private List<AutoCarAttr> attrs;
-
     public List<AutoCarPic> getPics() {
         return pics;
     }
@@ -376,46 +352,6 @@ public class AutoCar implements Serializable{
     }
 
     private int invoiceType;
-
-    public int getQuoteType() {
-        return quoteType;
-    }
-
-    public void setQuoteType(int quoteType) {
-        this.quoteType = quoteType;
-    }
-
-    private int quoteType;
-
-    public int getSalePriceType() {
-        return salePriceType;
-    }
-
-    public void setSalePriceType(int salePriceType) {
-        this.salePriceType = salePriceType;
-    }
-
-    private int salePriceType;
-
-    public double getSaleAmount() {
-        return saleAmount;
-    }
-
-    public void setSaleAmount(double saleAmount) {
-        this.saleAmount = saleAmount;
-    }
-
-    private double saleAmount;
-
-    public double getShopPrice() {
-        return shopPrice;
-    }
-
-    public void setShopPrice(double shopPrice) {
-        this.shopPrice = shopPrice;
-    }
-
-    private double shopPrice;
 
     public String getBrandIds() {
         return brandIds;
@@ -497,4 +433,18 @@ public class AutoCar implements Serializable{
     }
 
     private Integer collectId;
+
+    public void setStartPrice(Double startPrice) {
+        this.startPrice = startPrice;
+    }
+
+    public List<AutoCarAttr> getAttrs() {
+        return attrs;
+    }
+
+    public void setAttrs(List<AutoCarAttr> attrs) {
+        this.attrs = attrs;
+    }
+
+    private List<AutoCarAttr> attrs;
 }

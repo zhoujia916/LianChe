@@ -78,7 +78,7 @@ public class AutoUserController extends BaseController {
                 String code= CommonUtil.getCode(6);
                 Map<String,Object> map = new HashMap<String, Object>();
                 map.put("code", code);
-                String response = SmsPush.send(phone, 1, map);
+                String response = SmsPush.send(SmsPush.CODE_SENDCODE, phone, code);
                 if(SmsPush.isSuccess(response)){
                     AutoSms sms=new AutoSms();
                     if("register".equalsIgnoreCase(keyword)){
@@ -173,6 +173,7 @@ public class AutoUserController extends BaseController {
                         autoUser.setUserAvatar("../resource/admin/avatars/profile-pic.jpg");
                         autoUser.setPoint(100);
                         autoUser.setPhone(autoUser.getUserName());
+                        autoUser.setBirth(ConvertUtil.toLong(new Date()));
                         autoUser.setSortOrder(0);
                         if(autoUserService.insert(autoUser)){
                             JSONArray array=new JSONArray();
@@ -490,7 +491,6 @@ public class AutoUserController extends BaseController {
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            System.out.println(user.getUserId());
             map.put("userId",user.getUserId());
             AutoUser autoUser=autoUserService.query(map);
             if(autoUser!=null){
@@ -511,55 +511,61 @@ public class AutoUserController extends BaseController {
         return result;
     }
 
+
     /**
-     * 查看用户收藏
-     * @param user
+     * 查看我的收藏
+     * @param userId
+     * @param markId
+     * @param collectId
      * @return
      */
     @RequestMapping(value = "/collection.do")
     @ResponseBody
-    public Result collection(AutoUser user,Page page){
+    public Result collection(Integer userId,Integer markId,Integer collectId){
         Result result=new Result();
         try{
-            Map<String, Object> map=new HashMap<String, Object>();
-            map.put("userId",ConvertUtil.toString(user.getUserId()));
-            List<AutoCollect> autoCollectList=autoCollectService.queryList(map);
-            if(autoCollectList!=null && autoCollectList.size()>0){
-                List<Integer> carIdList=new ArrayList<Integer>();
-                for(AutoCollect autoCollect:autoCollectList ){
-                    carIdList.add(autoCollect.getTargetId());
+            if(userId==null){
+                result.setCode(-1);
+                result.setMsg("查看参数错误！");
+            }else{
+                Map<String, Object> map=new HashMap<String, Object>();
+                if(markId!=null && markId>0 && collectId!=null && collectId>0){
+                    if(markId==1){
+                        String collectSql="act.collect_id>"+collectId;
+                        map.put("collectSql",collectSql);
+                    }else if(markId==2){
+                        String collectSql="act.collect_id<"+collectId;
+                        map.put("collectSql",collectSql);
+                    }
                 }
-                map.clear();
-                map.put("carIdList",carIdList);
-                List<AutoCar> carList=autoCarService.queryList(map,page);
+                map.put("userId",userId);
+                List<AutoCar> carList=autoCarService.queryUserCollect(map);
                 if(carList!=null && carList.size()>0){
                     JSONArray array=new JSONArray();
                     for(int i=0;i<carList.size();i++){
                         JSONObject jsonObject=new JSONObject();
+                        jsonObject.put("collectId",carList.get(i).getCollectId());
+                        jsonObject.put("carId",carList.get(i).getCarId());
+                        jsonObject.put("carName",carList.get(i).getCarName());
+                        jsonObject.put("titleName",carList.get(i).getCatName());
                         map.clear();
                         map.put("carPicId", carList.get(i).getCarId());
                         AutoCarPic carPic=autoCarPicService.query(map);
-                        map.clear();
-                        map.put("carAttrId",carList.get(i).getCarId());
-                        List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
-                        jsonObject.put("pic",carPic.getPath());
-                        if(carAttrList.size()>1){
-                            jsonObject.put("attrValue","多色");
-                        }else{
-                            jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
+                        if(carPic!=null){
+                            jsonObject.put("pic",carPic.getPath());
                         }
+                        jsonObject.put("attrValue","珍珠白");
                         map.clear();
-                        map.put("userId",carList.get(i).getAddUserId());
-                        AutoUser autoUser=autoUserService.query(map);
-                        jsonObject.put("carId",carList.get(i).getCarId());
-                        jsonObject.put("carName",carList.get(i).getCarName());
-                        jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
-                        jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
-                        jsonObject.put("quoteType",carList.get(i).getQuoteType());
-                        jsonObject.put("quotePrice",10000);
+                        map.put("attrCarId",carList.get(i).getCarId());
+                        AutoCarAttr carAttr=autoCarAttrService.query(map);
+                        if(carAttr!=null){
+                            jsonObject.put("officalPrice",carAttr.getOfficalPrice());
+                            jsonObject.put("quoteType",carAttr.getQuoteType());
+                            jsonObject.put("quotePrice",carAttr.getSaleAmount());
+                        }
                         jsonObject.put("status",carList.get(i).getStatus());
-                        jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(autoCollectList.get(i).getAddTime()),"MM-dd HH:mm"));
-                        if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                        jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddTime()),"MM-dd HH:mm"));
+                        if(carList.get(i).getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
                             jsonObject.put("isAuthenticate",true);
                         }else{
                             jsonObject.put("isAuthenticate",false);
@@ -579,16 +585,16 @@ public class AutoUserController extends BaseController {
 
     /**
      * 删除我的收藏
-     * @param carId
+     * @param collectId
      * @return
      */
     @RequestMapping(value = "/deleteCollection.do")
     @ResponseBody
-    public Result deleteCollection(Integer carId){
+    public Result deleteCollection(Integer collectId){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("carId",carId);
+            map.put("collectId",collectId);
             if(!autoCollectService.delete(map)){
                 result.setCode(1);
                 result.setMsg("删除我的收藏失败！");
@@ -620,6 +626,7 @@ public class AutoUserController extends BaseController {
                     JSONObject jsonObject=new JSONObject();
                     jsonObject.put("msgId",msg.getMsgId());
                     jsonObject.put("msgTitle",msg.getMsgTitle());
+                    jsonObject.put("msgStatus",msg.getStatus());
                     jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(msg.getAddTime()),Constants.DATE_FORMAT));
                     array.add(jsonObject);
                 }
@@ -646,6 +653,9 @@ public class AutoUserController extends BaseController {
             map.put("msgId",msgId);
             AutoMsg msg=autoMsgService.query(map);
             if(msg!=null){
+                msg.setViewCount(msg.getViewCount()+1);
+                msg.setStatus(1);
+                autoMsgService.update(msg);
                 JSONArray array=new JSONArray();
                 JSONObject jsonObject=new JSONObject();
                 jsonObject.put("msgId",msg.getMsgId());
@@ -674,23 +684,20 @@ public class AutoUserController extends BaseController {
     /**
      * 查看我的销车
      * @param order
-     * @param page
      * @return
      */
     @RequestMapping(value = "/carSource.do")
     @ResponseBody
-    public Result carSource(AutoOrder order,Page page){
+    public Result carSource(AutoOrder order,Integer markId,Integer carId){
         Result result=new Result();
         try{
             if(order==null){
                 result.setCode(-1);
                 result.setMsg("查看我的销车失败！");
-            }else if(page==null){
-                result.setCode(-1);
-                result.setMsg("查看我的销车失败！");
             }else{
                 Map<String, Object> map=new HashMap<String, Object>();
                 map.put("userId",order.getSellerId());
+                map.put("sellerId",order.getSellerId());
                 if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
                     String sql = " ao.order_id is null"
                             + " or (ao.order_status = " + Constants.OS_SUBMIT
@@ -719,50 +726,42 @@ public class AutoUserController extends BaseController {
                 else if(order.getClientStatus().equals(Constants.CS_CANCEL)){
                     map.put("orderStatus", Constants.OS_CANCEL);
                 }
-                List<AutoCar> carList = autoCarService.queryOrderList(map, page);
+                if(markId!=null && markId>0 && carId!=null && carId>0){
+                    if(markId==1){
+                        String carSql="ac.car_id>"+carId;
+                        map.put("carSql",carSql);
+                    }else if(markId==2){
+                        String carSql="ac.car_id<"+carId;
+                        map.put("carSql",carSql);
+                    }
+                }
+                List<AutoCar> carList = autoCarService.queryOrderList(map);
                 if(carList!=null && carList.size()>0){
-                    List<Integer> carIdList=new ArrayList<Integer>();
-                    List<Integer> orderIdList=new ArrayList<Integer>();
-                    for(AutoCar car:carList ){
-                        carIdList.add(car.getCarId());
-                    }
-                    map.clear();
-                    map.put("carIdList",carIdList);
-                    List<AutoOrderCar> orderCarList=autoOrderCarService.queryList(map);
-                    for(AutoOrderCar orderCar:orderCarList){
-                        orderIdList.add(orderCar.getOrderId());
-                    }
-                    map.clear();
-                    map.put("orderIdList",orderIdList);
-                    List<AutoOrder> orderList=autoOrderService.queryList(map);
                     if(carList!=null && carList.size()>0){
                         JSONArray array=new JSONArray();
                         for(int i=0;i<carList.size();i++){
                             JSONObject jsonObject=new JSONObject();
-                            map.clear();
-                            map.put("carPicId", carList.get(i).getCarId());
-                            AutoCarPic carPic=autoCarPicService.query(map);
-                            map.clear();
-                            map.put("carAttrId",carList.get(i).getCarId());
-                            List<AutoCarAttr> carAttrList=autoCarAttrService.queryList(map);
-                            jsonObject.put("pic",carPic.getPath());
-                            if(carAttrList.size()>1){
-                                jsonObject.put("attrValue","多色");
-                            }else{
-                                jsonObject.put("attrValue",carAttrList.get(i).getAttrValue());
-                            }
-                            map.clear();
-                            map.put("userId",order.getSellerId());
-                            AutoUser autoUser=autoUserService.query(map);
+                            jsonObject.put("attrValue","珍珠白");
                             jsonObject.put("carId",carList.get(i).getCarId());
                             jsonObject.put("carName",carList.get(i).getCarName());
                             jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
-                            jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
-                            jsonObject.put("quoteType",carList.get(i).getQuoteType());
-                            jsonObject.put("quotePrice",10000);
+                            map.clear();
+                            map.put("carPicId", carList.get(i).getCarId());
+                            AutoCarPic carPic=autoCarPicService.query(map);
+                            if(carPic!=null){
+                                jsonObject.put("pic",carPic.getPath());
+                            }
+                            map.clear();
+                            map.put("attrCarId",carList.get(i).getCarId());
+                            AutoCarAttr carAttr=autoCarAttrService.query(map);
+                            if(carAttr!=null){
+                                jsonObject.put("officalPrice",carAttr.getOfficalPrice());
+                                jsonObject.put("quoteType",carAttr.getQuoteType());
+                                jsonObject.put("quotePrice",carAttr.getSaleAmount());
+                            }
                             jsonObject.put("status",carList.get(i).getStatus());
-                            jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(orderList.get(i).getAddTime()),"MM-dd HH:mm"));
-                            if(autoUser.getStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                            jsonObject.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddOrderTime()), "MM-dd HH:mm"));
+                            if(carList.get(i).getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
                                 jsonObject.put("isAuthenticate",true);
                             }else{
                                 jsonObject.put("isAuthenticate",false);

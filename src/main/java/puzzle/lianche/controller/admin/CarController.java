@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.AutoCar;
-import puzzle.lianche.entity.SystemAuthority;
-import puzzle.lianche.entity.SystemMenuAction;
-import puzzle.lianche.entity.SystemUser;
+import puzzle.lianche.entity.*;
+import puzzle.lianche.service.IAutoCarAttrService;
 import puzzle.lianche.service.IAutoCarService;
 import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.utils.ConvertUtil;
@@ -33,7 +31,7 @@ public class CarController extends ModuleController {
     private IAutoCarService autoCarService;
 
     @Autowired
-    private ISystemMenuActionService systemMenuActionService;
+    private IAutoCarAttrService autoCarAttrService;
 
     @RequestMapping(value = {"/","/index"})
     public String index(){
@@ -65,8 +63,26 @@ public class CarController extends ModuleController {
             if(list!=null && list.size()>0){
                 JSONArray array=new JSONArray();
                 for(AutoCar car:list){
-                    JSONObject jsonObject=JSONObject.fromObject(car);
+                    JSONObject jsonObject=new JSONObject();
+                    jsonObject.put("carId",car.getCarId());
+                    jsonObject.put("carName",car.getCarName());
                     jsonObject.put("carType",Constants.MAP_AUTO_CAR_TYPE.get(car.getCarType()));
+                    jsonObject.put("brandName",car.getBrandName());
+                    jsonObject.put("catName",car.getCatName());
+                    jsonObject.put("modelName",car.getModelName());
+                    map.clear();
+                    map.put("attrCarId",car.getCarId());
+                    AutoCarAttr carAttr=autoCarAttrService.query(map);
+                    if(carAttr!=null){
+                        jsonObject.put("officalPrice",carAttr.getOfficalPrice());
+                        jsonObject.put("totalNumber",carAttr.getTotalNumber());
+                        jsonObject.put("lockNumber",carAttr.getLockNumber());
+                        jsonObject.put("surplusNumber",carAttr.getSurplusNumber());
+                    }
+                    jsonObject.put("userName",car.getUserName());
+                    jsonObject.put("realName",car.getRealName());
+                    jsonObject.put("status",car.getStatus());
+                    jsonObject.put("sortOrder",car.getSortOrder());
                     array.add(jsonObject);
                 }
                 result.setData(array);

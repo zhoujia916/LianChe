@@ -106,7 +106,10 @@
         select <include refid="allColumn"/> from auto_collect
         <where>  
         	<if test="collectId > 0">
-                collect_id = #{collectId}
+                and collect_id = #{collectId}
+            </if>
+            <if test="carId > 0">
+                and target_id = #{carId}
             </if>
         </where> 
     </select>
@@ -116,7 +119,7 @@
         from auto_collect as acl
         inner join auto_car as ac on acl.target_id=ac.car_id
         inner join auto_user au on acl.user_id=au.user_id
-        inner join auto_user_profile as aup on au.user_id=aup.user_id
+        left join auto_user_profile as aup on au.user_id=aup.user_id
         <where>
             <if test="carName!=null and carName!=''">
                 and ac.car_name like concat('%',#{carName},'%')
@@ -128,5 +131,6 @@
                 and acl.user_id in (${userId})
             </if>
         </where>
+        order by acl.add_time desc,acl.collect_id desc
     </select>
 </mapper>
