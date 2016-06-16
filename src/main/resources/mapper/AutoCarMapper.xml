@@ -7,6 +7,7 @@
         <result column="brand_id" property="brandId" />
         <result column="brand_cat_id" property="brandCatId" />
         <result column="brand_model_id" property="brandModelId" />
+        <result column="offical_price" property="officalPrice" />
         <result column="province" property="province" />
         <result column="city" property="city" />
         <result column="area" property="area" />
@@ -35,8 +36,8 @@
     </resultMap>
 
     <sql id="allColumn">
-        car_id, car_name, brand_id, brand_cat_id, brand_model_id, offical_price, quote_type, sale_price_type, sale_amount, shop_price,
-        total_number, lock_number, surplus_number, province, city, area, has_parts , parts , parts_price,
+        car_id, car_name, brand_id, brand_cat_id, brand_model_id, offical_price,
+        province, city, area,refresh_time, has_parts , parts , parts_price,
         add_time, add_user_id, start_date, end_date, car_type, status, invoice_type, sort_order, remark
     </sql>
 
@@ -47,6 +48,7 @@
             <if test="brandId != null">brand_id, </if>
             <if test="brandCatId != null">brand_cat_id, </if>
             <if test="brandModelId != null">brand_model_id, </if>
+            <if test="officalPrice != null">offical_price, </if>
             <if test="province != null">province, </if>
             <if test="city != null">city, </if>
             <if test="area != null">area, </if>
@@ -71,10 +73,11 @@
             <if test="brandId != null">#{brandId}, </if>
             <if test="brandCatId != null">#{brandCatId}, </if>
             <if test="brandModelId != null">#{brandModelId}, </if>
-            <if test="refreshTime != null">#{refreshTime}, </if>
+            <if test="officalPrice != null">#{officalPrice}, </if>
             <if test="province != null">#{province}, </if>
             <if test="city != null">#{city}, </if>
             <if test="area != null">#{area}, </if>
+            <if test="refreshTime != null">#{refreshTime}, </if>
             <if test="hasParts != null">#{hasParts}, </if>
             <if test="parts != null">#{parts}, </if>
             <if test="partsPrice != null">#{partsPrice}, </if>
@@ -108,27 +111,6 @@
             <if test="officalPrice != null">
                 offical_price = #{officalPrice},
             </if>
-            <if test="quoteType != null">
-                quote_type = #{quoteType},
-            </if>
-            <if test="salePriceType != null">
-                sale_price_type = #{salePriceType},
-            </if>
-            <if test="saleAmount != null">
-                sale_amount = #{saleAmount},
-            </if>
-            <if test="shopPrice != null">
-                shop_price = #{shopPrice},
-            </if>
-            <if test="totalNumber != null">
-                total_number = #{totalNumber},
-            </if>
-            <if test="lockNumber != null">
-                lock_number = #{lockNumber},
-            </if>
-            <if test="surplusNumber != null">
-                surplus_number = #{surplusNumber},
-            </if>
             <if test="province != null">
                 province = #{province},
             </if>
@@ -137,6 +119,9 @@
             </if>
             <if test="area != null">
                 area = #{area},
+            </if>
+            <if test="refreshTime != null">
+                refresh_time = #{refreshTime},
             </if>
             <if test="hasParts != null">
                 has_parts = #{hasParts},
@@ -199,12 +184,6 @@
                 </if>
                 <if test="brandModelId > 0">
                     brand_model_id = #{brandModelId}
-                </if>
-                <if test="totalNumber > 0">
-                    total_number = #{totalNumber}
-                </if>
-                <if test="lockNumber > 0">
-                    lock_number = #{lockNumber}
                 </if>
                 <if test="province > 0">
                     province = #{province}

@@ -169,24 +169,9 @@ public class AutoCarController extends BaseController {
                 result.setMsg("品牌不能为空！");
                 return result;
             }
-            map.put("brandId", car.getBrandId());
-            AutoBrand brand = autoBrandService.query(map);
-            if(brand == null){
-                result.setCode(-1);
-                result.setMsg("不存在该品牌！");
-                return result;
-            }
             if(car.getBrandCatId() == null || car.getBrandCatId() == 0){
                 result.setCode(-1);
                 result.setMsg("车系不能为空！");
-                return result;
-            }
-            map.clear();
-            map.put("catId", car.getBrandCatId());
-            AutoBrandCat cat = autoBrandCatService.query(map);
-            if(cat == null){
-                result.setCode(-1);
-                result.setMsg("不存在该车系！");
                 return result;
             }
             if(car.getBrandModelId() == null || car.getBrandModelId() == 0){
@@ -194,7 +179,8 @@ public class AutoCarController extends BaseController {
                 result.setMsg("车型不能为空！");
                 return result;
             }
-            map.clear();
+            map.put("brandId", car.getBrandId());
+            map.put("catId", car.getBrandCatId());
             map.put("modelId", car.getBrandModelId());
             AutoBrandModel model = autoBrandModelService.query(map);
             if(model == null){
@@ -245,7 +231,7 @@ public class AutoCarController extends BaseController {
                 AutoCarAttr carAttr = car.getAttrs().get(i);
                 car.getAttrs().get(i).setLockNumber(0);
                 car.getAttrs().get(i).setSurplusNumber(carAttr.getTotalNumber());
-                double price = carAttr.getOfficalPrice();
+                double price = car.getOfficalPrice();
                 if(carAttr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP) {
                     if (carAttr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY) {
                         price += carAttr.getSaleAmount();
@@ -276,5 +262,4 @@ public class AutoCarController extends BaseController {
         }
         return result;
     }
-
 }

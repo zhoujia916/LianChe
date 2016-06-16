@@ -6,7 +6,6 @@
         <result column="car_id" property="carId" />
         <result column="outside_color" property="outsideColor" />
         <result column="inside_color" property="insideColor" />
-        <result column="offical_price" property="officalPrice" />
         <result column="quote_type" property="quoteType" />
         <result column="sale_price_type" property="salePriceType" />
         <result column="sale_amount" property="saleAmount" />
@@ -17,7 +16,7 @@
     </resultMap>
 
     <sql id="allColumn">
-    	car_attr_id, car_id, outside_color, inside_color, offical_price, quote_type,
+    	car_attr_id, car_id, outside_color, inside_color, quote_type,
     	sale_price_type, sale_amount, total_number, lock_number, surplus_number, price
     </sql>
 
@@ -27,7 +26,6 @@
         <if test="carId != null">car_id, </if>
         <if test="outsideColor != null">outside_color, </if>
         <if test="insideColor != null">inside_color, </if>
-        <if test="officalPrice != null">offical_price, </if>
         <if test="quoteType != null">quote_type, </if>
         <if test="salePriceType != null">sale_price_type, </if>
         <if test="saleAmount != null">sale_amount, </if>
@@ -41,7 +39,6 @@
         <if test="carId != null">#{carId}}, </if>
         <if test="outsideColor != null">#{outsideColor}, </if>
         <if test="insideColor != null">#{insideColor}, </if>
-        <if test="officalPrice != null">#{officalPrice}, </if>
         <if test="quoteType != null">#{quoteType}, </if>
         <if test="salePriceType != null">#{salePriceType}, </if>
         <if test="saleAmount != null">#{saleAmount}, </if>
@@ -58,7 +55,6 @@
         car_id,
         outside_color,
         inside_color,
-        offical_price,
         quote_type,
         sale_price_type,
         sale_amount,
@@ -73,7 +69,6 @@
             #{attr.carId},
             #{attr.outsideColor},
             #{attr.insideColor},
-            #{attr.officalPrice},
             #{attr.quoteType},
             #{attr.salePriceType},
             #{attr.saleAmount},
@@ -96,9 +91,6 @@
             </if>
             <if test="insideColor != null">
                 inside_color = #{insideColor},
-            </if>
-            <if test="officalPrice != null">
-                offical_price = #{officalPrice},
             </if>
             <if test="quoteType != null">
                 quote_type = #{quoteType},

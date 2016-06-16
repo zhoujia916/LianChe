@@ -46,7 +46,6 @@ public class AutoCarAttr implements Serializable{
 	@Column(name="attr_id", nullable=true)
     private Integer outsideColor;
     private Integer insideColor;
-    private Double officalPrice;
     private Integer quoteType;
     private Integer salePriceType;
     private Double saleAmount;
@@ -98,15 +97,6 @@ public class AutoCarAttr implements Serializable{
 
     public void setInsideColor(Integer insideColor) {
         this.insideColor = insideColor;
-    }
-
-
-    public Double getOfficalPrice() {
-        return officalPrice;
-    }
-
-    public void setOfficalPrice(Double officalPrice) {
-        this.officalPrice = officalPrice;
     }
 
     public Integer getQuoteType() {

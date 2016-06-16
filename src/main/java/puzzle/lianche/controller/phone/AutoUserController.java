@@ -45,12 +45,6 @@ public class AutoUserController extends BaseController {
     private IAutoMsgService autoMsgService;
 
     @Autowired
-    private IAutoOrderCarService autoOrderCarService;
-
-    @Autowired
-    private IAutoOrderService autoOrderService;
-
-    @Autowired
     private IAutoFeedbackService autoFeedbackService;
 
     /**
@@ -522,7 +516,6 @@ public class AutoUserController extends BaseController {
         return result;
     }
 
-
     /**
      * 查看我的收藏
      * @param userId
@@ -710,6 +703,8 @@ public class AutoUserController extends BaseController {
     /**
      * 查看我的销车
      * @param order
+     * @param markId
+     * @param carId
      * @return
      */
     @RequestMapping(value = "/carSource.do")
@@ -717,7 +712,7 @@ public class AutoUserController extends BaseController {
     public Result carSource(AutoOrder order,Integer markId,Integer carId){
         Result result=new Result();
         try{
-            if(order.getSellerId()==null || order.getSellerId()<=0 || order.getClientStatus()==null || order.getClientStatus()<=0){
+            if(order.getSellerId()==null || order.getSellerId()<=0 || order.getClientStatus()==null){
                 result.setCode(-1);
                 result.setMsg("查看我的销车失败！");
             }else{

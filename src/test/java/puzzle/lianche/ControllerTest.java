@@ -92,7 +92,7 @@ public class ControllerTest {
     @Rollback(false)
     public void testPhoneUser() throws Exception {
 //        mockMvc.perform(((post("/phone/autouser/register.do").param("userName", "13658473085").param("password","111111")).param("code","743996")))
-        mockMvc.perform(((post("/phone/autouser/sendCode.do").param("phone", "15123849097").param("keyword","register"))))
+        mockMvc.perform(((post("/phone/autouser/feedback.do").param("addUserId", "29").param("content","还可以，8分吧！"))))
 //        mockMvc.perform(((post("/phone/autouser/login.do").param("username", "13658473085").param("password","111111"))))
 //        mockMvc.perform(((post("/phone/autouser/collection.do").param("userId", "29").param("markId","1").param("carId","3"))))
                 .andExpect(status().isOk()).andDo(print());

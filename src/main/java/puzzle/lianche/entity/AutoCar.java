@@ -27,7 +27,6 @@ public class AutoCar implements Serializable{
         sb.append(", brandId=").append(brandId);
         sb.append(", brandCatId=").append(brandCatId);
         sb.append(", brandModelId=").append(brandModelId);
-
         sb.append(", province=").append(province);
         sb.append(", city=").append(city);
         sb.append(", area=").append(area);
@@ -55,6 +54,7 @@ public class AutoCar implements Serializable{
     private Integer brandCatId;
     @Column(name="brand_model_id", nullable=true)
     private Integer brandModelId;
+    private Double officalPrice;
     @Column(name="province", nullable=true)
     private Integer province;
     @Column(name="city", nullable=true)
@@ -85,6 +85,13 @@ public class AutoCar implements Serializable{
     private String remark;
     private Long refreshTime;
 
+    public Double getOfficalPrice() {
+        return officalPrice;
+    }
+
+    public void setOfficalPrice(Double officalPrice) {
+        this.officalPrice = officalPrice;
+    }
 
     public Long getRefreshTime() {
         return refreshTime;
