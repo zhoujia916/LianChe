@@ -753,10 +753,10 @@ public class AutoUserController extends BaseController {
                 if(markId!=null && markId>0 && carId!=null && carId>0){
                     if(markId==1){
                         String carSql="ac.car_id>"+carId;
-                        map.put("carSql",carSql);
+                        map.put("filter",carSql);
                     }else if(markId==2){
                         String carSql="ac.car_id<"+carId;
-                        map.put("carSql",carSql);
+                        map.put("filter",carSql);
                     }
                 }
                 List<AutoCar> carList = autoCarService.queryOrderList(map);

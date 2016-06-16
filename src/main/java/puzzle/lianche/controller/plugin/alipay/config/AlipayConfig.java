@@ -34,7 +34,7 @@ public class AlipayConfig {
     public static String notify_url = "http://test.one-auto.com/alipay/notify";
 
 	// 商户的私钥
-	public static String private_key = "";
+	public static String private_key = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAL/LzhtqbP44IU9MRI88sx2Q7ZSnN1yukrmRluJwW9aYNpSx1lyskZG8v3+4bkL+8dbuzJOeR3n8Dxb55KzTmrqEjD3QV05hIBcSEFRhPz75FmqfiqocL8h/JDWbZTJwVae2gHCzAhfWgGEnJYPusOgpvkt4aUEfBMLe00eVN68XAgMBAAECgYBzQi7iGtrVCzY5SUQKMBgTtHyR0MtcTyyth+h8u7j1BRQH17dSigIQ6rTKNDNO35bF60vVilC55dfLnvDlS2S3ly7OZZ0xjObLrXVrhkuB7HRHWZCaTrJBxqCaB8f9iWum57fZqjiMRqybLLngt3aN97IRyAUXCk3b6RunsmfTwQJBAOmOSqIFwZg8TRR65hNP+SaFv7+AONs0NFo9olc4fYV5ieILemx/Ina2cMyOybrInWsvIaUXCMa6/7P1Ak3yoUsCQQDSOi6+wOOcynX7Sd4HsBcgRBj5ktC7XOvPz9i8pbrjan4dDuAcEIO0mK6dvbFNSdy41sJHPQKHKTiyLVvOrtXlAkBcMY0IdBk9jOAoa3MSwIjrSfStFWJcNTlNPfMtVuFFpPpmvn0vAuiJz+6q8Np03ug0/T/cuUD/oaV6Vgb42gQNAkEAhQnw/yKOaHDvzQDoE7FqUS8HJxm0In4hdTexj2DKLpT8DmOVi+0fjDB7gLPE+oZdulOeSvrfGK4LhSaTTO7zyQJAPBnV72w1p8u6pC3wICMSiY/TFUOFOcbesuBRssEo4nzLODVukP1sAYqhNWGMl2OegWNkahn2SemYVwrnloZKlQ==";
     public static String private_key_path = "key\\rsa_private_key.pem";
 	
 	// 支付宝的公钥，无需修改该值
@@ -52,5 +52,39 @@ public class AlipayConfig {
 	
 	// 签名方式 不需修改
 	public static String sign_type = "RSA";
+
+
+//    a) Java与。Net开发语言
+//    ◆商户的私钥
+//    1、必须保证只有一行文字，即，没有回车、换行、空格等
+//    2、去掉“-----BEGIN RSA PRIVATE KEY-----”、“-----END RSA PRIVATE KEY-----”，只保存这两条文字之中的部分
+//    ◆商户的公钥
+//    1、必须保证只有一行文字，即，没有回车、换行、空格等
+//    2、去掉“-----BEGIN PUBLIC KEY-----”、“-----END PUBLIC KEY-----”，只保存这两条文字之中的部分
+//    3、保存到一个临时的记事本中，再打开b.alipay.com，并用要绑定密钥的支付宝账号登录，找到“获取PID、KEY”的按钮
+//    4、根据http://help.alipay.com/support/help_detail.htm?help_id=243726&sh=Y&tab=null&info_type=9里的步骤上传RSA公钥，即刚才保存在临时记事本中的那串字符串。
+//
+//            ◆支付宝公钥
+//    1、必须保证只有一行文字，即，没有回车、换行、空格等
+//    2、去掉“-----BEGIN PUBLIC KEY-----”、“-----END PUBLIC KEY-----”，只保存这两条文字之中的部分
+//    a) Php开发语言
+//    ◆商户的私钥
+//    1、必须保证只有一行文字，即，没有回车、换行、空格等
+//    2、不需要对刚生成的（原始的）私钥做pkcs8编码，即不需要使用到PKCS8格式的私钥
+//    3、不需要去掉去掉“-----BEGIN PUBLIC KEY-----”、“-----END PUBLIC KEY-----”
+//    简言之，只要维持刚生成出来的私钥的内容即可。
+//            ◆商户的公钥
+//    1、必须保证只有一行文字，即，没有回车、换行、空格等
+//    2、去掉“-----BEGIN PUBLIC KEY-----”、“-----END PUBLIC KEY-----”，只保存这两条文字之中的部分
+//    3、保存到一个临时的记事本中，再打开b.alipay.com，并用要绑定密钥的支付宝账号登录，找到“获取PID、KEY”的按钮
+//    4、根据http://help.alipay.com/support/help_detail.htm?help_id=243726&sh=Y&tab=null&info_type=9里的步骤上传RSA公钥，即刚才保存在临时记事本中的那串字符串。
+//            ◆支付宝公钥
+//    1、必须保证只有一行文字，即，没有回车、换行、空格等
+//    2、须保留“-----BEGIN PUBLIC KEY-----”、“-----END PUBLIC KEY-----”这两条文字。
+//    简言之，支付宝公钥只需要维持原样即可。
+//            2） 把公钥上传给支付宝
+//    操作流程见：http://help.alipay.com/support/help_detail.htm?help_id=243726&sh=Y&tab=null&info_type=9
+//            3） 从支付宝那获得支付宝公钥
+//    此处公钥由技术支持提供，请找技术支持索要支付宝公钥文件。
 
 }

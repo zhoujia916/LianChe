@@ -29,8 +29,7 @@ public class AlipayController extends BaseController {
 
     @Autowired
     private IAutoOrderService autoOrderService;
-    @Autowired
-    private IAutoOrderCarService autoOrderCarService;
+
     @Autowired
     private IAutoCarService autoCarService;
 
@@ -44,13 +43,13 @@ public class AlipayController extends BaseController {
           (order.getOrderId() <= 0 && StringUtil.isNullOrEmpty(order.getOrderSn()))){
             Result result = new Result();
             result.setCode(-1);
-            result.setMsg("该订单不能为空！");
+            result.setMsg("订单不能为空！");
             this.writeJson(result);
         }
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            int buyerId = order.getBuyerId();
-            int sellerId = order.getSellerId();
+            Integer buyerId = order.getBuyerId();
+            Integer sellerId = order.getSellerId();
             order = autoOrderService.query(order.getOrderId(), order.getOrderSn());
             if(order == null){
                 Result result = new Result();
@@ -84,30 +83,31 @@ public class AlipayController extends BaseController {
                 this.writeJson(result);
                 return;
             }
+            car.setCarName(new String(car.getCarName().getBytes(), AlipayConfig.input_charset));
 
             Map<String, String> payinfo = new HashMap<String, String>();
             // 必填，接口名称，固定值
             payinfo.put("service", "\"mobile.securitypay.pay\"");
             // 必填，合作商户号
             payinfo.put("partner", "\"" + AlipayConfig.partner + "\"");
-            // 可选，买家ID
-            payinfo.put("seller_id", "\"" + AlipayConfig.account + "\"");
+            // 必填，参数编码字符集
+            payinfo.put("_input_charset", "\"" + AlipayConfig.input_charset + "\"");
+            // 必填，服务器异步通知页面路径
+            payinfo.put("notify_url", "\"" + AlipayConfig.notify_url + "\"");
             // 必填，商户网站唯一订单号
             payinfo.put("out_trade_no", "\"" + order.getOrderSn() + "\"");
             // 必填，商品名称
             payinfo.put("subject", "\"" + car.getCarName() + "\"");
-            // 必填，商品详情
-            payinfo.put("body", "\"" + car.getCarName() + "\"");
-            // 必填，总金额，取值范围为[0.01,100000000.00]
-            payinfo.put("total_fee", "\"" + ConvertUtil.toString(order.getAmount()) + "\"");
-            // 可选，服务器异步通知页面路径
-            payinfo.put("notify_url", "\"" + AlipayConfig.notify_url + "\"");
             // 必填，支付类型
             payinfo.put("payment_type", "\"1\"");
-            // 必填，参数编码字符集
-            payinfo.put("_input_charset", "\"UTF-8\"");
+            // 可选，买家ID
+            payinfo.put("seller_id", "\"" + AlipayConfig.account + "\"");
+            // 必填，总金额，取值范围为[0.01,100000000.00]
+            payinfo.put("total_fee", "\"" + ConvertUtil.toString(order.getAmount()) + "\"");
+            // 必填，商品详情
+            payinfo.put("body", "\"" + car.getCarName() + "\"");
             // 可选，未付款交易的超时时间
-//                    payinfo.put("it_b_pay", "\"30m\"");
+//            payinfo.put("it_b_pay", "\"3d\"");
 
             String orderInfo = AlipayCore.createLinkString(payinfo);
 
@@ -153,23 +153,12 @@ public class AlipayController extends BaseController {
         }
     }
 
-
-
-    @RequestMapping(value = {"/alipay/query"})
-    public void query(){
-        String key = getKey(this.getParameter("type"));
-        if(StringUtil.isNotNullOrEmpty(key)){
-            this.writeText(key);
-        }
-    }
-
     public String getKey(String type){
         String key = null;
         if(type.equals("private")){
             key = AlipayConfig.private_key;
             if(StringUtil.isNullOrEmpty(key)){
-                String path = "WEB-INF/classes/alipaykey/rsa_private_key.pem";
-                path = "D:\\Projects\\Java\\LianChe\\src\\main\\webapp\\WEB-INF\\classes\\alipaykey\\rsa_private_key.pem";
+                String path = System.getProperty("user.dir") + "\\WEB-INF\\classes\\alipaykey\\pkcs8_rsa_private_key.pem";
                 key = FileUtil.readFile(path);
                 AlipayConfig.private_key = key;
             }
@@ -177,8 +166,7 @@ public class AlipayController extends BaseController {
         else if(type.equals("public")){
             key = AlipayConfig.public_key;
             if(StringUtil.isNullOrEmpty(key)){
-                String path = "WEB-INF/classes/alipaykey/rsa_public_key.pem";
-                path = "D:\\Projects\\Java\\LianChe\\src\\main\\webapp\\WEB-INF\\classes\\alipaykey\\rsa_public_key.pem";
+                String path = System.getProperty("user.dir") + "\\WEB-INF\\classes\\alipaykey\\rsa_public_key.pem";
                 key = FileUtil.readFile(path);
                 AlipayConfig.public_key = key;
             }

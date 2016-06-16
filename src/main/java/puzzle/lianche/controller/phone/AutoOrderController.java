@@ -42,14 +42,9 @@ public class AutoOrderController extends BaseController {
     public Result cancel(AutoOrder order){
         Result result = new Result();
         try{
-            if(order == null){
+            if(order == null || ((order.getOrderId() == null && order.getOrderId() <= 0) && StringUtil.isNullOrEmpty(order.getOrderSn()))){
                 result.setCode(-1);
-                result.setMsg("取消订单不能为空!");
-                return result;
-            }
-            if(order.getOrderId() == null || order.getOrderId() <= 0){
-                result.setCode(-1);
-                result.setMsg("取消订单不能为空!");
+                result.setMsg("订单不能为空!");
                 return result;
             }
             if(order.getBuyerId() == null || order.getBuyerId() <= 0){
@@ -58,20 +53,18 @@ public class AutoOrderController extends BaseController {
                 return result;
             }
             int buyerId = order.getBuyerId();
-            int sellerId = order.getSellerId();
-            order = autoOrderService.query(order.getOrderId(), null);
+            order = autoOrderService.query(order.getOrderId(), order.getOrderSn());
             if(order == null){
                 result.setCode(-1);
-                result.setMsg("取消订单不能为空!");
+                result.setMsg("订单不存在!");
                 return result;
             }
-            if(order.getBuyerId() != buyerId && sellerId != order.getSellerId()){
+            if(order.getBuyerId() != buyerId){
                 result.setCode(-1);
                 result.setMsg("您没有取消该订单的权限!");
                 return result;
             }
-            if(order.getOrderStatus() != Constants.OS_SUBMIT && order.getOrderStatus() != Constants.OS_ACCEPT &&
-               order.getOrderStatus() != Constants.OS_EXECUTE){
+            if(order.getOrderStatus() != Constants.OS_SUBMIT){
                 result.setCode(-1);
                 result.setMsg("该订单不能取消！");
                 return result;
