@@ -365,11 +365,8 @@
             <if test="orderStatus != null and orderStatus >0">
                 and ao.order_status = ${orderStatus}
             </if>
-            <if test="startTime != null and startTime > 0">
-                and add_time &gt;= #{startTime}
-            </if>
-            <if test="endTime != null and endTime > 0">
-                and add_time &lt;= #{endTime}
+            <if test="curTime != null and curTime > 0">
+                and #{curTime} &gt;= start_date and #{curTime} &lt;= end_date
             </if>
         </where>
         order by ${sort} ac.refresh_time desc, ac.car_id desc LIMIT 0,10

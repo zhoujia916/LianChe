@@ -64,6 +64,7 @@ public class AutoOrderController extends BaseController {
                 result.setMsg("您没有取消该订单的权限!");
                 return result;
             }
+            //只有买家未处理(接受或取消时)可取消
             if(order.getOrderStatus() != Constants.OS_SUBMIT){
                 result.setCode(-1);
                 result.setMsg("该订单不能取消！");
