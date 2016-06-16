@@ -516,6 +516,7 @@ public class AutoUserController extends BaseController {
         return result;
     }
 
+
     /**
      * 查看我的收藏
      * @param userId
@@ -561,9 +562,9 @@ public class AutoUserController extends BaseController {
                         jsonObject.put("attrValue","珍珠白");
                         map.clear();
                         map.put("attrCarId",carList.get(i).getCarId());
+                        jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
                         AutoCarAttr carAttr=autoCarAttrService.query(map);
                         if(carAttr!=null){
-                            jsonObject.put("officalPrice",carAttr.getOfficalPrice());
                             jsonObject.put("quoteType",carAttr.getQuoteType());
                             jsonObject.put("quotePrice",carAttr.getSaleAmount());
                         }
@@ -701,7 +702,7 @@ public class AutoUserController extends BaseController {
     }
 
     /**
-     * 查看我的销车
+     * 查看销车
      * @param order
      * @param markId
      * @param carId
@@ -712,7 +713,7 @@ public class AutoUserController extends BaseController {
     public Result carSource(AutoOrder order,Integer markId,Integer carId){
         Result result=new Result();
         try{
-            if(order.getSellerId()==null || order.getSellerId()<=0 || order.getClientStatus()==null){
+            if(order.getSellerId()==null || order.getSellerId()<=0 || order.getClientStatus()==null || order.getClientStatus()<=0){
                 result.setCode(-1);
                 result.setMsg("查看我的销车失败！");
             }else{
@@ -753,10 +754,10 @@ public class AutoUserController extends BaseController {
                 if(markId!=null && markId>0 && carId!=null && carId>0){
                     if(markId==1){
                         String carSql="ac.car_id>"+carId;
-                        map.put("filter",carSql);
+                        map.put("carSql",carSql);
                     }else if(markId==2){
                         String carSql="ac.car_id<"+carId;
-                        map.put("filter",carSql);
+                        map.put("carSql",carSql);
                     }
                 }
                 List<AutoCar> carList = autoCarService.queryOrderList(map);
@@ -777,9 +778,9 @@ public class AutoUserController extends BaseController {
                             }
                             map.clear();
                             map.put("attrCarId",carList.get(i).getCarId());
+                            jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
                             AutoCarAttr carAttr=autoCarAttrService.query(map);
                             if(carAttr!=null){
-                                jsonObject.put("officalPrice",carAttr.getOfficalPrice());
                                 jsonObject.put("quoteType",carAttr.getQuoteType());
                                 jsonObject.put("quotePrice",carAttr.getSaleAmount());
                             }
