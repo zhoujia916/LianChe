@@ -27,17 +27,19 @@
         <result column="model_name" property="modelName"/>
         <result column="user_name" property="userName"/>
         <result column="real_name" property="realName"/>
-        <result column="userStatus" property="userStatus"/>
+        <result column="user_status" property="userStatus"/>
         <result column="pic" property="pic"/>
         <result column="collect_id" property="collectId"/>
-        <result column="addOrderTime" property="addOrderTime"/>
+        <result column="add_order_time" property="addOrderTime"/>
         <result column="collectId" property="collectId"/>
+        <result column="offical_price" property="officalPrice"/>
+        <result column="refresh_time" property="refreshTime"/>
     </resultMap>
 
     <sql id="allColumn">
         car_id, car_name, brand_id, brand_cat_id, brand_model_id, offical_price, quote_type, sale_price_type, sale_amount, shop_price,
         total_number, lock_number, surplus_number, province, city, area, has_parts , parts , parts_price,
-        add_time, add_user_id, start_date, end_date, car_type, status, invoice_type, sort_order, remark
+        add_time, add_user_id, start_date, end_date, car_type, status, invoice_type, sort_order, remark, offical_price, refresh_time
     </sql>
 
     <insert id="insert" parameterType="AutoCar" useGeneratedKeys="true" keyProperty="carId">
@@ -62,7 +64,9 @@
             <if test="status != null">status, </if>
             <if test="invoiceType != null">invoice_type, </if>
             <if test="remark != null">remark, </if>
-            <if test="sortOrder != null">sort_order</if>
+            <if test="sortOrder != null">sort_order,</if>
+            <if test="refreshTime != null">refresh_time,</if>
+            <if test="officalPrice != null">offical_price</if>
         )
         values
         (
@@ -86,7 +90,9 @@
             <if test="status != null">#{status}, </if>
             <if test="invoiceType != null">#{invoiceType}, </if>
             <if test="remark != null">#{remark}, </if>
-            <if test="sortOrder != null">#{sortOrder}</if>
+            <if test="sortOrder != null">#{sortOrder},</if>
+            <if test="refreshTime != null">#{refreshTime},</if>
+            <if test="officalPrice != null">#{officalPrice}</if>
         )
     </insert>
 
@@ -166,7 +172,13 @@
                 status = #{status},
             </if>
             <if test="sortOrder != null">
-                sort_order = #{sortOrder}
+                sort_order = #{sortOrder},
+            </if>
+            <if test="refreshTime != null">
+                refresh_time = #{refreshTime},
+            </if>
+            <if test="officalPrice != null">
+                offical_price = #{officalPrice},
             </if>
             <if test="remark != null">
                 remark = #{remark}
@@ -182,7 +194,7 @@
                 <if test="carId > 0">
                     car_id = #{carId}
                 </if>
-                <if test="carIds!=null and carIds.length>0">
+                <if test="carIds != null and carIds.length > 0">
                     car_id in
                     <foreach collection="carIds" item="carId" open="(" separator="," close=")">
                         #{carId}
@@ -250,7 +262,7 @@
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoCar">
-        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as user_status
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
         left join auto_user_profile as aup on aup.user_id=ac.add_user_id

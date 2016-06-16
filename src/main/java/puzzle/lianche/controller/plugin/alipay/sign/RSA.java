@@ -1,6 +1,9 @@
 
 package puzzle.lianche.controller.plugin.alipay.sign;
 
+import com.thoughtworks.xstream.core.util.Base64Encoder;
+import sun.misc.BASE64Decoder;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -26,17 +29,22 @@ public class RSA{
 	public static String sign(String content, String privateKey, String input_charset){
         try 
         {
-        	PKCS8EncodedKeySpec priPKCS8 	= new PKCS8EncodedKeySpec( Base64.decode(privateKey) ); 
+//            BASE64Decoder decoder = new BASE64Decoder();
+//            PKCS8EncodedKeySpec priPKCS8 	= new PKCS8EncodedKeySpec( decoder.decodeBuffer(privateKey) );
+            //这里支付宝的Base64 加解密方法有点问题
+            PKCS8EncodedKeySpec priPKCS8 	= new PKCS8EncodedKeySpec( Base64.decode(privateKey) );
         	KeyFactory keyf 				= KeyFactory.getInstance("RSA");
         	PrivateKey priKey 				= keyf.generatePrivate(priPKCS8);
 
-            java.security.Signature signature = java.security.Signature
-                .getInstance(SIGN_ALGORITHMS);
+            java.security.Signature signature = java.security.Signature.getInstance(SIGN_ALGORITHMS);
 
             signature.initSign(priKey);
             signature.update( content.getBytes(input_charset) );
 
             byte[] signed = signature.sign();
+
+//            Base64Encoder encoder = new Base64Encoder();
+//            return encoder.encode(signed).replaceAll("\\s", "");
             
             return Base64.encode(signed);
         }

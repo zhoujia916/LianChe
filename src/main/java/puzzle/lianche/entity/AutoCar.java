@@ -85,6 +85,16 @@ public class AutoCar implements Serializable{
     private String remark;
     private Long refreshTime;
 
+    public Double getOfficalPrice() {
+        return officalPrice;
+    }
+
+    public void setOfficalPrice(Double officalPrice) {
+        this.officalPrice = officalPrice;
+    }
+
+    private Double officalPrice;
+
 
     public Long getRefreshTime() {
         return refreshTime;
