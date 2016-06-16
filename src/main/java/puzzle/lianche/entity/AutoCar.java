@@ -54,7 +54,6 @@ public class AutoCar implements Serializable{
     private Integer brandCatId;
     @Column(name="brand_model_id", nullable=true)
     private Integer brandModelId;
-    private Double officalPrice;
     @Column(name="province", nullable=true)
     private Integer province;
     @Column(name="city", nullable=true)
@@ -92,12 +91,8 @@ public class AutoCar implements Serializable{
     public void setOfficalPrice(Double officalPrice) {
         this.officalPrice = officalPrice;
     }
-<<<<<<< HEAD
-=======
 
     private Double officalPrice;
-
->>>>>>> 54507b0368b0adc9f51c8af46227bab8a1a5b1e4
 
     public Long getRefreshTime() {
         return refreshTime;

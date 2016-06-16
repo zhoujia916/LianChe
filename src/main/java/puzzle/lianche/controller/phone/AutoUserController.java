@@ -533,7 +533,11 @@ public class AutoUserController extends BaseController {
                 result.setCode(-1);
                 result.setMsg("参数错误！");
             }else{
+                Page page=new Page();
+                page.setPageSize(10);
                 Map<String, Object> map=new HashMap<String, Object>();
+                map.put("userId",userId);
+                map.put("curTime",System.currentTimeMillis());
                 if(markId!=null && markId>0 && collectId!=null && collectId>0){
                     if(markId==1){
                         String collectSql="act.collect_id>"+collectId;
@@ -543,8 +547,7 @@ public class AutoUserController extends BaseController {
                         map.put("collectSql",collectSql);
                     }
                 }
-                map.put("userId",userId);
-                List<AutoCar> carList=autoCarService.queryUserCollect(map);
+                List<AutoCar> carList=autoCarService.queryUserCollect(map,page);
                 if(carList!=null && carList.size()>0){
                     JSONArray array=new JSONArray();
                     for(int i=0;i<carList.size();i++){
@@ -696,7 +699,7 @@ public class AutoUserController extends BaseController {
         }catch(Exception e){
             result.setCode(1);
             result.setMsg("查看消息详细信息出错！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(result.getMsg() + e.getMessage());
         }
         return result;
     }
@@ -713,12 +716,15 @@ public class AutoUserController extends BaseController {
     public Result carSource(AutoOrder order,Integer markId,Integer carId){
         Result result=new Result();
         try{
-            if(order.getSellerId()==null || order.getSellerId()<=0 || order.getClientStatus()==null || order.getClientStatus()<=0){
+            if(order.getSellerId()==null || order.getSellerId()<=0 || order.getClientStatus()==null){
                 result.setCode(-1);
                 result.setMsg("查看我的销车失败！");
             }else{
+                Page page=new Page();
+                page.setPageSize(10);
                 Map<String, Object> map=new HashMap<String, Object>();
                 map.put("userId",order.getSellerId());
+                map.put("curTime",System.currentTimeMillis());
                 if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
                     String sql = " ao.order_id is null"
                             + " or (ao.order_status = " + Constants.OS_SUBMIT
@@ -760,7 +766,7 @@ public class AutoUserController extends BaseController {
                         map.put("carSql",carSql);
                     }
                 }
-                List<AutoCar> carList = autoCarService.queryOrderList(map);
+                List<AutoCar> carList = autoCarService.queryOrderList(map,page);
                 if(carList!=null && carList.size()>0){
                     if(carList!=null && carList.size()>0){
                         JSONArray array=new JSONArray();
@@ -777,7 +783,7 @@ public class AutoUserController extends BaseController {
                                 jsonObject.put("pic",carPic.getPath());
                             }
                             map.clear();
-                            map.put("attrCarId",carList.get(i).getCarId());
+                            map.put("attrCarId", carList.get(i).getCarId());
                             jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
                             AutoCarAttr carAttr=autoCarAttrService.query(map);
                             if(carAttr!=null){
