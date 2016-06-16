@@ -169,9 +169,24 @@ public class AutoCarController extends BaseController {
                 result.setMsg("品牌不能为空！");
                 return result;
             }
+            map.put("brandId", car.getBrandId());
+            AutoBrand brand = autoBrandService.query(map);
+            if(brand == null){
+                result.setCode(-1);
+                result.setMsg("不存在该品牌！");
+                return result;
+            }
             if(car.getBrandCatId() == null || car.getBrandCatId() == 0){
                 result.setCode(-1);
                 result.setMsg("车系不能为空！");
+                return result;
+            }
+            map.clear();
+            map.put("catId", car.getBrandCatId());
+            AutoBrandCat cat = autoBrandCatService.query(map);
+            if(cat == null){
+                result.setCode(-1);
+                result.setMsg("不存在该车系！");
                 return result;
             }
             if(car.getBrandModelId() == null || car.getBrandModelId() == 0){
@@ -179,10 +194,8 @@ public class AutoCarController extends BaseController {
                 result.setMsg("车型不能为空！");
                 return result;
             }
-            map.put("brandId", car.getBrandId());
-            map.put("catId", car.getBrandCatId());
+            map.clear();
             map.put("modelId", car.getBrandModelId());
-
             AutoBrandModel model = autoBrandModelService.query(map);
             if(model == null){
                 result.setCode(-1);
@@ -220,19 +233,14 @@ public class AutoCarController extends BaseController {
                 return result;
             }
             //endregion
-
             //region Init Attr Info
             car.setCarName(model.getBrandName() + model.getCatName() + model.getModelName());
-
             car.setAddTime(ConvertUtil.toLong(new Date()));
-
+            car.setRefreshTime(ConvertUtil.toLong(new Date()));
             car.setStartDate(ConvertUtil.toLong(ConvertUtil.toDate(car.getBeginTimeString())));
             car.setEndDate(ConvertUtil.toLong(ConvertUtil.toDate(car.getEndTimeString())));
-
             car.setStatus(Constants.AUTO_CAR_STATUS_ON);
             car.setCarType(Constants.AUTO_CAR_TYPE_COMMON);
-
-
             for(int i = 0; i < car.getAttrs().size(); i++){
                 AutoCarAttr carAttr = car.getAttrs().get(i);
                 car.getAttrs().get(i).setLockNumber(0);
@@ -254,9 +262,7 @@ public class AutoCarController extends BaseController {
                 }
                 car.getAttrs().get(i).setPrice(price);
             }
-
             car.setSortOrder(0);
-
             //endregion
             if(!autoCarService.insert(car)){
                 result.setCode(1);
