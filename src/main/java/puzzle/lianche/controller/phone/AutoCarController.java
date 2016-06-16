@@ -22,9 +22,6 @@ public class AutoCarController extends BaseController {
     private IAutoUserService autoUserService;
 
     @Autowired
-    private IAutoUserProfileService autoUserProfileService;
-
-    @Autowired
     private IAutoCarService autoCarService;
 
     @Autowired
@@ -78,7 +75,11 @@ public class AutoCarController extends BaseController {
             if(car.getSort() != null && car.getSort() == 1){
                 map.put("sort", "au.points desc,");
             }
+
             map.put("status", Constants.AUTO_CAR_STATUS_ON);
+            map.put("startTime", ConvertUtil.toLong(ConvertUtil.toDate(car.getBeginTimeString())));
+            map.put("endTime", ConvertUtil.toLong(ConvertUtil.toDate(car.getEndTimeString())));
+
             List<AutoCar> list = autoCarService.queryList(map, page);
             if(list != null && list.size() > 0){
 
@@ -88,7 +89,6 @@ public class AutoCarController extends BaseController {
                     object.put("carId", item.getCarId());
                     object.put("carName", item.getCarName());
                     object.put("addTime", ConvertUtil.toString(new Date(item.getAddTime()),Constants.DATE_FORMAT));
-
                     object.put("pic", item.getPic());
 //                    object.put("officalPrice", item.get());
 //                    object.put("quoteType", item.getQuoteType());
