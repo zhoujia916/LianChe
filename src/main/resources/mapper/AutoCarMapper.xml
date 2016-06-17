@@ -34,8 +34,6 @@
         <result column="collect_id" property="collectId"/>
         <result column="add_order_time" property="addOrderTime"/>
         <result column="collectId" property="collectId"/>
-        <result column="offical_price" property="officalPrice"/>
-        <result column="refresh_time" property="refreshTime"/>
     </resultMap>
 
     <sql id="allColumn">
@@ -67,9 +65,7 @@
             <if test="status != null">status, </if>
             <if test="invoiceType != null">invoice_type, </if>
             <if test="remark != null">remark, </if>
-            <if test="sortOrder != null">sort_order,</if>
-            <if test="refreshTime != null">refresh_time,</if>
-            <if test="officalPrice != null">offical_price</if>
+            <if test="sortOrder != null">sort_order</if>
         )
         values
         (
@@ -94,9 +90,7 @@
             <if test="status != null">#{status}, </if>
             <if test="invoiceType != null">#{invoiceType}, </if>
             <if test="remark != null">#{remark}, </if>
-            <if test="sortOrder != null">#{sortOrder},</if>
-            <if test="refreshTime != null">#{refreshTime},</if>
-            <if test="officalPrice != null">#{officalPrice}</if>
+            <if test="sortOrder != null">#{sortOrder}</if>
         )
     </insert>
 
@@ -159,12 +153,6 @@
             </if>
             <if test="sortOrder != null">
                 sort_order = #{sortOrder},
-            </if>
-            <if test="refreshTime != null">
-                refresh_time = #{refreshTime},
-            </if>
-            <if test="officalPrice != null">
-                offical_price = #{officalPrice},
             </if>
             <if test="remark != null">
                 remark = #{remark}
@@ -265,7 +253,7 @@
             <if test="brandId != null and brandId > 0">
                 and ac.brand_id = #{brandId}
             </if>
-            <if test="brandIds != null and brands != ''">
+            <if test="brandIds != null and brandIds != ''">
                 and ac.brand_id in (${brandIds})
             </if>
             <if test="startPrice != null and startPrice > 0">
@@ -289,6 +277,12 @@
             <if test="addUserId > 0">
                 and ac.add_user_id = ${addUserId}
             </if>
+            <if test="filter != null and filter != ''">
+                and ${filter}
+            </if>
+            <if test="curTime != null">
+                and #{curTime} &gt;= ac.start_date and #{curTime} &lt;= ac.end_date
+            </if>
         </where>
         order by ${sort} ac.add_time desc, ac.car_id desc
     </select>
@@ -308,9 +302,6 @@
             </if>
             <if test="collectSql != null and collectSql !=''">
                 and ${collectSql}
-            </if>
-            <if test="curTime !=null">
-                and #{curTime} &gt;= ac.start_date and #{curTime} &lt;= ac.end_date
             </if>
         </where>
         order by act.add_time desc,act.collect_id desc

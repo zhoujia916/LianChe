@@ -35,4 +35,6 @@ public interface IAutoOrderService{
     public boolean doNotify(AutoOrder order);
 
     public boolean doDeposit(AutoOrder order);
+
+    public List<AutoOrder> queryOrder(Map<String, Object> map,Page page);
 }

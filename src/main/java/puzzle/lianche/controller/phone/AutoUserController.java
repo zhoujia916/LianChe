@@ -537,7 +537,6 @@ public class AutoUserController extends BaseController {
                 page.setPageSize(10);
                 Map<String, Object> map=new HashMap<String, Object>();
                 map.put("userId",userId);
-                map.put("curTime",System.currentTimeMillis());
                 if(markId!=null && markId>0 && collectId!=null && collectId>0){
                     if(markId==1){
                         String collectSql="act.collect_id>"+collectId;

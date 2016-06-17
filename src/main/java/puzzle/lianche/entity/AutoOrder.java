@@ -230,5 +230,58 @@ public class AutoOrder implements Serializable{
 
     private Integer clientStatus;
 
+    private String carName;
+    private String sellerName;
+    private String sellerRealName;
+    private String buyerName;
+    private String buyerRealName;
+    private Integer price;
 
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public String getCarName() {
+        return carName;
+    }
+
+    public void setCarName(String carName) {
+        this.carName = carName;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
+
+    public String getSellerRealName() {
+        return sellerRealName;
+    }
+
+    public void setSellerRealName(String sellerRealName) {
+        this.sellerRealName = sellerRealName;
+    }
+
+    public String getBuyerName() {
+        return buyerName;
+    }
+
+    public void setBuyerName(String buyerName) {
+        this.buyerName = buyerName;
+    }
+
+    public String getBuyerRealName() {
+        return buyerRealName;
+    }
+
+    public void setBuyerRealName(String buyerRealName) {
+        this.buyerRealName = buyerRealName;
+    }
 }

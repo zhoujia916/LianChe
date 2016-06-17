@@ -46,11 +46,11 @@ public class AutoCarServiceImpl implements IAutoCarService {
 	public boolean insert(AutoCar entity){
         try {
             if (sqlMapper.insert("AutoCarMapper.insert", entity)) {
-                if (entity.getAttrs() != null && entity.getAttrs().size() > 0) {
-                    for (int i = 0; i < entity.getAttrs().size(); i++) {
-                        entity.getAttrs().get(i).setCarId(entity.getCarId());
+                if (entity.getAttr() != null && entity.getAttr().size() > 0) {
+                    for (int i = 0; i < entity.getAttr().size(); i++) {
+                        entity.getAttr().get(i).setCarId(entity.getCarId());
                     }
-                    autoCarAttrService.insertBatch(entity.getAttrs());
+                    autoCarAttrService.insertBatch(entity.getAttr());
                 }
                 if(entity.getPics() != null && entity.getPics().size() > 0){
                     for (int i = 0; i < entity.getPics().size(); i++) {

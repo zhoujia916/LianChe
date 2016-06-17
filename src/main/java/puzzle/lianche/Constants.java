@@ -264,6 +264,17 @@ public class Constants {
     public static final Integer OS_CANCEL = -2;
     public static final Integer OS_CLOSE = -1;
 
+    public static final  Map<Integer,String> ORDER_STATUS=new HashMap<Integer, String>(){
+        {
+            put(1,"买家已提交");
+            put(2,"卖家已同意");
+            put(3,"卖家不同意");
+            put(4,"交易中");
+            put(-2,"交易成功");
+            put(-1,"交易取消");
+        }
+    };
+
     /**
      * 支付状态(等待买家支付订金,买家已支付订金,等待卖家支付订金,卖家已支付订金,等待系统退还订金,系统已退还订金)
      */
@@ -274,11 +285,29 @@ public class Constants {
     public static final Integer PS_WAIT_RETURN_DEPOSIT = 5;
     public static final Integer PS_SYSTEM_RETURN_DEPOSIT = 6;
 
+    public static final Map<Integer, String> PAY_STATUS=new HashMap<Integer, String>(){
+        {
+            put(1,"等待买家支付订金");
+            put(2,"买家已支付订金");
+            put(3,"等待卖家支付订金");
+            put(4,"卖家已支付订金");
+            put(5,"等待系统退还订金");
+            put(6,"系统已退还订金");
+        }
+    };
+
     /**
      * 物流状态(未提车,已提车)
      */
     public static final Integer SS_UNSHIP = 1;
     public static final Integer SS_SHIPED = 2;
+
+    public static final Map<Integer, String> SHIP_STATUS=new HashMap<Integer, String>(){
+        {
+            put(1,"未提车");
+            put(2,"已提车");
+        }
+    };
 
     /**
      * 客户端状态(未支付订金,已支付订金,已成交,已取消)
@@ -384,6 +413,8 @@ public class Constants {
         public static final String ADMIN_ATTR = "admin/attr/index";
 
         public static final String ADMIN_SMS = "admin/sms/index";
+
+        public static final String ADMIN_ORDER = "admin/order/index";
     }
 
     public class PageHelper{
