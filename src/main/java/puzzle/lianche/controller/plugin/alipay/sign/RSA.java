@@ -1,9 +1,6 @@
 
 package puzzle.lianche.controller.plugin.alipay.sign;
 
-import com.thoughtworks.xstream.core.util.Base64Encoder;
-import sun.misc.BASE64Decoder;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

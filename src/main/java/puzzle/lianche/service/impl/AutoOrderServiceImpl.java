@@ -287,6 +287,11 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         return false;
     }
 
+    @Override
+    public List<AutoOrder> queryOrder(Map<String, Object> map, Page page) {
+        return sqlMapper.queryList("AutoOrderMapper.queryOrder",map,page);
+    }
+
     /**
      * 退还支付订金
      * @param order

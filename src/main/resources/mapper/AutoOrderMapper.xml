@@ -18,6 +18,12 @@
         <result column="amount" property="amount" />
         <result column="remark" property="remark" />
         <result column="add_time" property="addTime" />
+        <result column="carName" property="carName"/>
+        <result column="price" property="price"/>
+        <result column="sellerName" property="sellerName"/>
+        <result column="sellerRealName" property="sellerRealName"/>
+        <result column="buyerName" property="buyerName"/>
+        <result column="buyerRealName" property="buyerRealName"/>
     </resultMap>
 
     <sql id="allColumn">
@@ -187,6 +193,19 @@
                 </if>
 	        </trim>
         </where>
+    </select>
+
+    <select id="queryOrder" parameterType="Map" resultMap="AutoOrder">
+        select ao.*,ac.car_name as carName,aca.price as price,
+        (select au.user_name from auto_user as au where ao.seller_id=au.user_id) as sellerName,
+        (select aup.real_name from auto_user_profile as aup where ao.seller_id=aup.user_id) as sellerRealName,
+        (select au.user_name from auto_user as au where ao.buyer_id=au.user_id) as buyerName,
+        (select aup.real_name from auto_user_profile as aup where ao.buyer_id=aup.user_id) as buyerRealName
+        from auto_order as ao
+        inner join auto_order_car as aoc on ao.order_id=aoc.order_id
+        inner join auto_car as ac on aoc.car_id=ac.car_id
+        inner join auto_car_attr as aca on ac.car_id=aca.car_id
+        order by ao.add_time desc,ao.order_id desc
     </select>
 
 </mapper>

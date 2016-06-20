@@ -57,11 +57,13 @@ public class FeedBackController extends ModuleController {
                 JSONArray array=new JSONArray();
                 for(AutoFeedback feedback:list){
                     JSONObject jsonObject=JSONObject.fromObject(feedback);
-                    String[] pic=feedback.getPic().split(",");
-                    for(int i=0;i<pic.length;i++){
-                        stringBuffer.append("<img style='width: 30px;height: 30px;' src='"+pic[i]+"'/>");
-                        if(pic.length-i>1){
-                            stringBuffer.append("&nbsp;&nbsp;");
+                    if(feedback.getPic()!=null) {
+                        String[] pic = feedback.getPic().split(",");
+                        for (int i = 0; i < pic.length; i++) {
+                            stringBuffer.append("<img style='width: 30px;height: 30px;' src='" + pic[i] + "'/>");
+                            if (pic.length - i > 1) {
+                                stringBuffer.append("&nbsp;&nbsp;");
+                            }
                         }
                     }
                     jsonObject.put("pic", stringBuffer.toString());

@@ -21,7 +21,7 @@ public interface IAutoCarService{
 
     public List<AutoCar> queryList(Map<String, Object> map, Page page);
 
-    public List<AutoCar> queryUserCollect(Map<String, Object> map);
+    public List<AutoCar> queryUserCollect(Map<String, Object> map,Page page);
 
-    public List<AutoCar> queryOrderList(Map<String, Object> map);
+    public List<AutoCar> queryOrderList(Map<String, Object> map,Page page);
 }

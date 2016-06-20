@@ -27,7 +27,6 @@ public class AutoCar implements Serializable{
         sb.append(", brandId=").append(brandId);
         sb.append(", brandCatId=").append(brandCatId);
         sb.append(", brandModelId=").append(brandModelId);
-
         sb.append(", province=").append(province);
         sb.append(", city=").append(city);
         sb.append(", area=").append(area);
@@ -94,7 +93,6 @@ public class AutoCar implements Serializable{
     }
 
     private Double officalPrice;
-
 
     public Long getRefreshTime() {
         return refreshTime;
@@ -270,6 +268,69 @@ public class AutoCar implements Serializable{
     private String endTimeString;
     private Integer userStatus;
     private Long addOrderTime;
+    private String outsideColor;
+    private String insideColor;
+    private String quoteType;
+    private String salePriceType;
+    private String saleAmount;
+    private String totalNumber;
+    private String path;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getOutsideColor() {
+        return outsideColor;
+    }
+
+    public void setOutsideColor(String outsideColor) {
+        this.outsideColor = outsideColor;
+    }
+
+    public String getInsideColor() {
+        return insideColor;
+    }
+
+    public void setInsideColor(String insideColor) {
+        this.insideColor = insideColor;
+    }
+
+    public String getQuoteType() {
+        return quoteType;
+    }
+
+    public void setQuoteType(String quoteType) {
+        this.quoteType = quoteType;
+    }
+
+    public String getSalePriceType() {
+        return salePriceType;
+    }
+
+    public void setSalePriceType(String salePriceType) {
+        this.salePriceType = salePriceType;
+    }
+
+    public String getSaleAmount() {
+        return saleAmount;
+    }
+
+    public void setSaleAmount(String saleAmount) {
+        this.saleAmount = saleAmount;
+    }
+
+    public String getTotalNumber() {
+        return totalNumber;
+    }
+
+    public void setTotalNumber(String totalNumber) {
+        this.totalNumber = totalNumber;
+    }
 
     public Long getAddOrderTime() {
         return addOrderTime;
@@ -397,7 +458,7 @@ public class AutoCar implements Serializable{
         return sort;
     }
 
-    public void setSort(int sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
     }
 
@@ -448,13 +509,13 @@ public class AutoCar implements Serializable{
         this.startPrice = startPrice;
     }
 
-    public List<AutoCarAttr> getAttrs() {
-        return attrs;
+    public List<AutoCarAttr> getAttr() {
+        return attr;
     }
 
-    public void setAttrs(List<AutoCarAttr> attrs) {
-        this.attrs = attrs;
+    public void setAttr(List<AutoCarAttr> attr) {
+        this.attr = attr;
     }
 
-    private List<AutoCarAttr> attrs;
+    private List<AutoCarAttr> attr;
 }

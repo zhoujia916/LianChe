@@ -47,21 +47,18 @@ public class AutoCarController extends BaseController {
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Result list(AutoCar car){
+    public Result list(AutoCar car,Integer markId){
         Result result = new Result();
-        Map<String, Object> map = new HashMap<String, Object>();
         try{
             Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(this.getParameter("pageIndex")));
-            page.setPageSize(ConvertUtil.toInt(this.getParameter("pageSize")));
+            page.setPageSize(10);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("curTime",System.currentTimeMillis());
             if(StringUtil.isNotNullOrEmpty(car.getCarName())){
                 map.put("carName", car.getCarName());
             }
             if(car.getBrandId() != null && car.getBrandId()> 0){
                 map.put("brandId", car.getBrandId());
-            }
-            if(StringUtil.isNotNullOrEmpty(car.getBrandIds())){
-                map.put("brandIds", car.getBrandIds());
             }
             if(StringUtil.isNotNullOrEmpty(car.getBrandIds())){
                 map.put("brandIds", car.getBrandIds());
@@ -75,13 +72,20 @@ public class AutoCarController extends BaseController {
             if(car.getSort() != null && car.getSort() == 1){
                 map.put("sort", "au.points desc,");
             }
-
+            if(markId!=null && markId>0 && car.getCarId()!=null && car.getCarId()>0){
+                if(markId==1){
+                    String carSql="ac.car_id>"+car.getCarId();
+                    map.put("filter",carSql);
+                }else if(markId==2){
+                    String carSql="ac.car_id<"+car.getCarId();
+                    map.put("filter",carSql);
+                }
+            }
             map.put("status", Constants.AUTO_CAR_STATUS_ON);
             map.put("curTime", System.currentTimeMillis());
 
             List<AutoCar> list = autoCarService.queryList(map, page);
             if(list != null && list.size() > 0){
-
                 JSONArray array = new JSONArray();
                 for(AutoCar item : list){
                     JSONObject object = new JSONObject();
@@ -132,7 +136,7 @@ public class AutoCarController extends BaseController {
                 }
                 List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
                 if(attrs != null){
-                    car.setAttrs(attrs);
+                    car.setAttr(attrs);
                 }
                 map.clear();
                 map.put("userId", car.getAddUserId());
@@ -165,35 +169,21 @@ public class AutoCarController extends BaseController {
             //region Check Input
             if(car.getBrandId() == null || car.getBrandId() == 0){
                 result.setCode(-1);
-                result.setMsg("品牌不能为空！");
-                return result;
-            }
-            map.put("brandId", car.getBrandId());
-            AutoBrand brand = autoBrandService.query(map);
-            if(brand == null){
-                result.setCode(-1);
-                result.setMsg("不存在该品牌！");
+                result.setMsg("请选择车型相关信息！");
                 return result;
             }
             if(car.getBrandCatId() == null || car.getBrandCatId() == 0){
                 result.setCode(-1);
-                result.setMsg("车系不能为空！");
-                return result;
-            }
-            map.clear();
-            map.put("catId", car.getBrandCatId());
-            AutoBrandCat cat = autoBrandCatService.query(map);
-            if(cat == null){
-                result.setCode(-1);
-                result.setMsg("不存在该车系！");
+                result.setMsg("请选择车型相关信息！");
                 return result;
             }
             if(car.getBrandModelId() == null || car.getBrandModelId() == 0){
                 result.setCode(-1);
-                result.setMsg("车型不能为空！");
+                result.setMsg("请选择车型相关信息！");
                 return result;
             }
-            map.clear();
+            map.put("brandId", car.getBrandId());
+            map.put("catId", car.getBrandCatId());
             map.put("modelId", car.getBrandModelId());
             AutoBrandModel model = autoBrandModelService.query(map);
             if(model == null){
@@ -201,7 +191,7 @@ public class AutoCarController extends BaseController {
                 result.setMsg("请选择车型相关信息！");
                 return result;
             }
-            if(car.getAttrs() == null || car.getAttrs().isEmpty()){
+            if(car.getAttr() == null || car.getAttr().isEmpty()){
                 result.setCode(-1);
                 result.setMsg("请输入正确的配置信息！");
                 return result;
@@ -240,11 +230,11 @@ public class AutoCarController extends BaseController {
             car.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(car.getEndTimeString() + " 23:59:59")));
             car.setStatus(Constants.AUTO_CAR_STATUS_ON);
             car.setCarType(Constants.AUTO_CAR_TYPE_COMMON);
-            for(int i = 0; i < car.getAttrs().size(); i++){
-                AutoCarAttr carAttr = car.getAttrs().get(i);
-                car.getAttrs().get(i).setLockNumber(0);
-                car.getAttrs().get(i).setSurplusNumber(carAttr.getTotalNumber());
-                double price = carAttr.getOfficalPrice();
+            for(int i = 0; i < car.getAttr().size(); i++){
+                AutoCarAttr carAttr = car.getAttr().get(i);
+                car.getAttr().get(i).setLockNumber(0);
+                car.getAttr().get(i).setSurplusNumber(carAttr.getTotalNumber());
+                double price = car.getOfficalPrice();
                 if(carAttr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP) {
                     if (carAttr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY) {
                         price += carAttr.getSaleAmount();
@@ -259,7 +249,7 @@ public class AutoCarController extends BaseController {
                         price -= price * carAttr.getSaleAmount() / 100;
                     }
                 }
-                car.getAttrs().get(i).setPrice(price);
+                car.getAttr().get(i).setPrice(price);
             }
             car.setSortOrder(0);
             //endregion
@@ -275,5 +265,4 @@ public class AutoCarController extends BaseController {
         }
         return result;
     }
-
 }
