@@ -33,12 +33,6 @@ public class AutoCarServiceImpl implements IAutoCarService {
 
     private static Logger logger = LoggerFactory.getLogger(AutoCarServiceImpl.class);
 
-    public void deleteCarRelated(Map map){
-        autoCarAttrService.delete(map);
-        autoCarPicService.delete(map);
-        autoCarAttrService.delete(map);
-    }
-
 	/**
 	* 插入单条记录
 	*/
@@ -82,7 +76,9 @@ public class AutoCarServiceImpl implements IAutoCarService {
     public boolean delete(Map<String, Object> map){
     	try{
             if(sqlMapper.delete("AutoCarMapper.delete", map)){
-                deleteCarRelated(map);
+                autoCarAttrService.delete(map);
+                autoCarPicService.delete(map);
+                autoCarAttrService.delete(map);
                 return true;
             }
         }catch (Exception e){

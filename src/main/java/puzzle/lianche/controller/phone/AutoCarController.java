@@ -82,8 +82,7 @@ public class AutoCarController extends BaseController {
                 }
             }
             map.put("status", Constants.AUTO_CAR_STATUS_ON);
-            map.put("startTime", ConvertUtil.toLong(ConvertUtil.toDate(car.getBeginTimeString())));
-            map.put("endTime", ConvertUtil.toLong(ConvertUtil.toDate(car.getEndTimeString())));
+            map.put("curTime", System.currentTimeMillis());
 
             List<AutoCar> list = autoCarService.queryList(map, page);
             if(list != null && list.size() > 0){
@@ -258,8 +257,8 @@ public class AutoCarController extends BaseController {
             car.setCarName(model.getBrandName() + model.getCatName() + model.getModelName());
             car.setAddTime(ConvertUtil.toLong(new Date()));
             car.setRefreshTime(ConvertUtil.toLong(new Date()));
-            car.setStartDate(ConvertUtil.toLong(ConvertUtil.toDate(car.getBeginTimeString())));
-            car.setEndDate(ConvertUtil.toLong(ConvertUtil.toDate(car.getEndTimeString())));
+            car.setStartDate(ConvertUtil.toLong(ConvertUtil.toDateTime(car.getBeginTimeString() + " 00:00:00")));
+            car.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(car.getEndTimeString() + " 23:59:59")));
             car.setStatus(Constants.AUTO_CAR_STATUS_ON);
             car.setCarType(Constants.AUTO_CAR_TYPE_COMMON);
             for(int i = 0; i < car.getAttr().size(); i++){

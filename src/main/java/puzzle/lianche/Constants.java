@@ -325,6 +325,12 @@ public class Constants {
     public static final Integer ORDER_USER_BUYER = 1;
     public static final Integer ORDER_USER_SELLER = 2;
 
+    /**
+     * 支付方式(微信支付，支付宝支付)
+     */
+    public static final Integer ORDER_PAYMENT_WXPAY = 1;
+    public static final Integer ORDER_PAYMENT_ALIPAY = 2;
+
     //endregion
 
 
@@ -341,7 +347,6 @@ public class Constants {
 
     public static final Integer AUTO_AUTHORITY_TARGET_TYPE_MENU = 1;
     public static final Integer AUTO_AUTHORITY_TARGET_TYPE_ACTION = 2;
-
 
     public class UrlHelper{
         public static final String RETURN_URL = "ReturnUrl";
