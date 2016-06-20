@@ -36,7 +36,7 @@
         )
         values
         (
-        <if test="carId != null">#{carId}}, </if>
+        <if test="carId != null">#{carId}, </if>
         <if test="outsideColor != null">#{outsideColor}, </if>
         <if test="insideColor != null">#{insideColor}, </if>
         <if test="quoteType != null">#{quoteType}, </if>
@@ -163,9 +163,6 @@
                 </if>
                 <if test="carId > 0">
                     and aca.car_id = #{carId}
-                </if>
-                <if test="carAttrId > 0">
-                    and aca.car_attr_id = #{carAttrId}
                 </if>
             </trim>
         </where>

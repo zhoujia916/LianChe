@@ -1,5 +1,7 @@
 package puzzle.lianche.controller.phone;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,9 @@ public class AutoOrderController extends BaseController {
 
     @Autowired
     private IAutoCarAttrService autoCarAttrService;
+
+    @Autowired
+    private IAutoCarPicService autoCarPicService;
 
     @Autowired
     private IAutoOrderService autoOrderService;
@@ -449,28 +454,22 @@ public class AutoOrderController extends BaseController {
     /**
      * 查询订单列表
      * @param order
+     * @param markId
+     * @param carId
      * @return
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Result list(AutoOrder order, Page page){
+    public Result list(AutoOrder order,Integer markId,Integer carId){
         Result result = new Result();
         Map<String, Object> map = new HashMap<String, Object>();
+        map.put("curTime",System.currentTimeMillis());
+        Page page=new Page();
+        page.setPageSize(10);
         try{
-            if(page == null || page.getPageIndex() < 0 || page.getPageSize() < 0){
+            if(order ==null || (order.getBuyerId() == null || order.getBuyerId() <= 0) && (order.getSellerId() == null || order.getSellerId() <= 0) || order.getClientStatus()==null){
                 result.setCode(-1);
-                result.setMsg("分页参数不能为空！");
-                return result;
-            }
-            if(order == null){
-                result.setCode(-1);
-                result.setMsg("查询参数不能为空！");
-                return result;
-            }
-            if((order.getBuyerId() == null || order.getBuyerId() == 0) &&
-               (order.getSellerId() != null || order.getSellerId() == 0)){
-                result.setCode(-1);
-                result.setMsg("查询用户不能为空！");
+                result.setMsg("参数错误！");
                 return result;
             }
             if(order.getBuyerId() != null && order.getBuyerId() > 0){
@@ -494,7 +493,7 @@ public class AutoOrderController extends BaseController {
                     map.put("orderStatus", Constants.OS_CANCEL);
                 }
             }
-            else if(order.getBuyerId() != null && order.getSellerId() > 0){
+            else if(order.getSellerId() != null && order.getSellerId() > 0){
                 map.put("sellerId", order.getSellerId());
                 if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
                     map.put("orderStatus", Constants.OS_ACCEPT);
@@ -515,10 +514,53 @@ public class AutoOrderController extends BaseController {
                     map.put("orderStatus", Constants.OS_CANCEL);
                 }
             }
-            List<AutoOrder> orders = autoOrderService.queryList(map, page);
-            result.setData(orders);
-            result.setTotal(page.getTotal());
-
+            if(markId!=null && markId>0 && carId!=null && carId>0){
+                if(markId==1){
+                    String carSql="ac.car_id>"+carId;
+                    map.put("carSql",carSql);
+                }else if(markId==2){
+                    String carSql="ac.car_id<"+carId;
+                    map.put("carSql",carSql);
+                }
+            }
+            List<AutoCar> carList = autoCarService.queryOrderList(map, page);
+            if(carList!=null && carList.size()>0){
+                if(carList!=null && carList.size()>0){
+                    JSONArray array=new JSONArray();
+                    for(int i=0;i<carList.size();i++){
+                        JSONObject jsonObject=new JSONObject();
+                        jsonObject.put("carId",carList.get(i).getCarId());
+                        jsonObject.put("carName",carList.get(i).getCarName());
+                        jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
+                        jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
+                        map.clear();
+                        map.put("carPicId", carList.get(i).getCarId());
+                        AutoCarPic carPic=autoCarPicService.query(map);
+                        if(carPic!=null){
+                            jsonObject.put("pic",carPic.getPath());
+                        }
+                        map.clear();
+                        map.put("attrCarId", carList.get(i).getCarId());
+                        AutoCarAttr carAttr=autoCarAttrService.query(map);
+                        if(carAttr!=null){
+                            jsonObject.put("attrValue",carAttr.getOutsideColor());
+                            jsonObject.put("quoteType",carAttr.getQuoteType());
+                            jsonObject.put("quotePrice",carAttr.getSaleAmount());
+                        }
+                        jsonObject.put("status",carList.get(i).getStatus());
+                        if(carList.get(i).getAddOrderTime()!=null) {
+                            jsonObject.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddOrderTime()), "MM-dd HH:mm"));
+                        }
+                        if(carList.get(i).getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                            jsonObject.put("isAuthenticate",true);
+                        }else{
+                            jsonObject.put("isAuthenticate",false);
+                        }
+                        array.add(jsonObject);
+                    }
+                    result.setData(array);
+                }
+            }
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("查询订单列表信息出错！");

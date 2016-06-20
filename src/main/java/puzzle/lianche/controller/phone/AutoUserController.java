@@ -554,19 +554,19 @@ public class AutoUserController extends BaseController {
                         jsonObject.put("collectId",carList.get(i).getCollectId());
                         jsonObject.put("carId",carList.get(i).getCarId());
                         jsonObject.put("carName",carList.get(i).getCarName());
-                        jsonObject.put("titleName",carList.get(i).getCatName());
+                        jsonObject.put("titleName",carList.get(i).getCatName()+carList.get(i).getModelName());
+                        jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
                         map.clear();
                         map.put("carPicId", carList.get(i).getCarId());
                         AutoCarPic carPic=autoCarPicService.query(map);
                         if(carPic!=null){
                             jsonObject.put("pic",carPic.getPath());
                         }
-                        jsonObject.put("attrValue","珍珠白");
                         map.clear();
                         map.put("attrCarId",carList.get(i).getCarId());
-                        jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
                         AutoCarAttr carAttr=autoCarAttrService.query(map);
                         if(carAttr!=null){
+                            jsonObject.put("attrValue",carAttr.getOutsideColor());
                             jsonObject.put("quoteType",carAttr.getQuoteType());
                             jsonObject.put("quotePrice",carAttr.getSaleAmount());
                         }
@@ -717,7 +717,7 @@ public class AutoUserController extends BaseController {
         try{
             if(order.getSellerId()==null || order.getSellerId()<=0 || order.getClientStatus()==null){
                 result.setCode(-1);
-                result.setMsg("查看我的销车失败！");
+                result.setMsg("参数错误！");
             }else{
                 Page page=new Page();
                 page.setPageSize(10);
@@ -771,10 +771,10 @@ public class AutoUserController extends BaseController {
                         JSONArray array=new JSONArray();
                         for(int i=0;i<carList.size();i++){
                             JSONObject jsonObject=new JSONObject();
-                            jsonObject.put("attrValue","珍珠白");
                             jsonObject.put("carId",carList.get(i).getCarId());
                             jsonObject.put("carName",carList.get(i).getCarName());
                             jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
+                            jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
                             map.clear();
                             map.put("carPicId", carList.get(i).getCarId());
                             AutoCarPic carPic=autoCarPicService.query(map);
@@ -783,9 +783,9 @@ public class AutoUserController extends BaseController {
                             }
                             map.clear();
                             map.put("attrCarId", carList.get(i).getCarId());
-                            jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
                             AutoCarAttr carAttr=autoCarAttrService.query(map);
                             if(carAttr!=null){
+                                jsonObject.put("attrValue",carAttr.getOutsideColor());
                                 jsonObject.put("quoteType",carAttr.getQuoteType());
                                 jsonObject.put("quotePrice",carAttr.getSaleAmount());
                             }

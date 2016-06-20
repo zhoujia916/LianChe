@@ -324,8 +324,14 @@
             <if test="sellerId !=null and sellerId > 0">
                 and ao.seller_id = ${sellerId}
             </if>
+            <if test="buyerId !=null and buyerId > 0">
+                and ao.buyer_id = ${buyerId}
+            </if>
             <if test="filter != null and filter != ''">
                 and ${filter}
+            </if>
+            <if test="carSql != null and carSql != ''">
+                and ${carSql}
             </if>
             <if test="orderStatusList != null and orderStatusList !=''">
                 and ao.order_status in (${orderStatusList})
@@ -335,6 +341,9 @@
             </if>
             <if test="shipStatus != null and shipStatus >0">
                 and ao.ship_status = ${shipStatus}
+            </if>
+            <if test="payStatus != null and payStatus >0">
+                and ao.pay_status = ${payStatus}
             </if>
             <if test="orderStatus != null and orderStatus >0">
                 and ao.order_status = ${orderStatus}

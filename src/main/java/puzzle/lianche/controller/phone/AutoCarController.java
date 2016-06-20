@@ -192,10 +192,41 @@ public class AutoCarController extends BaseController {
                 result.setMsg("请选择车型相关信息！");
                 return result;
             }
-            if(car.getAttr() == null || car.getAttr().isEmpty()){
+            if(StringUtil.isNullOrEmpty(car.getOutsideColor())){
                 result.setCode(-1);
-                result.setMsg("请输入正确的配置信息！");
+                result.setMsg("外饰颜色不能为空！");
                 return result;
+            }else if(StringUtil.isNullOrEmpty(car.getInsideColor())){
+                result.setCode(-1);
+                result.setMsg("内饰颜色不能为空！");
+                return result;
+            }else if(StringUtil.isNullOrEmpty(car.getQuoteType())){
+                result.setCode(-1);
+                result.setMsg("优惠量不能为空！");
+                return result;
+            }else if(StringUtil.isNullOrEmpty(car.getTotalNumber())){
+                result.setCode(-1);
+                result.setMsg("总数不能为空！");
+                return result;
+            }else{
+                List<AutoCarAttr> attrList=new ArrayList<AutoCarAttr>();
+                String[] outsideColors=car.getOutsideColor().split("-,-");
+                String[] insideColors=car.getInsideColor().split("-,-");
+                String[] quoteTypes=car.getQuoteType().split("-,-");
+                String[] salePriceTypes=car.getSalePriceType().split("-,-");
+                String[] saleAmounts=car.getSaleAmount().split("-,-");
+                String[] totalNumbers=car.getTotalNumber().split("-,-");
+                for(int i=0;i<outsideColors.length;i++){
+                    AutoCarAttr autoCarAttr=new AutoCarAttr();
+                    autoCarAttr.setOutsideColor(outsideColors[i]);
+                    autoCarAttr.setInsideColor(insideColors[i]);
+                    autoCarAttr.setQuoteType(ConvertUtil.toInt(quoteTypes[i]));
+                    autoCarAttr.setSalePriceType(ConvertUtil.toInt(salePriceTypes[i]));
+                    autoCarAttr.setSaleAmount(ConvertUtil.toDouble(saleAmounts[i]));
+                    autoCarAttr.setTotalNumber(ConvertUtil.toInt(totalNumbers[i]));
+                    attrList.add(autoCarAttr);
+                }
+                car.setAttr(attrList);
             }
             if(StringUtil.isNullOrEmpty(car.getBeginTimeString())){
                 result.setCode(-1);
@@ -256,12 +287,12 @@ public class AutoCarController extends BaseController {
             //endregion
             if(!autoCarService.insert(car)){
                 result.setCode(1);
-                result.setMsg("保存车源信息失败！");
+                result.setMsg("发布车源信息失败！");
             }
 
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("保存车源信息出错!");
+            result.setMsg("发布车源信息出错!");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
