@@ -106,7 +106,7 @@ public class AutoOrderController extends BaseController {
                 return result;
             }
             int buyerId = order.getBuyerId();
-            order = autoOrderService.query(order.getOrderId(), null);
+            order = autoOrderService.query(order.getOrderId(), order.getOrderSn());
             if(order == null){
                 result.setCode(-1);
                 result.setMsg("该订单不存在！");
