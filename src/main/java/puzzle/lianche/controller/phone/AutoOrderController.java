@@ -49,14 +49,14 @@ public class AutoOrderController extends BaseController {
             }
             if(order.getBuyerId() == null || order.getBuyerId() <= 0){
                 result.setCode(-1);
-                result.setMsg("取消订单用户不能为空!");
+                result.setMsg("用户不能为空!");
                 return result;
             }
             int buyerId = order.getBuyerId();
             order = autoOrderService.query(order.getOrderId(), order.getOrderSn());
             if(order == null){
                 result.setCode(-1);
-                result.setMsg("订单不存在!");
+                result.setMsg("该订单不存在!");
                 return result;
             }
             if(order.getBuyerId() != buyerId){
@@ -64,7 +64,7 @@ public class AutoOrderController extends BaseController {
                 result.setMsg("您没有取消该订单的权限!");
                 return result;
             }
-            //只有买家未处理(接受或取消时)可取消
+            //只有卖家未处理(接受或取消时)可取消
             if(order.getOrderStatus() != Constants.OS_SUBMIT){
                 result.setCode(-1);
                 result.setMsg("该订单不能取消！");
@@ -183,7 +183,7 @@ public class AutoOrderController extends BaseController {
     }
 
     /**
-     * 卖家同意订单(支付订金)
+     * 卖家同意订单(已支付订金)
      * @param order
      * @return
      */
@@ -350,7 +350,7 @@ public class AutoOrderController extends BaseController {
                 result.setMsg("订单数据不能为空！");
                 return result;
             }
-            if(order.getCars() == null || order.getCars().size() <= 0){
+            if(order.getCar() == null){
                 result.setCode(-1);
                 result.setMsg("车源不能为空！");
                 return result;
@@ -361,7 +361,7 @@ public class AutoOrderController extends BaseController {
                 return result;
             }
 
-            AutoOrderCar orderCar = order.getCars().get(0);
+            AutoOrderCar orderCar = order.getCar();
 
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("carId", orderCar.getCarId());
@@ -372,7 +372,7 @@ public class AutoOrderController extends BaseController {
                 return result;
             }
 
-            if(StringUtil.isNullOrEmpty(orderCar.getCarAttrId()) || StringUtil.isNullOrEmpty(orderCar.getCarAttr())){
+            if(StringUtil.isNullOrEmpty(orderCar.getCarAttrId())){
                 result.setCode(-1);
                 result.setMsg("请选择外观和内饰！");
                 return result;
@@ -380,40 +380,37 @@ public class AutoOrderController extends BaseController {
 
             map.clear();
             map.put("carId", orderCar.getCarId());
-            map.put("carAttrIds", orderCar.getCarAttrId());
-            List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
-            if(attrs == null || attrs.size() == 0 || attrs.size() % 6 != 0){
+            map.put("carAttrId", orderCar.getCarAttrId());
+            AutoCarAttr attr = autoCarAttrService.query(map);
+            if(attr == null){
                 result.setCode(-1);
                 result.setMsg("请选择外观和内饰！");
                 return result;
             }
-//            if(orderCar.getCarNumber() == null || orderCar.getCarNumber() <= 0 || orderCar.getCarNumber() >= car.getSurplusNumber()){
-//                result.setCode(-1);
-//                result.setMsg("预订数量不正确！");
-//                return result;
-//            }
+
+
             //region Caculte price
-//            double price = car.getOfficalPrice();
-//            double salePrice = car.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY ?
-//                    car.getSaleAmount() :
-//                    (price * car.getSaleAmount() / 100);
-//            if(car.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP){
-//                price += salePrice;
-//            }
-//            else if(car.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
-//                price -= salePrice;
-//            }
-//            if(orderCar.getHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
-//                price += car.getPartsPrice();
-//            }
-//            price += attrs.get(0).getAttrPrice() + attrs.get(1).getAttrPrice();
+            double price = car.getOfficalPrice();
+            double salePrice = attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY ?
+                               attr.getSaleAmount() :
+                               (price * attr.getSaleAmount() / 100);
+            if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP){
+                price += salePrice;
+            }
+            else if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
+                price -= salePrice;
+            }
+            if(orderCar.getHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
+                price += car.getPartsPrice();
+            }
+
 
             //endregion
-//            if(price != orderCar.getCarPrice()){
-//                result.setCode(-1);
-//                result.setMsg("提交金额不正确！");
-//                return result;
-//            }
+            if(price != orderCar.getCarPrice()){
+                result.setCode(-1);
+                result.setMsg("提交金额不正确！");
+                return result;
+            }
 
             //region Init Order Attr
             order.setOrderSn(autoOrderService.createSn(ConvertUtil.toString(order.getBuyerId())));
@@ -425,13 +422,14 @@ public class AutoOrderController extends BaseController {
             order.setSellerDeposit(0);
             order.setBuyerDeposit(0);
             order.setShipTime(0);
-//            order.setAmount(price * orderCar.getCarNumber());
+            order.setAmount(price * orderCar.getCarNumber());
             order.setAddTime(ConvertUtil.toLong(new Date()));
 
 
-//            orderCar.setCarPrice(price);
+            orderCar.setCarPrice(price);
             orderCar.setSendNumber(0);
             orderCar.setHasParts(Constants.AUTO_CAR_HAS_PARTS_NO);
+            order.setCar(orderCar);
             //endregion
 
             if(!autoOrderService.insert(order)){
@@ -580,7 +578,9 @@ public class AutoOrderController extends BaseController {
                 }
             }
             map.put("orderId", order.getOrderId());
-            order.setCars(autoOrderCarService.queryList(map));
+            AutoOrderCar orderCar = autoOrderCarService.query(map);
+            order.setCar(orderCar);
+            result.setData(order);
         } catch (Exception e) {
             result.setCode(1);
             result.setMsg("查看订单详情信息出错！");

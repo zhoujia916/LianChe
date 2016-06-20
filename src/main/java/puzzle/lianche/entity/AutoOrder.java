@@ -166,15 +166,15 @@ public class AutoOrder implements Serializable{
 	}
 
 
-    public List<AutoOrderCar> getCars() {
-        return cars;
+    public AutoOrderCar getCar() {
+        return car;
     }
 
-    public void setCars(List<AutoOrderCar> cars) {
-        this.cars = cars;
+    public void setCar(AutoOrderCar car) {
+        this.car = car;
     }
 
-    private List<AutoOrderCar> cars;
+    private AutoOrderCar car;
 
     public double getAmount() {
         return amount;

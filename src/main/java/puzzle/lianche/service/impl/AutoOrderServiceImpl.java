@@ -6,15 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import puzzle.lianche.Constants;
-import puzzle.lianche.entity.AutoCar;
-import puzzle.lianche.entity.AutoOrder;
-import puzzle.lianche.entity.AutoOrderCar;
-import puzzle.lianche.entity.AutoUser;
+import puzzle.lianche.entity.*;
 import puzzle.lianche.push.SmsPush;
-import puzzle.lianche.service.IAutoCarService;
-import puzzle.lianche.service.IAutoOrderCarService;
-import puzzle.lianche.service.IAutoOrderService;
-import puzzle.lianche.service.IAutoUserService;
+import puzzle.lianche.service.*;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.EncryptUtil;
 import puzzle.lianche.utils.Page;
@@ -28,7 +22,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
     private IAutoOrderCarService autoOrderCarService;
 
     @Autowired
-    private IAutoCarService autoCarService;
+    private IAutoCarAttrService autoCarAttrService;
 
     @Autowired
     private IAutoUserService autoUserService;
@@ -41,17 +35,19 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         try{
             //插入订单信息
             if(sqlMapper.insert("AutoOrderMapper.insert", entity)){
-                if(entity.getCars() != null && entity.getCars().size() > 0){
+                if(entity.getCar() != null){
                     //插入预定车源
-                    AutoOrderCar orderCar = entity.getCars().get(0);
+                    AutoOrderCar orderCar = entity.getCar();
                     orderCar.setOrderId(entity.getOrderId());
                     autoOrderCarService.insert(orderCar);
 
                     //更新锁定数量
-                    AutoCar car = autoCarService.query(orderCar.getCarId());
-//                    car.setLockNumber(car.getLockNumber() + orderCar.getCarNumber());
-//                    car.setSurplusNumber(car.getTotalNumber() - car.getLockNumber());
-                    autoCarService.update(car);
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("carAttrId", orderCar.getCarAttrId());
+                    AutoCarAttr attr = autoCarAttrService.query(map);
+                    attr.setLockNumber(attr.getLockNumber() + orderCar.getCarNumber());
+                    attr.setSurplusNumber(attr.getTotalNumber() - attr.getLockNumber());
+                    autoCarAttrService.update(attr);
                 }
 
             }
@@ -218,7 +214,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
             // 短信消息通知买家
             AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
 
-            SmsPush.send(SmsPush.CODE_SENDMSG, buyer.getUserName(), "您有一笔订单卖家已接受交易，订单号为-" + order.getOrderSn());
+            SmsPush.send(SmsPush.CODE_SENDMSG, buyer.getUserName(), "您有一笔订单卖家已接受交易，订单号为-" + order.getOrderSn()+ "。");
 
             return true;
         }
@@ -237,13 +233,14 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
     public boolean doReceive(AutoOrder order) {
         try {
             // 更新订单状态
+            order.setOrderStatus(Constants.OS_SUCCESS);
             order.setPayStatus(Constants.PS_WAIT_RETURN_DEPOSIT);
             order.setShipStatus(Constants.SS_SHIPED);
             sqlMapper.update("AutoOrderMapper.update", order);
 
             //短信消息通知卖家
             AutoUser seller = autoUserService.query(order.getSellerId(), null);
-            SmsPush.send(SmsPush.CODE_SENDMSG, seller.getUserName(), "您有一笔订单买家已确认收货，订单号为-" + order.getOrderSn());
+            SmsPush.send(SmsPush.CODE_SENDMSG, seller.getUserName(), "您有一笔订单买家已确认收货，订单号为-" + order.getOrderSn()+ "。");
 
             return true;
         }
@@ -276,9 +273,6 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
     @Override
     public boolean doDeposit(AutoOrder order) {
         try{
-            // 验证支付信息
-            doCheckDeposit(order, Constants.ORDER_USER_BUYER);
-
             // 更新订单状态
             order.setPayStatus(Constants.PS_BUYER_PAY_DEPOSIT);
             sqlMapper.update("AutoOrderMapper.update", order);
@@ -294,7 +288,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
     }
 
     /**
-     * 买家支付订金
+     * 退还支付订金
      * @param order
      * @return
      */
@@ -304,16 +298,20 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
                 return doReturnDeposit(order, Constants.ORDER_USER_BUYER) && doReturnDeposit(order, Constants.ORDER_USER_SELLER);
             } else{
                 if (type == Constants.ORDER_USER_BUYER && order.getBuyerDeposit() > 0) {
-                    // 支付宝 和 微信退款
-                    if(order.getPayMethod() == 1){
+                    if(order.getPayMethod() == Constants.ORDER_PAYMENT_ALIPAY){
 
                     }
-                    else if(order.getPayMethod() == 2){
+                    else if(order.getPayMethod() == Constants.ORDER_PAYMENT_WXPAY){
 
                     }
                 }
                 else if (type == Constants.ORDER_USER_SELLER && order.getSellerDeposit() > 0) {
+                    if(order.getPayMethod() == Constants.ORDER_PAYMENT_ALIPAY){
 
+                    }
+                    else if(order.getPayMethod() == Constants.ORDER_PAYMENT_WXPAY){
+
+                    }
                 }
             }
             return true;
@@ -322,23 +320,5 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
             logger.error(e.getMessage());
         }
         return false;
-    }
-
-    /**
-     * 确认支付订金
-     * @param order
-     * @return
-     */
-    public boolean doCheckDeposit(AutoOrder order, Integer type){
-        if(type == Constants.ORDER_USER_ALL){
-            return doCheckDeposit(order, Constants.ORDER_USER_BUYER) && doCheckDeposit(order, Constants.ORDER_USER_SELLER);
-        }
-        else if(type == Constants.ORDER_USER_BUYER){
-
-        }
-        else if(type == Constants.ORDER_USER_SELLER){
-
-        }
-        return true;
     }
 }

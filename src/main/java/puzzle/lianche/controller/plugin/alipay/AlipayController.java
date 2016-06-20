@@ -112,7 +112,7 @@ public class AlipayController extends BaseController {
             String orderInfo = AlipayCore.createLinkString(payinfo);
 
             // 对订单做RSA 签名(目前缺少private_key)
-            String sign = RSA.sign(orderInfo, getKey("private"), AlipayConfig.input_charset); //支付宝提供的Config.cs
+            String sign = RSA.sign(orderInfo, AlipayConfig.private_key, AlipayConfig.input_charset); //支付宝提供的Config.cs
             //仅需对sign做URL编码
             sign = URLEncoder.encode(sign, "utf-8");
 
@@ -139,39 +139,21 @@ public class AlipayController extends BaseController {
             AutoOrder order = autoOrderService.query(null, orderSn);
             if(order == null)
                 return;
-            if(order.getPayStatus() != Constants.PS_WAIT_BUYER_DEPOSIT &&
-               order.getPayStatus() != Constants.PS_WAIT_SELLER_DEPOSIT){
-                if(order.getAmount() != ConvertUtil.toDouble(totalFee)){
-                    return;
-                }
+            if(order.getAmount() != ConvertUtil.toDouble(totalFee)){
+                return;
+            }
+            if(order.getPayStatus() != Constants.PS_WAIT_BUYER_DEPOSIT){
                 if(autoOrderService.doDeposit(order)) {
+                    this.writeText("success");
+                }
+            }
+            else if(order.getPayStatus() != Constants.PS_WAIT_SELLER_DEPOSIT){
+                if(autoOrderService.doAccept(order)) {
                     this.writeText("success");
                 }
             }
         }
         catch (Exception e){
         }
-    }
-
-    public String getKey(String type){
-        String key = null;
-        if(type.equals("private")){
-            key = AlipayConfig.private_key;
-            if(StringUtil.isNullOrEmpty(key)){
-                String path = System.getProperty("user.dir") + "\\WEB-INF\\classes\\alipaykey\\pkcs8_rsa_private_key.pem";
-                key = FileUtil.readFile(path);
-                AlipayConfig.private_key = key;
-            }
-        }
-        else if(type.equals("public")){
-            key = AlipayConfig.public_key;
-            if(StringUtil.isNullOrEmpty(key)){
-                String path = System.getProperty("user.dir") + "\\WEB-INF\\classes\\alipaykey\\rsa_public_key.pem";
-                key = FileUtil.readFile(path);
-                AlipayConfig.public_key = key;
-            }
-
-        }
-        return key;
     }
 }
