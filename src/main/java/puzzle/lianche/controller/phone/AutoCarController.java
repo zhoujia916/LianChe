@@ -11,7 +11,6 @@ import puzzle.lianche.controller.BaseController;
 import puzzle.lianche.entity.*;
 import puzzle.lianche.service.*;
 import puzzle.lianche.utils.*;
-
 import java.util.*;
 
 @Controller(value = "phoneAutoCarController")
@@ -129,27 +128,27 @@ public class AutoCarController extends BaseController {
             }
 
             car = autoCarService.query(map);
-            if(car != null){
-                List<AutoCarPic> pics = autoCarPicService.queryList(map);
-                if(pics != null){
-                    car.setPics(pics);
-                }
-                List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
-                if(attrs != null){
-                    car.setAttr(attrs);
-                }
-                map.clear();
-                map.put("userId", car.getAddUserId());
-                car.setUser(autoUserService.query(map));
-                result.setData(car);
-            }else{
+            if(car == null){
                 result.setCode(1);
                 result.setMsg("该车源不存在！");
+                return result;
             }
+            List<AutoCarPic> pics = autoCarPicService.queryList(map);
+            if(pics != null){
+                car.setPics(pics);
+            }
+            List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
+            if(attrs != null){
+                car.setAttr(attrs);
+            }
+            map.clear();
+            map.put("userId", car.getAddUserId());
+            car.setUser(autoUserService.query(map));
+            result.setData(car);
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("获取车源详情信息出错");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
         }
         return result;
     }
@@ -207,25 +206,6 @@ public class AutoCarController extends BaseController {
                 result.setCode(-1);
                 result.setMsg("总数不能为空！");
                 return result;
-            }else{
-                List<AutoCarAttr> attrList=new ArrayList<AutoCarAttr>();
-                String[] outsideColors=car.getOutsideColor().split("-,-");
-                String[] insideColors=car.getInsideColor().split("-,-");
-                String[] quoteTypes=car.getQuoteType().split("-,-");
-                String[] salePriceTypes=car.getSalePriceType().split("-,-");
-                String[] saleAmounts=car.getSaleAmount().split("-,-");
-                String[] totalNumbers=car.getTotalNumber().split("-,-");
-                for(int i=0;i<outsideColors.length;i++){
-                    AutoCarAttr autoCarAttr=new AutoCarAttr();
-                    autoCarAttr.setOutsideColor(outsideColors[i]);
-                    autoCarAttr.setInsideColor(insideColors[i]);
-                    autoCarAttr.setQuoteType(ConvertUtil.toInt(quoteTypes[i]));
-                    autoCarAttr.setSalePriceType(ConvertUtil.toInt(salePriceTypes[i]));
-                    autoCarAttr.setSaleAmount(ConvertUtil.toDouble(saleAmounts[i]));
-                    autoCarAttr.setTotalNumber(ConvertUtil.toInt(totalNumbers[i]));
-                    attrList.add(autoCarAttr);
-                }
-                car.setAttr(attrList);
             }
             if(StringUtil.isNullOrEmpty(car.getBeginTimeString())){
                 result.setCode(-1);
@@ -254,9 +234,29 @@ public class AutoCarController extends BaseController {
             }
             //endregion
             //region Init Attr Info
+            //String spliter = "※";
+            List<AutoCarAttr> attrList=new ArrayList<AutoCarAttr>();
+            String[] outsideColors=car.getOutsideColor().split("-,-");
+            String[] insideColors=car.getInsideColor().split("-,-");
+            String[] quoteTypes=car.getQuoteType().split("-,-");
+            String[] salePriceTypes=car.getSalePriceType().split("-,-");
+            String[] saleAmounts=car.getSaleAmount().split("-,-");
+            String[] totalNumbers=car.getTotalNumber().split("-,-");
+            for(int i=0;i<outsideColors.length;i++){
+                AutoCarAttr autoCarAttr=new AutoCarAttr();
+                autoCarAttr.setOutsideColor(outsideColors[i]);
+                autoCarAttr.setInsideColor(insideColors[i]);
+                autoCarAttr.setQuoteType(ConvertUtil.toInt(quoteTypes[i]));
+                autoCarAttr.setSalePriceType(ConvertUtil.toInt(salePriceTypes[i]));
+                autoCarAttr.setSaleAmount(ConvertUtil.toDouble(saleAmounts[i]));
+                autoCarAttr.setTotalNumber(ConvertUtil.toInt(totalNumbers[i]));
+                attrList.add(autoCarAttr);
+            }
+            car.setAttr(attrList);
+
             car.setCarName(model.getBrandName() + model.getCatName() + model.getModelName());
             car.setAddTime(ConvertUtil.toLong(new Date()));
-            car.setRefreshTime(ConvertUtil.toLong(new Date()));
+            car.setRefreshTime(car.getAddTime());
             car.setStartDate(ConvertUtil.toLong(ConvertUtil.toDateTime(car.getBeginTimeString() + " 00:00:00")));
             car.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(car.getEndTimeString() + " 23:59:59")));
             car.setStatus(Constants.AUTO_CAR_STATUS_ON);

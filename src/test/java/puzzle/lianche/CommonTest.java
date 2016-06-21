@@ -1,60 +1,85 @@
 package puzzle.lianche;
 
-import javax.annotation.Resource;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import puzzle.lianche.controller.plugin.wxpay.util.WxPayData;
-import puzzle.lianche.entity.*;
-import puzzle.lianche.mapper.SqlMapper;
-import puzzle.lianche.push.SmsPush;
-import puzzle.lianche.service.*;
-import puzzle.lianche.service.impl.AutoBrandServiceImpl;
-import puzzle.lianche.utils.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
-import org.springframework.util.Assert;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.io.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-*.xml"})
 public class CommonTest {
 
+//    @Test
+//    public void testBase64(){
+//        String imgFile = "C:\\Users\\IBM-Thinkpad\\Desktop\\temp2.jpg";
+//        InputStream in = null;
+//        byte[] data = null;
+//        //读取图片字节数组
+//        try
+//        {
+//            in = new FileInputStream(imgFile);
+//            data = new byte[in.available()];
+//            in.read(data);
+//            in.close();
+//        }
+//        catch (IOException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        //对字节数组Base64编码
+//        BASE64Encoder encoder = new BASE64Encoder();
+//        String base64 = encoder.encode(data);
+////        String base64 = new String(data);
+//        System.out.println(base64);
+//
+//        BASE64Decoder decoder = new BASE64Decoder();
+//        try
+//        {
+//            //Base64解码
+//            byte[] b = decoder.decodeBuffer(base64);
+//            for(int i=0;i<b.length;++i){
+//                if(b[i]<0)
+//                {//调整异常数据
+//                    b[i]+=256;
+//                }
+//            }
+//            //生成jpeg图片
+//            String imgFilePath = "C:\\Users\\IBM-Thinkpad\\Desktop\\temp2(1).jpg";//新生成的图片
+//            OutputStream out = new FileOutputStream(imgFilePath);
+//            out.write(b);
+//            out.flush();
+//            out.close();
+//        }
+//        catch (Exception e)
+//        {
+//        }
+//    }
+
     @Test
-    public void testWxpay(){
-        WxPayData data = new WxPayData();
-        String xml = "<xml>\n" +
-                "   <appid>wx2421b1c4370ec43b</appid>\n" +
-                "   <attach>支付测试</attach>\n" +
-                "   <body>APP支付测试</body>\n" +
-                "   <mch_id>10000100</mch_id>\n" +
-                "   <nonce_str>1add1a30ac87aa2db72f57a2375d8fec</nonce_str>\n" +
-                "   <notify_url>http://wxpay.weixin.qq.com/pub_v2/pay/notify.v2.php</notify_url>\n" +
-                "   <out_trade_no>1415659990</out_trade_no>\n" +
-                "   <spbill_create_ip>14.23.150.211</spbill_create_ip>\n" +
-                "   <total_fee>1</total_fee>\n" +
-                "   <trade_type>APP</trade_type>\n" +
-                "   <sign>0CB01533B8C1EF103065174F50BCA001</sign>\n" +
-                "</xml>";
-        try {
-            data.fromXml(xml);
+    public void test2(){
+        String imgFile = "C:\\Users\\IBM-Thinkpad\\Desktop\\txt.txt";
+        InputStream in = null;
+        byte[] data = null;
+        try
+        {
+            in = new FileInputStream(imgFile);
+            data = new byte[in.available()];
+            in.read(data);
+            in.close();
         }
-        catch (Exception e){
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
-        System.out.println("ok");
+        StringBuffer sb = new StringBuffer(new String(data));
+        int count = sb.length() / 76;
+        for(int i = count; i > 0; i--){
+            sb.insert(i * 76, '\n');
+        }
+        System.out.println(sb.toString());
     }
 }
