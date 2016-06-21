@@ -518,4 +518,24 @@ public class AutoCar implements Serializable{
     }
 
     private List<AutoCarAttr> attr;
+
+    public int getAddUserStatus() {
+        return addUserStatus;
+    }
+
+    public void setAddUserStatus(int addUserStatus) {
+        this.addUserStatus = addUserStatus;
+    }
+
+    private int addUserStatus;
+
+    public int getCollectCount() {
+        return collectCount;
+    }
+
+    public void setCollectCount(int collectCount) {
+        this.collectCount = collectCount;
+    }
+
+    private int collectCount;
 }

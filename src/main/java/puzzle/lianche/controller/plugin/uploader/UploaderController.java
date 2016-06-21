@@ -116,7 +116,7 @@ public class UploaderController extends BaseController {
             if(request.getServerPort() != 80){
                 url += ":" + request.getServerPort();
             }
-            url += relativeUrl + saveName + saveExt;
+            url += relativeUrl + saveName.replace("\\", "/");
 
             result.setData(url);
         } catch (Exception e) {

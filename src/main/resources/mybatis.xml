@@ -37,7 +37,6 @@
         <typeAlias type="puzzle.lianche.entity.AutoArticle" alias="AutoArticle" />
         <typeAlias type="puzzle.lianche.entity.AutoArticleCat" alias="AutoArticleCat" />
         <typeAlias type="puzzle.lianche.entity.AutoArticleTemplate" alias="AutoArticleTemplate" />
-        <typeAlias type="puzzle.lianche.entity.AutoAttr" alias="AutoAttr" />
         <typeAlias type="puzzle.lianche.entity.AutoBrand" alias="AutoBrand" />
         <typeAlias type="puzzle.lianche.entity.AutoBrandCat" alias="AutoBrandCat" />
         <typeAlias type="puzzle.lianche.entity.AutoBrandModel" alias="AutoBrandModel" />
