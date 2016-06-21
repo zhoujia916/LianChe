@@ -144,9 +144,6 @@
             <if test="carAttrId > 0">
                 and car_attr_id = #{carAttrId}
             </if>
-            <if test="attrCarId > 0">
-                and car_id = ${attrCarId} limit 0,1
-            </if>
         </where>
         <if test="sort != null and sort != ''">
             order by ${sort}
@@ -163,6 +160,9 @@
                 </if>
                 <if test="carId > 0">
                     and aca.car_id = #{carId}
+                </if>
+                <if test="attrCarId > 0">
+                    and aca.car_id = #{attrCarId}
                 </if>
             </trim>
         </where>

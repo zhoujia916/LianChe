@@ -70,14 +70,21 @@ public class CarController extends ModuleController {
                     jsonObject.put("brandName",car.getBrandName());
                     jsonObject.put("catName",car.getCatName());
                     jsonObject.put("modelName",car.getModelName());
-                    jsonObject.put("officalPrice",car.getOfficalPrice());
-                    map.clear();
+                    jsonObject.put("officalPrice",car.getOfficalPrice());map.clear();
                     map.put("attrCarId",car.getCarId());
-                    AutoCarAttr carAttr=autoCarAttrService.query(map);
-                    if(carAttr!=null){
-                        jsonObject.put("totalNumber",carAttr.getTotalNumber());
-                        jsonObject.put("lockNumber",carAttr.getLockNumber());
-                        jsonObject.put("surplusNumber",carAttr.getSurplusNumber());
+                    List<AutoCarAttr> attrList=autoCarAttrService.queryList(map);
+                    if(attrList!=null && attrList.size()>0){
+                        int totalNumber=0;
+                        int lockNumber=0;
+                        int surplusNumber=0;
+                        for(AutoCarAttr attrs:attrList){
+                            totalNumber+=attrs.getTotalNumber();
+                            lockNumber+=attrs.getLockNumber();
+                            surplusNumber+=attrs.getSurplusNumber();
+                        }
+                        jsonObject.put("totalNumber",totalNumber);
+                        jsonObject.put("lockNumber",lockNumber);
+                        jsonObject.put("surplusNumber",surplusNumber);
                     }
                     jsonObject.put("userName",car.getUserName());
                     jsonObject.put("realName",car.getRealName());

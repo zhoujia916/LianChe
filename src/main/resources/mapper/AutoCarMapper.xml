@@ -300,9 +300,6 @@
             <if test="userId != null and userId >0">
                 and act.user_id=${userId}
             </if>
-            <if test="collectSql != null and collectSql !=''">
-                and ${collectSql}
-            </if>
         </where>
         order by act.add_time desc,act.collect_id desc
     </select>
@@ -329,9 +326,6 @@
             </if>
             <if test="filter != null and filter != ''">
                 and ${filter}
-            </if>
-            <if test="carSql != null and carSql != ''">
-                and ${carSql}
             </if>
             <if test="orderStatusList != null and orderStatusList !=''">
                 and ao.order_status in (${orderStatusList})

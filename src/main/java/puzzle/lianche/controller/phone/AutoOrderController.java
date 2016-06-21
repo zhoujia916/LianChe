@@ -12,10 +12,7 @@ import puzzle.lianche.entity.*;
 import puzzle.lianche.service.*;
 import puzzle.lianche.utils.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller(value = "phoneAutoOrderController")
 @RequestMapping(value = "/phone/autoorder")
@@ -453,20 +450,17 @@ public class AutoOrderController extends BaseController {
     /**
      * 查询订单列表
      * @param order
-     * @param markId
-     * @param carId
+     * @param page
      * @return
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Result list(AutoOrder order,Integer markId,Integer carId){
+    public Result list(AutoOrder order,Page page){
         Result result = new Result();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("curTime",System.currentTimeMillis());
-        Page page=new Page();
-        page.setPageSize(10);
         try{
-            if(order ==null || (order.getBuyerId() == null || order.getBuyerId() <= 0) && (order.getSellerId() == null || order.getSellerId() <= 0) || order.getClientStatus()==null){
+            if(order ==null || (order.getBuyerId() == null || order.getBuyerId() <= 0) || order.getClientStatus()==null){
                 result.setCode(-1);
                 result.setMsg("参数错误！");
                 return result;
@@ -513,53 +507,43 @@ public class AutoOrderController extends BaseController {
                     map.put("orderStatus", Constants.OS_CANCEL);
                 }
             }
-            if(markId!=null && markId>0 && carId!=null && carId>0){
-                if(markId==1){
-                    String carSql="ac.car_id>"+carId;
-                    map.put("carSql",carSql);
-                }else if(markId==2){
-                    String carSql="ac.car_id<"+carId;
-                    map.put("carSql",carSql);
-                }
-            }
-            List<AutoCar> carList = autoCarService.queryOrderList(map, page);
+            List<AutoCar> carList = autoCarService.queryOrderList(map,page);
             if(carList!=null && carList.size()>0){
-                if(carList!=null && carList.size()>0){
-                    JSONArray array=new JSONArray();
-                    for(int i=0;i<carList.size();i++){
-                        JSONObject jsonObject=new JSONObject();
-                        jsonObject.put("carId",carList.get(i).getCarId());
-                        jsonObject.put("carName",carList.get(i).getCarName());
-                        jsonObject.put("titleName",carList.get(i).getCatName()+" "+carList.get(i).getModelName());
-                        jsonObject.put("officalPrice",carList.get(i).getOfficalPrice());
-                        map.clear();
-                        map.put("carPicId", carList.get(i).getCarId());
-                        AutoCarPic carPic=autoCarPicService.query(map);
-                        if(carPic!=null){
-                            jsonObject.put("pic",carPic.getPath());
-                        }
-                        map.clear();
-                        map.put("attrCarId", carList.get(i).getCarId());
-                        AutoCarAttr carAttr=autoCarAttrService.query(map);
-                        if(carAttr!=null){
-                            jsonObject.put("attrValue",carAttr.getOutsideColor());
-                            jsonObject.put("quoteType",carAttr.getQuoteType());
-                            jsonObject.put("quotePrice",carAttr.getSaleAmount());
-                            jsonObject.put("salePriceType",carAttr.getSalePriceType());
-                        }
-                        jsonObject.put("status",carList.get(i).getStatus());
-                        if(carList.get(i).getAddOrderTime()!=null) {
-                            jsonObject.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddOrderTime()), "MM-dd HH:mm"));
-                        }
-                        if(carList.get(i).getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
-                            jsonObject.put("isAuthenticate",true);
-                        }else{
-                            jsonObject.put("isAuthenticate",false);
-                        }
-                        array.add(jsonObject);
+                JSONArray array=new JSONArray();
+                for(int i=0;i<carList.size();i++){
+                    JSONObject object=new JSONObject();
+                    object.put("collectId",carList.get(i).getCollectId());
+                    object.put("carId",carList.get(i).getCarId());
+                    object.put("carName",carList.get(i).getCarName());
+                    object.put("brandName",carList.get(i).getBrandName());
+                    object.put("catName",carList.get(i).getCatName());
+                    object.put("officalPrice",(carList.get(i).getOfficalPrice()));
+                    map.clear();
+                    map.put("carPicId", carList.get(i).getCarId());
+                    AutoCarPic carPic=autoCarPicService.query(map);
+                    if(carPic!=null){
+                        object.put("pic",carPic.getPath());
                     }
-                    result.setData(array);
+                    map.clear();
+                    map.put("attrCarId",carList.get(i).getCarId());
+                    List<AutoCarAttr> attrList=autoCarAttrService.queryList(map);
+                    if(attrList!=null && attrList.size()>0){
+                        List<AutoCarAttr> carAttrList=new ArrayList<AutoCarAttr>();
+                        for(AutoCarAttr attrs:attrList){
+                            carAttrList.add(attrs);
+                        }
+                        object.put("attrs",carAttrList);
+                    }
+                    object.put("status",carList.get(i).getStatus());
+                    object.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddTime()),"MM-dd HH:mm"));
+                    if(carList.get(i).getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                        object.put("addUserAuth",1);
+                    }else{
+                        object.put("addUserAuth",0);
+                    }
+                    array.add(object);
                 }
+                result.setData(array);
             }
         }catch (Exception e){
             result.setCode(1);
