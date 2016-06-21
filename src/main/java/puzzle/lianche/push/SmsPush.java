@@ -99,8 +99,9 @@ public class SmsPush {
 
     public static boolean isSuccess(String response){
         if(StringUtil.isNotNullOrEmpty(response)){
-            JSONObject json = JSONObject.fromObject(response);
-            return json.get("code").toString().equals(RESULT_OK);
+            return response.contains("<code>2</code>");
+//            JSONObject json = JSONObject.fromObject(response);
+//            return json.get("code").toString().equals(RESULT_OK);
         }
         return false;
     }

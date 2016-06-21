@@ -72,6 +72,9 @@ public class Constants {
         }
     };
 
+    /**
+     * 0=无效  1=注册或添加   2=等待审核  3=审核通过  4=审核未通过
+     */
     public static final Integer AUTO_USER_STATUS_DISABLED = 0;
     public static final Integer AUTO_USER_STATUS_REGISTERORADD = 1;
     public static final Integer AUTO_USER_STATUS_WAITAUTHENTICATION = 2;
@@ -347,6 +350,10 @@ public class Constants {
 
     public static final Integer AUTO_AUTHORITY_TARGET_TYPE_MENU = 1;
     public static final Integer AUTO_AUTHORITY_TARGET_TYPE_ACTION = 2;
+
+    public static final Integer PULLREFRESH_UP = 1;
+
+    public static final Integer PULLREFRESH_DOWN = 2;
 
     public class UrlHelper{
         public static final String RETURN_URL = "ReturnUrl";

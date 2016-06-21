@@ -44,6 +44,12 @@
                     <stopPort>9090</stopPort>
                     <scanIntervalSeconds>5</scanIntervalSeconds>
 
+                    <systemProperties>
+                        <systemProperty>
+                            <name>org.mortbay.jetty.Request.maxFormContentSize</name>
+                            <value>-1</value>
+                        </systemProperty>
+                    </systemProperties>
                 </configuration>
             </plugin>
 
