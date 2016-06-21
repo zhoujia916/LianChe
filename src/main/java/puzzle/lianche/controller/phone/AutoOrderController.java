@@ -545,6 +545,7 @@ public class AutoOrderController extends BaseController {
                             jsonObject.put("attrValue",carAttr.getOutsideColor());
                             jsonObject.put("quoteType",carAttr.getQuoteType());
                             jsonObject.put("quotePrice",carAttr.getSaleAmount());
+                            jsonObject.put("salePriceType",carAttr.getSalePriceType());
                         }
                         jsonObject.put("status",carList.get(i).getStatus());
                         if(carList.get(i).getAddOrderTime()!=null) {
