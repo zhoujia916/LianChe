@@ -31,15 +31,24 @@ public class PathFormatter {
         }
 
         Calendar calendar = Calendar.getInstance();
-        pathFormat = pathFormat.replace("{time}", String.valueOf(calendar.getTimeInMillis()));
+
         pathFormat = pathFormat.replace("{yyyy}", String.valueOf(calendar.get(Calendar.YEAR)));
         pathFormat = pathFormat.replace("{yy}", String.valueOf((calendar.get(Calendar.YEAR) % 100)));
-        pathFormat = pathFormat.replace("{MM}", String.valueOf(calendar.get(Calendar.MONTH)));
-        pathFormat = pathFormat.replace("{dd}", String.valueOf(calendar.get(Calendar.DATE)));
-        pathFormat = pathFormat.replace("{hh}", String.valueOf(calendar.get(Calendar.HOUR)));
-        pathFormat = pathFormat.replace("{mm}", String.valueOf(calendar.get(Calendar.MINUTE)));
-        pathFormat = pathFormat.replace("{ss}", String.valueOf(calendar.get(Calendar.SECOND)));
-
+        int month = calendar.get(Calendar.MONTH);
+        pathFormat = pathFormat.replace("{MM}", (month < 9 ? "0" : "") + String.valueOf(month + 1));
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        pathFormat = pathFormat.replace("{dd}", (day < 10 ? "0" : "") + String.valueOf(day));
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        pathFormat = pathFormat.replace("{HH}", (hourOfDay < 10 ? "0" : "") + String.valueOf(hourOfDay));
+        int hour = calendar.get(Calendar.HOUR);
+        pathFormat = pathFormat.replace("{hh}", (hour < 10 ? "0" : "") + String.valueOf(hour));
+        int minute = calendar.get(Calendar.MINUTE);
+        pathFormat = pathFormat.replace("{mm}", (minute < 10 ? "0" : "") + String.valueOf(minute));
+        int second = calendar.get(Calendar.SECOND);
+        pathFormat = pathFormat.replace("{ss}", (second < 10 ? "0" : "") + String.valueOf(second));
+        int millisecond = calendar.get(Calendar.MILLISECOND);
+        pathFormat = pathFormat.replace("{fff}", (millisecond < 10 ? "00" : millisecond < 100 ? "0" : "") + String.valueOf(millisecond));
+        pathFormat = pathFormat.replace("{time}", String.valueOf(calendar.getTimeInMillis()));
         return pathFormat + extension;
     }
 }
