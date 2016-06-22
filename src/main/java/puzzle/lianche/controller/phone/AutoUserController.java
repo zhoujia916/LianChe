@@ -525,22 +525,22 @@ public class AutoUserController extends BaseController {
                 List<AutoCar> carList=autoCarService.queryUserCollect(map,page);
                 if(carList!=null && carList.size()>0){
                     JSONArray array=new JSONArray();
-                    for(int i=0;i<carList.size();i++){
+                    for(AutoCar car:carList){
                         JSONObject object=new JSONObject();
-                        object.put("collectId",carList.get(i).getCollectId());
-                        object.put("carId",carList.get(i).getCarId());
-                        object.put("carName",carList.get(i).getCarName());
-                        object.put("brandName",carList.get(i).getBrandName());
-                        object.put("catName",carList.get(i).getCatName());
-                        object.put("officalPrice",(carList.get(i).getOfficalPrice()));
+                        object.put("collectId",car.getCollectId());
+                        object.put("carId",car.getCarId());
+                        object.put("carName",car.getCarName());
+                        object.put("brandName",car.getBrandName());
+                        object.put("catName",car.getCatName());
+                        object.put("officalPrice",(car.getOfficalPrice()));
                         map.clear();
-                        map.put("carPicId", carList.get(i).getCarId());
+                        map.put("carPicId", car.getCarId());
                         AutoCarPic carPic=autoCarPicService.query(map);
                         if(carPic!=null){
                             object.put("pic",carPic.getPath());
                         }
                         map.clear();
-                        map.put("attrCarId",carList.get(i).getCarId());
+                        map.put("attrCarId",car.getCarId());
                         List<AutoCarAttr> attrList=autoCarAttrService.queryList(map);
                         if(attrList!=null && attrList.size()>0){
                             List<AutoCarAttr> carAttrList=new ArrayList<AutoCarAttr>();
@@ -549,9 +549,9 @@ public class AutoUserController extends BaseController {
                             }
                             object.put("attrs",carAttrList);
                         }
-                        object.put("status",carList.get(i).getStatus());
-                        object.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddTime()),"MM-dd HH:mm"));
-                        if(carList.get(i).getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                        object.put("status",car.getStatus());
+                        object.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(car.getAddTime()),"MM-dd HH:mm"));
+                        if(car.getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
                             object.put("addUserAuth",1);
                         }else{
                             object.put("addUserAuth",0);
@@ -735,22 +735,22 @@ public class AutoUserController extends BaseController {
                 List<AutoCar> carList = autoCarService.queryOrderList(map,page);
                 if(carList!=null && carList.size()>0){
                     JSONArray array=new JSONArray();
-                    for(int i=0;i<carList.size();i++){
+                    for(AutoCar car:carList){
                         JSONObject object=new JSONObject();
-                        object.put("collectId",carList.get(i).getCollectId());
-                        object.put("carId",carList.get(i).getCarId());
-                        object.put("carName",carList.get(i).getCarName());
-                        object.put("brandName",carList.get(i).getBrandName());
-                        object.put("catName",carList.get(i).getCatName());
-                        object.put("officalPrice",(carList.get(i).getOfficalPrice()));
+                        object.put("collectId",car.getCollectId());
+                        object.put("carId",car.getCarId());
+                        object.put("carName",car.getCarName());
+                        object.put("brandName",car.getBrandName());
+                        object.put("catName",car.getCatName());
+                        object.put("officalPrice",(car.getOfficalPrice()));
                         map.clear();
-                        map.put("carPicId", carList.get(i).getCarId());
+                        map.put("carPicId", car.getCarId());
                         AutoCarPic carPic=autoCarPicService.query(map);
                         if(carPic!=null){
                             object.put("pic",carPic.getPath());
                         }
                         map.clear();
-                        map.put("attrCarId",carList.get(i).getCarId());
+                        map.put("attrCarId",car.getCarId());
                         List<AutoCarAttr> attrList=autoCarAttrService.queryList(map);
                         if(attrList!=null && attrList.size()>0){
                             List<AutoCarAttr> carAttrList=new ArrayList<AutoCarAttr>();
@@ -759,9 +759,9 @@ public class AutoUserController extends BaseController {
                             }
                             object.put("attrs",carAttrList);
                         }
-                        object.put("status",carList.get(i).getStatus());
-                        object.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(carList.get(i).getAddTime()),"MM-dd HH:mm"));
-                        if(carList.get(i).getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                        object.put("status",car.getStatus());
+                        object.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(car.getAddTime()),"MM-dd HH:mm"));
+                        if(car.getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
                             object.put("addUserAuth",1);
                         }else{
                             object.put("addUserAuth",0);

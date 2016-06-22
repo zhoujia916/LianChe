@@ -94,13 +94,13 @@ public class AutoCarController extends BaseController {
                     JSONObject jsonItem = new JSONObject();
                     jsonItem.put("carId", item.getCarId());
                     jsonItem.put("carName", item.getCarName());
+                    jsonItem.put("brandName",item.getBrandName());
+                    jsonItem.put("catName",item.getCatName());
                     jsonItem.put("addTime", ConvertUtil.toString(new Date(item.getAddTime()),Constants.DATE_FORMAT));
                     jsonItem.put("officalPrice", item.getOfficalPrice());
                     jsonItem.put("collectCount", item.getCollectCount());
-
                     map.clear();
                     map.put("carId", item.getCarId());
-
                     JSONArray jsonAttrArray = new JSONArray();
                     List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
                     if(attrs != null && !attrs.isEmpty()) {
@@ -114,7 +114,6 @@ public class AutoCarController extends BaseController {
                         }
                     }
                     jsonItem.put("attrs", jsonAttrArray);
-
                     String pic = null;
                     List<AutoCarPic> pics = autoCarPicService.queryList(map);
                     if(pics != null && !pics.isEmpty()) {
@@ -123,7 +122,6 @@ public class AutoCarController extends BaseController {
                     jsonItem.put("pic", pic);
                     int isAuth = item.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT ? 1 : 0;
                     jsonItem.put("addUserAuth", isAuth);
-
                     jsonArray.add(jsonItem);
                 }
                 result.setData(jsonArray);
