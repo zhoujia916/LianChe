@@ -175,7 +175,7 @@
         aup.real_name as realName,aup.shop_name as shopName,
         aup.shop_type as shopType
         from auto_user as au
-        left join auto_user_profile as aup on au.user_id=aup.user_id
+        left join auto_user_profile as aup on aup.user_id=au.user_id
         <where>
             <if test="userName != null and userName != ''">
                 and au.user_name like concat('%',#{userName},'%')

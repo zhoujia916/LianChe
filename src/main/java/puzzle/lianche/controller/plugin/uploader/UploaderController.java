@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import puzzle.lianche.controller.BaseController;
+import puzzle.lianche.utils.ImageUtil;
 import puzzle.lianche.utils.Result;
 import sun.misc.BASE64Decoder;
 
@@ -89,7 +90,7 @@ public class UploaderController extends BaseController {
         file = file.replaceAll(" ", "\n");
         saveExt = "." + saveExt;
 
-        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}\\{hh}{mm}{rand:6}");
+        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}\\{HH}{mm}{ss}{rand:6}");
         String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
 
         try {
@@ -111,6 +112,8 @@ public class UploaderController extends BaseController {
             out.write(b);
             out.flush();
             out.close();
+
+            ImageUtil.zoomImage(savePath + saveName, savePath + saveName, 640, 160);
 
             String url = request.getScheme() + "://" + request.getServerName();
             if(request.getServerPort() != 80){

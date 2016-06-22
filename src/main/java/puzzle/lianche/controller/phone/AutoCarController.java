@@ -1,6 +1,5 @@
 package puzzle.lianche.controller.phone;
 
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,8 @@ import puzzle.lianche.controller.BaseController;
 import puzzle.lianche.entity.*;
 import puzzle.lianche.service.*;
 import puzzle.lianche.utils.*;
+
+import javax.json.*;
 import java.util.*;
 
 @Controller(value = "phoneAutoCarController")
@@ -29,12 +30,6 @@ public class AutoCarController extends BaseController {
 
     @Autowired
     private IAutoCarAttrService autoCarAttrService;
-
-    @Autowired
-    private IAutoBrandService autoBrandService;
-
-    @Autowired
-    private IAutoBrandCatService autoBrandCatService;
 
     @Autowired
     private IAutoBrandModelService autoBrandModelService;
@@ -71,8 +66,8 @@ public class AutoCarController extends BaseController {
             if(car.getCarType() != null){
                 map.put("carType", car.getCarType());
             }
-            if(car.getSort() != null && car.getSort() == 1){
-                map.put("sort", " au.points desc ");
+            if(car.getViewUserId() != null && car.getViewUserId() > 0){
+                map.put("viewUserId", car.getViewUserId());
             }
 
             map.put("status", Constants.AUTO_CAR_STATUS_ON);
@@ -87,6 +82,9 @@ public class AutoCarController extends BaseController {
                 }
             }
 
+            if(car.getSort() != null && car.getSort() == 1){
+                map.put("sort", " au.points desc ");
+            }
             List<AutoCar> list = autoCarService.queryList(map, page);
             if(list != null && list.size() > 0){
                 JSONArray jsonArray = new JSONArray();
@@ -94,9 +92,17 @@ public class AutoCarController extends BaseController {
                     JSONObject jsonItem = new JSONObject();
                     jsonItem.put("carId", item.getCarId());
                     jsonItem.put("carName", item.getCarName());
-                    jsonItem.put("addTime", ConvertUtil.toString(new Date(item.getAddTime()),Constants.DATE_FORMAT));
+                    jsonItem.put("brandName", item.getBrandName());
+                    jsonItem.put("catName", item.getCatName());
+                    if(car.getCarType() == Constants.AUTO_CAR_TYPE_COMMON){
+                        jsonItem.put("addTime", ConvertUtil.toString(new Date(item.getRefreshTime()),Constants.DATE_FORMAT));
+                    }else{
+                        jsonItem.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(item.getRefreshTime()), "yyyy.MM.dd HH:mm"));
+                    }
+
                     jsonItem.put("officalPrice", item.getOfficalPrice());
                     jsonItem.put("collectCount", item.getCollectCount());
+                    jsonItem.put("collectId", item.getCollectId() == null ? 0 : item.getCollectId());
 
                     map.clear();
                     map.put("carId", item.getCarId());
@@ -161,18 +167,66 @@ public class AutoCarController extends BaseController {
                 result.setMsg("该车源不存在！");
                 return result;
             }
+
+
+            JSONObject jsonCar = new JSONObject();
+            jsonCar.put("carId", car.getCarId());
+            jsonCar.put("carName", car.getCarName());
+            jsonCar.put("collectId", car.getCollectId() == null ? 0 : car.getCollectId());
+            jsonCar.put("officalPrice", car.getOfficalPrice());
+
+            jsonCar.put("hasParts", car.getHasParts());
+            jsonCar.put("parts", car.getParts());
+            jsonCar.put("partsPrice", car.getPartsPrice());
+            jsonCar.put("brandName", car.getBrandName());
+            jsonCar.put("catName", car.getCatName());
+            jsonCar.put("modelName", car.getModelName());
+            jsonCar.put("remark", car.getRemark());
+            jsonCar.put("provinceName", car.getProvinceName());
+            jsonCar.put("cityName", car.getCityName());
+            jsonCar.put("invoiceType", car.getInvoiceType());
+
             List<AutoCarPic> pics = autoCarPicService.queryList(map);
-            if(pics != null){
-                car.setPics(pics);
+            JSONArray jsonCarPicAttray = new JSONArray();
+            if(pics != null && !pics.isEmpty()){
+                for(AutoCarPic pic : car.getPics()){
+                    jsonCarPicAttray.add(pic.getPath());
+                }
             }
+            jsonCar.put("pics", jsonCarPicAttray);
             List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
-            if(attrs != null){
-                car.setAttr(attrs);
+            JSONArray jsonCarAttrArray = new JSONArray();
+            int totalNumber = 0;
+            if(attrs != null && !attrs.isEmpty()){
+                for(AutoCarAttr attr : attrs){
+                    totalNumber += attr.getSurplusNumber();
+                    JSONObject jsonCarAttr = new JSONObject();
+                    jsonCarAttr.put("salePriceType", attr.getSalePriceType());
+                    jsonCarAttr.put("saleAmount", attr.getSaleAmount());
+                    jsonCarAttr.put("outsideColor", attr.getOutsideColor());
+                    jsonCarAttr.put("insideColor", attr.getInsideColor());
+                    jsonCarAttr.put("totalNumber", attr.getSurplusNumber());
+                    jsonCarAttrArray.add(jsonCarAttr);
+                }
             }
+            jsonCar.put("totalNumber", totalNumber);
+            jsonCar.put("attrs", jsonCarAttrArray);
+
             map.clear();
             map.put("userId", car.getAddUserId());
-            car.setUser(autoUserService.query(map));
-            result.setData(car);
+            AutoUser user = autoUserService.query(map);
+            JSONObject jsonUser = new JSONObject();
+            if(user != null){
+                jsonUser.put("userId", user.getUserId());
+                jsonUser.put("realName", user.getRealName());
+                jsonUser.put("userAvatar", user.getUserAvatar());
+                jsonUser.put("point", user.getPoint());
+                jsonUser.put("shopName", user.getShopType());
+            }
+            jsonCar.put("user", jsonUser);
+
+
+            result.setData(jsonCar);
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("获取车源详情信息出错");
@@ -308,10 +362,10 @@ public class AutoCarController extends BaseController {
             car.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(car.getEndTimeString() + " 23:59:59")));
             car.setStatus(Constants.AUTO_CAR_STATUS_ON);
             car.setCarType(Constants.AUTO_CAR_TYPE_COMMON);
-            for(int i = 0; i < car.getAttr().size(); i++){
-                AutoCarAttr carAttr = car.getAttr().get(i);
-                car.getAttr().get(i).setLockNumber(0);
-                car.getAttr().get(i).setSurplusNumber(carAttr.getTotalNumber());
+            for(int i = 0; i < car.getAttrs().size(); i++){
+                AutoCarAttr carAttr = car.getAttrs().get(i);
+                car.getAttrs().get(i).setLockNumber(0);
+                car.getAttrs().get(i).setSurplusNumber(carAttr.getTotalNumber());
                 double price = car.getOfficalPrice();
                 if(carAttr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP) {
                     if (carAttr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY) {
@@ -327,7 +381,7 @@ public class AutoCarController extends BaseController {
                         price -= price * carAttr.getSaleAmount() / 100;
                     }
                 }
-                car.getAttr().get(i).setPrice(price);
+                car.getAttrs().get(i).setPrice(price);
             }
             car.setSortOrder(0);
             //endregion

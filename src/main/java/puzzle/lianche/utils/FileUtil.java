@@ -40,7 +40,11 @@ public class FileUtil {
 	}
 	
 	public static String getFileExt(String fileName){
-		return fileName.substring(fileName.lastIndexOf('.'));
+        int index = fileName.lastIndexOf('/');
+        if(index == -1){
+            return "";
+        }
+        return fileName.substring(index + 1);
 	}
 	
 	public static boolean checkExists(String fileName){

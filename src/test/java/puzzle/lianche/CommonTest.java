@@ -8,6 +8,7 @@ import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import java.io.*;
+import java.util.Calendar;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-*.xml"})
@@ -59,27 +60,41 @@ public class CommonTest {
 //        }
 //    }
 
+//    @Test
+//    public void test2(){
+//        String imgFile = "C:\\Users\\IBM-Thinkpad\\Desktop\\txt.txt";
+//        InputStream in = null;
+//        byte[] data = null;
+//        try
+//        {
+//            in = new FileInputStream(imgFile);
+//            data = new byte[in.available()];
+//            in.read(data);
+//            in.close();
+//        }
+//        catch (IOException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        StringBuffer sb = new StringBuffer(new String(data));
+//        int count = sb.length() / 76;
+//        for(int i = count; i > 0; i--){
+//            sb.insert(i * 76, '\n');
+//        }
+//        System.out.println(sb.toString());
+//    }
+
     @Test
-    public void test2(){
-        String imgFile = "C:\\Users\\IBM-Thinkpad\\Desktop\\txt.txt";
-        InputStream in = null;
-        byte[] data = null;
-        try
-        {
-            in = new FileInputStream(imgFile);
-            data = new byte[in.available()];
-            in.read(data);
-            in.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        StringBuffer sb = new StringBuffer(new String(data));
-        int count = sb.length() / 76;
-        for(int i = count; i > 0; i--){
-            sb.insert(i * 76, '\n');
-        }
-        System.out.println(sb.toString());
+    public void test3(){
+        Calendar calendar = Calendar.getInstance();
+        System.out.println("Full Year:" + calendar.get(Calendar.YEAR));
+        System.out.println("Year:" + (calendar.get(Calendar.YEAR) % 100));
+        System.out.println("Month:" + (calendar.get(Calendar.MONTH) + 1));
+        System.out.println("Day:" + calendar.get(Calendar.DAY_OF_MONTH));
+        System.out.println("Hour:" + calendar.get(Calendar.HOUR_OF_DAY));
+        System.out.println("hour:" + calendar.get(Calendar.HOUR));
+        System.out.println("Minute:" + calendar.get(Calendar.MINUTE));
+        System.out.println("Second:" + calendar.get(Calendar.SECOND));
+        System.out.println("Minute:" + calendar.get(Calendar.MILLISECOND));
     }
 }

@@ -509,15 +509,15 @@ public class AutoCar implements Serializable{
         this.startPrice = startPrice;
     }
 
-    public List<AutoCarAttr> getAttr() {
-        return attr;
+    public List<AutoCarAttr> getAttrs() {
+        return attrs;
     }
 
-    public void setAttr(List<AutoCarAttr> attr) {
-        this.attr = attr;
+    public void setAttr(List<AutoCarAttr> attrs) {
+        this.attrs = attrs;
     }
 
-    private List<AutoCarAttr> attr;
+    private List<AutoCarAttr> attrs;
 
     public int getAddUserStatus() {
         return addUserStatus;
@@ -538,4 +538,24 @@ public class AutoCar implements Serializable{
     }
 
     private int collectCount;
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    private String provinceName;
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    private String cityName;
 }

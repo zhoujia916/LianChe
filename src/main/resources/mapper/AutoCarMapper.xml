@@ -10,6 +10,8 @@
         <result column="offical_price" property="officalPrice" />
         <result column="province" property="province" />
         <result column="city" property="city" />
+        <result column="province_name" property="provinceName" />
+        <result column="city_name" property="cityName" />
         <result column="area" property="area" />
         <result column="refresh_time" property="refreshTime"/>
         <result column="has_parts" property="hasParts"/>
@@ -214,12 +216,13 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoCar">
-        select ac.*, acp.path as pic
+        select ac.*, p.region_name as province_name, c.region_name as city_name
         <if test="viewUserId != null and viewUserId > 0">
-            ,IFNULL(select collect_id auto_user_collect as auc where auc.user_id = #{viewUserId}, 0) as collect_id
+            ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
         </if>
         from auto_car as ac
-        left join auto_car_pic as acp on acp.car_id = ac.car_id
+        left join auto_region as p on p.region_id = ac.province
+        left join auto_region as c on c.region_id = ac.city
         <where>
             <if test="carId != null and carId > 0">
                 ac.car_id = #{carId}
@@ -228,12 +231,14 @@
                 ac.car_id = (select car_id from auto_order_car where order_id = #{orderId})
             </if>
         </where>
-        limit 0, 1
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoCar">
         select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as add_user_status,
         (select count(1) from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id) as collect_count
+        <if test="viewUserId != null and viewUserId > 0">
+            ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
+        </if>
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
         left join auto_user_profile as aup on aup.user_id=ac.add_user_id
