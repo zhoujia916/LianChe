@@ -98,7 +98,7 @@ public class SmsController extends ModuleController{
                 for(String smsPhone:phone){
                     map.clear();
                     map.put("content",autoSms.getSmsContent());
-                    if(SmsPush.isSuccess(SmsPush.send(SmsPush.CODE_SENDMSG, smsPhone, "你该还钱了！"))){
+                    if(SmsPush.isSuccess(SmsPush.send(SmsPush.CODE_SENDMSG, smsPhone, autoSms.getSmsContent()))){
                         AutoSms sms=new AutoSms();
                         sms.setSmsType(Constants.DEFAULT_SMS_TYPE);
                         sms.setStatus(Constants.SMS_STATUS_TRUE);

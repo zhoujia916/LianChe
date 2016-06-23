@@ -8,13 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.AutoOrder;
-import puzzle.lianche.entity.SystemMenuAction;
+import puzzle.lianche.entity.*;
+import puzzle.lianche.service.IAutoCarAttrService;
+import puzzle.lianche.service.IAutoCarService;
 import puzzle.lianche.service.IAutoOrderService;
+import puzzle.lianche.service.IAutoUserService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
+import puzzle.lianche.utils.StringUtil;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +30,23 @@ public class OrderController extends ModuleController {
     @Autowired
     private IAutoOrderService autoOrderService;
 
+    @Autowired
+    private IAutoUserService autoUserService;
+
+    @Autowired
+    private IAutoCarService autoCarService;
+
+    @Autowired
+    private IAutoCarAttrService autoCarAttrService;
+
     @RequestMapping(value = {"/","/index"})
     public String index(){
         List<SystemMenuAction> actions=getActions();
+        List<AutoUser> users=autoUserService.queryList(null);
+        List<AutoCar> cars=autoCarService.queryList(null);
         this.setModelAttribute("actions", actions);
+        this.setModelAttribute("users",users);
+        this.setModelAttribute("cars",cars);
         return Constants.UrlHelper.ADMIN_ORDER;
     }
 
@@ -39,6 +56,28 @@ public class OrderController extends ModuleController {
         Result result=new Result();
         try{
             Map map=new HashMap();
+            String orderStatus=request.getParameter("orderStatus");
+            String payStatus=request.getParameter("payStatus");
+            String shipStatus=request.getParameter("shipStatus");
+            String beginTime=request.getParameter("beginTime");
+            String endTime=request.getParameter("endTime");
+            if(StringUtil.isNotNullOrEmpty(orderStatus)){
+                map.put("orderStatus",orderStatus);
+            }
+            if(StringUtil.isNotNullOrEmpty(payStatus)){
+                map.put("payStatus",payStatus);
+            }
+            if(StringUtil.isNotNullOrEmpty(shipStatus)){
+                if(ConvertUtil.toInt(shipStatus)>0){
+                    map.put("shipStatus",ConvertUtil.toInt(shipStatus));
+                }
+            }
+            if(StringUtil.isNotNullOrEmpty(beginTime)){
+                map.put("beginTime",ConvertUtil.toLong(ConvertUtil.toDateTime(beginTime + " 00:00:00")));
+            }
+            if(StringUtil.isNotNullOrEmpty(endTime)){
+                map.put("endTime",ConvertUtil.toLong(ConvertUtil.toDateTime(endTime + " 23:59:59")));
+            }
             Page page=new Page();
             page.setPageIndex(ConvertUtil.toInt(request.getParameter("pageIndex")));
             page.setPageSize(ConvertUtil.toInt(request.getParameter("pageSize")));
@@ -56,8 +95,8 @@ public class OrderController extends ModuleController {
                     jsonObject.put("sellerRealName",order.getSellerRealName());
                     jsonObject.put("buyerName",order.getBuyerName());
                     jsonObject.put("buyerRealName",order.getBuyerRealName());
-                    jsonObject.put("amount",order.getAmount());
-                    jsonObject.put("price",order.getPrice()*order.getAmount());
+                    jsonObject.put("carNumber",order.getCarNumber());
+                    jsonObject.put("price",order.getAmount());
                     jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(order.getAddTime())));
                     array.add(jsonObject);
                 }
@@ -70,5 +109,91 @@ public class OrderController extends ModuleController {
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
+    }
+
+    @RequestMapping(value = "/action.do")
+    @ResponseBody
+    public Result action(String action,AutoOrder autoOrder){
+        Result result=new Result();
+        try{
+            if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("carId", autoOrder.getCar().getCarId());
+                AutoCar car = autoCarService.query(map);
+                double price = car.getOfficalPrice();
+                map.clear();
+                map.put("carId", autoOrder.getCar().getCarId());
+                map.put("carAttrId", autoOrder.getCar().getCarAttrId());
+                AutoCarAttr attr = autoCarAttrService.query(map);
+                double salePrice = attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY ?
+                        attr.getSaleAmount() :
+                        (price * attr.getSaleAmount() / 100);
+                if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP){
+                    price += salePrice;
+                }
+                else if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
+                    price -= salePrice;
+                }
+                if(autoOrder.getCar().getHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
+                    price += car.getPartsPrice();
+                }
+                autoOrder.setOrderSn(autoOrderService.createSn(ConvertUtil.toString(autoOrder.getBuyerId())));
+                autoOrder.setOrderStatus(Constants.OS_SUBMIT);
+                autoOrder.setPayStatus(Constants.PS_WAIT_BUYER_DEPOSIT);
+                autoOrder.setShipStatus(Constants.SS_UNSHIP);
+                autoOrder.setSellerId(car.getAddUserId());
+                autoOrder.setSellerDeposit(0);
+                autoOrder.setBuyerDeposit(0);
+                autoOrder.setShipTime(0);
+                autoOrder.setAmount(price * autoOrder.getCar().getCarNumber());
+                autoOrder.setAddTime(ConvertUtil.toLong(new Date()));
+                autoOrder.getCar().setCarPrice(price);
+                autoOrder.getCar().setSendNumber(0);
+                autoOrder.setCar(autoOrder.getCar());
+                if(!autoOrderService.insert(autoOrder)){
+                    result.setCode(1);
+                    result.setData("保存订单信息出错！");
+                }else{
+                    insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"保存订单信息");
+                }
+            }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
+
+            }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
+
+            }
+        }catch(Exception e){
+            result.setCode(1);
+            result.setMsg("操作订单信息出错！");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 查看车源属性
+     * @param carId
+     * @return
+     */
+    @RequestMapping(value = "/queryCarAttr.do")
+    @ResponseBody
+    public JSONArray queryCarAttr(Integer carId){
+        JSONArray array=new JSONArray();
+        try{
+            Map map=new HashMap();
+            map.put("carId",carId);
+            List<AutoCarAttr> list=autoCarAttrService.queryList(map);
+            if(list!=null && list.size()>0){
+                for(AutoCarAttr carAttr:list){
+                    JSONObject object=new JSONObject();
+                    object.put("carAttrId",carAttr.getCarAttrId());
+                    object.put("attrValue","外观:"+carAttr.getOutsideColor()+"-内饰:"+carAttr.getInsideColor());
+                    array.add(object);
+                }
+            }
+            System.out.println(array.toString());
+        }catch(Exception e){
+            logger.error("查看车源属性出错！"+e.getMessage());
+        }
+        return array;
     }
 }

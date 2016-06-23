@@ -81,10 +81,10 @@
     </insert>
 
     <update id="update" parameterType="AutoCarAttr">
-        update auto_car_attr set
+        update auto_car_attr
         <set>
             <if test="carId != null">
-                car_id = #{carId}
+                car_id = #{carId},
             </if>
             <if test="outsideColor != null">
                 outside_color = #{outsideColor},

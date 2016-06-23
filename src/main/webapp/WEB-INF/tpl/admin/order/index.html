@@ -11,6 +11,36 @@
 <div class="row" id="">
     <div class="col-xs-12">
         <div id="order-gridview" class="gridview">
+
+            <div class="grid-filter">
+                <select multiple="" data-init="0" name="orderStatus" class="select2" data-placeholder=" 请选择订单状态">
+                    <option value="">&nbsp;</option>
+                    <option value="1">买家已提交</option>
+                    <option value="2">卖家已同意</option>
+                    <option value="3">卖家不同意</option>
+                    <option value="4">交易中</option>
+                    <option value="-2">交易成功</option>
+                    <option value="-1">交易取消</option>
+                </select>
+                <select multiple="" data-init="0" name="payStatus" class="select2" data-placeholder=" 请选择支付状态">
+                    <option value="">&nbsp;</option>
+                    <option value="1">等待买家支付订金</option>
+                    <option value="2">买家已支付订金</option>
+                    <option value="3">等待卖家支付订金</option>
+                    <option value="4">卖家已支付订金</option>
+                    <option value="5">等待系统退还订金</option>
+                    <option value="6">系统已退还订金</option>
+                </select>
+                <select data-init="0" name="shipStatus">
+                    <option value="0">请选择物流状态</option>
+                    <option value="1">未提车</option>
+                    <option value="2">已提车</option>
+                </select>
+                <input type="text input-sm" style="height: 29px" id="datepicker1" name="beginTime" placeholder="开始时间"/>
+                <input type="text input-sm" style="height: 29px" id="datepicker2" name="endTime" placeholder="结束时间"/>
+                <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
+            </div>
+
             {{include file="/inc/module_action.html"}}
 
             <div class="grid-table">
@@ -71,11 +101,66 @@
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">
-                                        车型
+                                        买家
                                     </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" id="carName" name="carName" placeholder="车型" class="txt input-sm col-sm-5 ">
+                                        <select data-init="0" id="buyerId" name="buyerId">
+                                            <option value="0">请选择买家</option>
+                                            {{foreach from=$users item=user}}
+                                                <option value="{{$user.userId}}">
+                                                    {{$user.userName}}
+                                                    {{if $user.realName!=null}}
+                                                        ({{$user.realName}})
+                                                    {{/if}}
+                                                </option>
+                                            {{/foreach}}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                        车源
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <select data-init="0" id="carId" name="car.carId">
+                                            <option value="0">请选择车源</option>
+                                            {{foreach from=$cars item=car}}
+                                                <option value="{{$car.carId}}">{{$car.carName}}</option>
+                                            {{/foreach}}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                        属性
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="hidden" id="markId"/>
+                                        <select data-init="0" id="carAttrId" name="car.carAttrId">
+                                            <option value="0">请选择属性</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                        数量
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" data-init="1" id="carNumber" name="car.carNumber" placeholder="数量" class="txt input-sm col-sm-8">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                        加配
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="checkbox" data-init="1" value="1" offval="0" name="car.hasParts" role="checkbox" class="editable ace ace-switch ace-switch-5">
+                                        <span class="lbl" style="top:6px;"></span>
                                     </div>
                                 </div>
                                 <div class="clearfix form-actions">
@@ -105,28 +190,101 @@
 </div><!-- /.row -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $("#carId").on("click",function(){
+            var markId=$("#markId").val();
+            var carId=$("#carId").val();
+            if(carId!=0 && carId!=null){
+                if(markId!=carId) {
+                    $.ajax({
+                        url: "order/queryCarAttr.do",
+                        type: "post",
+                        data: "carId=" + carId,
+                        success: function (data) {
+                            if(data.length>0) {
+                                $("#carAttrId").empty();
+                                $("#carAttrId").append("<option value='0'>请选择属性</option>");
+                                for (var i = 0; i < data.length; i++) {
+                                    $("#carAttrId").append("" +
+                                                    "<option value='" + data[i].carAttrId + "'>" + data[i].attrValue + "</option>");
+                                }
+                            }
+                        }
+                    });
+                    $("#markId").attr("value",carId);
+                }
+            }
+        });
+
+        $('.select2').css('width','160px').select2({allowClear:true})
+        $('#select2-multiple-style .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('.select2').addClass('tag-input-style');
+            else $('.select2').removeClass('tag-input-style');
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('[class*=select2]').remove();
+        });
+
+        $('.multiselect').multiselect({
+            enableFiltering: true,
+            buttonClass: 'btn btn-white btn-primary',
+            templates: {
+                button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"></button>',
+                ul: '<ul class="multiselect-container dropdown-menu"></ul>',
+                filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
+                filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
+                li: '<li><a href="javascript:void(0);"><label></label></a></li>',
+                divider: '<li class="multiselect-item divider"></li>',
+                liGroup: '<li class="multiselect-item group"><label class="multiselect-group"></label></li>'
+            }
+        });
+
+        $(document).one('ajaxloadstart.page', function(e) {
+            $('.multiselect').multiselect('destroy');
+        });
+
+        $( "#datepicker1" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $( "#datepicker2" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
         $("#order-gridview").gridview({
             url: "order/list.do",
-//            form: {
-//                url: "order/action.do",
-//                check:function(){
-//                    var roleName=$("#roleName").val();
-//                    var sortOrder=$("#sortOrder").val();
-//                    if(roleName==""){
-//                        console.log("check form");
-//                        $("#roleName").focus();
-//                        return "角色名称不能为空";
-//                    }
-//                    else if(sortOrder<0 || isNaN(sortOrder)){
-//                        console.log("check form");
-//                        $("#sortOrder").focus();
-//                        return "排序号必须大于等于0且必须为数字";
-//                    }
-//                    else{
-//                        return true;
-//                    }
-//                }
-//            },
+            form: {
+                url: "order/action.do",
+                check:function(){
+                    var buyerId=$("#buyerId").val();
+                    var carId=$("#carId").val();
+                    var carAttrId=$("#carAttrId").val();
+                    var carNumber=$("#carNumber").val();
+                    if(buyerId==0){
+                        console.log("check form");
+                        $("#buyerId").focus();
+                        return "请选择买家";
+                    }else if(carId==0){
+                        console.log("check form");
+                        $("#carId").focus();
+                        return "请选择车源";
+                    }else if(carAttrId==0){
+                        console.log("check form");
+                        $("#carAttrId").focus();
+                        return "请选择属性";
+                    }else if(carNumber<=0){
+                        console.log("check form");
+                        $("#carNumber").focus();
+                        return "请输入数量";
+                    }else{
+                        return true;
+                    }
+                }
+            },
             jsonReader: {
                 key_field: 'orderId'
             },
@@ -162,7 +320,7 @@
                     name: "buyerRealName"
                 },
                 {
-                    name: "amount"
+                    name: "carNumber"
                 },
                 {
                     name: "price"
@@ -172,7 +330,7 @@
                 },
                 {
                     name: "actions",
-                    list: ["delete","view"]
+                    list:["edit", "delete", "view"]
                 }
             ]
         });
