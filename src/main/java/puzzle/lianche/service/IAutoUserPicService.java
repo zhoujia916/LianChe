@@ -10,6 +10,8 @@ public interface IAutoUserPicService{
 
 	public boolean insert(AutoUserPic entity);
 
+    public boolean insertBatch(List<AutoUserPic> list);
+
     public boolean update(AutoUserPic entity);
 
     public boolean delete(Map<String, Object> map);

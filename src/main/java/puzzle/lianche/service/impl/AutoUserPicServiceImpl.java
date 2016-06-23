@@ -26,7 +26,15 @@ public class AutoUserPicServiceImpl implements IAutoUserPicService {
 		return sqlMapper.insert("AutoUserPicMapper.insert", entity);
 	}
 
-	/**
+    /**
+     * 批量插入记录
+     */
+    @Override
+    public boolean insertBatch(List<AutoUserPic> list) {
+        return sqlMapper.insert("AutoUserPicMapper.insertBatch", list);
+    }
+
+    /**
 	* 更新单条记录
 	*/
 	@Override

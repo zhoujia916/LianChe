@@ -127,7 +127,7 @@ public class AutoCarController extends BaseController {
                         pic = pics.get(0).getPath();
                     }
                     jsonItem.put("pic", pic);
-                    int isAuth = item.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT ? 1 : 0;
+                    int isAuth = item.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS ? 1 : 0;
                     jsonItem.put("addUserAuth", isAuth);
 
                     jsonArray.add(jsonItem);

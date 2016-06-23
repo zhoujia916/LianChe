@@ -81,8 +81,8 @@ public class ArticleController extends ModuleController {
                 for(AutoArticle article:articleList){
                     JSONObject jsonObject=JSONObject.fromObject(article);
                     jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(article.getAddTime())));
-                    jsonObject.put("status",Constants.AUTO_ARTICLE_STATUS.get(article.getStatus()));
-                    jsonObject.put("addUserType",Constants.AUTO_ARTICLE_USER_TYPE.get(article.getAddUserType()));
+                    jsonObject.put("status",Constants.MAP_AUTO_ARTICLE_STATUS.get(article.getStatus()));
+                    jsonObject.put("addUserType",Constants.MAP_AUTO_ARTICLE_USER_TYPE.get(article.getAddUserType()));
                     array.add(jsonObject);
                 }
                 result.setData(array);

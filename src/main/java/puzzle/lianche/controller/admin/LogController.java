@@ -72,7 +72,7 @@ public class LogController extends ModuleController{
                 JSONArray array=new JSONArray();
                 for(SystemLog log:list){
                     JSONObject jsonObject=JSONObject.fromObject(log);
-                    jsonObject.put("logType",Constants.LOG_TYPE.get(log.getLogType()));
+                    jsonObject.put("logType",Constants.MAP_LOG_TYPE.get(log.getLogType()));
                     //得到时间
                     jsonObject.put("logTime",ConvertUtil.toString(ConvertUtil.toDate(log.getLogTime())));
                     array.add(jsonObject);

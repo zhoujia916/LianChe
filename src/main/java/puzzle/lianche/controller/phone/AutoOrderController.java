@@ -536,7 +536,7 @@ public class AutoOrderController extends BaseController {
                     }
                     object.put("status",car.getStatus());
                     object.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(car.getAddTime()),"MM-dd HH:mm"));
-                    if(car.getUserStatus()==Constants.AUTO_USER_STATUS_AUTHENTICATIONADOPT){
+                    if(car.getUserStatus()==Constants.AUTO_USER_STATUS_AUTH_SUCCESS){
                         object.put("addUserAuth",1);
                     }else{
                         object.put("addUserAuth",0);

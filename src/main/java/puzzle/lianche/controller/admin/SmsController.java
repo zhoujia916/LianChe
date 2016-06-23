@@ -65,8 +65,8 @@ public class SmsController extends ModuleController{
                 JSONArray array=new JSONArray();
                 for(AutoSms sms:list){
                     JSONObject jsonObject=JSONObject.fromObject(sms);
-                    jsonObject.put("smsType",Constants.AUTO_SMS_TYPE.get(sms.getSmsType()));
-                    jsonObject.put("status",Constants.AUTO_SMS_STATUS.get(sms.getStatus()));
+                    jsonObject.put("smsType",Constants.MAP_AUTO_SMS_TYPE.get(sms.getSmsType()));
+                    jsonObject.put("status",Constants.MAP_AUTO_SMS_STATUS.get(sms.getStatus()));
                     array.add(jsonObject);
                 }
                 result.setData(array);

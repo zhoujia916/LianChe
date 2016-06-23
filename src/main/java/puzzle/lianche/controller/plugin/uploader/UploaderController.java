@@ -128,4 +128,178 @@ public class UploaderController extends BaseController {
         }
         return result;
     }
+
+    @ResponseBody
+    @RequestMapping(value = {"/uploader/userauth"})
+    public Result uploadUserAuth(@RequestParam("file") String file){
+        Result result = new Result();
+
+        String rootPath = session.getServletContext().getRealPath("");
+        String relativePath = request.getContextPath();
+        String typePath = getParameter("type");
+        String savePath = rootPath + "\\upload\\" + typePath + "\\";
+        String relativeUrl = relativePath + "/upload/" + typePath + "/";
+
+        String saveExt =
+                (file.startsWith("data:image/png;") ? "png" :
+                file.startsWith("data:image/jpg;") ? "jpg" :
+                file.startsWith("data:image/jpeg;") ? "jpeg" : "");
+
+        file = file.substring(("data:image/" + saveExt + ";base64,").length());
+
+        file = file.replaceAll(" ", "\n");
+        saveExt = "." + saveExt;
+
+        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}\\{HH}{mm}{ss}{rand:6}");
+        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
+
+        try {
+            File dir = new File(dirName);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] b = decoder.decodeBuffer(file);
+            for(int i = 0; i < b.length; ++i){
+                if(b[i] < 0){
+                    b[i] += 256;
+                }
+            }
+            //生成jpeg图片
+            OutputStream out = new FileOutputStream(savePath + saveName);
+            out.write(b);
+            out.flush();
+            out.close();
+
+            String url = request.getScheme() + "://" + request.getServerName();
+            if(request.getServerPort() != 80){
+                url += ":" + request.getServerPort();
+            }
+            url += relativeUrl + saveName.replace("\\", "/");
+
+            result.setData(url);
+        } catch (Exception e) {
+            result.setCode(1);
+            result.setMsg("文件上传失败！");
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = {"/uploader/useravatar"})
+    public Result uploadUserAvatar(@RequestParam("file") String file){
+        Result result = new Result();
+
+        String rootPath = session.getServletContext().getRealPath("");
+        String relativePath = request.getContextPath();
+        String typePath = getParameter("type");
+        String savePath = rootPath + "\\upload\\" + typePath + "\\";
+        String relativeUrl = relativePath + "/upload/" + typePath + "/";
+
+        String saveExt =
+                (file.startsWith("data:image/png;") ? "png" :
+                        file.startsWith("data:image/jpg;") ? "jpg" :
+                                file.startsWith("data:image/jpeg;") ? "jpeg" : "");
+
+        file = file.substring(("data:image/" + saveExt + ";base64,").length());
+
+        file = file.replaceAll(" ", "\n");
+        saveExt = "." + saveExt;
+
+        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}\\{HH}{mm}{ss}{rand:6}");
+        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
+
+        try {
+            File dir = new File(dirName);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] b = decoder.decodeBuffer(file);
+            for(int i = 0; i < b.length; ++i){
+                if(b[i] < 0){
+                    b[i] += 256;
+                }
+            }
+            //生成jpeg图片
+            OutputStream out = new FileOutputStream(savePath + saveName);
+            out.write(b);
+            out.flush();
+            out.close();
+
+            String url = request.getScheme() + "://" + request.getServerName();
+            if(request.getServerPort() != 80){
+                url += ":" + request.getServerPort();
+            }
+            url += relativeUrl + saveName.replace("\\", "/");
+
+            result.setData(url);
+        } catch (Exception e) {
+            result.setCode(1);
+            result.setMsg("文件上传失败！");
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = {"/uploader/feedback"})
+    public Result uploadFeedback(@RequestParam("file") String file){
+        Result result = new Result();
+
+        String rootPath = session.getServletContext().getRealPath("");
+        String relativePath = request.getContextPath();
+        String typePath = getParameter("type");
+        String savePath = rootPath + "\\upload\\" + typePath + "\\";
+        String relativeUrl = relativePath + "/upload/" + typePath + "/";
+
+        String saveExt =
+              (file.startsWith("data:image/png;") ? "png" :
+              file.startsWith("data:image/jpg;") ? "jpg" :
+              file.startsWith("data:image/jpeg;") ? "jpeg" : "");
+
+        file = file.substring(("data:image/" + saveExt + ";base64,").length());
+
+        file = file.replaceAll(" ", "\n");
+        saveExt = "." + saveExt;
+
+        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}\\{HH}{mm}{ss}{rand:6}");
+        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
+
+        try {
+            File dir = new File(dirName);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] b = decoder.decodeBuffer(file);
+            for(int i = 0; i < b.length; ++i){
+                if(b[i] < 0){
+                    b[i] += 256;
+                }
+            }
+            //生成jpeg图片
+            OutputStream out = new FileOutputStream(savePath + saveName);
+            out.write(b);
+            out.flush();
+            out.close();
+
+            String url = request.getScheme() + "://" + request.getServerName();
+            if(request.getServerPort() != 80){
+                url += ":" + request.getServerPort();
+            }
+            url += relativeUrl + saveName.replace("\\", "/");
+
+            result.setData(url);
+        } catch (Exception e) {
+            result.setCode(1);
+            result.setMsg("文件上传失败！");
+        }
+        return result;
+    }
 }

@@ -26,14 +26,14 @@ public class Constants {
         }
     };
 
-    public static final Map<Integer, String> USER_SEX = new HashMap<Integer, String>(){
+    public static final Map<Integer, String> MAP_USER_SEX = new HashMap<Integer, String>(){
         {
             put(1,"男");
             put(2,"女");
         }
     };
 
-    public static final Map<Integer, String> LOG_TYPE = new HashMap<Integer, String>(){
+    public static final Map<Integer, String> MAP_LOG_TYPE = new HashMap<Integer, String>(){
         {
             put(1,"查看");
             put(2,"增加");
@@ -44,7 +44,7 @@ public class Constants {
         }
     };
 
-    public static final Map<Integer, String> ROLE_TYPE = new HashMap<Integer, String>(){
+    public static final Map<Integer, String> MAP_ROLE_TYPE = new HashMap<Integer, String>(){
         {
             put(1,"系统角色");
             put(2,"自定义角色");
@@ -63,7 +63,7 @@ public class Constants {
     public static final Integer USER_MAP_TARGET_TYPE_GROUP = 2;
     public static final Integer USER_MAP_TARGET_TYPE_DEPT = 3;
 
-    public static final Map<String, Integer> MAP_LOG_TYPE = new HashMap<String, Integer>(){
+    public static final Map<String, Integer> MAP_ACTION_LOG_MAPPING = new HashMap<String, Integer>(){
         {
             put("SELECT",1);
             put("CREATE",2);
@@ -76,15 +76,15 @@ public class Constants {
      * 0=无效  1=注册或添加   2=等待审核  3=审核通过  4=审核未通过
      */
     public static final Integer AUTO_USER_STATUS_DISABLED = 0;
-    public static final Integer AUTO_USER_STATUS_REGISTERORADD = 1;
-    public static final Integer AUTO_USER_STATUS_WAITAUTHENTICATION = 2;
-    public static final Integer AUTO_USER_STATUS_AUTHENTICATIONADOPT = 3;
-    public static final Integer AUTO_USER_STATUS_AUTHENTICATIONNOADOPT = 4;
+    public static final Integer AUTO_USER_STATUS_NORMAL = 1;
+    public static final Integer AUTO_USER_STATUS_AUTH_WAITCHECK = 2;
+    public static final Integer AUTO_USER_STATUS_AUTH_SUCCESS = 3;
+    public static final Integer AUTO_USER_STATUS_AUTH_FAIL = 4;
 
     public static final Integer SYSTEM_AUTHORITY_TARGET_MENU = 1;
     public static final Integer SYSTEM_AUTHORITY_TARGET_ACTION = 2;
 
-    public static final  Map<Integer, String> AUTO_USER_STATUS = new HashMap<Integer, String>(){
+    public static final  Map<Integer, String> MAP_AUTO_USER_STATUS = new HashMap<Integer, String>(){
         {
             put(0,"账户禁用");
             put(1,"注册或添加");
@@ -94,7 +94,7 @@ public class Constants {
         }
     };
 
-    public static final Map<Integer, String> AUTO_USER_SHOP_TYPE = new HashMap<Integer, String>(){
+    public static final Map<Integer, String> MAP_AUTO_USER_SHOP_TYPE = new HashMap<Integer, String>(){
         {
             put(1,"4s店");
             put(2,"有实体店二网");
@@ -103,7 +103,7 @@ public class Constants {
         }
     };
 
-    public static final Map<Integer, String> AUTO_ARTICLE_STATUS = new HashMap<Integer, String>(){
+    public static final Map<Integer, String> MAP_AUTO_ARTICLE_STATUS = new HashMap<Integer, String>(){
         {
             put(0,"已保存");
             put(1,"已提交");
@@ -111,28 +111,32 @@ public class Constants {
         }
     };
 
-    public static final Map<Integer, String> AUTO_ARTICLE_USER_TYPE = new HashMap<Integer, String>(){
+    public static final Map<Integer, String> MAP_AUTO_ARTICLE_USER_TYPE = new HashMap<Integer, String>(){
         {
             put(1,"前台用户");
             put(2,"后台用户");
         }
     };
 
-    public static final Map<Integer, String> AUTO_MSG_TYPE = new HashMap<Integer, String>(){
+    public static final Map<Integer, String> MAP_AUTO_MSG_TYPE = new HashMap<Integer, String>(){
         {
             put(0,"系统发给用户的消息");
             put(1,"用户发给用户的消息");
         }
     };
 
-    public static final Map<Integer, String> AUTO_COLLECT_TYPE = new HashMap<Integer, String>(){
+
+    public static final Integer AUTO_COLLECT_TYPE_CAR = 1;
+
+    public static final Map<Integer, String> MAP_AUTO_COLLECT_TYPE = new HashMap<Integer, String>(){
         {
             put(1,"销车资源");
-            put(2,"特卖会");
         }
     };
 
-    public static final Map<Integer, String> AUTO_COLLECT_STATUS = new HashMap<Integer, String>(){
+    public static final Integer AUTO_COLLECT_STATUS_NORMAL = 1;
+    public static final Integer AUTO_COLLECT_STATUS_DELETE = 0;
+    public static final Map<Integer, String> MAP_AUTO_COLLECT_STATUS = new HashMap<Integer, String>(){
         {
             put(0,"已删除");
             put(1,"正常");
@@ -205,7 +209,7 @@ public class Constants {
     };
     //endregion
 
-    public static final Map<Integer, String> AUTO_ATTR_TYPE = new HashMap<Integer, String>(){
+    public static final Map<Integer, String> MAP_AUTO_ATTR_TYPE = new HashMap<Integer, String>(){
         {
             put(1,"单选框");
             put(2,"复选框");
@@ -215,7 +219,7 @@ public class Constants {
         }
     };
 
-    public static final Map<Integer, String> AUTO_SMS_TYPE = new HashMap<Integer, String>(){
+    public static final Map<Integer, String> MAP_AUTO_SMS_TYPE = new HashMap<Integer, String>(){
         {
             put(1,"注册验证码");
             put(2,"找回密码");
@@ -224,7 +228,7 @@ public class Constants {
         }
     };
 
-    public static final Map<Integer, String> AUTO_SMS_STATUS = new HashMap<Integer, String>(){
+    public static final Map<Integer, String> MAP_AUTO_SMS_STATUS = new HashMap<Integer, String>(){
         {
             put(1,"发送成功");
             put(2,"发送失败");;

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import puzzle.lianche.entity.AutoUser;
+import puzzle.lianche.entity.AutoUserPic;
 import puzzle.lianche.service.IAutoCollectService;
 import puzzle.lianche.service.IAutoUserPicService;
 import puzzle.lianche.service.IAutoUserProfileService;
@@ -61,7 +62,22 @@ public class AutoUserServiceImpl implements IAutoUserService {
 	*/
 	@Override
     public boolean update(AutoUser entity){
-    	return sqlMapper.update("AutoUserMapper.update", entity);
+        try {
+            if(sqlMapper.update("AutoUserMapper.update", entity)){
+                if(entity.getPics() != null && !entity.getPics().isEmpty()) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("userId", entity.getUserId());
+                    autoUserPicService.delete(map);
+
+                    List<AutoUserPic> list = entity.getPics();
+                    autoUserPicService.insertBatch(list);
+                }
+                return true;
+            }
+        }catch(Exception e){
+            logger.error(e.getMessage());
+        }
+        return false;
     }
 
 	/**

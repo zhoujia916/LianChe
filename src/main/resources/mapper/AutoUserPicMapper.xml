@@ -32,6 +32,22 @@
        	)
     </insert>
 
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into auto_user_pic
+        (
+          user_id, pic_type, pic_path, add_time
+        )
+        values
+        <foreach collection="list" item="pic" index="index" separator=",">
+            (
+                #{pic.userId},
+                #{pic.picType},
+                #{pic.picPath},
+                #{pic.addTime}
+            )
+        </foreach>
+    </insert>
+
     <update id="update" parameterType="AutoUserPic">
         update auto_user_pic set 
         <set>
