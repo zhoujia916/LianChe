@@ -62,10 +62,10 @@ public class MsgController extends ModuleController {
                 map.put("fromUserName",autoMsg.getFromUserName());
             }
             if(autoMsg.getBeginTimeString()!=null && autoMsg.getBeginTimeString()!=""){
-                map.put("beginTime",ConvertUtil.toLong(ConvertUtil.toDate(autoMsg.getBeginTimeString() + " 00:00:00")));
+                map.put("beginTime",ConvertUtil.toLong(ConvertUtil.toDateTime(autoMsg.getBeginTimeString() + " 00:00:00")));
             }
             if(autoMsg.getEndTimeString()!=null && autoMsg.getEndTimeString()!=""){
-                map.put("endTime",ConvertUtil.toLong(ConvertUtil.toDate(autoMsg.getEndTimeString()+" 23:59:59")));
+                map.put("endTime",ConvertUtil.toLong(ConvertUtil.toDateTime(autoMsg.getEndTimeString()+" 23:59:59")));
             }
             List<AutoMsg> list=autoMsgService.queryList(map,page);
             if(list!=null && list.size()>0){

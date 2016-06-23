@@ -55,10 +55,10 @@ public class ArticleController extends ModuleController {
             page.setPageIndex(ConvertUtil.toInt(pageIndex));
             page.setPageSize(ConvertUtil.toInt(pageSize));
             if(autoArticle.getBeginTimeString()!=null && autoArticle.getBeginTimeString()!=""){
-                map.put("beginTime",ConvertUtil.toLong(ConvertUtil.toDate(autoArticle.getBeginTimeString()+" 00:00:00")));
+                map.put("beginTime",ConvertUtil.toLong(ConvertUtil.toDateTime(autoArticle.getBeginTimeString()+" 00:00:00")));
             }
             if(autoArticle.getEndTimeString()!=null && autoArticle.getEndTimeString()!=""){
-                map.put("endTime",ConvertUtil.toLong(ConvertUtil.toDate(autoArticle.getEndTimeString()+" 23:59:59")));
+                map.put("endTime",ConvertUtil.toLong(ConvertUtil.toDateTime(autoArticle.getEndTimeString()+" 23:59:59")));
             }
             if(autoArticle.getStatusString()!=null &&autoArticle.getStatusString()!=""){
                 map.put("autoArticleStatus",autoArticle.getStatusString());

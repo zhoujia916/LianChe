@@ -66,7 +66,31 @@ public class AutoCarServiceImpl implements IAutoCarService {
 	*/
 	@Override
     public boolean update(AutoCar entity){
-    	return sqlMapper.update("AutoCarMapper.update", entity);
+        try{
+            if(sqlMapper.update("AutoCarMapper.update", entity)){
+                Map map=new HashMap();
+                if (entity.getAttr() != null && entity.getAttr().size() > 0) {
+                    map.put("carId",entity.getCarId());
+                    autoCarAttrService.delete(map);
+                    for (int i = 0; i < entity.getAttr().size(); i++) {
+                        entity.getAttr().get(i).setCarId(entity.getCarId());
+                    }
+                    autoCarAttrService.insertBatch(entity.getAttr());
+                }
+                if(entity.getPics() != null && entity.getPics().size() > 0){
+                    map.put("carId",entity.getCarId());
+                    autoCarPicService.delete(map);
+                    for (int i = 0; i < entity.getPics().size(); i++) {
+                        entity.getPics().get(i).setCarId(entity.getCarId());
+                    }
+                    autoCarPicService.insertBatch(entity.getPics());
+                }
+            }
+            return true;
+        }catch(Exception e){
+            logger.error(e.getMessage());
+        }
+        return false;
     }
 
 	/**
@@ -78,7 +102,7 @@ public class AutoCarServiceImpl implements IAutoCarService {
             if(sqlMapper.delete("AutoCarMapper.delete", map)){
                 autoCarAttrService.delete(map);
                 autoCarPicService.delete(map);
-                autoCarAttrService.delete(map);
+                autoCollectService.delete(map);
                 return true;
             }
         }catch (Exception e){

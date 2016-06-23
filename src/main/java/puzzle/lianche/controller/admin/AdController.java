@@ -53,10 +53,10 @@ public class AdController extends ModuleController {
                 map.put("adPositionIds",autoAd.getAdPositionIdString());
             }
             if(autoAd.getBeginTimeString()!=null && autoAd.getBeginTimeString()!=""){
-                map.put("startDate",ConvertUtil.toLong(ConvertUtil.toDate(autoAd.getBeginTimeString()+" 00:00:00")));
+                map.put("startDate",ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getBeginTimeString()+" 00:00:00")));
             }
             if(autoAd.getEndTimeString()!=null && autoAd.getEndTimeString()!=""){
-                map.put("endDate",ConvertUtil.toLong(ConvertUtil.toDate(autoAd.getEndTimeString() + " 23:59:59")));
+                map.put("endDate",ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getEndTimeString() + " 23:59:59")));
             }
             List<AutoAd> list=autoAdService.queryList(map,page);
             if(list!=null && list.size()>0){
@@ -65,6 +65,8 @@ public class AdController extends ModuleController {
                     JSONObject jsonObject=JSONObject.fromObject(ad);
                     jsonObject.put("startDate",ConvertUtil.toString(ConvertUtil.toDate(ad.getStartDate())));
                     jsonObject.put("endDate",ConvertUtil.toString(ConvertUtil.toDate(ad.getEndDate())));
+                    jsonObject.put("beginTimeString",ConvertUtil.toString(ConvertUtil.toDate(ad.getStartDate()),"yyyy-MM-dd"));
+                    jsonObject.put("endTimeString",ConvertUtil.toString(ConvertUtil.toDate(ad.getEndDate()),"yyyy-MM-dd"));
                     jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(ad.getAddTime())));
                     array.add(jsonObject);
                 }
@@ -86,8 +88,8 @@ public class AdController extends ModuleController {
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 autoAd.setAddTime(ConvertUtil.toLong(new Date()));
-                autoAd.setStartDate(ConvertUtil.toLong(ConvertUtil.toDate(autoAd.getBeginTimeString()+" 00:00:00")));
-                autoAd.setEndDate(ConvertUtil.toLong(ConvertUtil.toDate(autoAd.getEndTimeString() + " 23:59:59")));
+                autoAd.setStartDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getBeginTimeString()+" 00:00:00")));
+                autoAd.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getEndTimeString()+" 23:59:59")));
                 autoAd.setStatus(1);
                 if(!autoAdService.insert(autoAd)){
                     result.setCode(1);
@@ -96,8 +98,8 @@ public class AdController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"添加广告信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
-                autoAd.setStartDate(ConvertUtil.toLong(ConvertUtil.toDate(autoAd.getBeginTimeString()+" 00:00:00")));
-                autoAd.setEndDate(ConvertUtil.toLong(ConvertUtil.toDate(autoAd.getEndTimeString() + " 23:59:59")));
+                autoAd.setStartDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getBeginTimeString()+" 00:00:00")));
+                autoAd.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getEndTimeString()+" 23:59:59")));
                 if(!autoAdService.update(autoAd)){
                     result.setCode(1);
                     result.setMsg("修改广告信息时出错");
