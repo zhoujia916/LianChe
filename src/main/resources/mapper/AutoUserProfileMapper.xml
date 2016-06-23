@@ -23,11 +23,11 @@
         (
 
         	<if test="userId > 0">user_id, </if>
-            <if test="idNumber != null">id_number</if>
+            <if test="idNumber != null">id_number,</if>
         	<if test="realName != null">real_name, </if>
         	<if test="shopName != null">shop_name, </if>
         	<if test="phone != null">phone, </if>
-        	<if test="shopType > 0">shop_type, </if>
+        	<if test="shopType != null">shop_type, </if>
         	<if test="shopDesc != null">shop_desc, </if>
         	<if test="shopBrands != null">shop_brands, </if>
         	<if test="shopBase != null">shop_base</if>
@@ -36,11 +36,11 @@
         (
 
         	<if test="userId  > 0">#{userId}, </if>
-            <if test="idNumber != null">#{idNumber}</if>
+            <if test="idNumber != null">#{idNumber},</if>
         	<if test="realName != null">#{realName}, </if>
         	<if test="shopName != null">#{shopName}, </if>
         	<if test="phone != null">#{phone}, </if>
-        	<if test="shopType > 0">#{shopType}, </if>
+        	<if test="shopType != null">#{shopType}, </if>
         	<if test="shopDesc != null">#{shopDesc}, </if>
         	<if test="shopBrands != null">#{shopBrands}, </if>
         	<if test="shopBase != null">#{shopBase}</if>
@@ -62,7 +62,7 @@
         	<if test="phone != null">  
         		phone = #{phone},
         	</if>
-        	<if test="shopType > 0 ">
+        	<if test="shopType != null ">
         		shop_type = #{shopType},
         	</if>
         	<if test="shopDesc != null">  

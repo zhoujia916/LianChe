@@ -18,8 +18,9 @@
         <result column="realName" property="realName"/>
         <result column="shopName" property="shopName"/>
         <result column="shopType" property="shopType"/>
-        <result column="orderNumber" property="orderNumber"/>
-        <result column="carNumber" property="carNumber"/>
+        <result column="order_number" property="orderNumber"/>
+        <result column="car_number" property="carNumber"/>
+        <result column="id_number" property="idNumber"/>
     </resultMap>
 
     <sql id="allColumn">
@@ -40,6 +41,7 @@
         	<if test="point != null">point, </if>
         	<if test="remark != null">remark, </if>
         	<if test="addTime != null">add_time, </if>
+            <if test="idNumber != null">id_number, </if>
         	<if test="authenticateTime != null">authenticate_time, </if>
         	<if test="sortOrder != null">sort_order</if>
         )
@@ -56,6 +58,7 @@
         	<if test="point != null">#{point}, </if>
         	<if test="remark != null">#{remark}, </if>
         	<if test="addTime != null">#{addTime}, </if>
+            <if test="idNumber != null">#{idNumber}, </if>
         	<if test="authenticateTime != null">#{authenticateTime}, </if>
         	<if test="sortOrder != null">#{sortOrder}</if>
        	)
@@ -94,6 +97,9 @@
         	<if test="addTime != null">
         		add_time = #{addTime},
         	</if>
+            <if test="idNumber != null and idNumber != ''">
+                id_number = #{idNumber},
+            </if>
         	<if test="authenticateTime != null">
         		authenticate_time = #{authenticateTime},
         	</if>
@@ -153,16 +159,16 @@
         aup.real_name as realName,
         aup.shop_name as shopName,
         aup.shop_type as shopType,
-        (select count(1) from auto_order as ao where ao.buyer_id = au.user_id or ao.seller_id = au.user_id) as orderNumber,
-        (select count(1) from auto_car as ac where ac.add_user_id = au.user_id) as carNumber
+        (select count(1) from auto_order as ao where ao.buyer_id = au.user_id or ao.seller_id = au.user_id) as order_Number,
+        (select count(1) from auto_car as ac where ac.add_user_id = au.user_id) as car_Number
         from auto_user as au
         left join auto_user_profile as aup on aup.user_id = au.user_id
         <where>
         	<if test="userId > 0">
                 and au.user_id = #{userId}
             </if>
-            <if test="username !=null and username!='' ">
-                and au.user_name = #{username}
+            <if test="userName !=null and userName!='' ">
+                and au.user_name = #{userName}
             </if>
             <if test="password !=null and password !='' ">
                 and au.password = #{password}

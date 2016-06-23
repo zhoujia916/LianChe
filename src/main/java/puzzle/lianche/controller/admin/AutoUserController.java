@@ -79,9 +79,9 @@ public class AutoUserController extends ModuleController {
                     jsonObject.put("point",user.getPoint());
                     jsonObject.put("sortOrder",user.getSortOrder());
                     jsonObject.put("remark",user.getRemark());
-                    jsonObject.put("status",Constants.AUTO_USER_STATUS.get(user.getStatus()));
+                    jsonObject.put("status",Constants.MAP_AUTO_USER_STATUS.get(user.getStatus()));
                     if(user.getShopType() != null){
-                        jsonObject.put("shopType",Constants.AUTO_USER_SHOP_TYPE.get(user.getShopType()));
+                        jsonObject.put("shopType",Constants.MAP_AUTO_USER_SHOP_TYPE.get(user.getShopType()));
                     }else{
                         jsonObject.put("shopType","");
                     }
@@ -113,7 +113,7 @@ public class AutoUserController extends ModuleController {
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
                 autoUser.setUserAvatar("../resource/admin/avatars/profile-pic.jpg");
-                autoUser.setStatus(Constants.AUTO_USER_STATUS_REGISTERORADD);
+                autoUser.setStatus(Constants.AUTO_USER_STATUS_NORMAL);
                 autoUser.setAddTime(ConvertUtil.toLong(new Date()));
                 if(autoUser.getBirthDay() != null && autoUser.getBirthDay() != ""){
                     autoUser.setBirth(ConvertUtil.toLong(ConvertUtil.toDate(autoUser.getBirthDay()+" 00:00:00")));

@@ -76,7 +76,7 @@ public class MsgController extends ModuleController {
                         msg.setFromRealName("系统");
                     }
                     JSONObject jsonObject=JSONObject.fromObject(msg);
-                    jsonObject.put("msgType",Constants.AUTO_MSG_TYPE.get(msg.getMsgType()));
+                    jsonObject.put("msgType",Constants.MAP_AUTO_MSG_TYPE.get(msg.getMsgType()));
                     jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(msg.getAddTime())));
                     array.add(jsonObject);
                 }

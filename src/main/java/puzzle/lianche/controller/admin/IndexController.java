@@ -73,7 +73,7 @@ public class IndexController extends ModuleController {
 
             //region 待实名认证用户
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("status", Constants.AUTO_USER_STATUS_WAITAUTHENTICATION);
+            map.put("status", Constants.AUTO_USER_STATUS_AUTH_WAITCHECK);
             Page page = new Page();
             page.setPageIndex(Constants.PageHelper.PAGE_INDEX_FIRST);
             page.setPageSize(Constants.PageHelper.PAGE_SIZE_COMMON);

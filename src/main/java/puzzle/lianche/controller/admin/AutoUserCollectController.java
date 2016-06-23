@@ -61,7 +61,7 @@ public class AutoUserCollectController extends ModuleController {
                 JSONArray array=new JSONArray();
                 for(AutoCollect collect:list){
                     JSONObject jsonObject=JSONObject.fromObject(collect);
-                    jsonObject.put("targetType",Constants.AUTO_COLLECT_TYPE.get(collect.getTargetType()));
+                    jsonObject.put("targetType",Constants.MAP_AUTO_COLLECT_TYPE.get(collect.getTargetType()));
                     jsonObject.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(collect.getAddTime())));
                     array.add(jsonObject);
                 }

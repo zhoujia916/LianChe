@@ -65,7 +65,7 @@ public class RoleController extends ModuleController {
                 JSONArray array=new JSONArray();
                 for(SystemRole role:list){
                     JSONObject jsonObject=JSONObject.fromObject(role);
-                    jsonObject.put("roleTypeName",Constants.ROLE_TYPE.get(role.getRoleType()));
+                    jsonObject.put("roleTypeName",Constants.MAP_ROLE_TYPE.get(role.getRoleType()));
                     array.add(jsonObject);
                 }
                 result.setData(array);

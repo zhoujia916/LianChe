@@ -3,6 +3,7 @@ package puzzle.lianche.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.lang.StringBuilder;
 import javax.persistence.CascadeType;
@@ -277,4 +278,34 @@ public class AutoUser implements Serializable{
     }
 
     public AutoUserProfile profile;
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
+    private String pic;
+
+    public List<AutoUserPic> getPics() {
+        return pics;
+    }
+
+    public void setPics(List<AutoUserPic> pics) {
+        this.pics = pics;
+    }
+
+    private List<AutoUserPic> pics;
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    private String idNumber;
 }
