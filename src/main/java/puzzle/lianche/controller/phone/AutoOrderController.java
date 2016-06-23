@@ -33,6 +33,9 @@ public class AutoOrderController extends BaseController {
     @Autowired
     private IAutoOrderCarService autoOrderCarService;
 
+    @Autowired
+    private IAutoUserService autoUserService;
+
 
     /**
      * 取消订单
@@ -55,6 +58,17 @@ public class AutoOrderController extends BaseController {
                 return result;
             }
             int buyerId = order.getBuyerId();
+            AutoUser find = autoUserService.query(buyerId, null);
+            if(find == null){
+                result.setCode(1);
+                result.setMsg("该用户不存在！");
+                return result;
+            }
+            if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                result.setCode(1);
+                result.setMsg("该账户已被禁用！");
+                return result;
+            }
             order = autoOrderService.query(order.getOrderId(), order.getOrderSn());
             if(order == null){
                 result.setCode(-1);
@@ -108,6 +122,17 @@ public class AutoOrderController extends BaseController {
                 return result;
             }
             int buyerId = order.getBuyerId();
+            AutoUser find = autoUserService.query(buyerId, null);
+            if(find == null){
+                result.setCode(1);
+                result.setMsg("该用户不存在！");
+                return result;
+            }
+            if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                result.setCode(1);
+                result.setMsg("该账户已被禁用！");
+                return result;
+            }
             order = autoOrderService.query(order.getOrderId(), order.getOrderSn());
             if(order == null){
                 result.setCode(-1);
@@ -152,6 +177,17 @@ public class AutoOrderController extends BaseController {
         try{
             if(order.getSellerId() != null && order.getSellerId() > 0){
                 int sellerId = order.getSellerId();
+                AutoUser find = autoUserService.query(sellerId, null);
+                if(find == null){
+                    result.setCode(1);
+                    result.setMsg("该用户不存在！");
+                    return result;
+                }
+                if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                    result.setCode(1);
+                    result.setMsg("该账户已被禁用！");
+                    return result;
+                }
                 order = autoOrderService.query(order.getOrderId(), null);
                 if(order == null){
                     result.setCode(-1);
@@ -200,6 +236,17 @@ public class AutoOrderController extends BaseController {
                 return result;
             }
             int sellerId = order.getSellerId();
+            AutoUser find = autoUserService.query(sellerId, null);
+            if(find == null){
+                result.setCode(1);
+                result.setMsg("该用户不存在！");
+                return result;
+            }
+            if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                result.setCode(1);
+                result.setMsg("该账户已被禁用！");
+                return result;
+            }
             order = autoOrderService.query(order.getOrderId(), null);
             if(order == null){
                 result.setCode(-1);
@@ -253,6 +300,17 @@ public class AutoOrderController extends BaseController {
                 return result;
             }
             int buyerId = order.getBuyerId();
+            AutoUser find = autoUserService.query(buyerId, null);
+            if(find == null){
+                result.setCode(1);
+                result.setMsg("该用户不存在！");
+                return result;
+            }
+            if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                result.setCode(1);
+                result.setMsg("该账户已被禁用！");
+                return result;
+            }
             order = autoOrderService.query(order.getOrderId(), null);
             if(order == null){
                 result.setCode(-1);
@@ -305,6 +363,17 @@ public class AutoOrderController extends BaseController {
                 return result;
             }
             int sellerId = order.getSellerId();
+            AutoUser find = autoUserService.query(sellerId, null);
+            if(find == null){
+                result.setCode(1);
+                result.setMsg("该用户不存在！");
+                return result;
+            }
+            if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                result.setCode(1);
+                result.setMsg("该账户已被禁用！");
+                return result;
+            }
             order = autoOrderService.query(order.getOrderId(), null);
             if(order == null){
                 result.setCode(-1);
@@ -360,6 +429,17 @@ public class AutoOrderController extends BaseController {
             if(order.getBuyerId() == null || order.getBuyerId() <= 0){
                 result.setCode(-1);
                 result.setMsg("买家不能为空！");
+                return result;
+            }
+            AutoUser find = autoUserService.query(order.getBuyerId(), null);
+            if(find == null){
+                result.setCode(1);
+                result.setMsg("该用户不存在！");
+                return result;
+            }
+            if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                result.setCode(1);
+                result.setMsg("该账户已被禁用！");
                 return result;
             }
 
@@ -457,58 +537,48 @@ public class AutoOrderController extends BaseController {
     @ResponseBody
     public Result list(AutoOrder order,Page page){
         Result result = new Result();
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("curTime",System.currentTimeMillis());
         try{
-            if(order ==null || (order.getBuyerId() == null || order.getBuyerId() <= 0) || order.getClientStatus()==null){
+            if(order ==null || order.getBuyerId() == null || order.getBuyerId() == 0 ||
+                    order.getClientStatus() == null){
                 result.setCode(-1);
-                result.setMsg("参数错误！");
+                result.setMsg("查询参数不正确！");
                 return result;
             }
-            if(order.getBuyerId() != null && order.getBuyerId() > 0){
-                map.put("buyerId", order.getBuyerId());
-                if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
-                    map.put("orderStatus", Constants.OS_SUBMIT);
-                    map.put("payStatus", Constants.PS_WAIT_BUYER_DEPOSIT);
-                    map.put("shipStatus", Constants.SS_UNSHIP);
-                }
-                else if(order.getClientStatus().equals(Constants.CS_DEPOSIT)){
-                    map.put("orderStatusList", Constants.OS_SUBMIT + "," + Constants.OS_ACCEPT + "," + Constants.OS_EXECUTE);
-                    map.put("payStatusList", Constants.PS_BUYER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SELLER_DEPOSIT + "," + Constants.PS_SELLER_PAY_DEPOSIT);
-                    map.put("shipStatus", Constants.SS_UNSHIP);
-                }
-                else if(order.getClientStatus().equals(Constants.CS_SUCCESS)){
-                    map.put("orderStatusList", Constants.OS_SUCCESS);
-                    map.put("payStatusList", Constants.PS_SELLER_PAY_DEPOSIT + "," + Constants.PS_WAIT_RETURN_DEPOSIT + "," + Constants.PS_SYSTEM_RETURN_DEPOSIT );
-                    map.put("shipStatus", Constants.SS_SHIPED);
-                }
-                else if(order.getClientStatus().equals(Constants.CS_CANCEL)) {
-                    map.put("orderStatus", Constants.OS_CANCEL);
-                }
+            AutoUser find = autoUserService.query(order.getBuyerId(), null);
+            if(find == null){
+                result.setCode(1);
+                result.setMsg("该用户不存在！");
+                return result;
             }
-            else if(order.getSellerId() != null && order.getSellerId() > 0){
-                map.put("sellerId", order.getSellerId());
-                if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
-                    map.put("orderStatus", Constants.OS_ACCEPT);
-                    map.put("payStatus", Constants.PS_WAIT_SELLER_DEPOSIT);
-                    map.put("shipStatus", Constants.SS_UNSHIP);
-                }
-                else if(order.getClientStatus().equals(Constants.CS_DEPOSIT)){
-                    map.put("orderStatus", Constants.OS_EXECUTE);
-                    map.put("payStatusList", Constants.PS_SELLER_PAY_DEPOSIT );
-                    map.put("shipStatus", Constants.SS_UNSHIP);
-                }
-                else if(order.getClientStatus().equals(Constants.CS_SUCCESS)){
-                    map.put("orderStatusList", Constants.OS_SUCCESS);
-                    map.put("payStatusList", Constants.PS_WAIT_RETURN_DEPOSIT + "," + Constants.PS_SYSTEM_RETURN_DEPOSIT );
-                    map.put("shipStatus", Constants.SS_SHIPED);
-                }
-                else if(order.getClientStatus().equals(Constants.CS_CANCEL)){
-                    map.put("orderStatus", Constants.OS_CANCEL);
-                }
+            if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                result.setCode(1);
+                result.setMsg("该账户已被禁用！");
+                return result;
             }
+            map.put("buyerId", order.getBuyerId());
+            if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
+                map.put("orderStatus", Constants.OS_SUBMIT);
+                map.put("payStatus", Constants.PS_WAIT_BUYER_DEPOSIT);
+                map.put("shipStatus", Constants.SS_UNSHIP);
+            }
+            else if(order.getClientStatus().equals(Constants.CS_DEPOSIT)){
+                map.put("orderStatusList", Constants.OS_SUBMIT + "," + Constants.OS_ACCEPT + "," + Constants.OS_EXECUTE);
+                map.put("payStatusList", Constants.PS_BUYER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SELLER_DEPOSIT + "," + Constants.PS_SELLER_PAY_DEPOSIT);
+                map.put("shipStatus", Constants.SS_UNSHIP);
+            }
+            else if(order.getClientStatus().equals(Constants.CS_SUCCESS)){
+                map.put("orderStatusList", Constants.OS_SUCCESS);
+                map.put("payStatusList", Constants.PS_SELLER_PAY_DEPOSIT + "," + Constants.PS_WAIT_RETURN_DEPOSIT + "," + Constants.PS_SYSTEM_RETURN_DEPOSIT );
+                map.put("shipStatus", Constants.SS_SHIPED);
+            }
+            else if(order.getClientStatus().equals(Constants.CS_CANCEL)) {
+                map.put("orderStatus", Constants.OS_CANCEL);
+            }
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("curTime",System.currentTimeMillis());
             List<AutoCar> carList = autoCarService.queryOrderList(map,page);
-            if(carList!=null && carList.size()>0){
+
+            if(carList!=null && !carList.isEmpty()){
                 JSONArray array=new JSONArray();
                 for(AutoCar car:carList){
                     JSONObject object=new JSONObject();
@@ -544,7 +614,9 @@ public class AutoOrderController extends BaseController {
                     array.add(object);
                 }
                 result.setData(array);
+                result.setTotal(page.getTotal());
             }
+
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("查询订单列表信息出错！");
@@ -573,11 +645,24 @@ public class AutoOrderController extends BaseController {
             if((order.getBuyerId() == null || order.getBuyerId() == 0) &&
                     (order.getSellerId() != null || order.getSellerId() == 0)){
                 result.setCode(-1);
-                result.setMsg("查询用户不能为空！");
+                result.setMsg("用户不能为空！");
                 return result;
             }
+
             if(order.getBuyerId() != null && order.getBuyerId() > 0){
                 int buyerId = order.getBuyerId();
+                AutoUser find = autoUserService.query(buyerId, null);
+                if(find == null){
+                    result.setCode(1);
+                    result.setMsg("该用户不存在！");
+                    return result;
+                }
+                if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                    result.setCode(1);
+                    result.setMsg("该账户已被禁用！");
+                    return result;
+                }
+
                 order = autoOrderService.query(order.getOrderId(), null);
                 if(order == null){
                     result.setCode(1);
@@ -592,6 +677,17 @@ public class AutoOrderController extends BaseController {
             }
             else if(order.getSellerId() != null && order.getSellerId() > 0){
                 int sellerId = order.getSellerId();
+                AutoUser find = autoUserService.query(sellerId, null);
+                if(find == null){
+                    result.setCode(1);
+                    result.setMsg("该用户不存在！");
+                    return result;
+                }
+                if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                    result.setCode(1);
+                    result.setMsg("该账户已被禁用！");
+                    return result;
+                }
                 order = autoOrderService.query(order.getOrderId(), null);
                 if(order == null){
                     result.setCode(1);
