@@ -1,12 +1,20 @@
 package puzzle.lianche.utils;
 
+import com.thoughtworks.xstream.core.util.Base64Encoder;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EncryptUtil {
 
@@ -92,16 +100,7 @@ public class EncryptUtil {
         return input;
     }
 
-	/**
-	 * 加密
-	 * 
-	 * @param content
-	 *            需要加密的内容
-	 * @param password
-	 *            加密密码
-	 * @return
-	 */
-	public static byte[] encryptAES(String content, String password) {
+	public static byte[] AESEncrypt(String content, String password) {
 		try {
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");
 			kgen.init(128, new SecureRandom(password.getBytes()));
@@ -129,16 +128,7 @@ public class EncryptUtil {
 		return null;
 	}
 
-	/**
-	 * 解密
-	 * 
-	 * @param content
-	 *            待解密内容
-	 * @param password
-	 *            解密密钥
-	 * @return
-	 */
-	public static byte[] decryptAES(byte[] content, String password) {
+	public static byte[] AESDecrypt(byte[] content, String password) {
 		try {
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");
 			kgen.init(128, new SecureRandom(password.getBytes()));
@@ -162,4 +152,99 @@ public class EncryptUtil {
 		}
 		return null;
 	}
+
+
+
+    public class RSAUtil{
+        private Map<String, Object> mKeys = new HashMap<String, Object>();
+        public static final String KEY_ALGORITHM = "SHA1WithRSA";
+        private static final String PUBLIC_KEY = "RSAPublicKey";
+        private static final String PRIVATE_KEY = "RSAPrivateKey";
+
+        /**
+         * 初始化密钥
+         * @throws Exception
+         */
+        public void initKey() throws Exception{
+            KeyPairGenerator generator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+            generator.initialize(1024);
+            KeyPair pair = generator.generateKeyPair();
+            RSAPrivateKey privateKey = (RSAPrivateKey)pair.getPrivate();
+            RSAPublicKey publicKey = (RSAPublicKey)pair.getPrivate();
+            mKeys.put(PUBLIC_KEY, publicKey);
+            mKeys.put(PRIVATE_KEY, privateKey);
+        }
+
+        /**
+         * 获取私钥字符串
+         */
+        public String getPrivateKey(Map<String, Object> map){
+            Key key = (Key)map.get(PRIVATE_KEY);
+            return new BASE64Encoder().encode(key.getEncoded());
+        }
+
+        /**
+         * 获取公钥字符串
+         */
+        public String getPublicKey(Map<String, Object> map){
+            Key key = (Key)map.get(PUBLIC_KEY);
+            return new BASE64Encoder().encode(key.getEncoded());
+        }
+
+        /**
+         * 加密字符串
+         * @param publicKey  公钥字符串（经过base64编码）
+         * @param data       需要加密的字符串
+         * @throws Exception
+         */
+        public String encrypt(String publicKey, String data) throws Exception {
+            PublicKey key = getPublicKey(publicKey);
+            Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            byte[] enBytes = cipher.doFinal(data.getBytes());
+            return (new BASE64Encoder()).encode(enBytes);
+        }
+
+        /**
+         * 解密字符串
+         * @param privateKey 私钥字符串（经过base64编码）
+         * @param data       需要解密的字符串
+         * @throws Exception
+         */
+        public String decrypt(String privateKey, String data) throws Exception {
+            PrivateKey key = getPrivateKey(privateKey);
+            Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            byte[] deBytes = cipher.doFinal(new BASE64Decoder().decodeBuffer(data));
+            return new String(deBytes);
+        }
+
+        /**
+         * 根据字符串获取公钥对象
+         * @param key 密钥字符串（经过base64编码）
+         * @throws Exception
+         */
+        public PublicKey getPublicKey(String key) throws Exception {
+            byte[] keyBytes;
+            keyBytes = (new BASE64Decoder()).decodeBuffer(key);
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+            KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+            PublicKey publicKey = keyFactory.generatePublic(keySpec);
+            return publicKey;
+        }
+
+        /**
+         * 根据字符串获取私钥对象
+         * @param key 密钥字符串（经过base64编码）
+         * @throws Exception
+         */
+        public PrivateKey getPrivateKey(String key) throws Exception {
+            byte[] keyBytes;
+            keyBytes = (new BASE64Decoder()).decodeBuffer(key);
+            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
+            KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+            PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+            return privateKey;
+        }
+    }
 }

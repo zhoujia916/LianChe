@@ -168,7 +168,6 @@ public class AutoCarController extends BaseController {
                 return result;
             }
 
-
             JSONObject jsonCar = new JSONObject();
             jsonCar.put("carId", car.getCarId());
             jsonCar.put("carName", car.getCarName());
@@ -248,6 +247,27 @@ public class AutoCarController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         try{
             //region Check Input
+            if(car == null){
+                result.setCode(1);
+                result.setMsg("车源不能为空！");
+                return result;
+            }
+            if(car.getAddUserId() == null || car.getAddUserId() == 0){
+                result.setCode(1);
+                result.setMsg("用户不能为空！");
+                return result;
+            }
+            AutoUser find = autoUserService.query(car.getAddUserId(), null);
+            if(find == null){
+                result.setCode(1);
+                result.setMsg("该用户不存在！");
+                return result;
+            }
+            if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                result.setCode(1);
+                result.setMsg("该账户已被禁用！");
+                return result;
+            }
             if(car.getBrandId() == null || car.getBrandId() == 0){
                 result.setCode(-1);
                 result.setMsg("请选择车型相关信息！");
@@ -394,6 +414,58 @@ public class AutoCarController extends BaseController {
             result.setCode(1);
             result.setMsg("发布车源信息出错!");
             logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 删除用户车源
+     * @param car
+     * @return
+     */
+    @RequestMapping(value = "/delete.do")
+    @ResponseBody
+    public Result delete(AutoCar car){
+        Result result = new Result();
+        try {
+            if(car == null || car.getCarId() == null || car.getCarId() == 0){
+                result.setCode(1);
+                result.setMsg("车源不能为空！");
+                return result;
+            }
+            AutoCar existCar = autoCarService.query(car.getCarId());
+            if(existCar == null){
+                result.setCode(1);
+                result.setMsg("该车源不存在！");
+                return result;
+            }
+            AutoUser existUser = autoUserService.query(car.getAddUserId(), null);
+            if(existUser == null){
+                result.setCode(1);
+                result.setMsg("该用户不存在！");
+                return result;
+            }
+            if(existUser.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                result.setCode(1);
+                result.setMsg("该账户已被禁用！");
+                return result;
+            }
+            if(existCar.getAddUserId() != car.getAddUserId()){
+                result.setCode(1);
+                result.setMsg("您不能删除该车源信息！");
+                return result;
+            }
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("carId", car.getCarId());
+            if(!autoCarService.delete(map)){
+                result.setCode(1);
+                result.setMsg("删除车源信息失败！");
+            }
+        }
+        catch (Exception e){
+            result.setCode(1);
+            result.setMsg("删除车源信息出错！");
+            logger.error(e.getMessage());
         }
         return result;
     }
