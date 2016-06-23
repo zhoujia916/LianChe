@@ -69,13 +69,13 @@ public class AutoCarServiceImpl implements IAutoCarService {
         try{
             if(sqlMapper.update("AutoCarMapper.update", entity)){
                 Map map=new HashMap();
-                if (entity.getAttr() != null && entity.getAttr().size() > 0) {
+                if (entity.getAttrs() != null && entity.getAttrs().size() > 0) {
                     map.put("carId",entity.getCarId());
                     autoCarAttrService.delete(map);
-                    for (int i = 0; i < entity.getAttr().size(); i++) {
-                        entity.getAttr().get(i).setCarId(entity.getCarId());
+                    for (int i = 0; i < entity.getAttrs().size(); i++) {
+                        entity.getAttrs().get(i).setCarId(entity.getCarId());
                     }
-                    autoCarAttrService.insertBatch(entity.getAttr());
+                    autoCarAttrService.insertBatch(entity.getAttrs());
                 }
                 if(entity.getPics() != null && entity.getPics().size() > 0){
                     map.put("carId",entity.getCarId());

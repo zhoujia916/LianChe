@@ -160,10 +160,10 @@ public class CarController extends ModuleController {
                 autoCar.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getEndTimeString() + " 23:59:59")));
                 autoCar.setStatus(Constants.AUTO_CAR_STATUS_ON);
                 autoCar.setCarType(Constants.AUTO_CAR_TYPE_COMMON);
-                for(int i = 0; i < autoCar.getAttr().size(); i++){
-                    AutoCarAttr carAttr = autoCar.getAttr().get(i);
-                    autoCar.getAttr().get(i).setLockNumber(0);
-                    autoCar.getAttr().get(i).setSurplusNumber(carAttr.getTotalNumber());
+                for(int i = 0; i < autoCar.getAttrs().size(); i++){
+                    AutoCarAttr carAttr = autoCar.getAttrs().get(i);
+                    autoCar.getAttrs().get(i).setLockNumber(0);
+                    autoCar.getAttrs().get(i).setSurplusNumber(carAttr.getTotalNumber());
                     double price = autoCar.getOfficalPrice();
                     if(carAttr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP) {
                         if (carAttr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY) {
@@ -179,7 +179,7 @@ public class CarController extends ModuleController {
                             price -= price * carAttr.getSaleAmount() / 100;
                         }
                     }
-                    autoCar.getAttr().get(i).setPrice(price);
+                    autoCar.getAttrs().get(i).setPrice(price);
                 }
                 autoCar.setSortOrder(0);
                 if(!autoCarService.insert(autoCar)){
@@ -235,10 +235,10 @@ public class CarController extends ModuleController {
                 autoCar.setCarName(model.getBrandName() + model.getCatName() + model.getModelName());
                 autoCar.setStartDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getBeginTimeString() + " 00:00:00")));
                 autoCar.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getEndTimeString() + " 23:59:59")));
-                for(int i = 0; i < autoCar.getAttr().size(); i++){
-                    AutoCarAttr carAttr = autoCar.getAttr().get(i);
-                    autoCar.getAttr().get(i).setLockNumber(0);
-                    autoCar.getAttr().get(i).setSurplusNumber(carAttr.getTotalNumber());
+                for(int i = 0; i < autoCar.getAttrs().size(); i++){
+                    AutoCarAttr carAttr = autoCar.getAttrs().get(i);
+                    autoCar.getAttrs().get(i).setLockNumber(0);
+                    autoCar.getAttrs().get(i).setSurplusNumber(carAttr.getTotalNumber());
                     double price = autoCar.getOfficalPrice();
                     if(carAttr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP) {
                         if (carAttr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY) {
@@ -254,7 +254,7 @@ public class CarController extends ModuleController {
                             price -= price * carAttr.getSaleAmount() / 100;
                         }
                     }
-                    autoCar.getAttr().get(i).setPrice(price);
+                    autoCar.getAttrs().get(i).setPrice(price);
                 }
                 if(!autoCarService.update(autoCar)){
                     result.setCode(1);
