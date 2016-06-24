@@ -62,10 +62,10 @@ public class LogController extends ModuleController{
                 map.put("logType",systemLog.getLogTypeId());
             }
             if(systemLog.getBeginTimeString()!=null && systemLog.getBeginTimeString()!=""){
-                map.put("beginTime",ConvertUtil.toLong(ConvertUtil.toDate(systemLog.getBeginTimeString()+" 00:00:00")));
+                map.put("beginTime",ConvertUtil.toLong(ConvertUtil.toDateTime(systemLog.getBeginTimeString()+" 00:00:00")));
             }
             if(systemLog.getEndTimeString()!=null && systemLog.getEndTimeString()!=""){
-                map.put("endTime",ConvertUtil.toLong(ConvertUtil.toDate(systemLog.getEndTimeString()+" 23:59:59")));
+                map.put("endTime",ConvertUtil.toLong(ConvertUtil.toDateTime(systemLog.getEndTimeString()+" 23:59:59")));
             }
             List<SystemLog> list=systemLogService.queryList(map,page);
             if(list!=null&&list.size()>0){

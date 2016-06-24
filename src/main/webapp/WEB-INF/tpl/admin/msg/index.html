@@ -132,7 +132,12 @@
                                     <div class="col-sm-9">
                                         <select id="toUserIds" name="toUserIds" class="multiselect" multiple="">
                                             {{foreach from=$userList item=user}}
-                                                <option value="{{$user.userId}}">{{$user.userName}}</option>
+                                                <option value="{{$user.userId}}">
+                                                    {{$user.userName}}
+                                                    {{if $user.realName!=null}}
+                                                        ({{$user.realName}})
+                                                    {{/if}}
+                                                </option>
                                             {{/foreach}}
                                         </select>
                                     </div>

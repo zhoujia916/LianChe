@@ -236,6 +236,15 @@ public class AutoOrder implements Serializable{
     private String buyerName;
     private String buyerRealName;
     private Integer price;
+    private double carNumber;
+
+    public double getCarNumber() {
+        return carNumber;
+    }
+
+    public void setCarNumber(double carNumber) {
+        this.carNumber = carNumber;
+    }
 
 
     public String getPutTimeString() {
