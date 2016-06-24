@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import puzzle.lianche.entity.AutoUser;
 import puzzle.lianche.entity.AutoUserPic;
-import puzzle.lianche.service.IAutoCollectService;
-import puzzle.lianche.service.IAutoUserPicService;
-import puzzle.lianche.service.IAutoUserProfileService;
-import puzzle.lianche.service.IAutoUserService;
+import puzzle.lianche.service.*;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.mapper.SqlMapper;
 import puzzle.lianche.utils.StringUtil;
@@ -35,6 +32,12 @@ public class AutoUserServiceImpl implements IAutoUserService {
     @Autowired
     private IAutoCollectService autoCollectService;
 
+    @Autowired
+    private IAutoMsgService autoMsgService;
+
+    @Autowired
+    private IAutoFeedbackService autoFeedbackService;
+
     private static Logger logger = LoggerFactory.getLogger(AutoUserServiceImpl.class);
 
     /**
@@ -48,6 +51,10 @@ public class AutoUserServiceImpl implements IAutoUserService {
         autoUserProfileService.delete(map);
         //删除会员收藏
         autoCollectService.delete(map);
+        //删除会员的相关推送信息
+        autoMsgService.delete(map);
+        //删除会员的反馈信息
+        autoFeedbackService.delete(map);
     }
 	/**
 	* 插入单条记录

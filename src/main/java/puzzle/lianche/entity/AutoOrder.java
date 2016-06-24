@@ -237,7 +237,6 @@ public class AutoOrder implements Serializable{
     private String buyerRealName;
     private Integer price;
     private double carNumber;
-
     public double getCarNumber() {
         return carNumber;
     }

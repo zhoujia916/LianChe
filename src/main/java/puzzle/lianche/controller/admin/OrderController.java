@@ -92,9 +92,13 @@ public class OrderController extends ModuleController {
                     jsonObject.put("payStatus",Constants.PAY_STATUS.get(order.getPayStatus()));
                     jsonObject.put("shipStatus",Constants.SHIP_STATUS.get(order.getShipStatus()));
                     jsonObject.put("sellerName",order.getSellerName());
-                    jsonObject.put("sellerRealName",order.getSellerRealName());
+                    if(order.getSellerRealName()!=null){
+                        jsonObject.put("sellerName",order.getSellerName()+"("+order.getSellerRealName()+")");
+                    }
                     jsonObject.put("buyerName",order.getBuyerName());
-                    jsonObject.put("buyerRealName",order.getBuyerRealName());
+                    if(order.getBuyerRealName()!=null){
+                        jsonObject.put("buyerName",order.getBuyerName()+"("+order.getBuyerRealName()+")");
+                    }
                     jsonObject.put("carNumber",order.getCarNumber());
                     jsonObject.put("price",order.getAmount());
                     jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(order.getAddTime())));
@@ -150,6 +154,7 @@ public class OrderController extends ModuleController {
                 autoOrder.getCar().setCarPrice(price);
                 autoOrder.getCar().setSendNumber(0);
                 autoOrder.setCar(autoOrder.getCar());
+                autoOrder.setPutTime(ConvertUtil.toLong(ConvertUtil.toDate(autoOrder.getPutTimeString())));
                 if(!autoOrderService.insert(autoOrder)){
                     result.setCode(1);
                     result.setData("保存订单信息出错！");
@@ -205,7 +210,6 @@ public class OrderController extends ModuleController {
                     array.add(object);
                 }
             }
-            System.out.println(array.toString());
         }catch(Exception e){
             logger.error("查看车源属性出错！"+e.getMessage());
         }

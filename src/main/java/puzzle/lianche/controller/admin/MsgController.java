@@ -73,11 +73,14 @@ public class MsgController extends ModuleController {
                 for(AutoMsg msg:list){
                     if(msg.getFromUserName()==null && msg.getFromRealName()==null){
                         msg.setFromUserName("系统");
-                        msg.setFromRealName("系统");
+                    }
+                    if(msg.getToRealName()!=null){
+                        msg.setToUserName(msg.getToUserName()+"("+msg.getToRealName()+")");
                     }
                     JSONObject jsonObject=JSONObject.fromObject(msg);
                     jsonObject.put("msgType",Constants.MAP_AUTO_MSG_TYPE.get(msg.getMsgType()));
                     jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(msg.getAddTime())));
+
                     array.add(jsonObject);
                 }
                 result.setData(array);

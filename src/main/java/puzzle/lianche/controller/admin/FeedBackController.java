@@ -66,6 +66,9 @@ public class FeedBackController extends ModuleController {
                             }
                         }
                     }
+                    if(feedback.getRealName()!=null){
+                        feedback.setUserName(feedback.getUserName()+"("+feedback.getRealName()+")");
+                    }
                     jsonObject.put("pic", stringBuffer.toString());
                     jsonObject.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(feedback.getAddTime())));
                     array.add(jsonObject);

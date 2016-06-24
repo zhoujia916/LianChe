@@ -59,9 +59,7 @@
                         <th>支付状态</th>
                         <th>物流状态</th>
                         <th>卖方姓名</th>
-                        <th>卖方真实姓名</th>
                         <th>买方姓名</th>
-                        <th>买方真实姓名</th>
                         <th>数量</th>
                         <th>售价</th>
                         <th>订购时间</th>
@@ -155,6 +153,15 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">
+                                        提车时间
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" id="putTime" name="putTimeString" placeholder="提车时间" class="txt input-sm col-sm-5 "/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
                                         加配
                                     </label>
 
@@ -213,6 +220,11 @@
                     });
                     $("#markId").attr("value",carId);
                 }
+            }else{
+                $("#carAttrId").empty();
+                $("#carAttrId").append("<option value='0'>请选择属性</option>");
+                $("#markId").empty();
+                $("#markId").attr("value",carId);
             }
         });
 
@@ -254,6 +266,20 @@
         $( "#datepicker2" ).datepicker({
             showOtherMonths: true,
             selectOtherMonths: false
+        });
+
+        $( "#putTime" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $(".btn-action[data-action='select']").click(function(){
+            var key = $("#order-gridview").gridview("getKey");
+            if(!key){
+                showAlert("请选择记录！");
+                return;
+            }
+            changeHash("admin/orderdetails/index/"+ key);
         });
 
         $("#order-gridview").gridview({
@@ -321,13 +347,7 @@
                     name: "sellerName"
                 },
                 {
-                    name: "sellerRealName"
-                },
-                {
                     name: "buyerName"
-                },
-                {
-                    name: "buyerRealName"
                 },
                 {
                     name: "carNumber"

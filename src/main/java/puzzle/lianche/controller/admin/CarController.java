@@ -88,7 +88,9 @@ public class CarController extends ModuleController {
                         jsonObject.put("surplusNumber",surplusNumber);
                     }
                     jsonObject.put("userName",car.getUserName());
-                    jsonObject.put("realName",car.getRealName());
+                    if(car.getRealName()!=null){
+                        jsonObject.put("userName",car.getUserName()+"("+car.getRealName()+")");
+                    }
                     jsonObject.put("status",car.getStatus());
                     jsonObject.put("sortOrder",car.getSortOrder());
                     array.add(jsonObject);

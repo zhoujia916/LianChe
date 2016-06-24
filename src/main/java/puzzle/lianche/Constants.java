@@ -427,6 +427,8 @@ public class Constants {
         public static final String ADMIN_SMS = "admin/sms/index";
 
         public static final String ADMIN_ORDER = "admin/order/index";
+
+        public static final String ADMIN_ORDER_DETAILS = "admin/orderdetails/index";
     }
 
     public class PageHelper{
