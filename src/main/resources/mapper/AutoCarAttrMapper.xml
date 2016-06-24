@@ -81,11 +81,8 @@
     </insert>
 
     <update id="update" parameterType="AutoCarAttr">
-        update auto_car_attr set
+        update auto_car_attr
         <set>
-            <if test="carId != null">
-                car_id = #{carId}
-            </if>
             <if test="outsideColor != null">
                 outside_color = #{outsideColor},
             </if>
@@ -141,13 +138,12 @@
     <select id="query" parameterType="Map" resultMap="AutoCarAttr">
         select * from auto_car_attr
         <where>
-            <if test="carAttrId > 0">
-                and car_attr_id = #{carAttrId}
-            </if>
+            <trim prefixOverrides="and | or">
+                <if test="carAttrId != null and carAttrId > 0">
+                    and car_attr_id = #{carAttrId}
+                </if>
+            </trim>
         </where>
-        <if test="sort != null and sort != ''">
-            order by ${sort}
-        </if>
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoCarAttr">

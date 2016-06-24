@@ -95,7 +95,8 @@ public class AutoOrderController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("取消订单出错");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -158,8 +159,9 @@ public class AutoOrderController extends BaseController {
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("支付订金操作失败！");
-            logger.error(result.getMsg()+e.getMessage());
+            result.setMsg("支付订金操作出错！");
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -215,7 +217,8 @@ public class AutoOrderController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("拒绝订单操作失败！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -273,7 +276,8 @@ public class AutoOrderController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("同意订单操作失败！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -337,7 +341,8 @@ public class AutoOrderController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("订单收货操作失败！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -399,8 +404,9 @@ public class AutoOrderController extends BaseController {
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("通知订单收货操作失败！");
-            logger.error(result.getMsg()+e.getMessage());
+            result.setMsg("通知订单收货操作出错！");
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -443,6 +449,12 @@ public class AutoOrderController extends BaseController {
                 return result;
             }
 
+            if(StringUtil.isNullOrEmpty(order.getPutTimeString())){
+                result.setCode(1);
+                result.setMsg("提车时间不能为空！");
+                return result;
+            }
+
             AutoOrderCar orderCar = order.getCar();
 
             Map<String, Object> map = new HashMap<String, Object>();
@@ -453,12 +465,19 @@ public class AutoOrderController extends BaseController {
                 result.setMsg("车源不能为空！");
                 return result;
             }
+            if(car.getAddUserId() == order.getBuyerId()){
+                result.setCode(-1);
+                result.setMsg("买家不能购买自己的车源！");
+                return result;
+            }
+
 
             if(StringUtil.isNullOrEmpty(orderCar.getCarAttrId())){
                 result.setCode(-1);
                 result.setMsg("请选择外观和内饰！");
                 return result;
             }
+
 
             map.clear();
             map.put("carId", orderCar.getCarId());
@@ -506,7 +525,7 @@ public class AutoOrderController extends BaseController {
             order.setShipTime(0);
             order.setAmount(price * orderCar.getCarNumber());
             order.setAddTime(ConvertUtil.toLong(new Date()));
-
+            order.setPutTime(ConvertUtil.toLong(ConvertUtil.toDate(order.getPutTimeString())));
 
             orderCar.setCarPrice(price);
             orderCar.setSendNumber(0);
@@ -516,19 +535,22 @@ public class AutoOrderController extends BaseController {
 
             if(!autoOrderService.insert(order)){
                 result.setCode(1);
-                result.setData("保存订单信息出错！");
+                result.setMsg("保存订单信息失败！");
+            }else{
+                result.setData(order.getOrderId());
             }
 
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("保存订单信息出错！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
 
     /**
-     * 查询订单列表
+     * 查询订单列表(买家)
      * @param order
      * @param page
      * @return
@@ -538,6 +560,7 @@ public class AutoOrderController extends BaseController {
     public Result list(AutoOrder order,Page page){
         Result result = new Result();
         try{
+            HashMap<String, Object> map = new HashMap<String, Object>();
             if(order ==null || order.getBuyerId() == null || order.getBuyerId() == 0 ||
                     order.getClientStatus() == null){
                 result.setCode(-1);
@@ -562,65 +585,71 @@ public class AutoOrderController extends BaseController {
                 map.put("shipStatus", Constants.SS_UNSHIP);
             }
             else if(order.getClientStatus().equals(Constants.CS_DEPOSIT)){
-                map.put("orderStatusList", Constants.OS_SUBMIT + "," + Constants.OS_ACCEPT + "," + Constants.OS_EXECUTE);
+                map.put("orderStatusList", Constants.OS_SUBMIT + "," + Constants.OS_EXECUTE);
                 map.put("payStatusList", Constants.PS_BUYER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SELLER_DEPOSIT + "," + Constants.PS_SELLER_PAY_DEPOSIT);
                 map.put("shipStatus", Constants.SS_UNSHIP);
             }
             else if(order.getClientStatus().equals(Constants.CS_SUCCESS)){
                 map.put("orderStatusList", Constants.OS_SUCCESS);
-                map.put("payStatusList", Constants.PS_SELLER_PAY_DEPOSIT + "," + Constants.PS_WAIT_RETURN_DEPOSIT + "," + Constants.PS_SYSTEM_RETURN_DEPOSIT );
+                map.put("payStatusList", Constants.PS_SELLER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SYSTEM_DEPOSIT + "," + Constants.PS_SYSTEM_RETURN_DEPOSIT );
                 map.put("shipStatus", Constants.SS_SHIPED);
             }
             else if(order.getClientStatus().equals(Constants.CS_CANCEL)) {
                 map.put("orderStatus", Constants.OS_CANCEL);
             }
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("curTime",System.currentTimeMillis());
-            List<AutoCar> carList = autoCarService.queryOrderList(map,page);
+            List<AutoOrder> orderList = autoOrderService.queryList(map, page);
 
-            if(carList!=null && !carList.isEmpty()){
-                JSONArray array=new JSONArray();
-                for(AutoCar car:carList){
-                    JSONObject object=new JSONObject();
-                    object.put("collectId",car.getCollectId());
-                    object.put("carId",car.getCarId());
-                    object.put("carName",car.getCarName());
-                    object.put("brandName",car.getBrandName());
-                    object.put("catName",car.getCatName());
-                    object.put("officalPrice",(car.getOfficalPrice()));
+            JSONArray jsonOrderArray = new JSONArray();
+            if(orderList != null && !orderList.isEmpty()){
+                for(AutoOrder orderItem : orderList){
+                    JSONObject jsonOrderItem = new JSONObject();
+                    jsonOrderItem.put("orderId", orderItem.getOrderId());
+                    jsonOrderItem.put("orderSn", orderItem.getOrderSn());
+                    jsonOrderItem.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(orderItem.getAddTime()), "MM-dd HH:mm"));
+
+                    jsonOrderItem.put("operate", autoOrderService.queryOperate(orderItem));
+
                     map.clear();
-                    map.put("carPicId", car.getCarId());
-                    AutoCarPic carPic=autoCarPicService.query(map);
-                    if(carPic!=null){
-                        object.put("pic",carPic.getPath());
-                    }
+                    map.put("orderId", orderItem.getOrderId());
+                    AutoOrderCar orderCar = autoOrderCarService.query(map);
+
                     map.clear();
-                    map.put("attrCarId",car.getCarId());
-                    List<AutoCarAttr> attrList=autoCarAttrService.queryList(map);
-                    if(attrList!=null && attrList.size()>0){
-                        List<AutoCarAttr> carAttrList=new ArrayList<AutoCarAttr>();
-                        for(AutoCarAttr attrs:attrList){
-                            carAttrList.add(attrs);
-                        }
-                        object.put("attrs",carAttrList);
-                    }
-                    object.put("status",car.getStatus());
-                    object.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(car.getAddTime()),"MM-dd HH:mm"));
-                    if(car.getUserStatus()==Constants.AUTO_USER_STATUS_AUTH_SUCCESS){
-                        object.put("addUserAuth",1);
-                    }else{
-                        object.put("addUserAuth",0);
-                    }
-                    array.add(object);
+                    map.put("carId", orderCar.getCarId());
+                    AutoCar car = autoCarService.query(map);
+
+                    map.clear();
+                    map.put("carAttrId", orderCar.getCarAttrId());
+                    AutoCarAttr catAttr = autoCarAttrService.query(map);
+
+                    JSONObject jsonCar = new JSONObject();
+                    jsonCar.put("carId", car.getCarId());
+                    jsonCar.put("pic", car.getPic());
+                    jsonCar.put("brandName", car.getBrandName());
+                    jsonCar.put("catName", car.getCatName());
+                    jsonCar.put("carName", car.getCarName());
+                    jsonCar.put("officalPrice", car.getOfficalPrice());
+
+                    JSONObject jsonAttr = new JSONObject();
+                    jsonAttr.put("outsideColor", catAttr.getOutsideColor());
+                    jsonAttr.put("quoteType", catAttr.getQuoteType());
+                    jsonAttr.put("salePriceType", catAttr.getSalePriceType());
+                    jsonAttr.put("saleAmount", catAttr.getSaleAmount());
+
+                    jsonCar.put("attr", jsonAttr);
+
+                    jsonOrderItem.put("car", jsonCar);
+
+                    jsonOrderArray.add(jsonOrderItem);
                 }
-                result.setData(array);
-                result.setTotal(page.getTotal());
             }
+            result.setData(jsonOrderArray);
+            result.setTotal(page.getTotal());
 
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("查询订单列表信息出错！");
-            logger.error(result.getMsg()+e.getMessage());
+            result.setMsg("查询订单信息出错！");
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -642,8 +671,7 @@ public class AutoOrderController extends BaseController {
                 result.setMsg("订单不能为空！");
                 return result;
             }
-            if((order.getBuyerId() == null || order.getBuyerId() == 0) &&
-                    (order.getSellerId() != null || order.getSellerId() == 0)){
+            if((order.getBuyerId() == null || order.getBuyerId() == 0) && (order.getSellerId() != null || order.getSellerId() == 0)){
                 result.setCode(-1);
                 result.setMsg("用户不能为空！");
                 return result;
@@ -707,7 +735,8 @@ public class AutoOrderController extends BaseController {
         } catch (Exception e) {
             result.setCode(1);
             result.setMsg("查看订单详情信息出错！");
-            logger.error(result.getMsg() + e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }

@@ -558,4 +558,14 @@ public class AutoCar implements Serializable{
     }
 
     private String cityName;
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    private Double price;
 }

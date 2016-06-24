@@ -216,13 +216,16 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoCar">
-        select ac.*, p.region_name as province_name, c.region_name as city_name
+        select ac.*, p.region_name as province_name, c.region_name as city_name, ab.brand_name, abc.cat_name
         <if test="viewUserId != null and viewUserId > 0">
             ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
         </if>
+
         from auto_car as ac
         left join auto_region as p on p.region_id = ac.province
         left join auto_region as c on c.region_id = ac.city
+        inner join auto_brand as ab on ab.brand_id=ac.brand_id
+        inner join auto_brand_cat as abc on abc.cat_id=ac.brand_cat_id
         <where>
             <if test="carId != null and carId > 0">
                 ac.car_id = #{carId}
@@ -336,9 +339,7 @@
             <if test="buyerId !=null and buyerId > 0">
                 and ao.buyer_id = ${buyerId}
             </if>
-            <if test="filter != null and filter != ''">
-                and ${filter}
-            </if>
+
             <if test="orderStatusList != null and orderStatusList !=''">
                 and ao.order_status in (${orderStatusList})
             </if>
@@ -356,6 +357,9 @@
             </if>
             <if test="curTime != null and curTime > 0">
                 and #{curTime} &gt;= start_date and #{curTime} &lt;= end_date
+            </if>
+            <if test="filter != null and filter != ''">
+                and ${filter}
             </if>
         </where>
         order by ${sort} ac.refresh_time desc, ac.car_id desc

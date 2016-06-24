@@ -237,6 +237,27 @@ public class AutoOrder implements Serializable{
     private String buyerRealName;
     private Integer price;
 
+
+    public String getPutTimeString() {
+        return putTimeString;
+    }
+
+    public void setPutTimeString(String putTimeString) {
+        this.putTimeString = putTimeString;
+    }
+
+    public String putTimeString;
+
+    public Long getPutTime() {
+        return putTime;
+    }
+
+    public void setPutTime(Long putTime) {
+        this.putTime = putTime;
+    }
+
+    private Long putTime;
+
     public Integer getPrice() {
         return price;
     }

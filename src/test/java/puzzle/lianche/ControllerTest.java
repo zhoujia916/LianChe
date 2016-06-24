@@ -24,10 +24,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.*;
 
 @WebAppConfiguration
 @Transactional
@@ -45,56 +49,28 @@ public class ControllerTest {
     @Before
     public void setup() {
         try {
-
             this.mockMvc = webAppContextSetup(wac).build();
         }
         catch (Exception e){
             e.printStackTrace();
         }
-
-//        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).alwaysExpect(status().isOk()).build();
-//        this.mockMvc = MockMvcBuilders.standaloneSetup(userService).build();
     }
 
     @Test
-//    @Rollback(false)  //有些单元测试你不希望回滚
-    public void testAdminLogin() throws Exception{
-//        mockMvc.perform((get("/admin/"))).andExpect(status().isOk())
-//                .andDo(print());
+    public void phoneAutoUserSendCode() throws Exception{
+        mockMvc.perform(post("/phone/autouser/sendCode.do"))
+                .andExpect(status().isOk()).andDo(print());
 
-//        mockMvc.perform((get("/admin/login"))).andExpect(status().isOk())
-//                .andDo(print());
-//
-//        mockMvc.perform((get("/admin/index"))).andExpect(status().is3xxRedirection())
-//                .andDo(print());
+        mockMvc.perform(post("/phone/autouser/sendCode.do").param("phone", "123456"))
+                .andExpect(status().isOk()).andDo(print());
+
+        mockMvc.perform(post("/phone/autouser/sendCode.do").param("phone", "13501656316"))
+                .andExpect(status().isOk()).andDo(print());
     }
 
     @Test
-    public void testAdminMenu() throws Exception {
-        String src = "/179,153";
-        String pattern = "/[\\d,]+";
-        Assert.isTrue(src.matches(pattern));
-    }
-//
-//    @Test
-//    public void test3() throws Exception {
-//        mockMvc.perform((get("/user/testb.do"))).andExpect(status().isOk())
-//                .andDo(print());
-//
-//
-//    @Test
-//    public void test4() throws Exception {
-//        mockMvc.perform((post("/spring/post.do").param("abc", "def")))
-//                .andExpect(status().isOk()).andDo(print());
-//    }
-
-    @Test
-    @Rollback(false)
-    public void testPhoneUser() throws Exception {
-//        mockMvc.perform(((post("/phone/autouser/register.do").param("userName", "13658473085").param("password","111111")).param("code","743996")))
-        mockMvc.perform(((post("/phone/autouser/feedback.do").param("addUserId", "29").param("content","还可以，8分吧！"))))
-//        mockMvc.perform(((post("/phone/autouser/login.do").param("username", "13658473085").param("password","111111"))))
-//        mockMvc.perform(((post("/phone/autouser/collection.do").param("userId", "29").param("markId","1").param("carId","3"))))
+    public void phoneAutoUserRegister() throws Exception{
+        mockMvc.perform(post("/phone/autouser/register.do").param("userName", "13501656316").param("password", "111111").param("code", "123456"))
                 .andExpect(status().isOk()).andDo(print());
     }
 }

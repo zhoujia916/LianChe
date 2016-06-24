@@ -21,6 +21,8 @@ public interface IAutoOrderService{
 
     public String createSn(String key);
 
+    public List<String> queryOperate(AutoOrder order);
+
     public AutoOrder query(Integer orderId, String orderSn);
 
     public boolean doCancel(AutoOrder order);
