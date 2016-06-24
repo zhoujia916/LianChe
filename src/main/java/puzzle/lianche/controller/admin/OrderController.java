@@ -159,7 +159,21 @@ public class OrderController extends ModuleController {
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
 
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
-
+                Map map=new HashMap();
+                String id=request.getParameter("id");
+                String ids=request.getParameter("ids");
+                if(StringUtil.isNotNullOrEmpty(id)){
+                    map.put("orderId",ConvertUtil.toInt(id));
+                }else if(StringUtil.isNotNullOrEmpty(ids)){
+                    String[] orderIds=ids.split(",");
+                    map.put("orderIds",orderIds);
+                }
+                if(!autoOrderService.delete(map)){
+                    result.setCode(1);
+                    result.setMsg("删除订单出错！");
+                }else{
+                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除订单信息");
+                }
             }
         }catch(Exception e){
             result.setCode(1);
@@ -187,6 +201,7 @@ public class OrderController extends ModuleController {
                     JSONObject object=new JSONObject();
                     object.put("carAttrId",carAttr.getCarAttrId());
                     object.put("attrValue","外观:"+carAttr.getOutsideColor()+"-内饰:"+carAttr.getInsideColor());
+                    object.put("surplusNumber",carAttr.getSurplusNumber());
                     array.add(object);
                 }
             }

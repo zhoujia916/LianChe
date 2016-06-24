@@ -117,6 +117,12 @@
 	        	<if test="orderId != null and orderId > 0">
 	                order_id = #{orderId}
 	            </if>
+                <if test="orderIds != null and orderIds.length > 0">
+                    order_id in
+                    <foreach collection="orderIds" item="orderId" open="(" separator="," close=")">
+                        #{orderId}
+                    </foreach>
+                </if>
 	        	<if test="orderSn != null and orderSn != ''">
 	                order_sn = #{orderSn}
 	            </if>

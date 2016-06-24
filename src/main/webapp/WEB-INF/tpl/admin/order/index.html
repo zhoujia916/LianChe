@@ -31,7 +31,7 @@
                     <option value="5">等待系统退还订金</option>
                     <option value="6">系统已退还订金</option>
                 </select>
-                <select data-init="0" name="shipStatus">
+                <select data-init="0" name="shipStatus" style="height: 29px;width: 160px;">
                     <option value="0">请选择物流状态</option>
                     <option value="1">未提车</option>
                     <option value="2">已提车</option>
@@ -204,8 +204,9 @@
                                 $("#carAttrId").empty();
                                 $("#carAttrId").append("<option value='0'>请选择属性</option>");
                                 for (var i = 0; i < data.length; i++) {
+                                    $("#markId").append("<input type='hidden' id='" + data[i].carAttrId + "' value='"+data[i].surplusNumber+"'/>");
                                     $("#carAttrId").append("" +
-                                                    "<option value='" + data[i].carAttrId + "'>" + data[i].attrValue + "</option>");
+                                            "<option value='" + data[i].carAttrId + "'>" + data[i].attrValue + "(库存:"+data[i].surplusNumber+")</option>");
                                 }
                             }
                         }
@@ -263,6 +264,7 @@
                     var buyerId=$("#buyerId").val();
                     var carId=$("#carId").val();
                     var carAttrId=$("#carAttrId").val();
+                    var surplusNumber=$("#"+carAttrId+"").val();
                     var carNumber=$("#carNumber").val();
                     if(buyerId==0){
                         console.log("check form");
@@ -280,6 +282,14 @@
                         console.log("check form");
                         $("#carNumber").focus();
                         return "请输入数量";
+                    }else if(surplusNumber==0){
+                        console.log("check form");
+                        $("#carAttrId").focus();
+                        return "该车源属性库存为0,请重新选择";
+                    }else if(carNumber>surplusNumber){
+                        console.log("check form");
+                        $("#carNumber").focus();
+                        return "数量大于库存,请重新输入";
                     }else{
                         return true;
                     }
