@@ -74,7 +74,15 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
 	*/
 	@Override
     public boolean delete(Map<String, Object> map){
-    	return sqlMapper.delete("AutoOrderMapper.delete", map);
+        try{
+            if(sqlMapper.delete("AutoOrderMapper.delete", map)){
+                autoOrderCarService.delete(map);
+                return true;
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+    	return false;
     }
 
 	/**
