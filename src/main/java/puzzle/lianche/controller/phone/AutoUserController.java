@@ -107,6 +107,7 @@ public class AutoUserController extends BaseController {
             result.setCode(1);
             result.setMsg("发送短信验证码出错！");
             logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -186,7 +187,8 @@ public class AutoUserController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("注册会员信息出错！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -248,7 +250,8 @@ public class AutoUserController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("登录验证出错！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -319,7 +322,8 @@ public class AutoUserController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("修改新密码错误！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -388,7 +392,8 @@ public class AutoUserController extends BaseController {
         }catch(Exception e){
             result.setCode(1);
             result.setMsg("修改密码出错！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -476,6 +481,7 @@ public class AutoUserController extends BaseController {
             result.setCode(1);
             result.setMsg("完善个人时信息出错！");
             logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -521,6 +527,7 @@ public class AutoUserController extends BaseController {
             result.setCode(1);
             result.setMsg("保存用户图像出错！");
             logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -599,7 +606,8 @@ public class AutoUserController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("保存实名认证信息出错！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -645,7 +653,8 @@ public class AutoUserController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("查看会员中心出错！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -714,11 +723,13 @@ public class AutoUserController extends BaseController {
                     array.add(object);
                 }
                 result.setData(array);
+                result.setTotal(page.getTotal());
             }
         }catch(Exception e){
             result.setCode(1);
             result.setMsg("查看我的收藏出错！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -771,7 +782,8 @@ public class AutoUserController extends BaseController {
         }catch(Exception e){
             result.setCode(1);
             result.setMsg("删除车源收藏出错！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -833,7 +845,8 @@ public class AutoUserController extends BaseController {
         }catch(Exception e){
             result.setCode(1);
             result.setMsg("添加车源收藏出错！");
-            logger.error(result.getMsg()+e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -842,14 +855,15 @@ public class AutoUserController extends BaseController {
     /**
      * 查看消息中心
      * @param user
+     * @param page
      * @return
      */
     @RequestMapping(value = "/listMessage.do")
     @ResponseBody
-    public Result listMessage(AutoUser user){
+    public Result listMessage(AutoUser user, Page page){
         Result result=new Result();
         try{
-            if(user == null || user.getUserId()==null || user.getUserId()<=0){
+            if(user == null || user.getUserId() == null || user.getUserId() <= 0){
                 result.setCode(-1);
                 result.setMsg("用户不能为空！");
                 return result;
@@ -867,7 +881,7 @@ public class AutoUserController extends BaseController {
             }
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("toUserId", user.getUserId());
-            List<AutoMsg> msgList = autoMsgService.queryList(map);
+            List<AutoMsg> msgList = autoMsgService.queryList(map, page);
             if (msgList != null && msgList.size() > 0) {
                 JSONArray array = new JSONArray();
                 for (AutoMsg msg : msgList) {
@@ -879,57 +893,79 @@ public class AutoUserController extends BaseController {
                     array.add(jsonObject);
                 }
                 result.setData(array);
+                result.setTotal(page.getTotal());
             }
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("查看消息中心出错！");
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
 
     /**
      * 查看消息详细信息
-     * @param msgId
+     * @param msg
      * @return
      */
     @RequestMapping(value = "/showMessage.do")
     @ResponseBody
-    public Result showMessage(Integer msgId){
+    public Result showMessage(AutoMsg msg){
         Result result=new Result();
         try{
-            if(msgId==null || msgId<=0){
+            if(msg == null || msg.getMsgId() == null || msg.getMsgId() == 0){
                 result.setCode(-1);
-                result.setMsg("参数错误！");
+                result.setMsg("消息不能为空！");
                 return result;
             }
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("msgId", msgId);
-            AutoMsg msg = autoMsgService.query(map);
-            if (msg != null) {
-                msg.setViewCount(msg.getViewCount() + 1);
-                msg.setStatus(1);
-                autoMsgService.update(msg);
-                JSONArray array = new JSONArray();
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("msgId", msg.getMsgId());
-                jsonObject.put("msgTitle", msg.getMsgTitle());
-                if (msg.getFromUserName() == null && msg.getFromRealName() == null) {
-                    jsonObject.put("formUserName", "系统");
-                } else if (msg.getFromRealName() == null) {
-                    jsonObject.put("formUserName", msg.getFromUserName());
-                } else if (msg.getFromUserName() != null && msg.getFromRealName() != null) {
-                    jsonObject.put("formUserName", msg.getFromRealName());
-                }
-                jsonObject.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(msg.getAddTime()), "MM-dd HH:mm:ss"));
-                jsonObject.put("viewCount", msg.getViewCount());
-                jsonObject.put("msgContent", msg.getMsgContent());
-                array.add(jsonObject);
-                result.setData(array);
+            if(msg.getToUserId() == null || msg.getToUserId() == 0){
+                result.setCode(-1);
+                result.setMsg("用户不能为空！");
+                return result;
             }
+            AutoUser find = autoUserService.query(msg.getToUserId(), null);
+            if(find == null){
+                result.setCode(-1);
+                result.setMsg("用户不能为空！");
+                return result;
+            }
+            if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                result.setCode(-1);
+                result.setMsg("该账户被禁用！");
+                return result;
+            }
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("msgId", msg.getMsgId());
+            msg = autoMsgService.query(map);
+            if(msg == null){
+                result.setCode(-1);
+                result.setMsg("该消息不存在！");
+                return result;
+            }
+            msg.setViewCount(msg.getViewCount() + 1);
+            msg.setStatus(1);
+            autoMsgService.update(msg);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("msgId", msg.getMsgId());
+            jsonObject.put("msgTitle", msg.getMsgTitle());
+            if (msg.getFromUserName() == null && msg.getFromRealName() == null) {
+                jsonObject.put("formUserName", "系统");
+            } else if (msg.getFromRealName() == null) {
+                jsonObject.put("formUserName", msg.getFromUserName());
+            } else if (msg.getFromUserName() != null && msg.getFromRealName() != null) {
+                jsonObject.put("formUserName", msg.getFromRealName());
+            }
+            jsonObject.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(msg.getAddTime()), "MM-dd HH:mm:ss"));
+            jsonObject.put("viewCount", msg.getViewCount());
+            jsonObject.put("msgContent", msg.getMsgContent());
+            result.setData(jsonObject);
         }catch(Exception e){
             result.setCode(1);
             result.setMsg("查看消息详细信息出错！");
-            logger.error(result.getMsg() + e.getMessage());
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -965,26 +1001,26 @@ public class AutoUserController extends BaseController {
             map.put("addUserId",order.getSellerId());
 
             if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
-                String sql = " and (ao.order_id is null"
+                String sql = " (ao.order_id is null"
                             + " or (ao.order_status = " + Constants.OS_SUBMIT
                             + " and ao.pay_status = " + Constants.PS_WAIT_BUYER_DEPOSIT
                             + " and ao.ship_status = " + Constants.SS_UNSHIP + "))";
                 map.put("filter", sql);
             }
             else if(order.getClientStatus().equals(Constants.CS_DEPOSIT)){
-                String sql = " and ao.order_status in(" + Constants.OS_SUBMIT + "," + Constants.OS_EXECUTE + ") " +
+                String sql = " ao.order_status in(" + Constants.OS_SUBMIT + "," + Constants.OS_EXECUTE + ") " +
                              " and ao.pay_status in(" + Constants.PS_BUYER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SELLER_DEPOSIT + "," + Constants.PS_SELLER_PAY_DEPOSIT + ") " +
                              " and ao.ship_status = " + Constants.SS_UNSHIP;
                 map.put("filter", sql);
             }
             else if(order.getClientStatus().equals(Constants.CS_SUCCESS)){
-                String sql = " and ao.order_status  = " + Constants.OS_SUCCESS +
+                String sql = " ao.order_status  = " + Constants.OS_SUCCESS +
                              " and ao.pay_status in(" + Constants.PS_SELLER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SYSTEM_DEPOSIT + "," + Constants.PS_SYSTEM_RETURN_DEPOSIT + ") " +
                              " and ao.ship_status = " + Constants.SS_SHIPED;
                 map.put("filter", sql);
             }
             else if(order.getClientStatus().equals(Constants.CS_CANCEL)){
-                String sql = " and ao.order_status = " + Constants.OS_CANCEL;
+                String sql = " ao.order_status = " + Constants.OS_CANCEL;
                 map.put("filter", sql);
             }
             List<AutoCar> carList = autoCarService.queryOrderList(map,page);
@@ -1024,10 +1060,13 @@ public class AutoUserController extends BaseController {
                     array.add(object);
                 }
                 result.setData(array);
+                result.setTotal(page.getTotal());
             }
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("查看我的销车出错！");
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -1067,6 +1106,7 @@ public class AutoUserController extends BaseController {
             result.setCode(1);
             result.setMsg("提交反馈意见出错！");
             logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }

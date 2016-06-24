@@ -125,6 +125,7 @@ public class AutoCarServiceImpl implements IAutoCarService {
     @Override
     public AutoCar query(int carId) {
         Map<String, Object> map = new HashMap<String, Object>();
+        map.put("carId", carId);
         return query(map);
     }
 

@@ -249,51 +249,53 @@
         inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
         inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
         <where>
-            <if test="carIdList!=null and carIdList.size()>0">
-                and ac.car_id in
-                <foreach collection="carIdList" item="carId" open="(" separator="," close=")">
-                    ${carId}
-                </foreach>
-            </if>
-            <if test="carName!= null and carName !='' ">
-                and ac.car_name like concat('%',#{carName},'%')
-            </if>
-            <if test="carType != null and carType > -1">
-                and ac.car_type=#{carType}
-            </if>
-            <if test="brandId != null and brandId > 0">
-                and ac.brand_id = #{brandId}
-            </if>
-            <if test="brandIds != null and brandIds != ''">
-                and ac.brand_id in (${brandIds})
-            </if>
-            <if test="startPrice != null and startPrice > 0">
-                and ac.shop_price &gt;= #{startPrice}
-            </if>
-            <if test="endPrice != null and endPrice > 0">
-                and ac.shop_price &lt;= #{endPrice}
-            </if>
-            <if test="startDate != null">
-                and ac.start_date &gt;= #{startDate}
-            </if>
-            <if test="endDate != null">
-                and ac.end_date &lt;= #{endDate}
-            </if>
-            <if test="carType != null">
-                and ac.car_type = #{carType}
-            </if>
-            <if test="status != null">
-                and ac.status = #{status}
-            </if>
-            <if test="addUserId > 0">
-                and ac.add_user_id = ${addUserId}
-            </if>
-            <if test="filter != null and filter != ''">
-                ${filter}
-            </if>
-            <if test="curTime != null">
-                and #{curTime} &gt;= ac.start_date and #{curTime} &lt;= ac.end_date
-            </if>
+            <trim prefixOverrides="and | or">
+                <if test="carIdList!=null and carIdList.size()>0">
+                    and ac.car_id in
+                    <foreach collection="carIdList" item="carId" open="(" separator="," close=")">
+                        ${carId}
+                    </foreach>
+                </if>
+                <if test="carName!= null and carName !='' ">
+                    and ac.car_name like concat('%',#{carName},'%')
+                </if>
+                <if test="carType != null and carType > -1">
+                    and ac.car_type=#{carType}
+                </if>
+                <if test="brandId != null and brandId > 0">
+                    and ac.brand_id = #{brandId}
+                </if>
+                <if test="brandIds != null and brandIds != ''">
+                    and ac.brand_id in (${brandIds})
+                </if>
+                <if test="startPrice != null and startPrice > 0">
+                    and ac.shop_price &gt;= #{startPrice}
+                </if>
+                <if test="endPrice != null and endPrice > 0">
+                    and ac.shop_price &lt;= #{endPrice}
+                </if>
+                <if test="startDate != null">
+                    and ac.start_date &gt;= #{startDate}
+                </if>
+                <if test="endDate != null">
+                    and ac.end_date &lt;= #{endDate}
+                </if>
+                <if test="carType != null">
+                    and ac.car_type = #{carType}
+                </if>
+                <if test="status != null">
+                    and ac.status = #{status}
+                </if>
+                <if test="addUserId > 0">
+                    and ac.add_user_id = ${addUserId}
+                </if>
+                <if test="filter != null and filter != ''">
+                    ${filter}
+                </if>
+                <if test="curTime != null">
+                    and #{curTime} &gt;= ac.start_date and #{curTime} &lt;= ac.end_date
+                </if>
+            </trim>
         </where>
         order by
         <if test="sort != null and sort != ''">
@@ -307,16 +309,18 @@
         au.status as userStatus,act.collect_id as collectId
         from auto_car as ac
         inner join auto_user as au on au.user_id = ac.add_user_id
-        inner join auto_brand as ab on ac.brand_id=ab.brand_id
-        inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
-        inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
-        inner join auto_collect as act on ac.car_id=act.target_id
+        inner join auto_brand as ab on ab.brand_id = ac.brand_id
+        inner join auto_brand_cat as abc on abc.cat_id = ac.brand_cat_id
+        inner join auto_brand_model as abm on abm.model_id = ac.brand_model_id
+        inner join auto_collect as act on act.target_id=ac.car_id and act.target_type = 1
         <where>
-            <if test="userId != null and userId >0">
-                and act.user_id=${userId}
-            </if>
+            <trim prefixOverrides="and | or">
+                <if test="userId != null and userId >0">
+                    and act.user_id=${userId}
+                </if>
+            </trim>
         </where>
-        order by act.add_time desc,act.collect_id desc
+        order by act.collect_id desc
     </select>
 
     <select id="queryOrderList" parameterType="Map" resultMap="AutoCar">
@@ -330,37 +334,39 @@
         left join auto_order_car as aoc on aoc.car_id = ac.car_id
         left join auto_order as ao on ao.order_id = aoc.order_id
         <where>
-            <if test="userId != null and userId > 0">
-                and ac.add_user_id = ${userId}
-            </if>
-            <if test="sellerId !=null and sellerId > 0">
-                and ao.seller_id = ${sellerId}
-            </if>
-            <if test="buyerId !=null and buyerId > 0">
-                and ao.buyer_id = ${buyerId}
-            </if>
+            <trim prefixOverrides="and | or">
+                <if test="addUserId != null and addUserId > 0">
+                    and ac.add_user_id = ${addUserId}
+                </if>
+                <if test="sellerId !=null and sellerId > 0">
+                    and ao.seller_id = ${sellerId}
+                </if>
+                <if test="buyerId !=null and buyerId > 0">
+                    and ao.buyer_id = ${buyerId}
+                </if>
 
-            <if test="orderStatusList != null and orderStatusList !=''">
-                and ao.order_status in (${orderStatusList})
-            </if>
-            <if test="payStatusList != null and payStatusList !=''">
-                and ao.pay_status in (${payStatusList})
-            </if>
-            <if test="shipStatus != null and shipStatus >0">
-                and ao.ship_status = ${shipStatus}
-            </if>
-            <if test="payStatus != null and payStatus >0">
-                and ao.pay_status = ${payStatus}
-            </if>
-            <if test="orderStatus != null and orderStatus >0">
-                and ao.order_status = ${orderStatus}
-            </if>
-            <if test="curTime != null and curTime > 0">
-                and #{curTime} &gt;= start_date and #{curTime} &lt;= end_date
-            </if>
-            <if test="filter != null and filter != ''">
-                and ${filter}
-            </if>
+                <if test="orderStatusList != null and orderStatusList !=''">
+                    and ao.order_status in (${orderStatusList})
+                </if>
+                <if test="payStatusList != null and payStatusList !=''">
+                    and ao.pay_status in (${payStatusList})
+                </if>
+                <if test="shipStatus != null and shipStatus >0">
+                    and ao.ship_status = ${shipStatus}
+                </if>
+                <if test="payStatus != null and payStatus >0">
+                    and ao.pay_status = ${payStatus}
+                </if>
+                <if test="orderStatus != null and orderStatus >0">
+                    and ao.order_status = ${orderStatus}
+                </if>
+                <if test="curTime != null and curTime > 0">
+                    and #{curTime} &gt;= start_date and #{curTime} &lt;= end_date
+                </if>
+                <if test="filter != null and filter != ''">
+                    and ${filter}
+                </if>
+            </trim>
         </where>
         order by ${sort} ac.refresh_time desc, ac.car_id desc
     </select>
