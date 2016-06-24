@@ -20,16 +20,17 @@
         <result column="add_time" property="addTime" />
         <result column="carName" property="carName"/>
         <result column="price" property="price"/>
-        <result column="carNumber" property="carNumber"/>
         <result column="sellerName" property="sellerName"/>
         <result column="sellerRealName" property="sellerRealName"/>
         <result column="buyerName" property="buyerName"/>
         <result column="buyerRealName" property="buyerRealName"/>
+        <result column="put_time" property="putTime"/>
+
     </resultMap>
 
     <sql id="allColumn">
     	order_id, order_sn, order_status, pay_status, ship_status, seller_id, buyer_id, pay_method,
-    	pay_number,seller_deposit, buyer_deposit, ship_time, order_remark, status_remark, amount, remark, add_time
+    	pay_number,seller_deposit, buyer_deposit, ship_time, order_remark, status_remark, amount, remark, add_time, put_time
     </sql>
 
     <insert id="insert" parameterType="AutoOrder" useGeneratedKeys="true" keyProperty="orderId">
@@ -50,7 +51,8 @@
             <if test="statusRemark != null">status_remark, </if>
             <if test="amount != null">amount, </if>
             <if test="remark != null">remark, </if>
-        	<if test="addTime != null">add_time</if>
+        	<if test="addTime != null">add_time,</if>
+            <if test="putTime != null">put_time</if>
         )
         values 
         (
@@ -69,7 +71,8 @@
             <if test="statusRemark != null">#{statusRemark}, </if>
             <if test="amount != null">#{amount}, </if>
             <if test="remark != null">#{remark}, </if>
-        	<if test="addTime != null">#{addTime}</if>
+        	<if test="addTime != null">#{addTime},</if>
+            <if test="putTime != null">#{putTime}</if>
        	)
     </insert>
 
@@ -107,7 +110,11 @@
         		add_time = #{addTime}
         	</if>
         </set>
-        where order_id = #{orderId}
+        <where> 
+        	<if test="orderId > 0">
+                order_id = #{orderId}
+            </if>
+        </where>
     </update>
 
     <delete id="delete" parameterType="Map">
@@ -137,7 +144,7 @@
                 order_id = #{orderId}
             </if>
             <if test="orderSn != null and orderSn != ''">
-                order_sn = #{orderSn}
+                and order_sn = #{orderSn}
             </if>
         </where> 
     </select>
@@ -145,43 +152,28 @@
     <select id="queryList" parameterType="Map" resultMap="AutoOrder">
         select <include refid="allColumn"/> from auto_order
         <where>
-            <if test="orderId > 0">
-                and order_id = #{orderId}
-            </if>
-            <if test="orderSn != null">
-                and order_sn = #{orderSn}
-            </if>
-            <if test="orderStatus > 0">
-                and order_status = #{orderStatus}
-            </if>
-            <if test="payStatus > 0">
-                and pay_status = #{payStatus}
-            </if>
-            <if test="shipStatus > 0">
-                and ship_status = #{shipStatus}
-            </if>
-            <if test="orderIdList!=null and orderIdList.size()>0">
-                and order_id in
-                <foreach collection="orderIdList" item="orderId" open="(" separator="," close=")">
-                    ${orderId}
-                </foreach>
-            </if>
-	        <trim prefixOverrides="and | or">
-	        	<if test="orderId > 0">
-	                and order_id = #{orderId}
-	            </if>
-	        	<if test="orderSn != null">
-	                and order_sn = #{orderSn}
-	            </if>
-	        	<if test="orderStatus > 0">
-	                and order_status = #{orderStatus}
-	            </if>
-	        	<if test="payStatus > 0">
-	                and pay_status = #{payStatus}
-	            </if>
-	        	<if test="shipStatus > 0">
-	                and ship_status = #{shipStatus}
-	            </if>
+            <trim prefixOverrides="and | or">
+                <if test="orderId > 0">
+                    and order_id = #{orderId}
+                </if>
+                <if test="orderSn != null and orderSn != ''">
+                    and order_sn = #{orderSn}
+                </if>
+                <if test="orderStatus != null">
+                    and order_status = #{orderStatus}
+                </if>
+                <if test="payStatus != null">
+                    and pay_status = #{payStatus}
+                </if>
+                <if test="shipStatus != null">
+                    and ship_status = #{shipStatus}
+                </if>
+                <if test="orderIdList!=null and orderIdList.size()>0">
+                    and order_id in
+                    <foreach collection="orderIdList" item="orderId" open="(" separator="," close=")">
+                        ${orderId}
+                    </foreach>
+                </if>
                 <if test="orderStatusList != null and orderStatusList != ''">
                     and order_status in (${orderStatusList})
                 </if>
@@ -195,14 +187,14 @@
                     and seller_id = ${sellerId}
                 </if>
                 <if test="buyerId != null and buyerId > 0">
-                    and seller_id = ${buyerId}
+                    and buyer_id = ${buyerId}
                 </if>
 	        </trim>
         </where>
     </select>
 
     <select id="queryOrder" parameterType="Map" resultMap="AutoOrder">
-        select ao.*,ac.car_name as carName,aca.price as price,aoc.car_number as carNumber,
+        select ao.*,ac.car_name as carName,aca.price as price,
         (select au.user_name from auto_user as au where ao.seller_id=au.user_id) as sellerName,
         (select aup.real_name from auto_user_profile as aup where ao.seller_id=aup.user_id) as sellerRealName,
         (select au.user_name from auto_user as au where ao.buyer_id=au.user_id) as buyerName,
@@ -211,23 +203,6 @@
         inner join auto_order_car as aoc on ao.order_id=aoc.order_id
         inner join auto_car as ac on aoc.car_id=ac.car_id
         inner join auto_car_attr as aca on ac.car_id=aca.car_id
-        <where>
-            <if test="orderStatus != null and orderStatus != ''">
-                and ao.order_status in (${orderStatus})
-            </if>
-            <if test="payStatus != null and payStatus != ''">
-                and ao.pay_status in (${payStatus})
-            </if>
-            <if test="shipStatus != null and shipStatus >0 ">
-                and ao.ship_status = ${shipStatus}
-            </if>
-            <if test="beginTime != null">
-                and ao.add_time &gt;= #{beginTime}
-            </if>
-            <if test="endTime != null">
-                and ao.add_time &lt;= #{endTime}
-            </if>
-        </where>
         order by ao.add_time desc,ao.order_id desc
     </select>
 

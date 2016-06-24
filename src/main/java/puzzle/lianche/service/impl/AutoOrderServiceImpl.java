@@ -55,6 +55,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         }
         catch (Exception e){
             logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return false;
 
@@ -140,6 +141,50 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         return orderSn;
     }
 
+    /**
+     * 查询订单可执行操作
+     * @param order
+     * @return
+     */
+    @Override
+    public List<String> queryOperate(AutoOrder order) {
+        List<String> operates = new ArrayList<String>();
+        if(order.getOrderStatus() == Constants.OS_SUBMIT){
+            if(order.getPayStatus() == Constants.PS_WAIT_BUYER_DEPOSIT){
+
+            }
+            else if(order.getPayStatus() == Constants.PS_BUYER_PAY_DEPOSIT){
+
+            }
+            else if(order.getPayStatus() == Constants.PS_WAIT_SELLER_DEPOSIT){
+
+            }
+        }
+        else if(order.getOrderStatus() == Constants.OS_EXECUTE){
+            if(order.getPayStatus() == Constants.PS_SELLER_PAY_DEPOSIT){
+
+            }
+            else if(order.getPayStatus() == Constants.PS_WAIT_SYSTEM_DEPOSIT){
+
+            }
+            else if(order.getPayStatus() == Constants.PS_SYSTEM_RETURN_DEPOSIT){
+
+            }
+        }
+        else if(order.getOrderStatus() == Constants.OS_SUCCESS){
+            if(order.getPayStatus() == Constants.PS_WAIT_SYSTEM_DEPOSIT){
+
+            }
+            else if(order.getPayStatus() == Constants.PS_SYSTEM_RETURN_DEPOSIT){
+
+            }
+        }
+        else if(order.getOrderStatus() == Constants.OS_CANCEL){
+
+        }
+        return operates;
+    }
+
 
     /**
      * 根据关键值查询订单
@@ -175,7 +220,8 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
             return true;
         }
         catch (Exception e){
-
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
@@ -188,7 +234,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
     @Override
     public boolean doReject(AutoOrder order) {
         try {
-            order.setShipStatus(Constants.OS_CANCEL);
+            order.setOrderStatus(Constants.OS_CANCEL);
 
             sqlMapper.update("AutoOrderMapper.update", order);
 
@@ -201,7 +247,8 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
             return true;
         }
         catch (Exception e){
-
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
@@ -215,7 +262,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
     public boolean doAccept(AutoOrder order) {
         try {
             // 更新订单状态
-            order.setOrderStatus(Constants.OS_ACCEPT);
+            order.setOrderStatus(Constants.OS_EXECUTE);
             order.setPayStatus(Constants.PS_SELLER_PAY_DEPOSIT);
             sqlMapper.update("AutoOrderMapper.update", order);
 
@@ -228,6 +275,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         }
         catch (Exception e){
             logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
@@ -242,7 +290,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         try {
             // 更新订单状态
             order.setOrderStatus(Constants.OS_SUCCESS);
-            order.setPayStatus(Constants.PS_WAIT_RETURN_DEPOSIT);
+            order.setPayStatus(Constants.PS_WAIT_SYSTEM_DEPOSIT);
             order.setShipStatus(Constants.SS_SHIPED);
             sqlMapper.update("AutoOrderMapper.update", order);
 
@@ -254,6 +302,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         }
         catch (Exception e){
             logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
@@ -290,7 +339,8 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
             return true;
         }
         catch (Exception e){
-
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
@@ -331,6 +381,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         }
         catch (Exception e){
             logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }

@@ -225,9 +225,6 @@
             </if>
         </where>
         order by am.msg_id desc
-        <if test="toUserId > 0">
-            LIMIT 0,10
-        </if>
     </select>
 
 </mapper>

@@ -265,20 +265,16 @@ public class Constants {
      * 订单状态(买家已提交,卖家已同意,卖家不同意,交易中,交易成功,交易取消)
      */
     public static final Integer OS_SUBMIT = 1;
-    public static final Integer OS_ACCEPT = 2;
-    public static final Integer OS_EXECUTE = 3;
-    public static final Integer OS_SUCCESS = 4;
-    public static final Integer OS_CANCEL = -2;
-    public static final Integer OS_CLOSE = -1;
+    public static final Integer OS_EXECUTE = 2;
+    public static final Integer OS_SUCCESS = 3;
+    public static final Integer OS_CANCEL = 0;
 
     public static final  Map<Integer,String> ORDER_STATUS=new HashMap<Integer, String>(){
         {
             put(1,"买家已提交");
-            put(2,"卖家已同意");
-            put(3,"卖家不同意");
-            put(4,"交易中");
-            put(-2,"交易成功");
-            put(-1,"交易取消");
+            put(2,"交易中");
+            put(3,"交易成功");
+            put(0,"交易取消");
         }
     };
 
@@ -289,7 +285,7 @@ public class Constants {
     public static final Integer PS_BUYER_PAY_DEPOSIT = 2;
     public static final Integer PS_WAIT_SELLER_DEPOSIT = 3;
     public static final Integer PS_SELLER_PAY_DEPOSIT = 4;
-    public static final Integer PS_WAIT_RETURN_DEPOSIT = 5;
+    public static final Integer PS_WAIT_SYSTEM_DEPOSIT = 5;
     public static final Integer PS_SYSTEM_RETURN_DEPOSIT = 6;
 
     public static final Map<Integer, String> PAY_STATUS=new HashMap<Integer, String>(){
@@ -306,13 +302,13 @@ public class Constants {
     /**
      * 物流状态(未提车,已提车)
      */
-    public static final Integer SS_UNSHIP = 1;
-    public static final Integer SS_SHIPED = 2;
+    public static final Integer SS_UNSHIP = 0;
+    public static final Integer SS_SHIPED = 1;
 
     public static final Map<Integer, String> SHIP_STATUS=new HashMap<Integer, String>(){
         {
-            put(1,"未提车");
-            put(2,"已提车");
+            put(0,"未提车");
+            put(1,"已提车");
         }
     };
 

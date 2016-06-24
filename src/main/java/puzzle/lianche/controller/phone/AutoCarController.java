@@ -185,10 +185,11 @@ public class AutoCarController extends BaseController {
             jsonCar.put("cityName", car.getCityName());
             jsonCar.put("invoiceType", car.getInvoiceType());
 
+
             List<AutoCarPic> pics = autoCarPicService.queryList(map);
             JSONArray jsonCarPicAttray = new JSONArray();
             if(pics != null && !pics.isEmpty()){
-                for(AutoCarPic pic : car.getPics()){
+                for(AutoCarPic pic : pics){
                     jsonCarPicAttray.add(pic.getPath());
                 }
             }
@@ -200,6 +201,7 @@ public class AutoCarController extends BaseController {
                 for(AutoCarAttr attr : attrs){
                     totalNumber += attr.getSurplusNumber();
                     JSONObject jsonCarAttr = new JSONObject();
+                    jsonCarAttr.put("carAttrId", attr.getCarAttrId());
                     jsonCarAttr.put("salePriceType", attr.getSalePriceType());
                     jsonCarAttr.put("saleAmount", attr.getSaleAmount());
                     jsonCarAttr.put("outsideColor", attr.getOutsideColor());
@@ -217,10 +219,11 @@ public class AutoCarController extends BaseController {
             JSONObject jsonUser = new JSONObject();
             if(user != null){
                 jsonUser.put("userId", user.getUserId());
-                jsonUser.put("realName", user.getRealName());
+                jsonUser.put("userName", user.getStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS ? user.getRealName() : user.getUserName());
                 jsonUser.put("userAvatar", user.getUserAvatar());
                 jsonUser.put("point", user.getPoint());
                 jsonUser.put("shopName", user.getShopType());
+                jsonUser.put("isAuth", user.getStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
             }
             jsonCar.put("user", jsonUser);
 
