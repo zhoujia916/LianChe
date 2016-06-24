@@ -21,7 +21,7 @@ public interface IAutoOrderService{
 
     public String createSn(String key);
 
-    public List<String> queryOperate(AutoOrder order);
+    public List<String> queryOperate(AutoOrder order, int userType  );
 
     public AutoOrder query(Integer orderId, String orderSn);
 

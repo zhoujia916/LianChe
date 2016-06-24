@@ -55,7 +55,17 @@ public class AutoCarAttrServiceImpl implements IAutoCarAttrService {
     	return sqlMapper.query("AutoCarAttrMapper.query", map);
     }
 
-	/**
+    /**
+     * 查询单条记录
+     */
+    @Override
+    public AutoCarAttr query(Integer carAttrId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("carAttId", carAttrId);
+        return query(map);
+    }
+
+    /**
 	* 查询多条记录
 	*/
 	@Override

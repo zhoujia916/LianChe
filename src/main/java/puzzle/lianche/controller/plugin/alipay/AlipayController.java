@@ -4,6 +4,7 @@ package puzzle.lianche.controller.plugin.alipay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.BaseController;
 import puzzle.lianche.controller.plugin.alipay.config.AlipayConfig;
@@ -38,13 +39,14 @@ public class AlipayController extends BaseController {
      * @param order
      */
     @RequestMapping(value = {"/alipay"})
-    public void payment(AutoOrder order){
+    @ResponseBody
+    public Result payment(AutoOrder order){
+        Result result = new Result();
         if(order == null || order.getOrderId() == null ||
           (order.getOrderId() <= 0 && StringUtil.isNullOrEmpty(order.getOrderSn()))){
-            Result result = new Result();
             result.setCode(-1);
             result.setMsg("订单不能为空！");
-            this.writeJson(result);
+            return result;
         }
         Map<String, Object> map = new HashMap<String, Object>();
         try {
@@ -52,36 +54,28 @@ public class AlipayController extends BaseController {
             Integer sellerId = order.getSellerId();
             order = autoOrderService.query(order.getOrderId(), order.getOrderSn());
             if(order == null){
-                Result result = new Result();
                 result.setCode(-1);
                 result.setMsg("该订单不存在！");
-                this.writeJson(result);
-                return;
+                return result;
             }
             if(buyerId != order.getBuyerId() && sellerId != order.getSellerId()){
-                Result result = new Result();
                 result.setCode(-1);
                 result.setMsg("您不能支付该笔订单订金！");
-                this.writeJson(result);
-                return;
+                return result;
             }
 
             if(order.getPayStatus() != Constants.PS_WAIT_BUYER_DEPOSIT &&
                     order.getPayStatus() != Constants.PS_WAIT_SELLER_DEPOSIT) {
-                Result result = new Result();
                 result.setCode(-1);
                 result.setMsg("该订单不能支付订金！");
-                this.writeJson(result);
-                return;
+                return result;
             }
             map.put("orderId", order.getOrderId());
             AutoCar car = autoCarService.query(map);
             if(car == null){
-                Result result = new Result();
                 result.setCode(-1);
                 result.setMsg("该订单没有预订车辆！");
-                this.writeJson(result);
-                return;
+                return result;
             }
             car.setCarName(new String(car.getCarName().getBytes(), AlipayConfig.input_charset));
 
@@ -103,7 +97,8 @@ public class AlipayController extends BaseController {
             // 可选，买家ID
             payinfo.put("seller_id", "\"" + AlipayConfig.account + "\"");
             // 必填，总金额，取值范围为[0.01,100000000.00]
-            payinfo.put("total_fee", "\"" + ConvertUtil.toString(order.getAmount()) + "\"");
+//            payinfo.put("total_fee", "\"" + ConvertUtil.toString(order.getAmount()) + "\"");
+            payinfo.put("total_fee", "\"" + 0.01 + "\"");
             // 必填，商品详情
             payinfo.put("body", "\"" + car.getCarName() + "\"");
             // 可选，未付款交易的超时时间
@@ -118,11 +113,13 @@ public class AlipayController extends BaseController {
 
             String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + "sign_type=\"" + AlipayConfig.sign_type + "\"";
 
-            this.writeText(payInfo);
+            result.setData(payInfo);
         }
         catch (Exception e){
             logger.error(e.getMessage());
+            e.printStackTrace();
         }
+        return result;
     }
 
     /**

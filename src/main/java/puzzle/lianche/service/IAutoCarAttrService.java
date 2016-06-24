@@ -17,6 +17,8 @@ public interface IAutoCarAttrService{
     public boolean delete(Map<String, Object> map);
 
     public AutoCarAttr query(Map<String, Object> map);
+
+    public AutoCarAttr query(Integer carAttrId);
     
     public List<AutoCarAttr> queryList(Object param);
 

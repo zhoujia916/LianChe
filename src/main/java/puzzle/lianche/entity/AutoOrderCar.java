@@ -34,7 +34,6 @@ public class AutoOrderCar implements Serializable{
         sb.append(", orderId=").append(orderId);
         sb.append(", carId=").append(carId);
         sb.append(", carAttrId=").append(carAttrId);
-        sb.append(", carAttr=").append(carAttr);
         sb.append(", carPrice=").append(carPrice);
         sb.append(", carNumber=").append(carNumber);
         sb.append(", sendNumber=").append(sendNumber);
@@ -53,9 +52,7 @@ public class AutoOrderCar implements Serializable{
 	@Column(name="car_id", nullable=true)
 	private Integer carId;
 	@Column(name="car_attr_id", nullable=true, length=255)
-	private String carAttrId;
-	@Column(name="car_attr", nullable=true, length=1000)
-	private String carAttr;
+	private Integer carAttrId;
 	@Column(name="car_price", nullable=true)
 	private Double carPrice;
 
@@ -97,20 +94,12 @@ public class AutoOrderCar implements Serializable{
 		this.carId = carId;
 	}
 		
-	public String getCarAttrId(){
+	public Integer getCarAttrId(){
 		return carAttrId;
 	}
 	
-	public void setCarAttrId(String carAttrId){
+	public void setCarAttrId(Integer carAttrId){
 		this.carAttrId = carAttrId;
-	}
-		
-	public String getCarAttr(){
-		return carAttr;
-	}
-	
-	public void setCarAttr(String carAttr){
-		this.carAttr = carAttr;
 	}
 		
 	public Double getCarPrice(){

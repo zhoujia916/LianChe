@@ -242,24 +242,35 @@ public class Constants {
 
     //region 订单
     /*
-        item_name   		order_status     		pay_status    		shipping_status           buyer actions         seller_actions                      admin
-    1. 	提交订单    			买家已提交订单			等待买家付订金        未提车                     cancel  payment
+        item_name   		order_status     		pay_status    		shipping_status           buyer actions                                   seller_actions                          admin
+    1. 	提交订单    			买家已提交订单			等待买家付订金        未提车                     cancel  payment                                                                         cancel payment
 
-    2. 	买家支付     			买家已提交订单			买家已支付订金	    未提车                     cancel                accept reject
+    2. 	买家支付     			买家已提交订单			买家已支付订金	    未提车                     cancel                                          accept reject                           cancel accept reject unpayment
 
-    3. 	卖家同意订单         	卖家已同意交易            等待卖家付订金    	未提车
+    3A. 卖家同意并支付      	交易中                   卖家已支付订金   	    未提车                     request_cancel receive contact_seller           notify_receive contact_buyer            cancel unaccept notify_receive receive
 
-    3A.	买家拒绝订单         	交易拒绝                 买家已支付订金        未提车
+    3B.	买家拒绝订单         	交易拒绝                 买家已支付订金        未提车
 
-    4. 	卖家支付      		交易中	        		卖家已支付订金        未提车                     request_cancel          contact_buyer(拨打电话)
+    4. 	买家确认收货         	交易成功                 等待系统退还定金       已提车                     contact_seller                                 contact_buyer                           return_buyer_deposit return_buyer_deposit
 
-    5. 	买家确认收货         	交易成功                 等待系统退还定金       已提车                     receive  contact_buyer  contact_buyer  notify(提醒买家确认收货)
+    5. 	系统退还订金         	交易成功                 定金已经退还          已提车                     contact_seller                                  contact_buyer
 
-    6. 	系统退还订金         	交易成功                 定金已经退还          已提车                     request_cancel          contact_buyer(拨打电话)
-
-    7. 	管理员取消订单       	交易取消                 定金已经退还          未提车
+    6. 	管理员取消订单       	交易取消                 定金已经退还          未提车                                                                                                             return_buyer_deposit return_buyer_deposit
     */
 
+    public static final String OO_CANCEL = "cancel";
+    public static final String OO_PAYMENT = "payment";
+    public static final String OO_UNPAYMENT = "unpayment";
+    public static final String OO_ACCEPT = "accept";
+    public static final String OO_UNACCEPT = "unaccept";
+    public static final String OO_REJECT = "reject";
+    public static final String OO_REQUEST_CANCEL = "request_cancel";
+    public static final String OO_CONTACT_BUYER = "contact_buyer";
+    public static final String OO_CONTACT_SELLER = "contact_seller";
+    public static final String OO_RECEIVE = "receive";
+    public static final String OO_NOTIFY_RECEIVE = "notify_receive";
+    public static final String OO_RETURN_BUYER_DEPOSIT = "return_buyer_deposit";
+    public static final String OO_RETURN_SELLER_DEPOSIT = "return_seller_deposit";
 
     /**
      * 订单状态(买家已提交,卖家已同意,卖家不同意,交易中,交易成功,交易取消)
@@ -322,11 +333,12 @@ public class Constants {
     public static final Integer CS_CANCEL = 4;
 
     /**
-     * 交易用户(双方，买家，卖家)
+     * 交易用户(双方，买家，卖家，平台)
      */
     public static final Integer ORDER_USER_ALL = 0;
     public static final Integer ORDER_USER_BUYER = 1;
     public static final Integer ORDER_USER_SELLER = 2;
+    public static final Integer ORDER_USER_ADMIN = 3;
 
     /**
      * 支付方式(微信支付，支付宝支付)

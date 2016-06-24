@@ -202,6 +202,7 @@ public class AutoCarController extends BaseController {
                     totalNumber += attr.getSurplusNumber();
                     JSONObject jsonCarAttr = new JSONObject();
                     jsonCarAttr.put("carAttrId", attr.getCarAttrId());
+                    jsonCarAttr.put("quoteType", attr.getQuoteType());
                     jsonCarAttr.put("salePriceType", attr.getSalePriceType());
                     jsonCarAttr.put("saleAmount", attr.getSaleAmount());
                     jsonCarAttr.put("outsideColor", attr.getOutsideColor());
