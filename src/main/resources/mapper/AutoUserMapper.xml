@@ -186,17 +186,17 @@
             <if test="userName != null and userName != ''">
                 and au.user_name like concat('%',#{userName},'%')
             </if>
-            <if test="userStatus !=null and userStatus!=''">
-                and au.status in (${userStatus})
-            </if>
-            <if test="shopName !=null and shopName !=''">
+            <if test="shopName !=null and shopName != ''">
                 and aup.shop_name like concat('%',#{shopName},'%')
             </if>
-            <if test="shopType !=null and shopType!=''">
+            <if test="shopType !=null and shopType != ''">
                 and aup.shop_type in (${shopType})
             </if>
-            <if test="userId!=null and userId!=''">
+            <if test="userId != null and userId > 0">
                 and au.user_id in (${userId})
+            </if>
+            <if test="status != null and status > 0">
+                and au.status = #{status}
             </if>
         </where>
         order by au.sort_order desc,au.user_id desc

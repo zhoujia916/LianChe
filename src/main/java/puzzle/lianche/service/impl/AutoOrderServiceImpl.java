@@ -142,6 +142,17 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
     }
 
     /**
+     * 释放锁定的订单
+     * @param list
+     * @return
+     */
+    @Override
+    public boolean realeseLock(List<AutoOrder> list) {
+
+        return false;
+    }
+
+    /**
      * 查询订单可执行操作
      * @param order
      * @return

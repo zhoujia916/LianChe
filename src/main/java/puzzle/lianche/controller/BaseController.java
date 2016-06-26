@@ -5,11 +5,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Cookie;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import puzzle.lianche.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import puzzle.lianche.init.InitConfig;
 
 import java.io.IOException;
 public class BaseController {
@@ -24,6 +26,8 @@ public class BaseController {
 
     protected ModelMap map;
 
+    @Autowired
+    protected InitConfig initConfig;
 
 
     public BaseController(){

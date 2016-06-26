@@ -12,7 +12,7 @@ public class IndexController extends BaseController {
         logger.info(request.getRequestURI());
         logger.error("something error");
         setModelAttribute("test", "testString");
-        return Constants.UrlHelper.INDEX;
+        return Constants.UrlHelper.ADMIN_SYSTEM_INDEX;
     }
 
     @ResponseBody
@@ -26,6 +26,6 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/logout.do")
     public String logout(){
         this.setCurrentUser(null);
-        return redirect(Constants.UrlHelper.USER_LOGIN);
+        return redirect(Constants.UrlHelper.ADMIN_SYSTEM_LOGIN);
     }
 }

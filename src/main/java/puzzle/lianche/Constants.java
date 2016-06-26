@@ -370,75 +370,67 @@ public class Constants {
     public class UrlHelper{
         public static final String RETURN_URL = "ReturnUrl";
 
-        public static final String USER_LOGIN = "user_login";
+        /**
+         *  系统管理模块
+         */
 
-        public static final String USER_LIST="user_list";
+        public static final String ADMIN_SYSTEM_LOGIN = "admin/login";
 
-        public static final String USER_DETAIL = "user_detail";
+        public static final String ADMIN_SYSTEM_MAIN = "admin/main";
 
-        public static final String ADMIN_LOGIN = "admin/login";
+        public static final String ADMIN_SYSTEM_INDEX = "index";
 
-        public static final String ADMIN_MAIN = "admin/main";
+        public static final String ADMIN_SYSTEM_MENU = "admin/system/menu/index";
 
-        public static final String ADMIN_INDEX = "admin/index";
+        public static final String ADMIN_SYSTEM_LOG = "admin/system/log/index";
 
-        public static final String ADMIN_MENU = "admin/menu/index";
+        public static final String ADMIN_SYSTEM_ROLE = "admin/system/role/index";
 
-        public static final String ADMIN_LOG = "admin/log/index";
+        public static final String ADMIN_SYSTEM_USER = "admin/system/user/index";
 
-        public static final String ADMIN_ROLE = "admin/role/index";
+        public static final String ADMIN_SYSTEM_USER_GROUP = "admin/system/usergroup/index";
 
-        public static final String ADMIN_USER = "admin/user/index";
+        public static final String ADMIN_SYSTEM_CONFIG = "admin/system/config/index";
 
-        public static final String ADMIN_USER_GROUP = "admin/userGroup/index";
+        public static final String ADMIN_SYSTEM_DEPT = "admin/system/dept/index";
 
-        public static final String ADMIN_MENU_SHOW = "admin/menu/show";
+        public static final String ADMIN_SYSTEM_AUTHORITY = "admin/system/authority/index";
 
-        public static final String ADMIN_ROLE_SHOW = "admin/role/show";
+        public static final String ADMIN_SYSTEM_MENU_ACTION = "admin/system/menuaction/index";
 
-        public static final String ADMIN_USER_SHOW = "admin/user/show";
+        /**
+         *  业务管理模块
+         */
 
-        public static final String ADMIN_CONFIG = "admin/config/index";
+        public static final String ADMIN_AUTO_USER = "admin/auto/user/index";
 
-        public static final String ADMIN_AUTO_USER = "admin/autoUser/index";
+        public static final String ADMIN_AUTO_ARTICLE = "admin/auto/article/index";
 
-        public static final String ADMIN_AUTO_ARTICLE = "admin/article/index";
+        public static final String ADMIN_AUTO_ARTICLE_CAT = "admin/auto/articlecat/index";
 
-        public static final String ADMIN_ARTICLE_CAT = "admin/articleCat/index";
+        public static final String ADMIN_AUTO_ARTICLE_TEMPLATE = "admin/auto/articletemplate/index";
 
-        public static final String ADMIN_ARTICLE_TEMPLATE = "admin/articletemplate/index";
+        public static final String ADMIN_AUTO_COLLECT = "admin/auto/collect/index";
 
-        public static final String ADMIN_AUTO_USER_COLLECTION = "admin/autousercollect/index";
+        public static final String ADMIN_AUTO_FEEDBACK = "admin/auto/feedback/index";
 
-        public static final String ADMIN_AUTO_FEEDBACK = "admin/feedback/index";
+        public static final String ADMIN_AUTO_MSG = "admin/auto/msg/index";
 
-        public static final String ADMIN_AUTO_MSG = "admin/msg/index";
+        public static final String ADMIN_AUTO_BRAND = "admin/auto/brand/index";
 
-        public static final String ADMIN_BRAND = "admin/brand/index";
+        public static final String ADMIN_AUTO_BRAND_CAT = "admin/auto/brandcat/index";
 
-        public static final String ADMIN_BRAND_CAT = "admin/brandcat/index";
+        public static final String ADMIN_AUTO_BRAND_MODEL = "admin/auto/brandmodel/index";
 
-        public static final String ADMIN_BRAND_MODEL = "admin/brandmodel/index";
+        public static final String ADMIN_AUTO_AD = "admin/auto/ad/index";
 
-        public static final String ADMIN_AD = "admin/ad/index";
+        public static final String ADMIN_AUTO_CAR = "admin/auto/car/index";
 
-        public static final String ADMIN_CAR = "admin/car/index";
+        public static final String ADMIN_AUTO_AD_POSITION = "admin/auto/adposition/index";
 
-        public static final String INDEX = "index";
+        public static final String ADMIN_AUTO_SMS = "admin/auto/sms/index";
 
-        public static final String ADMIN_DEPT = "admin/dept/index";
-
-        public static final String ADMIN_AUTHORITY = "admin/authority/index";
-
-        public static final String ADMIN_MENU_ACTION = "admin/menuaction/index";
-
-        public static final String ADMIN_ADPOSITION = "admin/adposition/index";
-
-        public static final String ADMIN_ATTR = "admin/attr/index";
-
-        public static final String ADMIN_SMS = "admin/sms/index";
-
-        public static final String ADMIN_ORDER = "admin/order/index";
+        public static final String ADMIN_AUTO_ORDER = "admin/auto/order/index";
     }
 
     public class PageHelper{
