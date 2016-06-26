@@ -368,7 +368,7 @@ public class Constants {
     public static final Integer PULLREFRESH_DOWN = 2;
 
     public class UrlHelper{
-        public static final String RETURN_URL = "ReturnUrl";
+        public static final String PARAM_RETURN_URL = "ReturnUrl";
 
         /**
          *  系统管理模块
@@ -378,7 +378,7 @@ public class Constants {
 
         public static final String ADMIN_SYSTEM_MAIN = "admin/main";
 
-        public static final String ADMIN_SYSTEM_INDEX = "index";
+        public static final String ADMIN_SYSTEM_INDEX = "admin/index";
 
         public static final String ADMIN_SYSTEM_MENU = "admin/system/menu/index";
 

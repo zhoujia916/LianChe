@@ -68,7 +68,7 @@ public class AutoCarServiceImpl implements IAutoCarService {
     public boolean update(AutoCar entity){
         try{
             if(sqlMapper.update("AutoCarMapper.update", entity)){
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 if (entity.getAttrs() != null && entity.getAttrs().size() > 0) {
                     map.put("carId",entity.getCarId());
                     autoCarAttrService.delete(map);
