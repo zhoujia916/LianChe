@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.*;
+import puzzle.lianche.entity.AutoArticle;
+import puzzle.lianche.entity.AutoArticleCat;
+import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.IAutoArticleCatService;
 import puzzle.lianche.service.IAutoArticleService;
-import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
@@ -20,9 +20,9 @@ import puzzle.lianche.utils.StringUtil;
 
 import java.util.*;
 
-@Controller (value = "adminArticleController")
-@RequestMapping (value = "/admin/article")
-public class ArticleController extends ModuleController {
+@Controller (value = "adminAutoArticleController")
+@RequestMapping (value = "/admin/autoarticle")
+public class AutoArticleController extends ModuleController {
 
     @Autowired
     private IAutoArticleService autoArticleService;
@@ -47,7 +47,7 @@ public class ArticleController extends ModuleController {
         Result result=new Result();
         List<AutoArticle> articleList=new ArrayList<AutoArticle>();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("title",autoArticle.getTitle());
             String pageIndex=request.getParameter("pageIndex");
             String pageSize=request.getParameter("pageSize");
@@ -100,7 +100,7 @@ public class ArticleController extends ModuleController {
     @ResponseBody
     public Result action(String action,AutoArticle autoArticle){
         Result result=new Result();
-        Map map=new HashMap();
+        Map<String, Object> map=new HashMap<String, Object>();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 autoArticle.setAddUserType(2);

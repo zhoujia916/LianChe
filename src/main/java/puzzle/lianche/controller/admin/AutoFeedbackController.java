@@ -8,26 +8,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.AutoFeedback;
-import puzzle.lianche.entity.SystemAuthority;
 import puzzle.lianche.entity.SystemMenuAction;
-import puzzle.lianche.entity.SystemUser;
 import puzzle.lianche.service.IAutoFeedbackService;
-import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller (value = "adminFeedBackController")
-@RequestMapping (value = "/admin/feedback")
-public class FeedBackController extends ModuleController {
+@Controller (value = "adminAutoFeedBackController")
+@RequestMapping (value = "/admin/autofeedback")
+public class AutoFeedbackController extends ModuleController {
 
     @Autowired
     private IAutoFeedbackService autoFeedbackService;
@@ -45,7 +40,7 @@ public class FeedBackController extends ModuleController {
         Result result=new Result();
         StringBuffer stringBuffer=new StringBuffer();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("userName",autoFeedback.getUserName());
             String pageIndex=request.getParameter("pageIndex");
             String pageSize=request.getParameter("pageSize");
@@ -89,7 +84,7 @@ public class FeedBackController extends ModuleController {
     @ResponseBody
     public Result action(String action){
         Result result=new Result();
-        Map map=new HashMap();
+        Map<String, Object> map=new HashMap<String, Object>();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
                 String id=request.getParameter("id");

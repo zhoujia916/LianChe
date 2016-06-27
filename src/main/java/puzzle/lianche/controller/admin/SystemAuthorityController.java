@@ -1,7 +1,5 @@
 package puzzle.lianche.controller.admin;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,19 +9,17 @@ import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.*;
 import puzzle.lianche.service.*;
-import puzzle.lianche.utils.CommonUtil;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller(value="adminAuthorityController")
-@RequestMapping(value = {"/admin/authority"})
-public class AuthorityController extends ModuleController {
+@Controller(value="adminAutoAuthorityController")
+@RequestMapping(value = {"/admin/systemauthority"})
+public class SystemAuthorityController extends ModuleController {
 
     @Autowired
     private ISystemAuthorityService systemAuthorityService;
@@ -70,7 +66,7 @@ public class AuthorityController extends ModuleController {
 //        this.setModelAttribute("menuList", menus);
 //        this.setModelAttribute("actionList", actions);
 
-        return Constants.UrlHelper.ADMIN_AUTHORITY;
+        return Constants.UrlHelper.ADMIN_SYSTEM_AUTHORITY;
     }
 
     @RequestMapping(value = {"/show/{id}"})
@@ -79,7 +75,7 @@ public class AuthorityController extends ModuleController {
         map.put("authorityId", id);
         SystemAuthority authority = systemAuthorityService.query(map);
         this.setModelAttribute("authority", authority);
-        return Constants.UrlHelper.ADMIN_AUTHORITY;
+        return Constants.UrlHelper.ADMIN_SYSTEM_AUTHORITY;
     }
 
     @RequestMapping(value = { "/list.do" })

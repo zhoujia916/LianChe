@@ -97,8 +97,11 @@ public class AlipayController extends BaseController {
             // 可选，买家ID
             payinfo.put("seller_id", "\"" + AlipayConfig.account + "\"");
             // 必填，总金额，取值范围为[0.01,100000000.00]
-//            payinfo.put("total_fee", "\"" + ConvertUtil.toString(order.getAmount()) + "\"");
-            payinfo.put("total_fee", "\"" + 0.01 + "\"");
+//            if((Boolean)initConfig.getProperty("test") == true){
+                payinfo.put("total_fee", "\"" + 0.01 + "\"");
+//            }else{
+//                payinfo.put("total_fee", "\"" + ConvertUtil.toString(order.getAmount()) + "\"");
+//            }
             // 必填，商品详情
             payinfo.put("body", "\"" + car.getCarName() + "\"");
             // 可选，未付款交易的超时时间

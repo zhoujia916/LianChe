@@ -8,11 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.SystemAuthority;
 import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.entity.SystemRole;
-import puzzle.lianche.entity.SystemUser;
 import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.service.ISystemRoleService;
 import puzzle.lianche.utils.ConvertUtil;
@@ -20,14 +17,13 @@ import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller(value = "adminRoleController")
-@RequestMapping(value = "/admin/role")
-public class RoleController extends ModuleController {
+@Controller(value = "adminSystemRoleController")
+@RequestMapping(value = "/admin/systemrole")
+public class SystemRoleController extends ModuleController {
 
     @Autowired
     private ISystemRoleService systemRoleService;
@@ -43,7 +39,7 @@ public class RoleController extends ModuleController {
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);
-        return Constants.UrlHelper.ADMIN_ROLE;
+        return Constants.UrlHelper.ADMIN_SYSTEM_ROLE;
     }
 
     @RequestMapping(value = "/list.do")
@@ -52,7 +48,7 @@ public class RoleController extends ModuleController {
         Result result=new Result();
         try{
             insertLog(Constants.PageHelper.PAGE_ACTION_SELECT,"查看角色信息");
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("roleType",systemRole.getRoleType());
             map.put("roleName",systemRole.getRoleName());
             String pageIndex=request.getParameter("pageIndex");
@@ -84,7 +80,7 @@ public class RoleController extends ModuleController {
     @ResponseBody
     public Result action(String action,SystemRole systemRole){
         Result result=new Result();
-        Map map=new HashMap();
+        Map<String, Object> map=new HashMap<String, Object>();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 systemRole.setRoleType(Constants.DEFAULT_ROLE_TYPE);

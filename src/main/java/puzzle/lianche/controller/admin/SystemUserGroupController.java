@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.SystemAuthority;
 import puzzle.lianche.entity.SystemMenuAction;
-import puzzle.lianche.entity.SystemUser;
 import puzzle.lianche.entity.SystemUserGroup;
 import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.service.ISystemUserGroupService;
@@ -20,14 +17,13 @@ import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller(value = "adminUserGroupController")
-@RequestMapping(value = "/admin/usergroup")
-public class UserGroupController  extends ModuleController {
+@Controller(value = "adminSystemUserGroupController")
+@RequestMapping(value = "/admin/systemusergroup")
+public class SystemUserGroupController extends ModuleController {
 
     @Autowired
     private ISystemUserGroupService userGroupService;
@@ -39,7 +35,7 @@ public class UserGroupController  extends ModuleController {
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);
-        return Constants.UrlHelper.ADMIN_USER_GROUP;
+        return Constants.UrlHelper.ADMIN_SYSTEM_USER_GROUP;
     }
 
     @RequestMapping(value = "/list.do")
@@ -48,7 +44,7 @@ public class UserGroupController  extends ModuleController {
         Result result=new Result();
         try{
             insertLog(Constants.PageHelper.PAGE_ACTION_SELECT, "查看用户组信息");
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("groupName",request.getParameter("groupName"));
             String pageIndex=request.getParameter("pageIndex");
             String pageSize=request.getParameter("pageSize");
@@ -77,7 +73,7 @@ public class UserGroupController  extends ModuleController {
     @ResponseBody
     public Result action(String action,SystemUserGroup systemUserGroup){
         Result result=new Result();
-        Map map=new HashMap();
+        Map<String, Object> map=new HashMap<String, Object>();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 if(!userGroupService.insert(systemUserGroup)){

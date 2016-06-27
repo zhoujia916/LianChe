@@ -8,20 +8,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.*;
+import puzzle.lianche.entity.AutoAd;
+import puzzle.lianche.entity.AutoAdPosition;
+import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.IAutoAdPositionService;
 import puzzle.lianche.service.IAutoAdService;
-import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@Controller (value = "adminAdController")
-@RequestMapping (value = "/admin/ad")
-public class AdController extends ModuleController {
+@Controller (value = "adminAutoAdController")
+@RequestMapping (value = "/admin/autoad")
+public class AutoAdController extends ModuleController {
 
     @Autowired
     private IAutoAdService autoAdService;
@@ -35,7 +39,7 @@ public class AdController extends ModuleController {
         this.setModelAttribute("actions", actions);
         List<AutoAdPosition> list=autoAdPositionService.queryList(null);
         this.setModelAttribute("list",list);
-        return Constants.UrlHelper.ADMIN_AD;
+        return Constants.UrlHelper.ADMIN_AUTO_AD;
     }
 
     @RequestMapping (value = "/list.do")
@@ -43,7 +47,7 @@ public class AdController extends ModuleController {
     public Result list(AutoAd autoAd){
         Result result=new Result();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             String pageIndex=request.getParameter("pageIndex");
             String pageSize=request.getParameter("pageSize");
             Page page = new Page();
@@ -107,7 +111,7 @@ public class AdController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改广告信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 String id=request.getParameter("id");
                 String ids=request.getParameter("ids");
                 if(StringUtil.isNotNullOrEmpty(id)){

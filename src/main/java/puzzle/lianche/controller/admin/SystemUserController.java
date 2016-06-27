@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.*;
 import puzzle.lianche.service.*;
 import puzzle.lianche.utils.*;
@@ -16,21 +15,21 @@ import puzzle.lianche.utils.*;
 import java.util.*;
 
 
-@Controller(value="adminUserControll")
-@RequestMapping(value = "/admin/user")
-public class UserController extends ModuleController {
+@Controller(value="adminSystemUserControll")
+@RequestMapping(value = "/admin/systemuser")
+public class SystemUserController extends ModuleController {
 
     @Autowired
     private ISystemUserService systemUserService;
 
     @Autowired
-    private ISystemRoleService roleService;
+    private ISystemRoleService systemRoleService;
 
     @Autowired
-    private ISystemUserGroupService userGroupService;
+    private ISystemUserGroupService systemUserGroupService;
 
     @Autowired
-    private ISystemDeptService deptService;
+    private ISystemDeptService systemDeptService;
 
     @Autowired
     private ISystemMenuActionService systemMenuActionService;
@@ -39,13 +38,13 @@ public class UserController extends ModuleController {
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);
-        List<SystemRole> roleList=roleService.queryList(null);
-        List<SystemUserGroup> userGroupList=userGroupService.queryList(null);
-        List<SystemDept> deptList=deptService.queryList(null);
+        List<SystemRole> roleList=systemRoleService.queryList(null);
+        List<SystemUserGroup> userGroupList=systemUserGroupService.queryList(null);
+        List<SystemDept> deptList=systemDeptService.queryList(null);
         this.setModelAttribute("userGroupList",userGroupList);
         this.setModelAttribute("deptList",addSubDept(deptList,0,"select"));
         this.setModelAttribute("roleList",roleList);
-        return Constants.UrlHelper.ADMIN_USER;
+        return Constants.UrlHelper.ADMIN_SYSTEM_USER;
     }
 
     /**
@@ -59,7 +58,7 @@ public class UserController extends ModuleController {
         StringBuffer str=new StringBuffer();
         try{
             insertLog(Constants.PageHelper.PAGE_ACTION_SELECT, "查看用户信息");
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             String pageIndex=request.getParameter("pageIndex");
             String pageSize=request.getParameter("pageSize");
             Page page = new Page();
@@ -137,7 +136,7 @@ public class UserController extends ModuleController {
     @ResponseBody
     public Result action(String action,SystemUser systemUser){
         Result result=new Result();
-        Map map=new HashMap();
+        Map<String, Object> map=new HashMap<String, Object>();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 systemUser.setPassword(EncryptUtil.MD5(systemUser.getPassword()));

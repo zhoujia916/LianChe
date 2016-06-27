@@ -7,24 +7,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.AutoAdPosition;
-import puzzle.lianche.entity.SystemAuthority;
 import puzzle.lianche.entity.SystemMenuAction;
-import puzzle.lianche.entity.SystemUser;
 import puzzle.lianche.service.IAutoAdPositionService;
-import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller(value = "adminAdposition")
-@RequestMapping (value = "/admin/position")
-public class AdPositionController extends ModuleController{
+@Controller(value = "adminAutoAdPosition")
+@RequestMapping (value = "/admin/autoadposition")
+public class AutoAdPositionController extends ModuleController{
     @Autowired
     private IAutoAdPositionService autoAdPositionService;
 
@@ -32,7 +28,7 @@ public class AdPositionController extends ModuleController{
     public String index(){
         List<SystemMenuAction> actions=getActions();
         this.setModelAttribute("actions", actions);
-        return Constants.UrlHelper.ADMIN_ADPOSITION;
+        return Constants.UrlHelper.ADMIN_AUTO_AD_POSITION;
     }
 
     @RequestMapping(value = "/list.do")
@@ -40,7 +36,7 @@ public class AdPositionController extends ModuleController{
     public Result list(AutoAdPosition autoAdPosition){
         Result result=new Result();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("positionName",autoAdPosition.getPositionName());
             String pageIndex=request.getParameter("pageIndex");
             String pageSize=request.getParameter("pageSize");
@@ -80,7 +76,7 @@ public class AdPositionController extends ModuleController{
                     insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"�޸�ָ���Ĺ��λ����Ϣ");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 String id=request.getParameter("id");
                 String ids=request.getParameter("ids");
                 if(StringUtil.isNotNullOrEmpty(id)){

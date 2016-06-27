@@ -34,8 +34,13 @@ public class InitConfig implements InitializingBean {
         return configs;
     }
 
+    public Object getProperty(String name){
+        return configs.get(name);
+    }
 
-
+    public Object getConfig(String name){
+        return properties.get(name);
+    }
 
     public void loadSystemProperty(){
         if(properties == null){

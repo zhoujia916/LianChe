@@ -84,7 +84,6 @@
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 			$(function($) {
-                resizeElem();
 
                  $('#btn-sign').on('click', function(e){
                       var username = $.trim($("#txtUserName").val());
@@ -114,9 +113,6 @@
                     }
                 })
 			});
-            function resizeElem(){
-                $(".login-container").css("margin-top", ($(window).height() / 2 - $(".login-container").height() /2) + "px");
-            }
 		</script>
 	</body>
 </html>

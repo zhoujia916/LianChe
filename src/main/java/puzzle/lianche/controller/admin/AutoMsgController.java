@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.*;
+import puzzle.lianche.entity.AutoMsg;
+import puzzle.lianche.entity.AutoUser;
+import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.IAutoMsgService;
 import puzzle.lianche.service.IAutoUserService;
 import puzzle.lianche.service.ISystemMenuActionService;
@@ -20,9 +21,9 @@ import puzzle.lianche.utils.StringUtil;
 
 import java.util.*;
 
-@Controller (value = "adminMsgController")
-@RequestMapping (value = "/admin/msg")
-public class MsgController extends ModuleController {
+@Controller (value = "adminAutoMsgController")
+@RequestMapping (value = "/admin/automsg")
+public class AutoMsgController extends ModuleController {
 
     @Autowired
     private IAutoMsgService autoMsgService;
@@ -47,7 +48,7 @@ public class MsgController extends ModuleController {
     public Result list(AutoMsg autoMsg){
         Result result=new Result();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             String pageIndex=request.getParameter("pageIndex");
             String pageSize=request.getParameter("pageSize");
             Page page = new Page();
@@ -126,7 +127,7 @@ public class MsgController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"新增消息记录");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 String id=request.getParameter("id");
                 String ids=request.getParameter("ids");
                 if(StringUtil.isNotNullOrEmpty(id)){

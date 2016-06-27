@@ -6,13 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.AutoArticleCat;
-import puzzle.lianche.entity.SystemAuthority;
 import puzzle.lianche.entity.SystemMenuAction;
-import puzzle.lianche.entity.SystemUser;
 import puzzle.lianche.service.IAutoArticleCatService;
-import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
@@ -22,9 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller (value = "adminArticleCatController")
-@RequestMapping (value = "/admin/articlecat")
-public class ArticleCatController extends ModuleController {
+@Controller (value = "adminAutoArticleCatController")
+@RequestMapping (value = "/admin/autoarticlecat")
+public class AutoArticleCatController extends ModuleController {
 
     @Autowired
     private IAutoArticleCatService autoArticleCatService;
@@ -35,7 +31,7 @@ public class ArticleCatController extends ModuleController {
         this.setModelAttribute("actions", actions);
         List<AutoArticleCat> autoArticleCatList=autoArticleCatService.queryList(null);
         this.setModelAttribute("autoArticleCatList",addSubAutoArticle(autoArticleCatList,0,"select"));
-        return Constants.UrlHelper.ADMIN_ARTICLE_CAT;
+        return Constants.UrlHelper.ADMIN_AUTO_ARTICLE_CAT;
     }
 
     @RequestMapping (value = "/list.do")
@@ -44,12 +40,7 @@ public class ArticleCatController extends ModuleController {
         Result result=new Result();
         try{
             List<AutoArticleCat> list=autoArticleCatService.queryByArticleCat(autoArticleCat);
-            if(list!=null && list.size()>0){
-//                for(int i=0;i<list.size();i++){
-//                    System.out.println(list.get(i).getCatName()+"---"+list.get(i).getParentName());
-//                }
-                result.setData(list);
-            }
+            result.setData(list);
         }catch(Exception e){
             result.setCode(1);
             result.setMsg("获取文章类型信息出错");
@@ -62,7 +53,7 @@ public class ArticleCatController extends ModuleController {
     @ResponseBody
     public Result action(String action,AutoArticleCat autoArticleCat){
         Result result=new Result();
-        Map map=new HashMap();
+        Map<String, Object> map=new HashMap<String, Object>();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 if(!autoArticleCatService.insert(autoArticleCat)){

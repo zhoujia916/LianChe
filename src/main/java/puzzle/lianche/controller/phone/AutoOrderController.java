@@ -11,7 +11,6 @@ import puzzle.lianche.controller.BaseController;
 import puzzle.lianche.entity.*;
 import puzzle.lianche.service.*;
 import puzzle.lianche.utils.*;
-
 import java.util.*;
 
 @Controller(value = "phoneAutoOrderController")
@@ -299,6 +298,11 @@ public class AutoOrderController extends BaseController {
         Result result = new Result();
         try{
             result.setData(0.1);
+            return result;
+//            if((Boolean)initConfig.getProperty("test") == true){
+//                result.setData(0.1);
+//                return result;
+//            }
 //            if(orderCar == null ||
 //                orderCar.getCarId() == null || orderCar.getCarId() == 0 ||
 //                orderCar.getCarAttrId() == null || orderCar.getCarAttrId() == 0 ||

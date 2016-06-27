@@ -18,7 +18,7 @@ public class LoginInterceptor extends HandlerInterceptor {
         HttpSession session = request.getSession();
         Object user = session.getAttribute(Constants.SESSION_ADMIN);
         if(user == null){
-            String url = request.getContextPath() + "/" + Constants.UrlHelper.ADMIN_LOGIN
+            String url = request.getContextPath() + "/" + Constants.UrlHelper.ADMIN_SYSTEM_LOGIN
                          + "?" + Constants.UrlHelper.RETURN_URL + "=" + URLEncoder.encode(path, "utf-8");
             response.sendRedirect(url);
 

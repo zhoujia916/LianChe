@@ -24,7 +24,7 @@ import puzzle.lianche.utils.*;
 import java.util.*;
 
 @Controller(value = "adminAutoUserController")
-@RequestMapping(value = "/admin/autoUser")
+@RequestMapping(value = "/admin/autouser")
 public class AutoUserController extends ModuleController {
 
     @Autowired
@@ -47,7 +47,7 @@ public class AutoUserController extends ModuleController {
     public Result list(AutoUser autoUser){
         Result result = new Result();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("userName",autoUser.getUserName());
             map.put("shopName",autoUser.getShopName());
             String pageIndex=request.getParameter("pageIndex");
@@ -108,7 +108,7 @@ public class AutoUserController extends ModuleController {
     @ResponseBody
     public Result action(String action,AutoUser autoUser){
         Result result=new Result();
-        Map map=new HashMap();
+        Map<String, Object> map=new HashMap<String, Object>();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
@@ -161,4 +161,37 @@ public class AutoUserController extends ModuleController {
         }
         return result;
     }
+
+
+    /**
+     * 实名认证会员信息
+     * @param action
+     * @param autoUser
+     * @return
+     */
+    @RequestMapping(value = "/auth.do")
+    @ResponseBody
+    public Result auth(String action, AutoUser autoUser){
+        Result result=new Result();
+        try{
+            autoUser = autoUserService.query(autoUser.getUserId(), null);
+            autoUser.setAuthenticateTime(ConvertUtil.toLong(new Date()));
+            if(action.equals("accept")){
+                autoUser.setStatus(Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
+            }
+            else if(action.equals("reject")){
+                autoUser.setStatus(Constants.AUTO_USER_STATUS_AUTH_FAIL);
+            }
+            if(!autoUserService.update(autoUser)){
+                result.setCode(1);
+                result.setMsg("实名认证会员信息失败");
+            }
+        }catch(Exception e){
+            result.setCode(1);
+            result.setMsg("实名认证会员信息出错");
+            logger.error(result.getMsg()+e.getMessage());
+        }
+        return result;
+    }
+
 }

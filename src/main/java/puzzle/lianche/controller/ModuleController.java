@@ -52,14 +52,14 @@ public class ModuleController extends BaseController {
                 List<Integer> actionIds = new ArrayList<Integer>();
                 for (SystemAuthority authority : user.getAuthorities()) {
                     if(StringUtil.isNotNullOrEmpty(authority.getMenuUrl())){
-                        if(authority.getMenuUrl().equals(url) && authority.getTargetType() == 1){
+                        if(authority.getMenuUrl().equals(url) && authority.getTargetType() == Constants.SYSTEM_AUTHORITY_TARGET_MENU){
                             menuId = authority.getTargetId();
                             break;
                         }
                     }
                 }
                 for (SystemAuthority item : user.getAuthorities()) {
-                    if(item.getTargetType() == 2){
+                    if(item.getTargetType() == Constants.SYSTEM_AUTHORITY_TARGET_ACTION){
                         actionIds.add(item.getTargetId());
                     }
                 }

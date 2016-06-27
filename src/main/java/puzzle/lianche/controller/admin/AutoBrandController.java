@@ -8,18 +8,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.*;
+import puzzle.lianche.entity.AutoBrand;
+import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.IAutoBrandService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@Controller (value = "adminBrandController")
-@RequestMapping (value = "/admin/brand")
-public class BrandController extends ModuleController {
+@Controller (value = "adminAutoBrandController")
+@RequestMapping (value = "/admin/autobrand")
+public class AutoBrandController extends ModuleController {
 
     @Autowired
     private IAutoBrandService autoBrandService;
@@ -28,7 +31,7 @@ public class BrandController extends ModuleController {
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);
-        return Constants.UrlHelper.ADMIN_BRAND;
+        return Constants.UrlHelper.ADMIN_AUTO_BRAND;
     }
 
     @RequestMapping (value = "/list.do")
@@ -36,7 +39,7 @@ public class BrandController extends ModuleController {
     public Result list(){
         Result result=new Result();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             String pageIndex=request.getParameter("pageIndex");
             String pageSize=request.getParameter("pageSize");
             String brandName=request.getParameter("brandName");
@@ -84,7 +87,7 @@ public class BrandController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"修改品牌信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 String id=request.getParameter("id");
                 String ids=request.getParameter("ids");
                 if(StringUtil.isNotNullOrEmpty(id)){

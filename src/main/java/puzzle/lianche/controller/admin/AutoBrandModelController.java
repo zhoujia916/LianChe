@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.AutoBrand;
 import puzzle.lianche.entity.AutoBrandCat;
 import puzzle.lianche.entity.AutoBrandModel;
@@ -21,14 +20,13 @@ import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller (value = "adminBrandModelController")
-@RequestMapping (value = "/admin/brandmodel")
-public class BrandModelController extends ModuleController {
+@Controller (value = "adminAutoBrandModelController")
+@RequestMapping (value = "/admin/autobrandmodel")
+public class AutoBrandModelController extends ModuleController {
 
     @Autowired
     private IAutoBrandModelService autoBrandModelService;
@@ -41,7 +39,7 @@ public class BrandModelController extends ModuleController {
 
     @RequestMapping (value = {"/","/index"})
     public String modelIndex(){
-        Map map=new HashMap();
+        Map<String, Object> map=new HashMap<String, Object>();
         List<AutoBrandCat> catList=autoBrandCatService.queryList(null);
         if(catList.size()>0){
             StringBuffer str=new StringBuffer();
@@ -58,12 +56,12 @@ public class BrandModelController extends ModuleController {
         this.setModelAttribute("catList",catList);
         this.setModelAttribute("brandList",brandList);
         this.setModelAttribute("list",list);
-        return Constants.UrlHelper.ADMIN_BRAND_MODEL;
+        return Constants.UrlHelper.ADMIN_AUTO_BRAND_MODEL;
     }
 
     @RequestMapping (value = "/index/{catId}")
     public String show(@PathVariable String catId){
-        Map map=new HashMap();
+        Map<String, Object> map=new HashMap<String, Object>();
         map.put("catId",catId);
         List<AutoBrandCat> catList=autoBrandCatService.queryList(map);
         if(catList.size()>0){
@@ -83,7 +81,7 @@ public class BrandModelController extends ModuleController {
         this.setModelAttribute("brandList",brandList);
         this.setModelAttribute("list",list);
         this.setModelAttribute("catId",catId);
-        return Constants.UrlHelper.ADMIN_BRAND_MODEL;
+        return Constants.UrlHelper.ADMIN_AUTO_BRAND_MODEL;
     }
 
     @RequestMapping (value = "/list.do")
@@ -91,7 +89,7 @@ public class BrandModelController extends ModuleController {
     public Result modelList(AutoBrandModel autoBrandModel){
         Result result=new Result();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("modelName",autoBrandModel.getModelName());
             String pageIndex=request.getParameter("pageIndex");
             String pageSize=request.getParameter("pageSize");
@@ -145,7 +143,7 @@ public class BrandModelController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改特定的车型信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 String id=request.getParameter("id");
                 String ids=request.getParameter("ids");
                 if(StringUtil.isNotNullOrEmpty(id)){

@@ -2,23 +2,22 @@ package puzzle.lianche.controller.admin;
 
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.*;
 import puzzle.lianche.service.*;
 import puzzle.lianche.utils.*;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@Controller(value="adminIndexController")
-public class IndexController extends ModuleController {
+@Controller(value="adminSystemIndexController")
+public class SystemIndexController extends ModuleController {
     @Autowired
     private ISystemUserService systemUserService;
 
@@ -31,15 +30,18 @@ public class IndexController extends ModuleController {
     @Autowired
     private IAutoUserService autoUserService;
 
+    @Autowired
+    private IAutoOrderService autoOrderService;
+
     //region request page
     @RequestMapping(value = {"", "/", "/admin/", "/admin/login"})
     public String login(){
-        String returnUrl = this.getParameter(Constants.UrlHelper.RETURN_URL);
+        String returnUrl = this.getParameter(Constants.UrlHelper.PARAM_RETURN_URL);
         if(this.getCurrentUser() != null){
             if(StringUtil.isNotNullOrEmpty(returnUrl)){
                 return this.redirect(returnUrl);
             }else {
-                return this.redirect(Constants.UrlHelper.ADMIN_INDEX);
+                return this.redirect(Constants.UrlHelper.ADMIN_SYSTEM_INDEX);
             }
         }
         String value = this.getCookie(Constants.COOKIE_ADMIN);
@@ -49,9 +51,9 @@ public class IndexController extends ModuleController {
             this.setModelAttribute("remember", info.getInt("remember"));
         }
         if(StringUtil.isNotNullOrEmpty(returnUrl)){
-            this.setModelAttribute("ReturnUrl", returnUrl);
+            this.setModelAttribute(Constants.UrlHelper.PARAM_RETURN_URL, returnUrl);
         }
-        return Constants.UrlHelper.ADMIN_LOGIN;
+        return Constants.UrlHelper.ADMIN_SYSTEM_LOGIN;
     }
 
     @RequestMapping(value = {"/logout", "/admin/logout", "/admin/logout"})
@@ -60,7 +62,7 @@ public class IndexController extends ModuleController {
         if(user != null) {
             this.setCurrentUser(null);
         }
-        return redirect(Constants.UrlHelper.ADMIN_LOGIN);
+        return redirect(Constants.UrlHelper.ADMIN_SYSTEM_LOGIN);
     }
 
     @RequestMapping(value = "/admin/index")
@@ -86,20 +88,23 @@ public class IndexController extends ModuleController {
 
 
             //region 已经确认订单和车源
-//            map.clear();
-//            map.put("status", Constants.AUTO_USER_STATUS_WAITAUTHENTICATION);
-//            page.setPageIndex(Constants.PageHelper.PAGE_INDEX_FIRST);
-//            page.setPageSize(Constants.PageHelper.PAGE_SIZE_COMMON);
-//
-//            this.setModelAttribute("task", task);
+            map.clear();
+            map.put("status", Constants.OS_EXECUTE);
+            page.setPageIndex(Constants.PageHelper.PAGE_INDEX_FIRST);
+            page.setPageSize(Constants.PageHelper.PAGE_SIZE_COMMON);
+            List<AutoOrder> orders = autoOrderService.queryList(map, page);
+            Result notification = new Result();
+            notification.setTotal(page.getTotal());
+            notification.setData(orders);
+            this.setModelAttribute("orders", notification);
             //endregion
         }
-        return Constants.UrlHelper.ADMIN_INDEX;
+        return Constants.UrlHelper.ADMIN_SYSTEM_INDEX;
     }
 
     @RequestMapping(value = "/admin/main")
     public String main(){
-        return Constants.UrlHelper.ADMIN_MAIN;
+        return Constants.UrlHelper.ADMIN_SYSTEM_MAIN;
     }
     //endregion
 
@@ -225,7 +230,7 @@ public class IndexController extends ModuleController {
     @RequestMapping(value = "/admin/signout.do")
     public String signout(){
         this.setCurrentUser(null);
-        return redirect(Constants.UrlHelper.USER_LOGIN);
+        return redirect(Constants.UrlHelper.ADMIN_SYSTEM_LOGIN);
     }
     //endregion
 }

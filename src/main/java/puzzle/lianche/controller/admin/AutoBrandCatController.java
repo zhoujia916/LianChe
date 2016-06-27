@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.AutoBrand;
 import puzzle.lianche.entity.AutoBrandCat;
 import puzzle.lianche.service.IAutoBrandCatService;
@@ -23,9 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller (value = "adminBrandCatController")
-@RequestMapping (value = "/admin/brandcat")
-public class BrandCatController extends ModuleController {
+@Controller (value = "adminAutoBrandCatController")
+@RequestMapping (value = "/admin/autobrandcat")
+public class AutoBrandCatController extends ModuleController {
 
     @Autowired
     private IAutoBrandService autoBrandService;
@@ -39,7 +38,7 @@ public class BrandCatController extends ModuleController {
         List<AutoBrand> list=autoBrandService.queryList(null);
         this.setModelAttribute("brandList",brandList);
         this.setModelAttribute("list",list);
-        return Constants.UrlHelper.ADMIN_BRAND_CAT;
+        return Constants.UrlHelper.ADMIN_AUTO_BRAND_CAT;
     }
 
     @RequestMapping (value = "/index/{brandId}")
@@ -51,7 +50,7 @@ public class BrandCatController extends ModuleController {
         this.setModelAttribute("brandId", brandId);
         this.setModelAttribute("brandList",brandList);
         this.setModelAttribute("list",list);
-        return Constants.UrlHelper.ADMIN_BRAND_CAT;
+        return Constants.UrlHelper.ADMIN_AUTO_BRAND_CAT;
     }
 
     @RequestMapping (value = "/list.do")
@@ -59,7 +58,7 @@ public class BrandCatController extends ModuleController {
     public Result catList(AutoBrandCat autoBrandCat){
         Result result=new Result();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("catName",autoBrandCat.getCatName());
             String pageIndex=request.getParameter("pageIndex");
             String pageSize=request.getParameter("pageSize");
@@ -109,7 +108,7 @@ public class BrandCatController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改特定的车系信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 String id=request.getParameter("id");
                 String ids=request.getParameter("ids");
                 if(StringUtil.isNotNullOrEmpty(id)){

@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.*;
 import puzzle.lianche.service.IAutoBrandModelService;
 import puzzle.lianche.service.IAutoCarAttrService;
 import puzzle.lianche.service.IAutoCarService;
-import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
@@ -21,9 +19,9 @@ import puzzle.lianche.utils.StringUtil;
 
 import java.util.*;
 
-@Controller (value = "adminCarController")
-@RequestMapping (value = "/admin/car")
-public class CarController extends ModuleController {
+@Controller (value = "adminAutoCarController")
+@RequestMapping (value = "/admin/autocar")
+public class AutoCarController extends ModuleController {
 
     @Autowired
     private IAutoCarService autoCarService;
@@ -38,7 +36,7 @@ public class CarController extends ModuleController {
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);
-        return Constants.UrlHelper.ADMIN_CAR;
+        return Constants.UrlHelper.ADMIN_AUTO_CAR;
     }
 
     @RequestMapping (value = "/list.do")
@@ -46,7 +44,7 @@ public class CarController extends ModuleController {
     public Result list(AutoCar autoCar){
         Result result=new Result();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("carName",autoCar.getCarName());
             map.put("carType",autoCar.getCarType());
             String pageIndex=request.getParameter("pageIndex");
@@ -150,7 +148,7 @@ public class CarController extends ModuleController {
                     }
                     autoCar.setPics(list);
                 }
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 map.put("brandId", autoCar.getBrandId());
                 map.put("catId", autoCar.getBrandCatId());
                 map.put("modelId", autoCar.getBrandModelId());
@@ -229,7 +227,7 @@ public class CarController extends ModuleController {
                     }
                     autoCar.setPics(list);
                 }
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 map.put("brandId", autoCar.getBrandId());
                 map.put("catId", autoCar.getBrandCatId());
                 map.put("modelId", autoCar.getBrandModelId());
@@ -265,7 +263,7 @@ public class CarController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改车源信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 String id = getParameter("id");
                 String ids = getParameter("ids");
                 if(StringUtil.isNotNullOrEmpty(id)){

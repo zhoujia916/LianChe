@@ -4,7 +4,10 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="
+           http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-4.2.xsd
            http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
            http://www.springframework.org/schema/mvc
@@ -22,8 +25,14 @@
     <mvc:default-servlet-handler />
     <!-- 启用spring aop代理 -->
     <aop:aspectj-autoproxy proxy-target-class="true" />
-
+    <!-- 包扫描 -->
     <context:component-scan base-package="puzzle.lianche" />
+    <!-- 定时任务 -->
+    <!--<task:scheduled-tasks>-->
+        <!--<task:scheduled ref="realeseLockCarJob" method="execute" cron="0/5 * * * * ?"/>-->
+    <!--</task:scheduled-tasks>-->
+    <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>
+    <task:scheduler id="qbScheduler" pool-size="10"/>
 
     <bean id="initConfig" class="puzzle.lianche.init.InitConfig" scope="singleton"></bean>
 </beans>

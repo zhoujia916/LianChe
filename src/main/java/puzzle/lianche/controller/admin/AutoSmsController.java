@@ -7,27 +7,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
-import puzzle.lianche.controller.BaseController;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.*;
+import puzzle.lianche.entity.AutoSms;
+import puzzle.lianche.entity.AutoUser;
+import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.push.SmsPush;
 import puzzle.lianche.service.IAutoSmsService;
 import puzzle.lianche.service.IAutoUserService;
-import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller (value = "adminSmsController")
-@RequestMapping (value = "/admin/sms")
-public class SmsController extends ModuleController{
+@Controller (value = "adminAutoSmsController")
+@RequestMapping (value = "/admin/autosms")
+public class AutoSmsController extends ModuleController{
 
     @Autowired
     private IAutoSmsService autoSmsService;
@@ -42,7 +41,7 @@ public class SmsController extends ModuleController{
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);
         this.setModelAttribute("userList",list);
-        return Constants.UrlHelper.ADMIN_SMS;
+        return Constants.UrlHelper.ADMIN_AUTO_SMS;
     }
 
     @RequestMapping (value = "/list.do")
@@ -50,7 +49,7 @@ public class SmsController extends ModuleController{
     public Result list(){
         Result result=new Result();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("smsType",request.getParameter("smsType"));
             if(request.getParameter("status")!=null && request.getParameter("status")!=""){
                 map.put("status", ConvertUtil.toInt(request.getParameter("status")));
@@ -86,7 +85,7 @@ public class SmsController extends ModuleController{
         Result result=new Result();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 map.put("userId",autoSms.getToUserId());
                 List<AutoUser> userList=autoUserService.queryList(map);
                 List<String> phone=new ArrayList<String>();
@@ -121,7 +120,7 @@ public class SmsController extends ModuleController{
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE, "添加短信信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 String id=request.getParameter("id");
                 String ids=request.getParameter("ids");
                 if(StringUtil.isNotNullOrEmpty(id)){

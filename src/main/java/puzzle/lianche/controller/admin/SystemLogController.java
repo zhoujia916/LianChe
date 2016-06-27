@@ -8,25 +8,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.SystemAuthority;
 import puzzle.lianche.entity.SystemLog;
 import puzzle.lianche.entity.SystemMenuAction;
-import puzzle.lianche.entity.SystemUser;
 import puzzle.lianche.service.ISystemLogService;
-import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller(value = "adminLogControll")
-@RequestMapping(value = "/admin/log")
-public class LogController extends ModuleController{
+@Controller(value = "adminSystemLogControll")
+@RequestMapping(value = "/admin/systemlog")
+public class SystemLogController extends ModuleController{
 
     @Autowired
     private ISystemLogService systemLogService;
@@ -36,7 +32,7 @@ public class LogController extends ModuleController{
     {
         List<SystemMenuAction> actions=getActions();
         this.setModelAttribute("actions", actions);
-        return Constants.UrlHelper.ADMIN_LOG;
+        return Constants.UrlHelper.ADMIN_SYSTEM_LOG;
     }
 
     /**
@@ -51,7 +47,7 @@ public class LogController extends ModuleController{
         Result result=new Result();
         try{
             insertLog(Constants.PageHelper.PAGE_ACTION_SELECT,"查看日志信息");
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("logIp",systemLog.getLogIp());
             String pageIndex=request.getParameter("pageIndex");
             String pageSize=request.getParameter("pageSize");
@@ -92,7 +88,7 @@ public class LogController extends ModuleController{
     @ResponseBody
     public Result action(String action){
         Result result=new Result();
-        Map map=new HashMap();
+        Map<String, Object> map=new HashMap<String, Object>();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
                 String id=request.getParameter("id");

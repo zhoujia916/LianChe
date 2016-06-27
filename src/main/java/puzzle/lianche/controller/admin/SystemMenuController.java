@@ -1,8 +1,5 @@
 package puzzle.lianche.controller.admin;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,18 +7,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.*;
+import puzzle.lianche.entity.SystemMenu;
+import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.service.ISystemMenuService;
-import puzzle.lianche.utils.*;
+import puzzle.lianche.utils.CommonUtil;
+import puzzle.lianche.utils.ConvertUtil;
+import puzzle.lianche.utils.Result;
+import puzzle.lianche.utils.StringUtil;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@Controller(value="adminMenuController")
-@RequestMapping(value = {"/admin/menu"})
-public class MenuController extends ModuleController {
+@Controller(value="adminSystemMenuController")
+@RequestMapping(value = {"/admin/systemmenu"})
+public class SystemMenuController extends ModuleController {
 
     @Autowired
     private ISystemMenuService systemMenuService;
@@ -33,16 +35,7 @@ public class MenuController extends ModuleController {
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);
-        return Constants.UrlHelper.ADMIN_MENU;
-    }
-
-    @RequestMapping(value = {"/show/{id}"})
-    public String show(@PathVariable Integer id){
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("menuId", id);
-        SystemMenu menu = systemMenuService.query(map);
-        this.setModelAttribute("menu", menu);
-        return Constants.UrlHelper.ADMIN_MENU_SHOW;
+        return Constants.UrlHelper.ADMIN_SYSTEM_MENU;
     }
 
     @RequestMapping(value = { "/tree.do" })

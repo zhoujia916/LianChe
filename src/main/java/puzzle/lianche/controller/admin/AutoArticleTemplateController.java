@@ -7,23 +7,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.AutoArticleTemplate;
-import puzzle.lianche.entity.AutoBrand;
 import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.IAutoArticleTemplateService;
-import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller (value = "adminArticleTemplateController")
-@RequestMapping (value = "/admin/articletemplate")
-public class ArticleTemplateController extends ModuleController {
+@Controller (value = "adminAutoArticleTemplateController")
+@RequestMapping (value = "/admin/autoarticletemplate")
+public class AutoArticleTemplateController extends ModuleController {
 
     @Autowired
     private IAutoArticleTemplateService autoArticleTemplateService;
@@ -32,7 +29,7 @@ public class ArticleTemplateController extends ModuleController {
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);
-        return Constants.UrlHelper.ADMIN_ARTICLE_TEMPLATE;
+        return Constants.UrlHelper.ADMIN_AUTO_ARTICLE_TEMPLATE;
     }
 
     @RequestMapping (value = "/list.do")
@@ -62,7 +59,7 @@ public class ArticleTemplateController extends ModuleController {
     @ResponseBody
     public Result action(String action,AutoArticleTemplate autoArticleTemplate){
         Result result=new Result();
-        Map map=new HashMap();
+        Map<String, Object> map=new HashMap<String, Object>();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 if(!autoArticleTemplateService.insert(autoArticleTemplate)){

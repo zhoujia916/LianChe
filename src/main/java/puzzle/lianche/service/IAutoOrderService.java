@@ -21,6 +21,8 @@ public interface IAutoOrderService{
 
     public String createSn(String key);
 
+    public boolean realeseLock(List<AutoOrder> list);
+
     public List<String> queryOperate(AutoOrder order, int userType  );
 
     public AutoOrder query(Integer orderId, String orderSn);

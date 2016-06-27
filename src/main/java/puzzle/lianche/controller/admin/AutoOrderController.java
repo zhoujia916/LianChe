@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller(value = "adminOrderController")
-@RequestMapping(value = "/admin/order")
-public class OrderController extends ModuleController {
+@Controller(value = "adminAutoOrderController")
+@RequestMapping(value = "/admin/autoorder")
+public class AutoOrderController extends ModuleController {
 
     @Autowired
     private IAutoOrderService autoOrderService;
@@ -47,7 +47,7 @@ public class OrderController extends ModuleController {
         this.setModelAttribute("actions", actions);
         this.setModelAttribute("users",users);
         this.setModelAttribute("cars",cars);
-        return Constants.UrlHelper.ADMIN_ORDER;
+        return Constants.UrlHelper.ADMIN_AUTO_ORDER;
     }
 
     @RequestMapping(value = "/list.do")
@@ -55,7 +55,7 @@ public class OrderController extends ModuleController {
     public Result list(){
         Result result=new Result();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             String orderStatus=request.getParameter("orderStatus");
             String payStatus=request.getParameter("payStatus");
             String shipStatus=request.getParameter("shipStatus");
@@ -162,7 +162,7 @@ public class OrderController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"保存订单信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
-                Map map=new HashMap();
+                Map<String, Object> map=new HashMap<String, Object>();
                 String id=request.getParameter("id");
                 String ids=request.getParameter("ids");
                 if(StringUtil.isNotNullOrEmpty(id)){
@@ -196,7 +196,7 @@ public class OrderController extends ModuleController {
     public JSONArray queryCarAttr(Integer carId){
         JSONArray array=new JSONArray();
         try{
-            Map map=new HashMap();
+            Map<String, Object> map=new HashMap<String, Object>();
             map.put("carId",carId);
             List<AutoCarAttr> list=autoCarAttrService.queryList(map);
             if(list!=null && list.size()>0){

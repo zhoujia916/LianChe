@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
-import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.ISystemMenuActionService;
@@ -19,9 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller(value="adminMenuActionController")
-@RequestMapping(value = {"/admin/menuaction"})
-public class MenuActionController extends ModuleController {
+@Controller(value="adminSystemMenuActionController")
+@RequestMapping(value = {"/admin/systemmenuaction"})
+public class SystemMenuActionController extends ModuleController {
 
     @Autowired
     private ISystemMenuActionService systemMenuActionService;
@@ -30,7 +28,7 @@ public class MenuActionController extends ModuleController {
     @RequestMapping(value = {"/index/{menuId}"})
     public String index(@PathVariable int menuId){
         this.setModelAttribute("menuId", menuId);
-        return Constants.UrlHelper.ADMIN_MENU_ACTION;
+        return Constants.UrlHelper.ADMIN_SYSTEM_MENU_ACTION;
     }
 
     @RequestMapping(value = { "/list.do" })
