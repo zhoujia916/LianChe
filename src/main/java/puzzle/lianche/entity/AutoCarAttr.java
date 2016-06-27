@@ -163,5 +163,13 @@ public class AutoCarAttr implements Serializable{
         this.price = price;
     }
 
-		
+    private Integer addUserId;
+
+    public Integer getAddUserId() {
+        return addUserId;
+    }
+
+    public void setAddUserId(Integer addUserId) {
+        this.addUserId = addUserId;
+    }
 }

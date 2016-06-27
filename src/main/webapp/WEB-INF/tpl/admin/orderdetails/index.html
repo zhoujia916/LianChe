@@ -5,7 +5,7 @@
 
     <h1>
         <i class="glyphicon glyphicon-signal"></i>
-            订单管理
+        订单管理
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             查看订单详情动作
@@ -18,36 +18,93 @@
 
 <div class="row" id="">
     <div class="col-xs-12">
-        <div id="orderdetails-gridview" class="gridview">
-            <input type="hidden" id="orderId" name="orderId" value="{{$orderId}}">
-
-            <div class="grid-action" style="margin:10px 0;">
-                <a data-action="delete" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-trash-o"></i>删除</a>
-
-                <a data-action="refresh" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-refresh"></i>刷新</a>
-            </div>
-
+        <div class="gridview">
             <div class="grid-table">
                 <table class="table table-striped table-bordered table-hover table-list table-tree">
                     <thead>
-                    <tr>
-                        <th width="50">
-                            <label class="position-relative">
-                                <input type="checkbox" class="ace grid-cb-all" />
-                                <span class="lbl"></span>
-                            </label>
-                        </th>
-                        <th width="100">编号</th>
-                        <th width="120">操作</th>
-                    </tr>
+                        <tr>
+                            <th width="80">编号</th>
+                            <th>订单序号</th>
+                            <th>订单状态</th>
+                            <th>支付状态</th>
+                            <th>物流状态</th>
+                            <th>数量</th>
+                            <th>售价</th>
+                            <th>订购时间</th>
+                            <th>提车时间</th>
+                            <th>是否加配</th>
+                        </tr>
                     </thead>
-
                     <tbody>
-                    <tr>
-                        <td colspan="8">
-                            <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{$order.orderId}}</td>
+                            <td>{{$order.orderSn}}</td>
+                            <td>{{$order.orderStatusString}}</td>
+                            <td>{{$order.payStatusString}}</td>
+                            <td>{{$order.shipStatusString}}</td>
+                            <td>{{$order.carNumber}}</td>
+                            <td>{{$order.amount}}</td>
+                            <td>{{$order.addTimeString}}</td>
+                            <td>{{$order.putTimeString}}</td>
+                            <td>
+                                {{if $order.hasParts==1}}
+                                    是
+                                {{else}}
+                                    否
+                                {{/if}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                买家：{{if $order.buyerRealName!=null}}
+                                            {{$order.buyerName}}({{$order.buyerRealName}})
+                                     {{else}}
+                                            {{$order.buyerName}}
+                                     {{/if}}
+                            </td>
+                            <td colspan="5">
+                                卖家：{{if $order.sellerRealName!=null}}
+                                            {{$order.sellerName}}({{$order.sellerRealName}})
+                                     {{else}}
+                                            {{$order.sellerName}}
+                                     {{/if}}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <thead>
+                        <tr>
+                            <th width="80">编号</th>
+                            <th>名称</th>
+                            <th>类型</th>
+                            <th>所属品牌</th>
+                            <th>所属车系</th>
+                            <th>所属车型</th>
+                            <th>官方售价</th>
+                            <th>总数</th>
+                            <th>锁定数</th>
+                            <th>剩余数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{$car.carId}}</td>
+                            <td>{{$car.carName}}</td>
+                            <td>{{$car.carTypeString}}</td>
+                            <td>{{$car.brandName}}</td>
+                            <td>{{$car.catName}}</td>
+                            <td>{{$car.modelName}}</td>
+                            <td>{{$car.officalPrice}}</td>
+                            <td>{{$carAttr.totalNumber}}</td>
+                            <td>{{$carAttr.lockNumber}}</td>
+                            <td>{{$carAttr.surplusNumber}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="10">
+                                {{foreach from=$orderActions item=action}}
+                                    <a onclick="action('{{$action}}')" class="btn btn-xs btn-action btn-purple" style="margin-top: -2px;margin-left: 10px;">{{$action}}</a>&nbsp;&nbsp;
+                                {{/foreach}}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="pagination-box">
@@ -55,44 +112,37 @@
                 </div>
             </div>
             <div class="grid-form search-form "></div>
+            <input type="hidden" id="orderId" value="{{$orderId}}"/>
         </div>
-
-        <!-- PAGE CONTENT ENDS -->
-    </div><!-- /.col -->
-</div><!-- /.row -->
-
-<!-- page specific plugin scripts -->
+    </div>
+</div>
 <script type="text/javascript">
-    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {});
 
-        $("#orderdetails-gridview").gridview({
-            url: "orderdetails/list.do",
-            filter:{
-                orderId: $("#orderId").val()
-            },
-            form: {
-                url: "orderdetails/action.do"
-            },
-            jsonReader: {
-                key_field: 'orderId'
-            },
-            columns: [
-                {
-                    name: "checkbox"
-                },
-                {
-                    name: "orderId"
-                },
-                {
-                    name: "actions",
-                    list: ["delete"]
-                }
-            ]
-        });
-    });
-</script>
-<script type="text/javascript">
     function goBack(){
         window.history.back();
+    }
+
+    function action(action){
+        var orderId = $("#orderId").val();
+        $.ajax({
+            url:'orderdetails/action.do',
+            type:'post',
+            data:'action='+action+"&orderId="+orderId,
+            success:function(data){
+                if(data=="true"){
+                    showAlert("修改成功！");
+                    load(orderId);
+                }else{
+                    showAlert("修改失败！");
+                }
+            }
+        });
+    }
+
+    function load(orderId){
+        alert();
+        changeHash("admin/orderdetails/index/"+ orderId);
+        alert(orderId);
     }
 </script>

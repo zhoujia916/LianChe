@@ -122,6 +122,7 @@
                                     </label>
 
                                     <div class="col-sm-9">
+                                        <input type="hidden" class="addUserId"/>
                                         <select data-init="0" id="carId" name="car.carId">
                                             <option value="0">请选择车源</option>
                                             {{foreach from=$cars item=car}}
@@ -202,12 +203,14 @@
             var carId=$("#carId").val();
             if(carId!=0 && carId!=null){
                 if(markId!=carId) {
+                    $("#markId").empty();
                     $.ajax({
                         url: "order/queryCarAttr.do",
                         type: "post",
                         data: "carId=" + carId,
                         success: function (data) {
                             if(data.length>0) {
+                                $(".addUserId").attr("value",data[0].addUserId);
                                 $("#carAttrId").empty();
                                 $("#carAttrId").append("<option value='0'>请选择属性</option>");
                                 for (var i = 0; i < data.length; i++) {
@@ -225,6 +228,7 @@
                 $("#carAttrId").append("<option value='0'>请选择属性</option>");
                 $("#markId").empty();
                 $("#markId").attr("value",carId);
+                $(".addUserId").attr("value",0);
             }
         });
 
@@ -288,6 +292,7 @@
                 url: "order/action.do",
                 check:function(){
                     var buyerId=$("#buyerId").val();
+                    var addUserId=$(".addUserId").val();
                     var carId=$("#carId").val();
                     var carAttrId=$("#carAttrId").val();
                     var surplusNumber=$("#"+carAttrId+"").val();
@@ -300,6 +305,10 @@
                         console.log("check form");
                         $("#carId").focus();
                         return "请选择车源";
+                    }else if(buyerId==addUserId){
+                        console.log("check form");
+                        $("#carId").focus();
+                        return "您不能购买您自己发布的车辆";
                     }else if(carAttrId==0){
                         console.log("check form");
                         $("#carAttrId").focus();

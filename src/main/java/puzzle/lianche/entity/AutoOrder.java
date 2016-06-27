@@ -235,13 +235,58 @@ public class AutoOrder implements Serializable{
     private String sellerRealName;
     private String buyerName;
     private String buyerRealName;
-    private Integer price;
-    private double carNumber;
-    public double getCarNumber() {
+    private Integer carNumber;
+    private String addTimeString;
+    private Integer hasParts;
+    private String orderStatusString;
+    private String payStatusString;
+    private String shipStatusString;
+
+    public String getOrderStatusString() {
+        return orderStatusString;
+    }
+
+    public void setOrderStatusString(String orderStatusString) {
+        this.orderStatusString = orderStatusString;
+    }
+
+    public String getPayStatusString() {
+        return payStatusString;
+    }
+
+    public void setPayStatusString(String payStatusString) {
+        this.payStatusString = payStatusString;
+    }
+
+    public String getShipStatusString() {
+        return shipStatusString;
+    }
+
+    public void setShipStatusString(String shipStatusString) {
+        this.shipStatusString = shipStatusString;
+    }
+
+    public Integer getHasParts() {
+        return hasParts;
+    }
+
+    public void setHasParts(Integer hasParts) {
+        this.hasParts = hasParts;
+    }
+
+    public String getAddTimeString() {
+        return addTimeString;
+    }
+
+    public void setAddTimeString(String addTimeString) {
+        this.addTimeString = addTimeString;
+    }
+
+    public Integer getCarNumber() {
         return carNumber;
     }
 
-    public void setCarNumber(double carNumber) {
+    public void setCarNumber(Integer carNumber) {
         this.carNumber = carNumber;
     }
 
@@ -265,14 +310,6 @@ public class AutoOrder implements Serializable{
     }
 
     private Long putTime;
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
 
     public String getCarName() {
         return carName;

@@ -154,15 +154,13 @@ public class OrderController extends ModuleController {
                 autoOrder.getCar().setCarPrice(price);
                 autoOrder.getCar().setSendNumber(0);
                 autoOrder.setCar(autoOrder.getCar());
-                autoOrder.setPutTime(ConvertUtil.toLong(ConvertUtil.toDate(autoOrder.getPutTimeString())));
+                autoOrder.setPutTime(ConvertUtil.toLong(ConvertUtil.toDate(autoOrder.getPutTimeString()+" 23:59:59")));
                 if(!autoOrderService.insert(autoOrder)){
                     result.setCode(1);
                     result.setData("保存订单信息出错！");
                 }else{
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"保存订单信息");
                 }
-            }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
-
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
                 Map map=new HashMap();
                 String id=request.getParameter("id");
@@ -207,6 +205,7 @@ public class OrderController extends ModuleController {
                     object.put("carAttrId",carAttr.getCarAttrId());
                     object.put("attrValue","外观:"+carAttr.getOutsideColor()+"-内饰:"+carAttr.getInsideColor());
                     object.put("surplusNumber",carAttr.getSurplusNumber());
+                    object.put("addUserId",carAttr.getAddUserId());
                     array.add(object);
                 }
             }

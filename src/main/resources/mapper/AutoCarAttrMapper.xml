@@ -13,6 +13,7 @@
         <result column="lock_number" property="lockNumber" />
         <result column="surplus_number" property="surplusNumber" />
         <result column="price" property="price" />
+        <result column="addUserId" property="addUserId"/>
     </resultMap>
 
     <sql id="allColumn">
@@ -147,8 +148,9 @@
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoCarAttr">
-        select aca.*
+        select aca.*,ac.add_user_id as addUserId
         from auto_car_attr as aca
+        inner join auto_car as ac on aca.car_id=ac.car_id
         <where>
             <trim prefixOverrides="and | or">
                 <if test="carAttrId > 0">

@@ -216,7 +216,7 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoCar">
-        select ac.*, p.region_name as province_name, c.region_name as city_name, ab.brand_name, abc.cat_name
+        select ac.*, p.region_name as province_name, c.region_name as city_name, ab.brand_name, abc.cat_name, abm.model_name
         <if test="viewUserId != null and viewUserId > 0">
             ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
         </if>
@@ -226,6 +226,7 @@
         left join auto_region as c on c.region_id = ac.city
         inner join auto_brand as ab on ab.brand_id=ac.brand_id
         inner join auto_brand_cat as abc on abc.cat_id=ac.brand_cat_id
+        inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
         <where>
             <if test="carId != null and carId > 0">
                 ac.car_id = #{carId}

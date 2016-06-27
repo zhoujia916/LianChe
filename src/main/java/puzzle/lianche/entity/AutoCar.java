@@ -275,6 +275,15 @@ public class AutoCar implements Serializable{
     private String saleAmount;
     private String totalNumber;
     private String path;
+    private String carTypeString;
+
+    public String getCarTypeString() {
+        return carTypeString;
+    }
+
+    public void setCarTypeString(String carTypeString) {
+        this.carTypeString = carTypeString;
+    }
 
     public String getPath() {
         return path;
