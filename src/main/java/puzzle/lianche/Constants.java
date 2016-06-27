@@ -293,6 +293,24 @@ public class Constants {
         }
     };
 
+    public static final Map<String, String> OO_ACTIONS = new HashMap<String, String>(){
+        {
+            put("取消订单","cancel");
+            put("设为订金已支付","payment");
+            put("设为订金未支付","unpayment");
+            put("同意交易","accept");
+            put("拒绝交易","unaccept");
+            put("拒绝","reject");
+            put("请求取消订单","request_cancel");
+            put("联系买家","contact_buyer");
+            put("联系卖家","contact_seller");
+            put("确认收货","receive");
+            put("通知买家收货","notify_receive");
+            put("退还买家订金","return_buyer_deposit");
+            put("退还卖家订金","return_seller_deposit");
+        }
+    };
+
     /**
      * 订单状态(买家已提交,卖家已同意,卖家不同意,交易中,交易成功,交易取消)
      */
@@ -451,13 +469,9 @@ public class Constants {
 
         public static final String ADMIN_AUTO_SMS = "admin/auto/sms/index";
 
-<<<<<<< HEAD
-        public static final String ADMIN_ORDER = "admin/order/index";
+        public static final String ADMIN_ORDER_DETAILS = "admin/auto/orderdetails/index";
 
-        public static final String ADMIN_ORDER_DETAILS = "admin/orderdetails/index";
-=======
         public static final String ADMIN_AUTO_ORDER = "admin/auto/order/index";
->>>>>>> 99ebb56b92ed5f0a169edf118ebb92183c8c9645
     }
 
     public class PageHelper{

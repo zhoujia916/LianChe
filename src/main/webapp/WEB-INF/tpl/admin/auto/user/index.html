@@ -204,7 +204,7 @@
 
         $(".btn-action[data-action='select']").click(function(){
             var keys = $("#autoUser-gridview").gridview("getKeys");
-            var hash = "admin/usercollect/";
+            var hash = "admin/autousercollect/";
             if(keys.length > 0){
                 hash = hash + "index/" + keys.join(",");
             }
@@ -212,9 +212,9 @@
         });
 
         $("#autoUser-gridview").gridview({
-            url: "autoUser/list.do",
+            url: "autouser/list.do",
             form: {
-                url: "autoUser/action.do",
+                url: "autouser/action.do",
                 check: function(){
                     var userName=$("#userName").val();
                     var password=$("#password").val();

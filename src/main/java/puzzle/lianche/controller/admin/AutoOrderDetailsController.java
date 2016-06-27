@@ -1,7 +1,5 @@
 package puzzle.lianche.controller.admin;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,10 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping(value = "/admin/orderdetails")
-@Controller(value = "/adminOrderDetailsController")
-public class OrderDetailsController extends ModuleController{
-
+@RequestMapping(value = "/admin/autoorderdetails")
+@Controller(value = "/adminAutoOrderDetailsController")
+public class AutoOrderDetailsController extends ModuleController {
     @Autowired
     private IAutoOrderService autoOrderService;
 
@@ -87,39 +84,43 @@ public class OrderDetailsController extends ModuleController{
 
     @RequestMapping("/action.do")
     @ResponseBody
-    public String action(String action,Integer orderId){
+    public Result action(String action,Integer orderId){
+        Result result=new Result();
         AutoOrder order=new AutoOrder();
         order.setOrderId(orderId);
         try{
-            if(action.equalsIgnoreCase(Constants.OO_CANCEL)){
+            if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_CANCEL)){
                 order.setOrderStatus(Constants.OS_CANCEL);
-            }else if(action.equalsIgnoreCase(Constants.OO_PAYMENT)){
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_PAYMENT)){
                 order.setPayStatus(Constants.PS_BUYER_PAY_DEPOSIT);
-            }else if(action.equalsIgnoreCase(Constants.OO_UNPAYMENT)){
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_UNPAYMENT)){
                 order.setPayStatus(Constants.PS_WAIT_BUYER_DEPOSIT);
-            }else if(action.equalsIgnoreCase(Constants.OO_ACCEPT)){
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_ACCEPT)){
 //                order.setPayStatus(Constants.);
-            }else if(action.equalsIgnoreCase(Constants.OO_UNACCEPT)){
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_UNACCEPT)){
 
-            }else if(action.equalsIgnoreCase(Constants.OO_REJECT)){
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_REJECT)){
 
-            }else if(action.equalsIgnoreCase(Constants.OO_RECEIVE)){
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RECEIVE)){
                 order.setShipStatus(Constants.SS_UNSHIP);
-            }else if(action.equalsIgnoreCase(Constants.OO_NOTIFY_RECEIVE)){
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_NOTIFY_RECEIVE)){
 
-            }else if(action.equalsIgnoreCase(Constants.OO_RETURN_BUYER_DEPOSIT)){
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RETURN_BUYER_DEPOSIT)){
 
-            }else if(action.equalsIgnoreCase(Constants.OO_RETURN_SELLER_DEPOSIT)){
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RETURN_SELLER_DEPOSIT)){
 
             }
             if(autoOrderService.update(order)){
                 insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改订单详情");
             }else{
-                return "false";
+                result.setCode(1);
+                result.setMsg("修改订单相关状态出错！");
             }
         }catch (Exception e){
-            logger.error(e.getMessage());
+            result.setCode(1);
+            result.setMsg("执行订单操作出错！");
+            logger.error(result.getMsg()+e.getMessage());
         }
-        return "true";
+        return result;
     }
 }

@@ -205,7 +205,7 @@
                 if(markId!=carId) {
                     $("#markId").empty();
                     $.ajax({
-                        url: "order/queryCarAttr.do",
+                        url: "autoorder/queryCarAttr.do",
                         type: "post",
                         data: "carId=" + carId,
                         success: function (data) {
@@ -283,13 +283,13 @@
                 showAlert("请选择记录！");
                 return;
             }
-            changeHash("admin/orderdetails/index/"+ key);
+            changeHash("admin/autoorderdetails/index/"+ key);
         });
 
         $("#order-gridview").gridview({
-            url: "order/list.do",
+            url: "autoorder/list.do",
             form: {
-                url: "order/action.do",
+                url: "autoorder/action.do",
                 check:function(){
                     var buyerId=$("#buyerId").val();
                     var addUserId=$(".addUserId").val();

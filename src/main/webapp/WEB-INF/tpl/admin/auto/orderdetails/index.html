@@ -98,6 +98,7 @@
                             <td>{{$carAttr.lockNumber}}</td>
                             <td>{{$carAttr.surplusNumber}}</td>
                         </tr>
+                        {{if $orderActions!=null}}
                         <tr>
                             <td colspan="10">
                                 {{foreach from=$orderActions item=action}}
@@ -105,6 +106,7 @@
                                 {{/foreach}}
                             </td>
                         </tr>
+                        {{/if}}
                     </tbody>
                 </table>
                 <div class="pagination-box">
@@ -126,12 +128,11 @@
     function action(action){
         var orderId = $("#orderId").val();
         $.ajax({
-            url:'orderdetails/action.do',
+            url:'autoorderdetails/action.do',
             type:'post',
             data:'action='+action+"&orderId="+orderId,
             success:function(data){
-                if(data=="true"){
-                    showAlert("修改成功！");
+                if(data.code==0){
                     load(orderId);
                 }else{
                     showAlert("修改失败！");
@@ -141,6 +142,6 @@
     }
 
     function load(orderId){
-        changeHash("admin/orderdetails/index/"+ orderId);
+        changeHash("admin/autoorder/index");
     }
 </script>
