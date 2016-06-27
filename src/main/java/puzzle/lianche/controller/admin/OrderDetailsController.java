@@ -19,6 +19,7 @@ import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,6 @@ public class OrderDetailsController extends ModuleController{
 
     @RequestMapping (value = "/index/{orderId}")
     public String show(@PathVariable String orderId){
-        System.out.println("---");
         if(StringUtil.isNotNullOrEmpty(orderId)){
             Map map=new HashMap();
             map.put("orderId",orderId);
@@ -49,6 +49,13 @@ public class OrderDetailsController extends ModuleController{
             order.setPayStatusString(Constants.PAY_STATUS.get(order.getPayStatus()));
             order.setShipStatusString(Constants.SHIP_STATUS.get(order.getShipStatus()));
             List<String> list=autoOrderService.queryOperate(order,Constants.ORDER_USER_ADMIN);
+            if(list!=null && list.size()>0){
+                List<String> orderActions=new ArrayList<String>();
+                for(String action:list){
+                    orderActions.add(Constants.OO_OPERATE.get(action));
+                }
+                this.setModelAttribute("orderActions",orderActions);
+            }
             map.clear();
             map.put("orderId",order.getOrderId());
             AutoCar car=autoCarService.query(map);
@@ -74,7 +81,6 @@ public class OrderDetailsController extends ModuleController{
             this.setModelAttribute("orderId",orderId);
             this.setModelAttribute("order",order);
             this.setModelAttribute("car",car);
-            this.setModelAttribute("orderActions",list);
         }
         return Constants.UrlHelper.ADMIN_ORDER_DETAILS;
     }
@@ -86,18 +92,30 @@ public class OrderDetailsController extends ModuleController{
         order.setOrderId(orderId);
         try{
             if(action.equalsIgnoreCase(Constants.OO_CANCEL)){
+                order.setOrderStatus(Constants.OS_CANCEL);
             }else if(action.equalsIgnoreCase(Constants.OO_PAYMENT)){
+                order.setPayStatus(Constants.PS_BUYER_PAY_DEPOSIT);
             }else if(action.equalsIgnoreCase(Constants.OO_UNPAYMENT)){
+                order.setPayStatus(Constants.PS_WAIT_BUYER_DEPOSIT);
             }else if(action.equalsIgnoreCase(Constants.OO_ACCEPT)){
+//                order.setPayStatus(Constants.);
             }else if(action.equalsIgnoreCase(Constants.OO_UNACCEPT)){
+
             }else if(action.equalsIgnoreCase(Constants.OO_REJECT)){
+
             }else if(action.equalsIgnoreCase(Constants.OO_RECEIVE)){
+                order.setShipStatus(Constants.SS_UNSHIP);
             }else if(action.equalsIgnoreCase(Constants.OO_NOTIFY_RECEIVE)){
+
             }else if(action.equalsIgnoreCase(Constants.OO_RETURN_BUYER_DEPOSIT)){
+
             }else if(action.equalsIgnoreCase(Constants.OO_RETURN_SELLER_DEPOSIT)){
+
             }
             if(autoOrderService.update(order)){
-                return "true";
+                insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改订单详情");
+            }else{
+                return "false";
             }
         }catch (Exception e){
             logger.error(e.getMessage());

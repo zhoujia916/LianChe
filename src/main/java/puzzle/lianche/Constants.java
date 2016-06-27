@@ -272,6 +272,24 @@ public class Constants {
     public static final String OO_RETURN_BUYER_DEPOSIT = "return_buyer_deposit";
     public static final String OO_RETURN_SELLER_DEPOSIT = "return_seller_deposit";
 
+    public static final Map<String, String> OO_OPERATE = new HashMap<String, String>(){
+        {
+            put("cancel","取消订单");
+            put("payment","设为订金已支付");
+            put("unpayment","设为订金未支付");
+            put("accept","同意交易");
+            put("unaccept","拒绝交易");
+            put("reject","拒绝");
+            put("request_cancel","请求取消订单");
+            put("contact_buyer","联系买家");
+            put("contact_seller","联系卖家");
+            put("receive","确认收货");
+            put("notify_receive","通知买家收货");
+            put("return_buyer_deposit","退还买家订金");
+            put("return_seller_deposit","退还卖家订金");
+        }
+    };
+
     /**
      * 订单状态(买家已提交,卖家已同意,卖家不同意,交易中,交易成功,交易取消)
      */
