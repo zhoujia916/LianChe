@@ -258,6 +258,9 @@ public class Constants {
     6. 	管理员取消订单       	交易取消                 定金已经退还          未提车                                                                                                             return_buyer_deposit return_buyer_deposit
     */
 
+    /**
+     * 订单操作(取消订单,设为订金已支付,设为订金未支付,同意交易,拒绝交易,请求取消订单,联系买家,联系卖家,确认收货,通知买家收货,退还买家订金,退还卖家订金)
+     */
     public static final String OO_CANCEL = "cancel";
     public static final String OO_PAYMENT = "payment";
     public static final String OO_UNPAYMENT = "unpayment";
