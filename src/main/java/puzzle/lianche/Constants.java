@@ -275,6 +275,42 @@ public class Constants {
     public static final String OO_RETURN_BUYER_DEPOSIT = "return_buyer_deposit";
     public static final String OO_RETURN_SELLER_DEPOSIT = "return_seller_deposit";
 
+    public static final Map<String, String> OO_OPERATE = new HashMap<String, String>(){
+        {
+            put("cancel","取消订单");
+            put("payment","设为订金已支付");
+            put("unpayment","设为订金未支付");
+            put("accept","同意交易");
+            put("unaccept","拒绝交易");
+            put("reject","拒绝");
+            put("request_cancel","请求取消订单");
+            put("contact_buyer","联系买家");
+            put("contact_seller","联系卖家");
+            put("receive","确认收货");
+            put("notify_receive","通知买家收货");
+            put("return_buyer_deposit","退还买家订金");
+            put("return_seller_deposit","退还卖家订金");
+        }
+    };
+
+    public static final Map<String, String> OO_ACTIONS = new HashMap<String, String>(){
+        {
+            put("取消订单","cancel");
+            put("设为订金已支付","payment");
+            put("设为订金未支付","unpayment");
+            put("同意交易","accept");
+            put("拒绝交易","unaccept");
+            put("拒绝","reject");
+            put("请求取消订单","request_cancel");
+            put("联系买家","contact_buyer");
+            put("联系卖家","contact_seller");
+            put("确认收货","receive");
+            put("通知买家收货","notify_receive");
+            put("退还买家订金","return_buyer_deposit");
+            put("退还卖家订金","return_seller_deposit");
+        }
+    };
+
     /**
      * 订单状态(买家已提交,卖家已同意,卖家不同意,交易中,交易成功,交易取消)
      */
@@ -434,6 +470,8 @@ public class Constants {
         public static final String ADMIN_AUTO_AD_POSITION = "admin/auto/adposition/index";
 
         public static final String ADMIN_AUTO_SMS = "admin/auto/sms/index";
+
+        public static final String ADMIN_ORDER_DETAILS = "admin/auto/orderdetails/index";
 
         public static final String ADMIN_AUTO_ORDER = "admin/auto/order/index";
     }

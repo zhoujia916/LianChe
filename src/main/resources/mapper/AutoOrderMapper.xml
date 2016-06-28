@@ -19,7 +19,7 @@
         <result column="remark" property="remark" />
         <result column="add_time" property="addTime" />
         <result column="carName" property="carName"/>
-        <result column="price" property="price"/>
+        <result column="carNumber" property="carNumber"/>
         <result column="sellerName" property="sellerName"/>
         <result column="sellerRealName" property="sellerRealName"/>
         <result column="buyerName" property="buyerName"/>
@@ -138,13 +138,19 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoOrder">
-        select <include refid="allColumn"/> from auto_order
+        select ao.*,aoc.car_number as carNumber,aoc.has_parts as hasParts,
+        (select au.user_name from auto_user as au where ao.seller_id=au.user_id) as sellerName,
+        (select aup.real_name from auto_user_profile as aup where ao.seller_id=aup.user_id) as sellerRealName,
+        (select au.user_name from auto_user as au where ao.buyer_id=au.user_id) as buyerName,
+        (select aup.real_name from auto_user_profile as aup where ao.buyer_id=aup.user_id) as buyerRealName
+        from auto_order as ao
+        inner join auto_order_car as aoc on ao.order_id=aoc.order_id
         <where>  
         	<if test="orderId > 0">
-                order_id = #{orderId}
+                ao.order_id = #{orderId}
             </if>
             <if test="orderSn != null and orderSn != ''">
-                and order_sn = #{orderSn}
+                and ao.order_sn = #{orderSn}
             </if>
         </where> 
     </select>
@@ -194,7 +200,7 @@
     </select>
 
     <select id="queryOrder" parameterType="Map" resultMap="AutoOrder">
-        select ao.*,ac.car_name as carName,aca.price as price,
+        select ao.*,ac.car_name as carName,aoc.car_number as carNumber,
         (select au.user_name from auto_user as au where ao.seller_id=au.user_id) as sellerName,
         (select aup.real_name from auto_user_profile as aup where ao.seller_id=aup.user_id) as sellerRealName,
         (select au.user_name from auto_user as au where ao.buyer_id=au.user_id) as buyerName,
@@ -202,7 +208,24 @@
         from auto_order as ao
         inner join auto_order_car as aoc on ao.order_id=aoc.order_id
         inner join auto_car as ac on aoc.car_id=ac.car_id
-        inner join auto_car_attr as aca on ac.car_id=aca.car_id
+        inner join auto_car_attr as aca on ac.car_id=aca.car_id and aoc.car_attr_id=aca.car_attr_id
+        <where>
+            <if test="orderStatus != null and orderStatus != ''">
+                and ao.order_status in (${orderStatus})
+            </if>
+            <if test="payStatus != null and payStatus != ''">
+                and ao.pay_status in (${payStatus})
+            </if>
+            <if test="shipStatus != null and shipStatus >0 ">
+                and ao.ship_status = ${shipStatus}
+            </if>
+            <if test="beginTime != null">
+                and ao.add_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and ao.add_time &lt;= #{endTime}
+            </if>
+        </where>
         order by ao.add_time desc,ao.order_id desc
     </select>
 

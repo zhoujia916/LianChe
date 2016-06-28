@@ -79,6 +79,15 @@
 	        	<if test="addUserId > 0">
 	                add_user_id = #{addUserId}
 	            </if>
+                <if test="userId > 0">
+                    add_user_id = #{userId}
+                </if>
+                <if test="userIds !=null and userIds.length > 0">
+                    add_user_id in
+                    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                        #{userId}
+                    </foreach>
+                </if>
 	        </trim>
         </where>
     </delete>
@@ -94,7 +103,7 @@
 
     <select id="queryList" parameterType="Map" resultMap="AutoFeedback">
         select af.*,au.user_name as userName,aup.real_name as realName from auto_feedback as af
-        left join auto_user as au on af.add_user_id=au.user_id
+        inner join auto_user as au on af.add_user_id=au.user_id
         left join auto_user_profile as aup on af.add_user_id=aup.user_id
         <where>
             <if test="userName!=null and userName!=''">

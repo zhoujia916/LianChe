@@ -167,6 +167,15 @@
 	        	<if test="toUserId > 0">
 	                to_user_id = #{toUserId}
 	            </if>
+                <if test="userId > 0">
+                    from_user_id or to_user_id = #{userId}
+                </if>
+                <if test="userIds !=null and userIds.length > 0">
+                    from_user_id or to_user_id in
+                    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                        #{userId}
+                    </foreach>
+                </if>
 	        	<if test="viewCount > 0">
 	                view_count = #{viewCount}
 	            </if>

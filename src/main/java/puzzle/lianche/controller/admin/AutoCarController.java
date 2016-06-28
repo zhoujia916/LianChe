@@ -129,7 +129,9 @@ public class AutoCarController extends ModuleController {
                     }
                     jsonObject.put("attrs", attrList);
                     jsonObject.put("userName",car.getUserName());
-                    jsonObject.put("realName",car.getRealName());
+                    if(car.getRealName()!=null){
+                        jsonObject.put("userName",car.getUserName()+"("+car.getRealName()+")");
+                    }
                     jsonObject.put("status",car.getStatus());
                     jsonObject.put("hasParts",car.getHasParts());
                     jsonObject.put("parts",car.getParts());
