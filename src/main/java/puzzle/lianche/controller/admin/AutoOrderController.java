@@ -57,22 +57,6 @@ public class AutoOrderController extends ModuleController {
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-<<<<<<< HEAD
-            String orderStatus=request.getParameter("orderStatus");
-            String payStatus=request.getParameter("payStatus");
-            String shipStatus=request.getParameter("shipStatus");
-            String beginTime=request.getParameter("beginTime");
-            String endTime=request.getParameter("endTime");
-            if(StringUtil.isNotNullOrEmpty(orderStatus)){
-                map.put("orderStatus",orderStatus);
-            }
-            if(StringUtil.isNotNullOrEmpty(payStatus)){
-                map.put("payStatus",payStatus);
-            }
-            if(StringUtil.isNotNullOrEmpty(shipStatus)){
-                if(ConvertUtil.toInt(shipStatus)>-1){
-                    map.put("shipStatus",ConvertUtil.toInt(shipStatus));
-=======
             if(autoOrder != null) {
                 if (autoOrder.getOrderStatus() != null && autoOrder.getOrderStatus() > 0) {
                     map.put("orderStatus", autoOrder.getOrderStatus());
@@ -88,7 +72,6 @@ public class AutoOrderController extends ModuleController {
                 }
                 if (StringUtil.isNotNullOrEmpty(autoOrder.getEndAddTime())) {
                     map.put("endTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoOrder.getEndAddTime() + " 23:59:59")));
->>>>>>> 361bac8266b21f9c2edf3351f57d1d40ba088738
                 }
             }
             List<AutoOrder> list=autoOrderService.queryOrder(map,page);
@@ -160,10 +143,7 @@ public class AutoOrderController extends ModuleController {
                 autoOrder.getCar().setCarPrice(price);
                 autoOrder.getCar().setSendNumber(0);
                 autoOrder.setCar(autoOrder.getCar());
-<<<<<<< HEAD
                 autoOrder.setPutTime(ConvertUtil.toLong(ConvertUtil.toDateTime(autoOrder.getPutTimeString()+" 23:59:59")));
-=======
->>>>>>> 361bac8266b21f9c2edf3351f57d1d40ba088738
                 if(!autoOrderService.insert(autoOrder)){
                     result.setCode(1);
                     result.setData("保存订单信息出错！");
