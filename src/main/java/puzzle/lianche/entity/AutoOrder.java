@@ -314,4 +314,24 @@ public class AutoOrder implements Serializable{
     public void setBuyerRealName(String buyerRealName) {
         this.buyerRealName = buyerRealName;
     }
+
+    public String getBeginAddTime() {
+        return beginAddTime;
+    }
+
+    public void setBeginAddTime(String beginAddTime) {
+        this.beginAddTime = beginAddTime;
+    }
+
+    private String beginAddTime;
+
+    public String getEndAddTime() {
+        return endAddTime;
+    }
+
+    public void setEndAddTime(String endAddTime) {
+        this.endAddTime = endAddTime;
+    }
+
+    private String endAddTime;
 }

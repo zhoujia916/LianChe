@@ -705,6 +705,7 @@ public class AutoOrderController extends BaseController {
                     jsonCar.put("catName", car.getCatName());
                     jsonCar.put("carName", car.getCarName());
                     jsonCar.put("officalPrice", car.getOfficalPrice());
+                    jsonCar.put("addUserAuth", car.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
 
                     JSONObject jsonAttr = new JSONObject();
                     jsonAttr.put("outsideColor", catAttr.getOutsideColor());
@@ -713,9 +714,7 @@ public class AutoOrderController extends BaseController {
                     jsonAttr.put("saleAmount", catAttr.getSaleAmount());
 
                     jsonCar.put("attr", jsonAttr);
-
                     jsonOrderItem.put("car", jsonCar);
-
                     jsonOrderArray.add(jsonOrderItem);
                 }
             }

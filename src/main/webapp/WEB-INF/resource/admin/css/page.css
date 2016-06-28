@@ -52,31 +52,31 @@ ul,li,ol{
 	margin-left:0; 
 }
 .table-tree .level1{ 
-	margin-left:18px; 
+	margin-left:32px;
 }
 .table-tree .level2{ 
-	margin-left:36px; 
+	margin-left:64px;
 }
 .table-tree .level3{ 
-	margin-left:54px; 
+	margin-left:96px;
 }
 .table-tree .level4{ 
-	margin-left:72px; 
+	margin-left:128px;
 }
 .table-tree .level5{ 
-	margin-left:90px; 
+	margin-left:160px;
 }
 .table-tree .level6{ 
-	margin-left:118px; 
+	margin-left:192px;
 }
 .table-tree .level7{ 
-	margin-left:136px; 
+	margin-left:224px;
 }
 .table-tree .level8{ 
-	margin-left:154px;
+	margin-left:256px;
 }
 .table-tree .level9{ 
-	margin-left:172px; 
+	margin-left:288px;
 }
 
 .gridview{
@@ -120,7 +120,6 @@ ul,li,ol{
 }
 
 
-
 .gridview .grid-form {
 	display:none;
 	width:100%;
@@ -145,6 +144,7 @@ ul,li,ol{
     top:50%;
     left:50%;
     z-index:1100;
+    margin:0;
 }
 
 .gridview .grid-form .alert-info{
@@ -157,24 +157,39 @@ ul,li,ol{
 	top: -10px;
 }
 
+.gridview .grid-form .chosen-single{
+    border-radius:0;
+}
+
+.gridview .grid-form .chosen-search input[type="text"]{
+    background:none;
+}
+
 .gridview .grid-form .form-group input[disabled],
 .gridview .grid-form .form-group textarea[disabled],
 .gridview .grid-form .form-group select[disabled]{
 	border: none;
 	background-color: transparent !important;
 }
-
+.gridview .grid-form .widget-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 .gridview .grid-form .widget-main{
 	padding: 10px 0 0;
 }
 
 .gridview .grid-form .form-actions{
-	text-align: center;
-	margin-bottom: 0;
+	margin: 0;
 	background-color:#D9EDF7;
+    padding:10px 5px;
 }
 
-.gridview .grid-form .position-relative{
+.form-actions{
+    text-align: center;
+}
+
+.position-relative{
     margin-top:8px;
     margin-right: 5px;
 }
@@ -214,6 +229,11 @@ ul,li,ol{
 .pagination .go span:hover{
     opacity: 0.8;
     filter: alpha(opacity=80);
+}
+
+.dropzone .dz-default.dz-message{
+    height: 90px;
+    margin-top: -45px;
 }
 
 
@@ -284,12 +304,14 @@ ul,li,ol{
 }
 .page-header{
     padding:0;
-    margin:0;
 }
 .page-header h1,.page-header h2,.page-header h3,.page-header h4,.page-header h5,.page-header h6{
     padding:10px;
     margin:0;
+    font-weight: lighter;
+    color: #2679B5;
 }
+
 
 .box-list{
 
@@ -351,4 +373,7 @@ ul,li,ol{
 }
 .clear{
 	clear: both;
+}
+.noscroll{
+    overflow:hidden;
 }

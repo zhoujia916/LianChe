@@ -73,24 +73,24 @@ public class Constants {
     };
 
     /**
-     * 0=无效  1=注册或添加   2=等待审核  3=审核通过  4=审核未通过
+     * 1=无效  2=注册或添加   3=等待审核  4=审核通过  5=审核未通过
      */
-    public static final Integer AUTO_USER_STATUS_DISABLED = 0;
-    public static final Integer AUTO_USER_STATUS_NORMAL = 1;
-    public static final Integer AUTO_USER_STATUS_AUTH_WAITCHECK = 2;
-    public static final Integer AUTO_USER_STATUS_AUTH_SUCCESS = 3;
-    public static final Integer AUTO_USER_STATUS_AUTH_FAIL = 4;
+    public static final Integer AUTO_USER_STATUS_DISABLED = 1;
+    public static final Integer AUTO_USER_STATUS_NORMAL = 2;
+    public static final Integer AUTO_USER_STATUS_AUTH_WAITCHECK = 3;
+    public static final Integer AUTO_USER_STATUS_AUTH_SUCCESS = 4;
+    public static final Integer AUTO_USER_STATUS_AUTH_FAIL = 5;
 
     public static final Integer SYSTEM_AUTHORITY_TARGET_MENU = 1;
     public static final Integer SYSTEM_AUTHORITY_TARGET_ACTION = 2;
 
     public static final  Map<Integer, String> MAP_AUTO_USER_STATUS = new HashMap<Integer, String>(){
         {
-            put(0,"账户禁用");
-            put(1,"注册或添加");
-            put(2,"等待实名认证");
-            put(3,"实名认证通过");
-            put(4,"实名认证未通过");
+            put(1,"账户禁用");
+            put(2,"注册或添加");
+            put(3,"等待实名认证");
+            put(4,"实名认证通过");
+            put(5,"实名认证未通过");
         }
     };
 
@@ -428,6 +428,8 @@ public class Constants {
         public static final String ADMIN_AUTO_AD = "admin/auto/ad/index";
 
         public static final String ADMIN_AUTO_CAR = "admin/auto/car/index";
+
+        public static final String ADMIN_AUTO_CAR_SHOW = "admin/auto/car/show";
 
         public static final String ADMIN_AUTO_AD_POSITION = "admin/auto/adposition/index";
 

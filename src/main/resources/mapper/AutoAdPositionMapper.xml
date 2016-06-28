@@ -96,6 +96,6 @@
                 position_name like concat('%',#{positionName},'%')
             </if>
         </where>
-        order by sort_order desc,position_id desc
+        order by sort_order asc,position_id asc
     </select>
 </mapper>

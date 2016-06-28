@@ -68,9 +68,9 @@
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         $("#feedback-gridview").gridview({
-            url: "feedback/list.do",
+            url: "autofeedback/list.do",
             form: {
-                url: "feedback/action.do"
+                url: "autofeedback/action.do"
             },
             jsonReader: {
                 key_field: 'feedbackId'

@@ -150,7 +150,7 @@
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoOrder">
-        select <include refid="allColumn"/> from auto_order
+        select <include refid="allColumn"/> from auto_order as ao
         <where>
             <trim prefixOverrides="and | or">
                 <if test="orderId > 0">

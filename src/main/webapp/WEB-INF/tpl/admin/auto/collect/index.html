@@ -10,7 +10,7 @@
             <i class="ace-icon fa fa-angle-double-right"></i>
             查看会员收藏
         </small>
-        <a class="btn btn-xs orange pull-right btn-warning" onclick="goBack()">
+        <a class="btn btn-xs orange pull-right btn-warning" href="#page/autouser/index">
             <i class="glyphicon glyphicon-arrow-left"></i>返回会员管理</span></a>
     </h1>
 
@@ -77,12 +77,12 @@
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         $("#collect-gridview").gridview({
-            url: "usercollect/list.do",
+            url: "autocollect/list.do",
             filter:{
                 userString: $("#userString").val()
             },
             form: {
-                url: "usercollect/action.do"
+                url: "autocollect/action.do"
             },
             jsonReader: {
                 key_field: 'collectId'
@@ -120,9 +120,4 @@
             ]
         });
     });
-</script>
-<script type="text/javascript">
-    function goBack(){
-        window.history.back();
-    }
 </script>

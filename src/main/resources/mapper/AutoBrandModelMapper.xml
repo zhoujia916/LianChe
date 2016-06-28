@@ -117,6 +117,6 @@
                 </if>
             </trim>
         </where>
-        order by abm.sort_order desc,abm.model_id desc
+        order by abm.sort_order desc,abm.model_id asc
     </select>
 </mapper>

@@ -13,20 +13,20 @@
         <div id="user-gridview" class="gridview">
             <div class="grid-filter">
                 <input type="text input-sm" style="height: 29px" class="txt" name="userName" placeholder="用户名" />
-                <select multiple="" data-init="0" name="roleId" class="select2" data-placeholder=" 请选择角色">
-                    <option value="">&nbsp;</option>
+                <select data-init="0" name="roleId" class="select2" data-placeholder="请选择角色">
+                    <option value="0">请选择角色</option>
                     {{foreach from=$roleList item=roleItem}}
                         <option value="{{$roleItem.roleId}}">{{$roleItem.roleName}}</option>
                     {{/foreach}}
                 </select>
-                <select multiple="" data-init="0" name="groupId" class="select2" data-placeholder=" 请选择用户组">
-                    <option value="">&nbsp;</option>
+                <select name="groupId" data-placeholder="请选择用户组">
+                    <option value="0">请选择用户组</option>
                     {{foreach from=$userGroupList item=userGroupItem}}
                         <option value="{{$userGroupItem.groupId}}">{{$userGroupItem.groupName}}</option>
                     {{/foreach}}
                 </select>
-                <select multiple="" data-init="0" name="deptId" class="select2" data-placeholder=" 请选择部门">
-                    <option value="">&nbsp;</option>
+                <select data-init="0" name="deptId" class="select2" data-placeholder=" 请选择部门">
+                    <option value="0">请选择部门</option>
                     {{foreach from=$deptList item=deptItem}}
                         <option value="{{$deptItem.deptId}}">{{$deptItem.deptName}}</option>
                     {{/foreach}}
@@ -91,7 +91,7 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         登录名
                                     </label>
 
@@ -100,7 +100,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                     用户名
                                     </label>
 
@@ -109,7 +109,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         密码
                                     </label>
 
@@ -118,7 +118,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         性别
                                     </label>
                                     <div class="col-sm-9">
@@ -130,7 +130,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         是否有效
                                     </label>
                                     <div class="col-sm-9">
@@ -139,7 +139,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         角色
                                     </label>
                                     <div class="col-sm-9">
@@ -151,7 +151,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         用户组
                                     </label>
                                     <div class="col-sm-9">
@@ -163,7 +163,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         部门
                                     </label>
                                     <div class="col-sm-9">
@@ -175,7 +175,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         职位
                                     </label>
 
@@ -184,7 +184,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         排序号
                                     </label>
 
@@ -215,22 +215,11 @@
 </div>
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $('.select2').css('width','160px').select2({allowClear:true})
-        $('#select2-multiple-style .btn').on('click', function(e){
-            var target = $(this).find('input[type=radio]');
-            var which = parseInt(target.val());
-            if(which == 2) $('.select2').addClass('tag-input-style');
-            else $('.select2').removeClass('tag-input-style');
-        });
-
-        $(document).one('ajaxloadstart.page', function(e) {
-            $('[class*=select2]').remove();
-        });
 
         $("#user-gridview").gridview({
-            url: "user/list.do",
+            url: "systemuser/list.do",
             form:{
-                url: "user/action.do",
+                url: "systemuser/action.do",
                 check:function(){
                     var loginName=$("#loginName").val();
                     var userName=$("#userName").val();

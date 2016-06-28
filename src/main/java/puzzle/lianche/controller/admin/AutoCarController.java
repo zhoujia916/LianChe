@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.*;
-import puzzle.lianche.service.IAutoBrandModelService;
-import puzzle.lianche.service.IAutoCarAttrService;
-import puzzle.lianche.service.IAutoCarService;
+import puzzle.lianche.service.*;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
@@ -27,6 +25,12 @@ public class AutoCarController extends ModuleController {
     private IAutoCarService autoCarService;
 
     @Autowired
+    private IAutoBrandService autoBrandService;
+
+    @Autowired
+    private IAutoBrandCatService autoBrandCatService;
+
+    @Autowired
     private IAutoBrandModelService autoBrandModelService;
 
     @Autowired
@@ -36,7 +40,43 @@ public class AutoCarController extends ModuleController {
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);
+
+
         return Constants.UrlHelper.ADMIN_AUTO_CAR;
+    }
+
+    @RequestMapping(value = {"/queryBrandCat"})
+    @ResponseBody
+    public Result queryBrandCat(Integer brandId){
+        Result result = new Result();
+        try {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("brandId", brandId);
+            List<AutoBrandCat> modelList = autoBrandCatService.queryList(map);
+            result.setData(modelList);
+        }
+        catch (Exception e){
+            result.setCode(1);
+            result.setMsg("查询车系列表出错");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = {"/queryBrandModel"})
+    @ResponseBody
+    public Result queryBrandModel(Integer catId){
+        Result result = new Result();
+        try {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("catId", catId);
+            List<AutoBrandModel> modelList = autoBrandModelService.queryList(map);
+            result.setData(modelList);
+        }
+        catch (Exception e){
+            result.setCode(1);
+            result.setMsg("查询车型列表出错");
+        }
+        return result;
     }
 
     @RequestMapping (value = "/list.do")
@@ -76,19 +116,24 @@ public class AutoCarController extends ModuleController {
                         int totalNumber=0;
                         int lockNumber=0;
                         int surplusNumber=0;
-                        for(AutoCarAttr attrs:attrList){
-                            totalNumber+=attrs.getTotalNumber();
-                            lockNumber+=attrs.getLockNumber();
-                            surplusNumber+=attrs.getSurplusNumber();
+                        for(AutoCarAttr attrItem : attrList){
+                            totalNumber+=attrItem.getTotalNumber();
+                            lockNumber+=attrItem.getLockNumber();
+                            surplusNumber+=attrItem.getSurplusNumber();
+
                         }
                         jsonObject.put("totalNumber",totalNumber);
                         jsonObject.put("lockNumber",lockNumber);
                         jsonObject.put("surplusNumber",surplusNumber);
+
                     }
+                    jsonObject.put("attrs", attrList);
                     jsonObject.put("userName",car.getUserName());
                     jsonObject.put("realName",car.getRealName());
                     jsonObject.put("status",car.getStatus());
-                    jsonObject.put("sortOrder",car.getSortOrder());
+                    jsonObject.put("hasParts",car.getHasParts());
+                    jsonObject.put("parts",car.getParts());
+                    jsonObject.put("partsPrice",car.getPartsPrice());
                     array.add(jsonObject);
                 }
                 result.setData(array);
@@ -100,6 +145,13 @@ public class AutoCarController extends ModuleController {
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
+    }
+
+    @RequestMapping(value = "/show")
+    public String show(){
+        List<AutoBrand> brandList = autoBrandService.queryList(null);
+        this.setModelAttribute("brandList", brandList);
+        return Constants.UrlHelper.ADMIN_AUTO_CAR_SHOW;
     }
 
     @RequestMapping(value = "/action.do")

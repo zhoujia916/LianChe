@@ -108,8 +108,14 @@
         	<if test="collectId > 0">
                 and collect_id = #{collectId}
             </if>
-            <if test="carId > 0">
-                and target_id = #{carId}
+            <if test="userId != null and userId > 0">
+                and user_id = #{userId}
+            </if>
+            <if test="targetType != null and targetType > 0">
+                and target_type = #{targetType}
+            </if>
+            <if test="targetId != null and targetId > 0">
+                and target_id = #{targetId}
             </if>
         </where> 
     </select>

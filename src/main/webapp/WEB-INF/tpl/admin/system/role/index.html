@@ -72,7 +72,7 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         名称
                                     </label>
                                     <div class="col-sm-9">
@@ -80,7 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         排序号
                                     </label>
 
@@ -116,9 +116,9 @@
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         $("#role-gridview").gridview({
-            url: "role/list.do",
+            url: "systemrole/list.do",
             form: {
-                url: "role/action.do",
+                url: "systemrole/action.do",
                 check:function(){
                     var roleName=$("#roleName").val();
                     var sortOrder=$("#sortOrder").val();

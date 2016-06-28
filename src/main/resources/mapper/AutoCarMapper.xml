@@ -216,12 +216,13 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoCar">
-        select ac.*, p.region_name as province_name, c.region_name as city_name, ab.brand_name, abc.cat_name
+        select ac.*, au.status as add_user_status, p.region_name as province_name, c.region_name as city_name, ab.brand_name, abc.cat_name
         <if test="viewUserId != null and viewUserId > 0">
             ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
         </if>
 
         from auto_car as ac
+        inner join auto_user as au on au.user_id = ac.add_user_id
         left join auto_region as p on p.region_id = ac.province
         left join auto_region as c on c.region_id = ac.city
         inner join auto_brand as ab on ab.brand_id=ac.brand_id
@@ -279,9 +280,6 @@
                 </if>
                 <if test="endDate != null">
                     and ac.end_date &lt;= #{endDate}
-                </if>
-                <if test="carType != null">
-                    and ac.car_type = #{carType}
                 </if>
                 <if test="status != null">
                     and ac.status = #{status}

@@ -40,19 +40,20 @@ public class AutoCollectController extends ModuleController {
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result list(AutoCollect autoCollect){
+    public Result list(AutoCollect autoCollect, Page page){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("carName",autoCollect.getCarName());
-            map.put("userName",autoCollect.getUserName());
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
-            if(!autoCollect.getUserString().equalsIgnoreCase("null")){
-                map.put("userId",autoCollect.getUserString());
+            if(autoCollect != null) {
+                if(StringUtil.isNotNullOrEmpty(autoCollect.getCarName())) {
+                    map.put("carName", autoCollect.getCarName());
+                }
+                if(StringUtil.isNotNullOrEmpty(autoCollect.getUserName())) {
+                    map.put("userName", autoCollect.getUserName());
+                }
+                if (autoCollect.getUserId() != null && autoCollect.getUserId() > 0) {
+                    map.put("userId", autoCollect.getUserString());
+                }
             }
             List<AutoCollect> list=autoCollectService.queryList(map,page);
             if(list!=null && list.size()>0){
