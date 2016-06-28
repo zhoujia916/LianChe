@@ -56,7 +56,7 @@ public class AutoUserController extends ModuleController {
             page.setPageIndex(ConvertUtil.toInt(pageIndex));
             page.setPageSize(ConvertUtil.toInt(pageSize));
             if(autoUser.getStatusString() != null && autoUser.getStatusString() != ""){
-                map.put("userStatus",autoUser.getStatusString());
+                map.put("status",autoUser.getStatusString());
             }
             if(autoUser.getShopTypeString() != null && autoUser.getShopTypeString() != ""){
                 map.put("shopType",autoUser.getShopTypeString());

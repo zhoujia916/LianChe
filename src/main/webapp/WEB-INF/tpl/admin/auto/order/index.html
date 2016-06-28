@@ -16,11 +16,9 @@
                 <select multiple="" data-init="0" name="orderStatus" class="select2" data-placeholder=" 请选择订单状态">
                     <option value="">&nbsp;</option>
                     <option value="1">买家已提交</option>
-                    <option value="2">卖家已同意</option>
-                    <option value="3">卖家不同意</option>
-                    <option value="4">交易中</option>
-                    <option value="-2">交易成功</option>
-                    <option value="-1">交易取消</option>
+                    <option value="2">交易中</option>
+                    <option value="3">交易成功</option>
+                    <option value="0">交易取消</option>
                 </select>
                 <select multiple="" data-init="0" name="payStatus" class="select2" data-placeholder=" 请选择支付状态">
                     <option value="">&nbsp;</option>
@@ -31,10 +29,10 @@
                     <option value="5">等待系统退还订金</option>
                     <option value="6">系统已退还订金</option>
                 </select>
-                <select data-init="0" name="shipStatus" style="height: 29px;width: 160px;">
-                    <option value="0">请选择物流状态</option>
-                    <option value="1">未提车</option>
-                    <option value="2">已提车</option>
+                <select data-init="-1" name="shipStatus" style="height: 29px;width: 160px;">
+                    <option value="-1">请选择物流状态</option>
+                    <option value="0">未提车</option>
+                    <option value="1">已提车</option>
                 </select>
                 <input type="text input-sm" style="height: 29px" id="datepicker1" name="beginTime" placeholder="开始时间"/>
                 <input type="text input-sm" style="height: 29px" id="datepicker2" name="endTime" placeholder="结束时间"/>
@@ -297,6 +295,7 @@
                     var carAttrId=$("#carAttrId").val();
                     var surplusNumber=$("#"+carAttrId+"").val();
                     var carNumber=$("#carNumber").val();
+                    var putTime=$("#putTime").val();
                     if(buyerId==0){
                         console.log("check form");
                         $("#buyerId").focus();
@@ -321,10 +320,14 @@
                         console.log("check form");
                         $("#carAttrId").focus();
                         return "该车源属性库存为0,请重新选择";
-                    }else if(carNumber>surplusNumber){
+                    }else if(parseInt(carNumber)>parseInt(surplusNumber)){
                         console.log("check form");
                         $("#carNumber").focus();
                         return "数量大于库存,请重新输入";
+                    }else if(!putTime){
+                        console.log("check form");
+                        $("#putTime").focus();
+                        return "请选择提车时间";
                     }else{
                         return true;
                     }
@@ -369,7 +372,7 @@
                 },
                 {
                     name: "actions",
-                    list:["edit", "delete", "view"]
+                    list:["delete"]
                 }
             ]
         });

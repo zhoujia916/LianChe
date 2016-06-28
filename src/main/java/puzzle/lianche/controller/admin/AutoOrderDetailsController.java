@@ -7,12 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.AutoCar;
-import puzzle.lianche.entity.AutoCarAttr;
-import puzzle.lianche.entity.AutoOrder;
-import puzzle.lianche.service.IAutoCarAttrService;
-import puzzle.lianche.service.IAutoCarService;
-import puzzle.lianche.service.IAutoOrderService;
+import puzzle.lianche.entity.*;
+import puzzle.lianche.service.*;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
@@ -32,6 +28,12 @@ public class AutoOrderDetailsController extends ModuleController {
     private IAutoCarService autoCarService;
 
     @Autowired
+    private IAutoOrderCarService autoOrderCarService;
+
+    @Autowired
+    private IAutoUserService autoUserService;
+
+    @Autowired
     private IAutoCarAttrService autoCarAttrService;
 
     @RequestMapping (value = "/index/{orderId}")
@@ -41,7 +43,7 @@ public class AutoOrderDetailsController extends ModuleController {
             map.put("orderId",orderId);
             AutoOrder order=autoOrderService.query(map);
             order.setAddTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getAddTime())));
-            order.setPutTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getPutTime())));
+            order.setPutTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getPutTime()),Constants.DATE_FORMAT));
             order.setOrderStatusString(Constants.ORDER_STATUS.get(order.getOrderStatus()));
             order.setPayStatusString(Constants.PAY_STATUS.get(order.getPayStatus()));
             order.setShipStatusString(Constants.SHIP_STATUS.get(order.getShipStatus()));
@@ -54,30 +56,28 @@ public class AutoOrderDetailsController extends ModuleController {
                 this.setModelAttribute("orderActions",orderActions);
             }
             map.clear();
+            map.put("userId",order.getBuyerId());
+            AutoUser buyerUser=autoUserService.query(map);
+            buyerUser.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(buyerUser.getShopType()));
+            map.clear();
+            map.put("userId",order.getSellerId());
+            AutoUser sellerUser=autoUserService.query(map);
+            sellerUser.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(sellerUser.getShopType()));
+            map.clear();
             map.put("orderId",order.getOrderId());
             AutoCar car=autoCarService.query(map);
             car.setCarTypeString(Constants.MAP_AUTO_CAR_TYPE.get(car.getCarType()));
             map.clear();
             map.put("attrCarId",car.getCarId());
-            List<AutoCarAttr> attrList=autoCarAttrService.queryList(map);
-            if(attrList!=null && attrList.size()>0) {
-                int totalNumber = 0;
-                int lockNumber = 0;
-                int surplusNumber = 0;
-                for (AutoCarAttr attrs : attrList) {
-                    totalNumber += attrs.getTotalNumber();
-                    lockNumber += attrs.getLockNumber();
-                    surplusNumber += attrs.getSurplusNumber();
-                }
-                AutoCarAttr carAttr=new AutoCarAttr();
-                carAttr.setTotalNumber(totalNumber);
-                carAttr.setLockNumber(lockNumber);
-                carAttr.setSurplusNumber(surplusNumber);
-                this.setModelAttribute("carAttr",carAttr);
-            }
+            map.put("carAttrId",order.getCarAttrId());
+            AutoCarAttr carAttr=autoCarAttrService.query(map);
+            carAttr.setOutsideColor("外观:"+carAttr.getOutsideColor()+"-内饰:"+carAttr.getInsideColor());
             this.setModelAttribute("orderId",orderId);
             this.setModelAttribute("order",order);
             this.setModelAttribute("car",car);
+            this.setModelAttribute("buyerUser",buyerUser);
+            this.setModelAttribute("sellerUser",sellerUser);
+            this.setModelAttribute("carAttr",carAttr);
         }
         return Constants.UrlHelper.ADMIN_ORDER_DETAILS;
     }
@@ -86,31 +86,48 @@ public class AutoOrderDetailsController extends ModuleController {
     @ResponseBody
     public Result action(String action,Integer orderId){
         Result result=new Result();
-        AutoOrder order=new AutoOrder();
-        order.setOrderId(orderId);
+        Map map=new HashMap();
+        map.put("orderId",orderId);
+        AutoOrder order=autoOrderService.query(map);
         try{
+            boolean flg=false;
             if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_CANCEL)){
-                order.setOrderStatus(Constants.OS_CANCEL);
+                flg=autoOrderService.doCancel(order);
             }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_PAYMENT)){
-                order.setPayStatus(Constants.PS_BUYER_PAY_DEPOSIT);
+                flg=autoOrderService.doDeposit(order);
             }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_UNPAYMENT)){
                 order.setPayStatus(Constants.PS_WAIT_BUYER_DEPOSIT);
+                flg=autoOrderService.update(order);
             }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_ACCEPT)){
-//                order.setPayStatus(Constants.);
+                flg=autoOrderService.doAccept(order);
             }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_UNACCEPT)){
-
+                flg=autoOrderService.doReject(order);
             }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_REJECT)){
-
+                flg=autoOrderService.doReject(order);
             }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RECEIVE)){
-                order.setShipStatus(Constants.SS_UNSHIP);
+                flg=autoOrderService.doReceive(order);
             }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_NOTIFY_RECEIVE)){
-
+                flg=autoOrderService.doNotify(order);
             }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RETURN_BUYER_DEPOSIT)){
-
+                Integer type=0;
+                if(order.getPayStatus()==Constants.PS_BUYER_PAY_DEPOSIT) {
+                    type=Constants.ORDER_USER_BUYER;
+                }
+                if(order.getPayStatus()==Constants.PS_BUYER_PAY_DEPOSIT && order.getPayStatus()==Constants.PS_SELLER_PAY_DEPOSIT){
+                    type=Constants.ORDER_USER_ALL;
+                }
+                flg = autoOrderService.doReturnDeposit(order, type);
             }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RETURN_SELLER_DEPOSIT)){
-
+                Integer type=0;
+                if(order.getPayStatus()==Constants.PS_SELLER_PAY_DEPOSIT) {
+                    type=Constants.ORDER_USER_SELLER;
+                }
+                if(order.getPayStatus()==Constants.PS_SELLER_PAY_DEPOSIT && order.getPayStatus()==Constants.PS_BUYER_PAY_DEPOSIT){
+                    type=Constants.ORDER_USER_ALL;
+                }
+                flg = autoOrderService.doReturnDeposit(order, type);
             }
-            if(autoOrderService.update(order)){
+            if(flg){
                 insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改订单详情");
             }else{
                 result.setCode(1);

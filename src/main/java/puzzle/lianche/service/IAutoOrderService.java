@@ -39,5 +39,7 @@ public interface IAutoOrderService{
 
     public boolean doDeposit(AutoOrder order);
 
+    public boolean doReturnDeposit(AutoOrder order,Integer type);
+
     public List<AutoOrder> queryOrder(Map<String, Object> map,Page page);
 }

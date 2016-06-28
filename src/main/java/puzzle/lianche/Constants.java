@@ -144,12 +144,12 @@ public class Constants {
     };
 
     //region AUTO_CAR_TYPE
-    public static final Integer AUTO_CAR_TYPE_COMMON = 0;
-    public static final Integer AUTO_CAR_TYPE_SALE = 1;
+    public static final Integer AUTO_CAR_TYPE_COMMON = 1;
+    public static final Integer AUTO_CAR_TYPE_SALE = 2;
     public static final Map<Integer, String> MAP_AUTO_CAR_TYPE = new HashMap<Integer, String>(){
         {
-            put(0,"销车资源");
-            put(1,"特卖会");
+            put(1,"销车资源");
+            put(2,"特卖会");
         }
     };
     //endregion
@@ -278,11 +278,11 @@ public class Constants {
     public static final Map<String, String> OO_OPERATE = new HashMap<String, String>(){
         {
             put("cancel","取消订单");
-            put("payment","设为订金已支付");
-            put("unpayment","设为订金未支付");
-            put("accept","同意交易");
-            put("unaccept","拒绝交易");
-            put("reject","拒绝");
+            put("payment","设为买家订金已支付");
+            put("unpayment","设为买家订金未支付");
+            put("accept","设为卖家同意交易");
+            put("unaccept","设为卖家取消交易");
+            put("reject","设为卖家拒绝交易");
             put("request_cancel","请求取消订单");
             put("contact_buyer","联系买家");
             put("contact_seller","联系卖家");
@@ -296,11 +296,11 @@ public class Constants {
     public static final Map<String, String> OO_ACTIONS = new HashMap<String, String>(){
         {
             put("取消订单","cancel");
-            put("设为订金已支付","payment");
-            put("设为订金未支付","unpayment");
-            put("同意交易","accept");
-            put("拒绝交易","unaccept");
-            put("拒绝","reject");
+            put("设为买家订金已支付","payment");
+            put("设为买家订金未支付","unpayment");
+            put("设为卖家同意交易","accept");
+            put("设为卖家取消交易","unaccept");
+            put("设为卖家拒绝交易","reject");
             put("请求取消订单","request_cancel");
             put("联系买家","contact_buyer");
             put("联系卖家","contact_seller");

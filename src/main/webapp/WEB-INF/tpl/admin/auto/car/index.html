@@ -105,6 +105,7 @@
                 </div>
             </div>
             <div class="grid-form search-form "></div>
+            <input type="hidden" id="carId" value="{{$carId}}"/>
         </div>
         <!-- PAGE CONTENT ENDS -->
     </div><!-- /.col -->
@@ -125,7 +126,10 @@
         });
 
         $("#car-gridview").gridview({
-            url: "car/list.do",
+            url: "autocar/list.do",
+            filter:{
+                carId: $("#carId").val()
+            },
             form: {
                 url: "car/action.do"
             },

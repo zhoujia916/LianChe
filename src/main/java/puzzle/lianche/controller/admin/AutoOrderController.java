@@ -68,7 +68,7 @@ public class AutoOrderController extends ModuleController {
                 map.put("payStatus",payStatus);
             }
             if(StringUtil.isNotNullOrEmpty(shipStatus)){
-                if(ConvertUtil.toInt(shipStatus)>0){
+                if(ConvertUtil.toInt(shipStatus)>-1){
                     map.put("shipStatus",ConvertUtil.toInt(shipStatus));
                 }
             }
@@ -154,7 +154,7 @@ public class AutoOrderController extends ModuleController {
                 autoOrder.getCar().setCarPrice(price);
                 autoOrder.getCar().setSendNumber(0);
                 autoOrder.setCar(autoOrder.getCar());
-                autoOrder.setPutTime(ConvertUtil.toLong(ConvertUtil.toDate(autoOrder.getPutTimeString()+" 23:59:59")));
+                autoOrder.setPutTime(ConvertUtil.toLong(ConvertUtil.toDateTime(autoOrder.getPutTimeString()+" 23:59:59")));
                 if(!autoOrderService.insert(autoOrder)){
                     result.setCode(1);
                     result.setData("保存订单信息出错！");
