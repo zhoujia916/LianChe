@@ -109,6 +109,6 @@
                 </if>
             </trim>
         </where>
-        order by abc.sort_order desc,abc.cat_id desc
+        order by abc.sort_order desc,abc.cat_id asc
     </select>
 </mapper>

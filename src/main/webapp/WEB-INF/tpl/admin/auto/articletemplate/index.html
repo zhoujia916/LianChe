@@ -61,7 +61,7 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         名称
                                     </label>
 
@@ -70,7 +70,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         内容
                                     </label>
                                     <div class="col-sm-9">
@@ -78,7 +78,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         排序号
                                     </label>
 
@@ -118,13 +118,13 @@
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         $(function($) {
             $("#gridview").gridview({
-                url: "articletemplate/list.do",
+                url: "autoarticletemplate/list.do",
                 treeReader:{
                     show: true,
                     expand_column: 'name'
                 },
                 form:{
-                    url: "articletemplate/action.do",
+                    url: "autoarticletemplate/action.do",
                     check:function(){
                         var name = $.trim($("#txtName").val());
                         if(name == ""){

@@ -1,8 +1,5 @@
 package puzzle.lianche.controller.plugin.uploader;
 
-import net.sf.json.JSONObject;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,13 +32,12 @@ public class UploaderController extends BaseController {
             String rootPath = session.getServletContext().getRealPath("");
             String relativePath = request.getContextPath();
             String typePath = getParameter("type");
-            String savePath = rootPath + "\\upload\\" + typePath + "\\";
+            String savePath = rootPath + "upload\\" + typePath + "\\";
             String relativeUrl = relativePath + "/upload/" + typePath + "/";
 
             String saveName = PathFormatter.format(file.getOriginalFilename(), "{yy}{MM}{dd}\\{hh}{mm}{rand:6}");
 
             String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
-            String saveExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
             try {
                 File dir = new File(dirName);
                 if (!dir.exists()) {
@@ -55,19 +51,73 @@ public class UploaderController extends BaseController {
                 if(request.getServerPort() != 80){
                     url += ":" + request.getServerPort();
                 }
-                url += relativeUrl + saveName + saveExt;
+                url += relativeUrl + saveName.replace("\\", "/");
 
 
                 result.setData(url);
 
-                this.writeJson(result);
             } catch (Exception e) {
                 result.setCode(1);
                 result.setMsg("上传文件失败！");
+                e.printStackTrace();
             }
         }
         return result;
     }
+
+    //region uploadBase64
+    public Result handleUpload(String file, String typePath, int width, int height) throws Exception{
+        Result result = new Result();
+
+        String rootPath = session.getServletContext().getRealPath("");
+        String relativePath = request.getContextPath();
+        String savePath = rootPath + "\\upload\\" + typePath + "\\";
+        String relativeUrl = relativePath + "/upload/" + typePath + "/";
+
+        String saveExt = (file.startsWith("data:image/png;") ? "png" :
+                         file.startsWith("data:image/jpg;") ? "jpg" :
+                         file.startsWith("data:image/jpeg;") ? "jpeg" : "");
+
+        file = file.substring(("data:image/" + saveExt + ";base64,").length());
+
+        file = file.replaceAll(" ", "\n");
+        saveExt = "." + saveExt;
+
+        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}\\{HH}{mm}{ss}{rand:6}");
+        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
+
+        File dir = new File(dirName);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+
+        BASE64Decoder decoder = new BASE64Decoder();
+        byte[] b = decoder.decodeBuffer(file);
+        for(int i = 0; i < b.length; ++i){
+            if(b[i] < 0){
+                b[i] += 256;
+            }
+        }
+        //生成jpeg图片
+        OutputStream out = new FileOutputStream(savePath + saveName);
+        out.write(b);
+        out.flush();
+        out.close();
+
+        ImageUtil.zoomImage(savePath + saveName, savePath + saveName, 640, 160);
+
+        String url = request.getScheme() + "://" + request.getServerName();
+        if(request.getServerPort() != 80){
+            url += ":" + request.getServerPort();
+        }
+        url += relativeUrl + saveName.replace("\\", "/");
+
+        result.setData(url);
+
+        return result;
+    }
+    //endregion
 
     @ResponseBody
     @RequestMapping(value = {"/uploader/car"})

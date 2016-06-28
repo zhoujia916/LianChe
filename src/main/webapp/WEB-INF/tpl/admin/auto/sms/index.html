@@ -80,7 +80,7 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         内容
                                     </label>
                                     <div class="col-sm-9">
@@ -88,7 +88,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         接收方
                                     </label>
                                     <div class="col-sm-9">
@@ -162,9 +162,9 @@
         });
 
         $("#sms-gridview").gridview({
-            url: "sms/list.do",
+            url: "autosms/list.do",
             form: {
-                url: "sms/action.do",
+                url: "autosms/action.do",
                 check:function(){
                     var smsContent=$("#smsContent").val();
                     var toUserId=$("#toUserId").val();

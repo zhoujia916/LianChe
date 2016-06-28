@@ -65,7 +65,7 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         名称
                                     </label>
 
@@ -74,7 +74,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         上级类型
                                     </label>
                                     <div class="col-sm-9">
@@ -83,7 +83,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         排序号
                                     </label>
 
@@ -122,13 +122,13 @@
 
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         $("#gridview").gridview({
-            url: "articlecat/list.do",
+            url: "autoarticlecat/list.do",
             treeReader:{
                 show: true,
                 expand_column: 'catName'
             },
             form:{
-                url: "articlecat/action.do",
+                url: "autoarticlecat/action.do",
                 check:function(){
                     var catName=$("#catName").val();
                     var sortOrder=$("#sortOrder").val();

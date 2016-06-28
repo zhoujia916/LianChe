@@ -10,7 +10,7 @@
             设置菜单动作
         </small>
 
-        <a class="btn btn-xs orange pull-right btn-warning" href="#page/menu/index">
+        <a class="btn btn-xs orange pull-right btn-warning" href="#page/systemmenu/index">
         <i class="glyphicon glyphicon-arrow-left"></i>返回菜单管理</span></a>
 
     </h1>
@@ -38,12 +38,12 @@
                         <span class="lbl"></span>
                     </label>
                 </th>
-                <th>编号</th>
+                <th style="width:100px;">编号</th>
                 <th>名称</th>
                 <th>动作</th>
                 <th>配置项</th>
                 <th>排序号</th>
-                <th>操作</th>
+                <th style="width:120px;">操作</th>
             </tr>
             </thead>
 
@@ -76,7 +76,7 @@
                     <div class="alert-info red"></div>
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 名称
                             </label>
 
@@ -85,7 +85,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 编码
                             </label>
 
@@ -94,7 +94,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 链接
                             </label>
 
@@ -103,7 +103,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 图标
                             </label>
 
@@ -112,7 +112,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 配置信息
                             </label>
 
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 排序号
                             </label>
 
@@ -157,7 +157,7 @@
             $(".page-content").height($(window).height() - 120);
 
 			$("#gridview").gridview({
-                url: "menuaction/list.do",
+                url: "systemmenuaction/list.do",
                 param:{
                     menuId: "{{$menuId}}"
                 },
@@ -168,7 +168,7 @@
                     key_field: "actionId"
                 },
                 form:{
-                    url: "menuaction/action.do",
+                    url: "systemmenuaction/action.do",
                     check:function(){
                         var actionName=$("#actionName").val();
                         var actionCode=$("#actionCode").val();

@@ -173,11 +173,12 @@ public class AutoUserController extends BaseController {
             }
 
             user.setPassword(EncryptUtil.MD5(user.getPassword()));
-            user.setUserAvatar("../resource/admin/avatars/profile-pic.jpg");
+            user.setUserAvatar("/resource/admin/avatars/profile-pic.jpg");
             user.setPoint(100);
             user.setPhone(user.getUserName());
-            user.setBirth(ConvertUtil.toLong(new Date()));
+            user.setBirth(new Long(0));
             user.setSortOrder(0);
+            user.setAddTime(ConvertUtil.toLong(new Date()));
             if(autoUserService.insert(user)){
                 result.setData(user.getUserId());
             }else{
@@ -838,6 +839,17 @@ public class AutoUserController extends BaseController {
             collect.setAddTime(ConvertUtil.toLong(new Date()));
             collect.setTargetType(Constants.AUTO_COLLECT_TYPE_CAR);
             collect.setStatus(Constants.AUTO_COLLECT_STATUS_NORMAL);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("targetId", collect.getTargetId());
+            map.put("targetType", Constants.AUTO_COLLECT_TYPE_CAR);
+            map.put("userId", collect.getUserId());
+            AutoCollect autoCollect = autoCollectService.query(map);
+            if(autoCollect != null){
+                result.setCode(-1);
+                result.setMsg("该车源已收藏！");
+                return result;
+            }
+
             if (!autoCollectService.insert(collect)) {
                 result.setCode(1);
                 result.setMsg("添加车源收藏失败！");

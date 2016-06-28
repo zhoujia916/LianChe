@@ -13,15 +13,22 @@
         <div id="order-gridview" class="gridview">
 
             <div class="grid-filter">
-                <select multiple="" data-init="0" name="orderStatus" class="select2" data-placeholder=" 请选择订单状态">
-                    <option value="">&nbsp;</option>
+                <select data-init="0" name="orderStatus" style="height: 29px;">
+                    <option value="0">请选择订单状态</option>
                     <option value="1">买家已提交</option>
+<<<<<<< HEAD
                     <option value="2">交易中</option>
                     <option value="3">交易成功</option>
                     <option value="0">交易取消</option>
+=======
+                    <option value="2">卖家已同意</option>
+                    <option value="3">交易中</option>
+                    <option value="4">交易成功</option>
+                    <option value="5">交易取消</option>
+>>>>>>> 361bac8266b21f9c2edf3351f57d1d40ba088738
                 </select>
-                <select multiple="" data-init="0" name="payStatus" class="select2" data-placeholder=" 请选择支付状态">
-                    <option value="">&nbsp;</option>
+                <select data-init="0" name="payStatus" style="height: 29px;">
+                    <option value="0">请选择支付状态</option>
                     <option value="1">等待买家支付订金</option>
                     <option value="2">买家已支付订金</option>
                     <option value="3">等待卖家支付订金</option>
@@ -29,13 +36,20 @@
                     <option value="5">等待系统退还订金</option>
                     <option value="6">系统已退还订金</option>
                 </select>
+<<<<<<< HEAD
                 <select data-init="-1" name="shipStatus" style="height: 29px;width: 160px;">
                     <option value="-1">请选择物流状态</option>
                     <option value="0">未提车</option>
                     <option value="1">已提车</option>
+=======
+                <select data-init="0" name="shipStatus" style="height: 29px;">
+                    <option value="0">请选择物流状态</option>
+                    <option value="1">未提车</option>
+                    <option value="2">已提车</option>
+>>>>>>> 361bac8266b21f9c2edf3351f57d1d40ba088738
                 </select>
-                <input type="text input-sm" style="height: 29px" id="datepicker1" name="beginTime" placeholder="开始时间"/>
-                <input type="text input-sm" style="height: 29px" id="datepicker2" name="endTime" placeholder="结束时间"/>
+                <input type="text input-sm" style="height: 29px" id="datepicker1" name="beginAddTime" placeholder="开始时间"/>
+                <input type="text input-sm" style="height: 29px" id="datepicker2" name="endAddTime" placeholder="结束时间"/>
                 <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
             </div>
 
@@ -58,8 +72,8 @@
                         <th>物流状态</th>
                         <th>卖方姓名</th>
                         <th>买方姓名</th>
-                        <th>数量</th>
-                        <th>售价</th>
+                        <th>订购数量</th>
+                        <th>订单金额</th>
                         <th>订购时间</th>
                         <th width="120">操作</th>
                     </tr>
@@ -80,7 +94,7 @@
 
             <div class="grid-form save-form">
                 <div class="overlay"></div>
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">
                     <div class="widget-header">
                         <h5 class="widget-title smaller"></h5>
 
@@ -96,41 +110,37 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         买家
                                     </label>
 
                                     <div class="col-sm-9">
-                                        <select data-init="0" id="buyerId" name="buyerId">
+                                        <select data-init="0" id="buyerId" name="buyerId" class="chosen-select" data-placeholder="请选择买家" style="width:160px;">
                                             <option value="0">请选择买家</option>
                                             {{foreach from=$users item=user}}
                                                 <option value="{{$user.userId}}">
-                                                    {{$user.userName}}
-                                                    {{if $user.realName!=null}}
-                                                        ({{$user.realName}})
-                                                    {{/if}}
+                                                    {{$user.userName}}{{if $user.realName!=null}}({{$user.realName}}){{/if}}
                                                 </option>
                                             {{/foreach}}
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         车源
                                     </label>
 
                                     <div class="col-sm-9">
-                                        <input type="hidden" class="addUserId"/>
-                                        <select data-init="0" id="carId" name="car.carId">
+                                        <select data-init="0" id="carId" name="car.carId" class="chosen-select" data-placeholder="请选择车源" style="width:360px;">
                                             <option value="0">请选择车源</option>
                                             {{foreach from=$cars item=car}}
-                                                <option value="{{$car.carId}}">{{$car.carName}}</option>
+                                            <option value="{{$car.carId}}">{{$car.carName}}</option>
                                             {{/foreach}}
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         属性
                                     </label>
 
@@ -142,25 +152,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         数量
                                     </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" data-init="1" id="carNumber" name="car.carNumber" placeholder="数量" class="txt input-sm col-sm-8">
+                                        <input type="text" class="txt input-sm col-sm-2input-mini" id="carNumber" name="car.carNumber" />
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">
-                                        提车时间
-                                    </label>
-
-                                    <div class="col-sm-9">
-                                        <input type="text" id="putTime" name="putTimeString" placeholder="提车时间" class="txt input-sm col-sm-5 "/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                <div class="form-group" id="rowHasParts">
+                                    <label class="col-sm-3 control-label">
                                         加配
                                     </label>
 
@@ -169,20 +170,24 @@
                                         <span class="lbl" style="top:6px;"></span>
                                     </div>
                                 </div>
-                                <div class="clearfix form-actions">
+                                <div class="clearfix">
                                     <input type="hidden" name="orderId" value="" />
-                                    <a class="btn btn-sm btn-action" data-action="reset">
-                                        <i class="ace-icon fa fa-undo"></i>
-                                        重置
-                                    </a>
-                                    &nbsp; &nbsp; &nbsp;
-                                    <a class="btn btn-sm btn-primary btn-action" data-action="save">
-                                        <i class="ace-icon fa fa-check"></i>
-                                        提交
-                                    </a>
+
                                 </div>
                             </form>
                         </div>
+                    </div>
+
+                    <div class="widget-footer form-actions">
+                        <a class="btn btn-sm btn-action" data-action="reset">
+                            <i class="ace-icon fa fa-undo"></i>
+                            重置
+                        </a>
+                        &nbsp; &nbsp; &nbsp;
+                        <a class="btn btn-sm btn-primary btn-action" data-action="save">
+                            <i class="ace-icon fa fa-check"></i>
+                            提交
+                        </a>
                     </div>
                 </div>
             </div>
@@ -196,68 +201,48 @@
 </div><!-- /.row -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $("#carId").on("click",function(){
-            var markId=$("#markId").val();
-            var carId=$("#carId").val();
-            if(carId!=0 && carId!=null){
-                if(markId!=carId) {
-                    $("#markId").empty();
-                    $.ajax({
-                        url: "autoorder/queryCarAttr.do",
-                        type: "post",
-                        data: "carId=" + carId,
-                        success: function (data) {
-                            if(data.length>0) {
-                                $(".addUserId").attr("value",data[0].addUserId);
-                                $("#carAttrId").empty();
-                                $("#carAttrId").append("<option value='0'>请选择属性</option>");
-                                for (var i = 0; i < data.length; i++) {
-                                    $("#markId").append("<input type='hidden' id='" + data[i].carAttrId + "' value='"+data[i].surplusNumber+"'/>");
-                                    $("#carAttrId").append("" +
-                                            "<option value='" + data[i].carAttrId + "'>" + data[i].attrValue + "(库存:"+data[i].surplusNumber+")</option>");
-                                }
-                            }
+        $('#carNumber').ace_spinner({value:1,min:0,max:10,step:1, btn_up_class:'btn-info' , btn_down_class:'btn-info'});
+
+        var attr = [];
+
+        $("#carId").on("change",function(){
+            var carId = $(this).val();
+            if(carId == "0"){
+                var html = "<option value='0'>请选择属性</option>";
+                $("#carAttrId").html(html);
+                $("#rowHasParts").hide().find("input").val("0");
+            }else {
+                $.post("autoorder/queryCarAttr.do", { carId: carId }, function (result) {
+                    if (result.code == 0) {
+                        var html = "<option value='0'>请选择属性</option>";
+                        attr = result.data.attr;
+                        $.each(attr, function () {
+                            html += "<option data-surplus='" + this["surplusNumber"] + "' value='" + this["carAttrId"] + "'>外观:" + this["outsideColor"] + "---内饰:" + this["insideColor"] + "(库存:" + this["surplusNumber"] + ")" + "</option>";
+                        });
+                        $("#carAttrId").html(html);
+                        if(result.data.hasParts == 1){
+                            $("#rowHasParts").show().find("input").val("0");
+                        }else{
+                            $("#rowHasParts").hide().find("input").val("0");
                         }
-                    });
-                    $("#markId").attr("value",carId);
+                    } else {
+                        showAlert(result.msg);
+                    }
+                });
+
+            }
+        });
+
+        $("#carAttrId").on("change", function(){
+            var max = 10;
+            var carAttrId = parseInt($(this).val());
+            $.each(attr, function(){
+                if(this["carAttrId"] == carAttrId){
+                    max = this['surplusNumber'];
+                    return false;
                 }
-            }else{
-                $("#carAttrId").empty();
-                $("#carAttrId").append("<option value='0'>请选择属性</option>");
-                $("#markId").empty();
-                $("#markId").attr("value",carId);
-                $(".addUserId").attr("value",0);
-            }
-        });
-
-        $('.select2').css('width','160px').select2({allowClear:true})
-        $('#select2-multiple-style .btn').on('click', function(e){
-            var target = $(this).find('input[type=radio]');
-            var which = parseInt(target.val());
-            if(which == 2) $('.select2').addClass('tag-input-style');
-            else $('.select2').removeClass('tag-input-style');
-        });
-
-        $(document).one('ajaxloadstart.page', function(e) {
-            $('[class*=select2]').remove();
-        });
-
-        $('.multiselect').multiselect({
-            enableFiltering: true,
-            buttonClass: 'btn btn-white btn-primary',
-            templates: {
-                button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"></button>',
-                ul: '<ul class="multiselect-container dropdown-menu"></ul>',
-                filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
-                filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
-                li: '<li><a href="javascript:void(0);"><label></label></a></li>',
-                divider: '<li class="multiselect-item divider"></li>',
-                liGroup: '<li class="multiselect-item group"><label class="multiselect-group"></label></li>'
-            }
-        });
-
-        $(document).one('ajaxloadstart.page', function(e) {
-            $('.multiselect').multiselect('destroy');
+            });
+            $('#carNumber').ace_spinner({value:1,min:1,max:max,step:1, btn_up_class:'btn-info' , btn_down_class:'btn-info'});
         });
 
         $( "#datepicker1" ).datepicker({
@@ -270,27 +255,12 @@
             selectOtherMonths: false
         });
 
-        $( "#putTime" ).datepicker({
-            showOtherMonths: true,
-            selectOtherMonths: false
-        });
-
-        $(".btn-action[data-action='select']").click(function(){
-            var key = $("#order-gridview").gridview("getKey");
-            if(!key){
-                showAlert("请选择记录！");
-                return;
-            }
-            changeHash("admin/autoorderdetails/index/"+ key);
-        });
-
         $("#order-gridview").gridview({
             url: "autoorder/list.do",
             form: {
                 url: "autoorder/action.do",
                 check:function(){
                     var buyerId=$("#buyerId").val();
-                    var addUserId=$(".addUserId").val();
                     var carId=$("#carId").val();
                     var carAttrId=$("#carAttrId").val();
                     var surplusNumber=$("#"+carAttrId+"").val();
@@ -304,10 +274,6 @@
                         console.log("check form");
                         $("#carId").focus();
                         return "请选择车源";
-                    }else if(buyerId==addUserId){
-                        console.log("check form");
-                        $("#carId").focus();
-                        return "您不能购买您自己发布的车辆";
                     }else if(carAttrId==0){
                         console.log("check form");
                         $("#carAttrId").focus();

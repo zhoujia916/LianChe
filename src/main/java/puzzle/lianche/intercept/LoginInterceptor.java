@@ -20,11 +20,12 @@ public class LoginInterceptor extends HandlerInterceptor {
         if(user == null){
             String url = request.getContextPath() + "/" + Constants.UrlHelper.ADMIN_SYSTEM_LOGIN
                          + "?" + Constants.UrlHelper.PARAM_RETURN_URL + "=" + URLEncoder.encode(path, "utf-8");
-            response.sendRedirect(url);
+//            response.sendRedirect(url);
 
-//            String script = "<script type='text/javascript'> window.top.location = '" + Constants.UrlHelper.ADMIN_LOGIN + "';</script>";
-//
-//            response.getWriter().write(script);
+
+            String script = "<script type='text/javascript'> window.top.location = '" + url + "';</script>";
+
+            response.getWriter().write(script);
 
             return false;
         }

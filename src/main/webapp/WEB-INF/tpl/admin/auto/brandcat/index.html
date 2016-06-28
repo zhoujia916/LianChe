@@ -92,7 +92,7 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         车系名称
                                     </label>
                                     <div class="col-sm-9">
@@ -100,7 +100,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         所属品牌
                                     </label>
                                     <div class="col-sm-9">
@@ -113,7 +113,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         排序号
                                     </label>
 
@@ -172,12 +172,12 @@
         });
 
         $("#brandcat-gridview").gridview({
-            url: "brandcat/list.do",
+            url: "autobrandmodel/list.do",
             filter:{
                 brandString: $("#brandString").val()
             },
             form: {
-                url: "brandcat/action.do",
+                url: "autobrandcat/action.do",
                 check:function(){
                     var catName=$("#catName").val();
                     var brandId=$("#brandId").val();

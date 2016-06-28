@@ -26,7 +26,7 @@
                             </label>
                         </th>
                         <th width="100">编号</th>
-                        <th>图标</th>
+                        <th>商标</th>
                         <th>名称</th>
                         <th>排序号</th>
                         <th width="120">操作</th>
@@ -68,7 +68,7 @@
                             <div class="alert-info red"></div>
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         名称
                                     </label>
                                     <div class="col-sm-9">
@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                    <label class="col-sm-3 control-label">
                                         排序号
                                     </label>
 
@@ -115,16 +115,16 @@
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         $(".btn-action[data-action='select']").click(function(){
             var keys = $("#brand-gridview").gridview("getKeys");
-            var hash = "admin/brandcat/";
+            var hash = "admin/autobrandcat/";
             if(keys.length > 0){
                 hash = hash + "index/" + keys.join(",");
             }
             changeHash(hash);
         });
         $("#brand-gridview").gridview({
-            url: "brand/list.do",
+            url: "autobrand/list.do",
             form: {
-                url: "brand/action.do",
+                url: "autobrand/action.do",
                 check:function(){
                     var brandName=$("#brandName").val();
                     var sortOrder=$("#sortOrder").val();
@@ -154,7 +154,7 @@
                 {
                     name: "brandLogo",
                     format: function(opts, column, row){
-                        return "<td><img style='width: 30px;height: 30px;' src='{{$contextPath}}" + row[column.name] + "' /></td>";
+                        return "<td><img style='width: 30px;height: 30px;' src='{{$contextPath}}/resource/admin/img/car/" + row[column.name] + "' /></td>";
                     }
                 },
                 {

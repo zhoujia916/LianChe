@@ -54,6 +54,10 @@
 		
 		jq.on("click", opts.gridaction + " .btn-action", function(){
 			var action = $(this).attr("data-action");
+            if(!isUndefinedOrNull(opts.buttons) && !isUndefinedOrNull(opts.buttons[action]) && $.isFunction(opts.buttons[action].handler)){
+                opts.buttons[action].handler.call(jq);
+                return;
+            }
 			if(action == "add"){
 				showForm(jq, action);
 			}
@@ -159,8 +163,7 @@
 				});
 			}
 			else if(action == "hide"){
-				form.find(".alert-info").hide();
-				form.hide();
+                hideForm(jq, opts);
 			}
 			else if(action == "reset"){
 				form.find(".alert-info").slideUp();
@@ -173,16 +176,14 @@
 			jq.on("click", opts.gridtable + " tbody " + opts.treeReader.branch_class, function(event){
 				var key = $(this.parentNode).attr("data-key");
 				var children = jq.find(opts.gridtable + " tbody tr[data-parent='" + key + "']");
-				if($(this.parentNode).attr("data-status") == "true"){
-					children.hide();
-					$(this.parentNode).attr("data-status", "false");
+                var isOpen = $(this).find(".ace-icon").hasClass(opts.treeReader.icons.open);
+                if(isOpen){
+                    children.hide();
                     $(this).find(".ace-icon").attr("class", opts.treeReader.icons.close);
-				}else{
-					children.show();
-					$(this.parentNode).attr("data-status", "true");
+                }else{
+                    children.show();
                     $(this).find(".ace-icon").attr("class", opts.treeReader.icons.open);
-				}
-
+                }
                 event.stopPropagation();
 			});
 		}
@@ -240,7 +241,22 @@
 		}
 		return rowData;
 	}
-	
+
+    function handleAction(jq, action){
+        var opts = getOption(jq);
+        if(action == "add"){
+            showForm(jq, action);
+        }
+        else if(action == "edit" || action == "view"){
+            var rows = getRows(jq, 1);
+            if(rows.length == 0){
+                opts.onUnselect.call(jq);
+                return;
+            }
+            showForm(jq, action, rows[0]);
+        }
+    }
+
 	function showForm(jq, action, data){
 		var opts = $.data(jq[0], "gridview");
 		var form = $(opts.form.selector);
@@ -268,12 +284,25 @@
 		}
 
         form.show();
+
+        var win = $(window);
+        var box = form.find(".widget-box");
+        var maxHeight = win.height() - 30;
+        var maxWidth = win.width() - 30;
+
+        var height = Math.min(box.height(), maxHeight);
+        var width = Math.min(box.width(), maxWidth);
+
+        box.css({"top":((win.height() - height)/2) + "px", "left": ((win.width() - width)/2) + "px"});
+
+        $("body").addClass("noscroll");
 	}
 	
 	function hideForm(jq, action){
 		var opts = $.data(jq[0], "gridview");
 		var form = $(opts.form.selector);
 		form.hide();
+        $("body").removeClass("noscroll");
 	}
 	
 	function fillForm(form, data){
@@ -321,7 +350,6 @@
     function isUndefinedOrNull(object){
         return object == undefined || object == null;
     }
-
 
     function fetchForm(form){
         var result = {};
@@ -502,10 +530,10 @@
             $.each(opts.data, function () {
                 if(opts.treeReader.show) {
                     if (this[opts.treeReader.parent_field] == opts.treeReader.parent_root){
-                        html += showRow(opts, this, true);
+                        html += showRow(opts, this);
                     }
                 }else{
-                    html += showRow(opts, this, false);
+                    html += showRow(opts, this);
                 }
             });
 
@@ -513,12 +541,14 @@
 		};
     }
 
-    function showRow(opts, row, children){
+    function showRow(opts, row){
         var html = "";
         var attr = " data-key='" + row[opts.jsonReader.key_field] + "'";
         if(opts.treeReader.show) {
             attr += " data-parent='" + row[opts.treeReader.parent_field] + "'";
-            attr += " data-status='" + (row[opts.treeReader.expaned_field] ? "true" : "false") + "'";
+        }
+        if((row[opts.treeReader.expanded_field] == false || opts.treeReader.expaned == false) && row[opts.treeReader.parent_field] != opts.treeReader.parent_root){
+            attr += " style='display:none'";
         }
         html += "<tr" + attr + ">";
         $.each(opts.columns, function () {
@@ -526,10 +556,10 @@
             html += format(opts, this, row);
         });
         html += "</tr>";
-        if(opts.treeReader.show && children) {
+        if(opts.treeReader.show) {
             $.each(opts.data, function () {
                 if(this[opts.treeReader.parent_field] == row[opts.jsonReader.key_field]){
-                    html += showRow(opts, this, children);
+                    html += showRow(opts, this);
                 }
             });
         }
@@ -612,6 +642,11 @@
                 }
                 var clazz = isLeaf ? opts.treeReader.icons.leaf :
                     !row[opts.treeReader.expanded_field] ? opts.treeReader.icons.open : opts.treeReader.icons.close;
+
+                if(row[opts.treeReader.expanded_field] == false || opts.treeReader.expaned == false){
+                    clazz = opts.treeReader.icons.close;
+                }
+
                 row[opts.treeReader.level_field] = getLevel(opts, row);
 				var prefix = '';
 					prefix += '<div class="tree-wrap tree-wrap-ltr level' + row[opts.treeReader.level_field] + '">';
@@ -719,6 +754,7 @@
 		},
 		treeReader:{
 			show: false,
+            expaned: null,
 			expaned_field: 'expanded',
 			leaf_field: 'isLeaf',
 			parent_field: 'parentId',
@@ -736,37 +772,46 @@
 			"add":{
 				tooltip: "新增",
 				clazz: "btn-info btn-xs white",
-				icon: "fa fa-plus-circle"
+				icon: "fa fa-plus-circle",
+                handler: function(){}
 			},
 			"edit":{
 				tooltip: "编辑",
 				clazz: "btn-info btn-xs white",
-				icon: "fa fa-pencil"
+				icon: "fa fa-pencil",
+                handler: function(){}
 			},
 			"view":{
 				tooltip: "查看",
 				clazz: "btn-warning btn-xs white",
-				icon: "fa fa-search-plus"
+				icon: "fa fa-search-plus",
+                handler: function(){}
 			},
 			"delete":{
 				tooltip: "删除",
 				clazz: "btn-danger btn-xs white",
-				icon: "fa fa-trash-o"
+				icon: "fa fa-trash-o",
+                handler: function(){}
 			},
 			"search":{
 				tooltip: "搜索",
 				clazz: "btn-primary btn-xs white",
-				icon: "fa fa-search"
+				icon: "fa fa-search",
+                handler: function(){}
 			},
 			"refresh":{
 				tooltip: "刷新",
 				clazz: "btn-primary btn-xs white",
-				icon: "fa fa-refresh"
+				icon: "fa fa-refresh",
+                handler: function(){}
 			},
             "setting":{
                 tooltip: "设置",
                 clazz: "btn-success btn-xs white",
-                icon: "fa fa-cog"
+                icon: "fa fa-cog",
+                handler: function(){
+
+                }
             }
 		},
 		columnSize: 0,

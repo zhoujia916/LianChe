@@ -26,19 +26,19 @@
                         <span class="lbl"></span>
                     </label>
                 </th>
-                <th>编号</th>
-                <th>名称</th>
-                <th>菜单地址</th>
+                <th style="width:100px;">编号</th>
+                <th style="width:180px;">名称</th>
+                <th style="width:200px;">菜单地址</th>
 
-                <th>
+                <th style="width:100px;">
                     <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
                     上级菜单
                 </th>
-                <th>菜单操作</th>
-                <th>状态</th>
-                <th>排序号</th>
+                <th style="">菜单操作</th>
+                <th style="width:60px;">状态</th>
+                <th style="width:60px;">排序号</th>
 
-                <th>操作</th>
+                <th style="width:120px;">操作</th>
             </tr>
             </thead>
 
@@ -58,7 +58,7 @@
     <!--save form-->
     <div class="grid-form save-form">
         <div class="overlay"></div>
-        <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+        <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">
             <div class="widget-header">
                 <h5 class="widget-title smaller"></h5>
 
@@ -74,7 +74,7 @@
                     <div class="alert-info red"></div>
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 名称
                             </label>
 
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 地址
                             </label>
 
@@ -92,7 +92,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 相关链接
                             </label>
 
@@ -101,7 +101,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 图标
                             </label>
 
@@ -110,7 +110,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 上级菜单
                             </label>
 
@@ -120,7 +120,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 有效状态
                             </label>
 
@@ -130,7 +130,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-3 control-label">
                                 排序号
                             </label>
 
@@ -138,20 +138,23 @@
                                 <input type="text" data-init="0"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
                             </div>
                         </div>
-                        <div class="clearfix form-actions">
+                        <div class="clearfix">
                             <input type="hidden" name="menuId" value="" />
-                            <a class="btn btn-sm btn-action" data-action="reset">
-                                <i class="ace-icon fa fa-undo"></i>
-                                重置
-                            </a>
-                            &nbsp; &nbsp; &nbsp;
-                            <a class="btn btn-sm btn-primary btn-action" data-action="save">
-                                <i class="ace-icon fa fa-check"></i>
-                                提交
-                            </a>
+
                         </div>
                     </form>
                 </div>
+            </div>
+            <div class="widget-footer form-actions">
+                <a class="btn btn-sm btn-action" data-action="reset">
+                    <i class="ace-icon fa fa-undo"></i>
+                    重置
+                </a>
+                &nbsp; &nbsp; &nbsp;
+                <a class="btn btn-sm btn-primary btn-action" data-action="save">
+                    <i class="ace-icon fa fa-check"></i>
+                    提交
+                </a>
             </div>
         </div>
     </div>
@@ -164,14 +167,6 @@
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
 	$('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(".btn-action[data-action='setting']").click(function(){
-            var key = $("#gridview").gridview("getKey");
-            if(!key){
-                showAlert("请选择记录！");
-                return;
-            }
-            changeHash("admin/menuaction/index/"+ key);
-        });
 
         $("#gridview").gridview({
             url: "systemmenu/list.do",
@@ -183,10 +178,11 @@
             },
             treeReader:{
                 show: true,
-                expand_column: 'menuName'
+                expand_column: 'menuName',
+                expaned: false
             },
             form:{
-                url: "menu/action.do",
+                url: "systemmenu/action.do",
                 check:function(){
                     var menuName=$("#menuName").val();
                     if(!menuName){
@@ -240,18 +236,24 @@
                 }
             },{
                 name: "actions",
-                buttons:{
-                    "setting": {
-                        tooltip: "设置",
-                        clazz: "btn-success btn-xs white",
-                        icon: "fa fa-cog",
-                        handler: function(){
-
-                        }
-                    }
-                },
                 list: ["edit", "delete", "view"]
-            }]
+            }],
+            buttons:{
+                "setting": {
+                    tooltip: "设置",
+                    clazz: "btn-success btn-xs white",
+                    icon: "fa fa-cog",
+                    handler: function(){
+                        var key = $(this).gridview("getKey");
+                        console.log(key);
+                        if(!key){
+                            showAlert("请选择记录！");
+                            return;
+                        }
+                        changeHash("admin/systemmenuaction/index/"+ key);
+                    }
+                }
+            }
         });
 
         function changeParent(data){
