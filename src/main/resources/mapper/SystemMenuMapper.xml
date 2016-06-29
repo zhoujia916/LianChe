@@ -128,6 +128,9 @@
                 <if test="menuId > 0">
                     and sm.menu_id = #{menuId, jdbcType=INTEGER}
                 </if>
+                <if test="menuIds != null and menuIds != ''">
+                    and sm.menu_id in (${menuIds})
+                </if>
                 <if test="menuName != null">
                     and sm.menu_name = #{menuName, jdbcType=VARCHAR}
                 </if>

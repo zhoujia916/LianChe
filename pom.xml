@@ -33,7 +33,7 @@
                     <tmpDirectory>${project.basedir}/src/main/webapp/tmp</tmpDirectory>
                     <webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>
 
-                    <contextPath>/LianChe</contextPath>
+                    <contextPath>/</contextPath>
                     <connectors>
                         <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
                             <port>9080</port>

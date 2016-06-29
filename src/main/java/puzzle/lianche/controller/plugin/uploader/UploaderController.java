@@ -32,17 +32,18 @@ public class UploaderController extends BaseController {
             String rootPath = session.getServletContext().getRealPath("");
             String relativePath = request.getContextPath();
             String typePath = getParameter("type");
-            String savePath = rootPath + "upload\\" + typePath + "\\";
+            String savePath = rootPath + "/upload/" + typePath + "/";
             String relativeUrl = relativePath + "/upload/" + typePath + "/";
 
-            String saveName = PathFormatter.format(file.getOriginalFilename(), "{yy}{MM}{dd}\\{hh}{mm}{rand:6}");
+            String saveName = PathFormatter.format(file.getOriginalFilename(), "{yy}{MM}{dd}/{hh}{mm}{rand:6}");
 
-            String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
+            String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
             try {
                 File dir = new File(dirName);
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
+
                 FileOutputStream fos = new FileOutputStream(savePath + saveName);
                 fos.write(file.getBytes());
                 fos.close();
@@ -51,7 +52,7 @@ public class UploaderController extends BaseController {
                 if(request.getServerPort() != 80){
                     url += ":" + request.getServerPort();
                 }
-                url += relativeUrl + saveName.replace("\\", "/");
+                url += relativeUrl + saveName;
 
 
                 result.setData(url);
@@ -71,7 +72,7 @@ public class UploaderController extends BaseController {
 
         String rootPath = session.getServletContext().getRealPath("");
         String relativePath = request.getContextPath();
-        String savePath = rootPath + "\\upload\\" + typePath + "\\";
+        String savePath = rootPath + "/upload/" + typePath + "/";
         String relativeUrl = relativePath + "/upload/" + typePath + "/";
 
         String saveExt = (file.startsWith("data:image/png;") ? "png" :
@@ -83,8 +84,8 @@ public class UploaderController extends BaseController {
         file = file.replaceAll(" ", "\n");
         saveExt = "." + saveExt;
 
-        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}\\{HH}{mm}{ss}{rand:6}");
-        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
+        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
+        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
 
         File dir = new File(dirName);
         if (!dir.exists()) {
@@ -127,7 +128,7 @@ public class UploaderController extends BaseController {
         String rootPath = session.getServletContext().getRealPath("");
         String relativePath = request.getContextPath();
         String typePath = getParameter("type");
-        String savePath = rootPath + "\\upload\\" + typePath + "\\";
+        String savePath = rootPath + "/upload/" + typePath + "/";
         String relativeUrl = relativePath + "/upload/" + typePath + "/";
 
         String saveExt =
@@ -140,8 +141,8 @@ public class UploaderController extends BaseController {
         file = file.replaceAll(" ", "\n");
         saveExt = "." + saveExt;
 
-        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}\\{HH}{mm}{ss}{rand:6}");
-        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
+        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
+        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
 
         try {
             File dir = new File(dirName);
@@ -169,7 +170,7 @@ public class UploaderController extends BaseController {
             if(request.getServerPort() != 80){
                 url += ":" + request.getServerPort();
             }
-            url += relativeUrl + saveName.replace("\\", "/");
+            url += relativeUrl + saveName;
 
             result.setData(url);
         } catch (Exception e) {
@@ -187,7 +188,7 @@ public class UploaderController extends BaseController {
         String rootPath = session.getServletContext().getRealPath("");
         String relativePath = request.getContextPath();
         String typePath = getParameter("type");
-        String savePath = rootPath + "\\upload\\" + typePath + "\\";
+        String savePath = rootPath + "/upload/" + typePath + "/";
         String relativeUrl = relativePath + "/upload/" + typePath + "/";
 
         String saveExt =
@@ -200,8 +201,8 @@ public class UploaderController extends BaseController {
         file = file.replaceAll(" ", "\n");
         saveExt = "." + saveExt;
 
-        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}\\{HH}{mm}{ss}{rand:6}");
-        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
+        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
+        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
 
         try {
             File dir = new File(dirName);
@@ -227,7 +228,7 @@ public class UploaderController extends BaseController {
             if(request.getServerPort() != 80){
                 url += ":" + request.getServerPort();
             }
-            url += relativeUrl + saveName.replace("\\", "/");
+            url += relativeUrl + saveName;
 
             result.setData(url);
         } catch (Exception e) {
@@ -245,7 +246,7 @@ public class UploaderController extends BaseController {
         String rootPath = session.getServletContext().getRealPath("");
         String relativePath = request.getContextPath();
         String typePath = getParameter("type");
-        String savePath = rootPath + "\\upload\\" + typePath + "\\";
+        String savePath = rootPath + "/upload/" + typePath + "/";
         String relativeUrl = relativePath + "/upload/" + typePath + "/";
 
         String saveExt =
@@ -258,8 +259,8 @@ public class UploaderController extends BaseController {
         file = file.replaceAll(" ", "\n");
         saveExt = "." + saveExt;
 
-        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}\\{HH}{mm}{ss}{rand:6}");
-        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
+        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
+        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
 
         try {
             File dir = new File(dirName);
@@ -285,7 +286,7 @@ public class UploaderController extends BaseController {
             if(request.getServerPort() != 80){
                 url += ":" + request.getServerPort();
             }
-            url += relativeUrl + saveName.replace("\\", "/");
+            url += relativeUrl + saveName;
 
             result.setData(url);
         } catch (Exception e) {
@@ -303,7 +304,7 @@ public class UploaderController extends BaseController {
         String rootPath = session.getServletContext().getRealPath("");
         String relativePath = request.getContextPath();
         String typePath = getParameter("type");
-        String savePath = rootPath + "\\upload\\" + typePath + "\\";
+        String savePath = rootPath + "/upload/" + typePath + "/";
         String relativeUrl = relativePath + "/upload/" + typePath + "/";
 
         String saveExt =
@@ -316,8 +317,8 @@ public class UploaderController extends BaseController {
         file = file.replaceAll(" ", "\n");
         saveExt = "." + saveExt;
 
-        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}\\{HH}{mm}{ss}{rand:6}");
-        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('\\'));
+        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
+        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
 
         try {
             File dir = new File(dirName);
@@ -343,7 +344,7 @@ public class UploaderController extends BaseController {
             if(request.getServerPort() != 80){
                 url += ":" + request.getServerPort();
             }
-            url += relativeUrl + saveName.replace("\\", "/");
+            url += relativeUrl + saveName;
 
             result.setData(url);
         } catch (Exception e) {

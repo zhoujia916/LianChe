@@ -48,6 +48,7 @@ public class ModuleController extends BaseController {
             SystemUser user = (SystemUser)getCurrentUser();
             if(user.getAuthorities() != null) {
                 String url = request.getRequestURI().replace(request.getContextPath() + "/admin/", "");
+
                 int menuId = 0;
                 List<Integer> actionIds = new ArrayList<Integer>();
                 for (SystemAuthority authority : user.getAuthorities()) {
@@ -65,7 +66,7 @@ public class ModuleController extends BaseController {
                 }
                 Map<String,Object> map = new HashMap<String, Object>();
                 map.put("menuId", menuId);
-                map.put("actionIds", actionIds);
+                map.put("actionIds", StringUtil.concat(actionIds, ","));
                 List<SystemMenuAction> actions = systemMenuActionService.queryList(map);
                 return actions;
             }

@@ -91,11 +91,8 @@
 	        	<if test="actionId > 0">
 	                action_id = #{actionId}
 	            </if>
-                <if test="actionIds != null">
-                    and action_id in
-                    <foreach item="item" index="index" collection="actionIds" open="(" separator="," close=")">
-                        #{item}
-                    </foreach>
+                <if test="actionIds != null and actionIds != ''">
+                    and action_id in (${actionIds})
                 </if>
                 <if test="actionCode != null">
                     action_code = #{actionCode}
@@ -132,11 +129,8 @@
 	        	<if test="actionId > 0">
                     and action_id = #{actionId}
 	            </if>
-                <if test="actionIds != null">
-                    and action_id in
-                    <foreach item="item" index="index" collection="actionIds" open="(" separator="," close=")">
-                        #{item}
-                    </foreach>
+                <if test="actionIds != null and actionIds != ''">
+                    and action_id in (${actionIds})
                 </if>
                 <if test="actionCode != null">
                     and action_code = #{actionCode}
