@@ -431,4 +431,13 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         }
         return false;
     }
+
+    /**
+     * 统计订单总数
+     * @param map
+     * @return
+     */
+    public Integer queryCount(Map<String, Object> map){
+        return (Integer)sqlMapper.query("AutoOrderMapper.queryCount", map);
+    }
 }

@@ -153,4 +153,13 @@ public class AutoCarServiceImpl implements IAutoCarService {
     public List<AutoCar> queryOrderList(Map<String, Object> map,Page page) {
         return sqlMapper.queryList("AutoCarMapper.queryOrderList", map,page);
     }
+
+    /**
+     * 统计车源总数
+     * @param map
+     * @return
+     */
+    public Integer queryCount(Map<String, Object> map){
+        return (Integer)sqlMapper.query("AutoCarMapper.queryCount", map);
+    }
 }

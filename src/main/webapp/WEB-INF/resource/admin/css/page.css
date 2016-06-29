@@ -79,6 +79,36 @@ ul,li,ol{
 	margin-left:288px;
 }
 
+.table-form{
+
+}
+
+.table-form .lab{
+    background-color: #F2F2F2;
+    text-align: right;
+}
+.table-form .w5{
+    width: 5%;
+}
+.table-form .w10{
+    width: 10%;
+}
+.table-form .w15{
+    width: 15%;
+}
+.table-form .w20{
+    width: 20%;
+}
+.table-form .w25{
+    width: 25%;
+}
+.table-form .w30{
+    width: 30%;
+}
+.table-form .w35{
+    width: 35%;
+}
+
 .gridview{
     padding:5px;
 }

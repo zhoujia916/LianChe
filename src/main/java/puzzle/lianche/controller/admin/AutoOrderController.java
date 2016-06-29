@@ -4,6 +4,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
@@ -19,10 +20,7 @@ import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
 import javax.websocket.server.PathParam;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller(value = "adminAutoOrderController")
 @RequestMapping(value = "/admin/autoorder")
@@ -179,18 +177,103 @@ public class AutoOrderController extends ModuleController {
 
 
     @RequestMapping(value = "/show/{orderId}")
-    @ResponseBody
-    public Result show(@PathParam("orderId")Integer orderId){
-        Result result=new Result();
+    public String show(@PathVariable("orderId")Integer orderId){
         try {
             if(orderId != null && orderId > 0){
                 AutoOrder order = autoOrderService.query(orderId, null);
+                order.setAddTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getAddTime())));
+                order.setPutTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getPutTime()),Constants.DATE_FORMAT));
+                order.setOrderStatusString(Constants.ORDER_STATUS.get(order.getOrderStatus()));
+                order.setPayStatusString(Constants.PAY_STATUS.get(order.getPayStatus()));
+                order.setShipStatusString(Constants.SHIP_STATUS.get(order.getShipStatus()));
+                List<String> list=autoOrderService.queryOperate(order,Constants.ORDER_USER_ADMIN);
+                if(list!=null && list.size()>0){
+                    List<String> orderActions=new ArrayList<String>();
+                    for(String action:list){
+                        orderActions.add(Constants.OO_OPERATE.get(action));
+                    }
+                    this.setModelAttribute("operateList", orderActions);
+                }
+                AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
+                buyer.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(buyer.getShopType()));
 
-                result.setData(order);
+                AutoUser seller = autoUserService.query(order.getSellerId(), null);
+                seller.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(seller.getShopType()));
+
+                map.put("orderId",order.getOrderId());
+                AutoCar car = autoCarService.query(map);
+                car.setCarTypeString(Constants.MAP_AUTO_CAR_TYPE.get(car.getCarType()));
+                map.clear();
+                map.put("attrCarId",car.getCarId());
+                map.put("carAttrId",order.getCarAttrId());
+                AutoCarAttr carAttr = autoCarAttrService.query(map);
+
+                this.setModelAttribute("order",order);
+                this.setModelAttribute("car", car);
+                this.setModelAttribute("buyer", buyer);
+                this.setModelAttribute("seller",seller);
+                this.setModelAttribute("carAttr", carAttr);
             }
         }
         catch(Exception e){
 
+        }
+        return Constants.UrlHelper.ADMIN_AUTO_ORDER_SHOW;
+    }
+
+    @RequestMapping("/operate.do")
+    @ResponseBody
+    public Result operate(String action,Integer orderId){
+        Result result=new Result();
+        try{
+            AutoOrder order=autoOrderService.query(orderId, null);
+            boolean flag=false;
+            if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_CANCEL)){
+                flag=autoOrderService.doCancel(order);
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_PAYMENT)){
+                flag=autoOrderService.doDeposit(order);
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_UNPAYMENT)){
+                order.setPayStatus(Constants.PS_WAIT_BUYER_DEPOSIT);
+                flag=autoOrderService.update(order);
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_ACCEPT)){
+                flag=autoOrderService.doAccept(order);
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_UNACCEPT)){
+                flag=autoOrderService.doReject(order);
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_REJECT)){
+                flag=autoOrderService.doReject(order);
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RECEIVE)){
+                flag=autoOrderService.doReceive(order);
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_NOTIFY_RECEIVE)){
+                flag=autoOrderService.doNotify(order);
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RETURN_BUYER_DEPOSIT)){
+                Integer type=0;
+                if(order.getPayStatus()==Constants.PS_BUYER_PAY_DEPOSIT) {
+                    type=Constants.ORDER_USER_BUYER;
+                }
+                if(order.getPayStatus()==Constants.PS_BUYER_PAY_DEPOSIT && order.getPayStatus()==Constants.PS_SELLER_PAY_DEPOSIT){
+                    type=Constants.ORDER_USER_ALL;
+                }
+                flag = autoOrderService.doReturnDeposit(order, type);
+            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RETURN_SELLER_DEPOSIT)){
+                Integer type=0;
+                if(order.getPayStatus()==Constants.PS_SELLER_PAY_DEPOSIT) {
+                    type=Constants.ORDER_USER_SELLER;
+                }
+                if(order.getPayStatus()==Constants.PS_SELLER_PAY_DEPOSIT && order.getPayStatus()==Constants.PS_BUYER_PAY_DEPOSIT){
+                    type=Constants.ORDER_USER_ALL;
+                }
+                flag = autoOrderService.doReturnDeposit(order, type);
+            }
+            if(flag){
+                insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改订单详情");
+            }else{
+                result.setCode(1);
+                result.setMsg("执行订单操作失败！");
+            }
+        }catch (Exception e){
+            result.setCode(1);
+            result.setMsg("执行订单操作出错！");
+            logger.error(result.getMsg()+e.getMessage());
         }
         return result;
     }

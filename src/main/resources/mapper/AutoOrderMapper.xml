@@ -230,4 +230,17 @@
         order by ao.add_time desc,ao.order_id desc
     </select>
 
+    <select id="queryCount" parameterType="Map" resultType="java.lang.Integer">
+        select count(1) from auto_order as ao
+        <where>
+            <trim prefixOverrides="and | or">
+                <if test="startTime != null and startTime >0">
+                    and ao.add_time &gt;= ${startTime}
+                </if>
+                <if test="endTime != null and endTime >0">
+                    and ao.add_time &lt;= ${endTime}
+                </if>
+            </trim>
+        </where>
+    </select>
 </mapper>

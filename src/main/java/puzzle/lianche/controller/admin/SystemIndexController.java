@@ -11,10 +11,7 @@ import puzzle.lianche.entity.*;
 import puzzle.lianche.service.*;
 import puzzle.lianche.utils.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller(value="adminSystemIndexController")
 public class SystemIndexController extends ModuleController {
@@ -34,7 +31,7 @@ public class SystemIndexController extends ModuleController {
     private IAutoOrderService autoOrderService;
 
     @Autowired
-    private IAutoBrandCatService autoBrandCatService;
+    private IAutoCarService autoCarService;
 
     //region request page
     @RequestMapping(value = {"/admin", "/admin/", "/admin/login"})
@@ -90,24 +87,77 @@ public class SystemIndexController extends ModuleController {
             this.setModelAttribute("task", task);
             //endregion
 
-
-            //region 已经确认订单和车源
-            map.clear();
-            map.put("status", Constants.OS_EXECUTE);
-            page.setPageIndex(Constants.PageHelper.PAGE_INDEX_FIRST);
-            page.setPageSize(Constants.PageHelper.PAGE_SIZE_COMMON);
-            List<AutoOrder> orders = autoOrderService.queryList(map, page);
-            Result notification = new Result();
-            notification.setTotal(page.getTotal());
-            notification.setData(orders);
-            this.setModelAttribute("orders", notification);
-            //endregion
         }
         return Constants.UrlHelper.ADMIN_SYSTEM_INDEX;
     }
 
     @RequestMapping(value = "/admin/main")
     public String main(){
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+
+            //region Count Year, Fest, Month, Week
+            Calendar calendar = Calendar.getInstance();
+            Integer year = calendar.get(Calendar.YEAR);
+            Integer month = calendar.get(Calendar.MONTH);
+            Integer day = calendar.get(Calendar.DAY_OF_MONTH);
+            Integer wday = calendar.get(Calendar.DAY_OF_WEEK);
+            Integer miliseconds = calendar.get(Calendar.MILLISECOND);
+            Long endTime = calendar.getTimeInMillis();
+
+
+            map.clear();
+            map.put("endTime", endTime);
+
+            calendar.set(year, 0, 1, 0, 0, 0);
+            Long startTime = calendar.getTimeInMillis() - miliseconds;
+
+            map.put("startTime", startTime);
+            int yearOrderCount = autoOrderService.queryCount(map);
+            int yearUserCount = autoUserService.queryCount(map);
+            int yearCarCount = autoCarService.queryCount(map);
+            this.setModelAttribute("yearOrderCount", yearOrderCount);
+            this.setModelAttribute("yearUserCount", yearUserCount);
+            this.setModelAttribute("yearCarCount", yearCarCount);
+
+            int quarterStartMonth = month < 3 ? 0 : month < 6 ? 3 : month < 9 ? 6 : 9;
+
+            calendar.set(year, quarterStartMonth, 1, 0, 0, 0);
+            startTime = calendar.getTimeInMillis() - miliseconds;
+            map.put("startTime", startTime);
+
+            int quarterOrderCount = autoOrderService.queryCount(map);
+            int quarterUserCount = autoUserService.queryCount(map);
+            int quarterCarCount = autoCarService.queryCount(map);
+            this.setModelAttribute("quarterOrderCount", quarterOrderCount);
+            this.setModelAttribute("quarterUserCount", quarterUserCount);
+            this.setModelAttribute("quarterCarCount", quarterCarCount);
+
+            calendar.set(year, month, 1, 0, 0, 0);
+            startTime = calendar.getTimeInMillis() - miliseconds;
+            map.put("startTime", startTime);
+            int monthOrderCount = autoOrderService.queryCount(map);
+            int monthUserCount = autoUserService.queryCount(map);
+            int monthCarCount = autoCarService.queryCount(map);
+            this.setModelAttribute("monthOrderCount", monthOrderCount);
+            this.setModelAttribute("monthUserCount", monthUserCount);
+            this.setModelAttribute("monthCarCount", monthCarCount);
+
+
+            calendar.set(Calendar.DAY_OF_WEEK, 0);
+            startTime = calendar.getTimeInMillis() - miliseconds;
+            map.put("startTime", startTime);
+            int weekOrderCount = autoOrderService.queryCount(map);
+            int weekUserCount = autoUserService.queryCount(map);
+            int weekCarCount = autoCarService.queryCount(map);
+            this.setModelAttribute("weekOrderCount", weekOrderCount);
+            this.setModelAttribute("weekUserCount", weekUserCount);
+            this.setModelAttribute("weekCarCount", weekCarCount);
+        }
+        catch (Exception e){
+
+        }
+        //endregion
         return Constants.UrlHelper.ADMIN_SYSTEM_MAIN;
     }
     //endregion

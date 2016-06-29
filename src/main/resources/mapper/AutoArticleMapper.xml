@@ -11,14 +11,13 @@
     	<result column="source_url" property="sourceUrl" /> 
     	<result column="add_time" property="addTime" /> 
     	<result column="add_user_id" property="addUserId" />
-        <result column="add_user_type" property="addUserType"/>
+        <result column="add_user_name" property="addUserName"/>
     	<result column="check_time" property="checkTime" /> 
     	<result column="status" property="status" /> 
-    	<result column="check_user_id" property="checkUserId" /> 
-    	<result column="sort_order" property="sortOrder" />
-        <result column="catName" property="catName"/>
-        <result column="userName" property="userName"/>
-        <result column="adminName" property="adminName"/>
+    	<result column="check_user_id" property="checkUserId" />
+        <result column="check_user_name" property="checkUserName" />
+        <result column="sort_order" property="sortOrder" />
+        <result column="cat_name" property="catName"/>
     </resultMap>
 
     <sql id="allColumn">
@@ -37,7 +36,6 @@
         	<if test="sourceUrl != null">source_url, </if>
         	<if test="addTime != null">add_time, </if>
         	<if test="addUserId != null">add_user_id, </if>
-            <if test="addUserType != null">add_user_type,</if>
         	<if test="checkTime != null">check_time, </if>
         	<if test="status != null">status, </if>
         	<if test="checkUserId != null">check_user_id, </if>
@@ -54,7 +52,6 @@
         	<if test="sourceUrl != null">#{sourceUrl}, </if>
         	<if test="addTime != null">#{addTime}, </if>
         	<if test="addUserId != null">#{addUserId}, </if>
-            <if test="addUserType != null">#{addUserType},</if>
         	<if test="checkTime != null">#{checkTime}, </if>
         	<if test="status != null">#{status}, </if>
         	<if test="checkUserId != null">#{checkUserId}, </if>
@@ -65,42 +62,44 @@
     <update id="update" parameterType="AutoArticle">
         update auto_article
         <set>
-        	<if test="title != null">  
-        		title = #{title},
-        	</if>
-        	<if test="title2 != null">  
-        		title2 = #{title2},
-        	</if>
-        	<if test="catId != null">  
-        		cat_id = #{catId},
-        	</if>
-        	<if test="cover != null">  
-        		cover = #{cover},
-        	</if>
-        	<if test="content != null">  
-        		content = #{content},
-        	</if>
-        	<if test="sourceUrl != null">  
-        		source_url = #{sourceUrl},
-        	</if>
-        	<if test="addTime != null">  
-        		add_time = #{addTime},
-        	</if>
-        	<if test="addUserId != null">  
-        		add_user_id = #{addUserId},
-        	</if>
-        	<if test="checkTime != null">  
-        		check_time = #{checkTime},
-        	</if>
-        	<if test="status != null">  
-        		status = #{status},
-        	</if>
-        	<if test="checkUserId != null">  
-        		check_user_id = #{checkUserId},
-        	</if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder},
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="title != null">
+                    title = #{title},
+                </if>
+                <if test="title2 != null">
+                    title2 = #{title2},
+                </if>
+                <if test="catId != null">
+                    cat_id = #{catId},
+                </if>
+                <if test="cover != null">
+                    cover = #{cover},
+                </if>
+                <if test="content != null">
+                    content = #{content},
+                </if>
+                <if test="sourceUrl != null">
+                    source_url = #{sourceUrl},
+                </if>
+                <if test="addTime != null">
+                    add_time = #{addTime},
+                </if>
+                <if test="addUserId != null">
+                    add_user_id = #{addUserId},
+                </if>
+                <if test="checkTime != null">
+                    check_time = #{checkTime},
+                </if>
+                <if test="status != null">
+                    status = #{status},
+                </if>
+                <if test="checkUserId != null">
+                    check_user_id = #{checkUserId},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder},
+                </if>
+            </trim>
         </set>
         where article_id = #{articleId}
     </update>
@@ -112,11 +111,8 @@
 	        	<if test="articleId > 0">
 	                article_id = #{articleId}
 	            </if>
-                <if test="articleIds!=null and articleIds.length>0">
-                    article_id in
-                    <foreach collection="articleIds" item="articleId" open="(" separator="," close=")">
-                        #{articleId}
-                    </foreach>
+                <if test="articleIds != null and articleIds != ''">
+                    article_id in (${articleIds})
                 </if>
 	        	<if test="title != null">
 	                title = #{title}
@@ -127,13 +123,10 @@
 	        	<if test="catId > 0">
 	                cat_id = #{catId}
 	            </if>
-                <if test="catIds!=null and catIds.length>0">
-                    cat_id in
-                    <foreach collection="catIds" item="catId" open="(" separator="," close=")">
-                        #{catId}
-                    </foreach>
+                <if test="catIds != null and catIds != null">
+                    cat_id in (${catIds})
                 </if>
-	        	<if test="cover != null">
+	        	<if test="cover != null and cover != ''">
 	                cover = #{cover}
 	            </if>
 	        	<if test="content != null">
@@ -159,7 +152,11 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoArticle">
-        select <include refid="allColumn"/> from auto_article
+        select aa.*, aac.cat_name as cat_name, asu.user_name as add_user_name, csu.user_name as check_user_name
+        from auto_article as aa
+        inner join auto_article_cat as aac on aa.cat_id=aac.cat_id
+        left join system_user as asu on asu.user_id = aa.add_user_id
+        left join system_user as csu on csu.user_id = aa.add_user_id
         <where>  
         	<if test="articleId > 0">
                 article_id = #{articleId}
@@ -168,36 +165,26 @@
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoArticle">
-        select aa.*,aac.cat_name as catName
-        ,(select user_name from system_user as su where su.user_id = aa.add_user_id and aa.add_user_type = 2
-        <if test="name!=null and name!=''">
-            and su.user_name like concat('%',#{name},'%')
-        </if>
-        ) as adminName
-        ,(select real_name from auto_user_profile as aup where aup.user_id = aa.add_user_id and aa.add_user_type = 1
-        <if test="name!=null and name!=''">
-            and aup.real_name like concat('%',#{name},'%')
-        </if>
-        ) as userName
+        select aa.*, aac.cat_name as cat_name, asu.user_name as add_user_name, csu.user_name as check_user_name
         from auto_article as aa
         inner join auto_article_cat as aac on aa.cat_id=aac.cat_id
+        left join system_user as asu on asu.user_id = aa.add_user_id
+        left join system_user as csu on csu.user_id = aa.add_user_id
         <where>
-            <if test="title!=null and title!=''">
-                and title like concat('%',#{title},'%')
-            </if>
-            <if test="beginTime!=null">
-                and add_time &gt;= #{beginTime}
-            </if>
-            <if test="endTime!=null">
-                and add_time &lt;= #{endTime}
-            </if>
-            <if test="autoArticleStatus!=null and autoArticleStatus!=''">
-                and aa.status in (${autoArticleStatus})
-            </if>
-            <if test="catNames!=null and catNames!=''">
-                and aac.cat_id in (${catNames})
-                or aac.parent_id in (${catNames})
-            </if>
+            <trim prefixOverrides="and | or">
+                <if test="title!=null and title!=''">
+                    and title like concat('%',#{title},'%')
+                </if>
+                <if test="beginTime!=null">
+                    and add_time &gt;= #{beginTime}
+                </if>
+                <if test="endTime!=null">
+                    and add_time &lt;= #{endTime}
+                </if>
+                <if test="autoArticleStatus!=null and autoArticleStatus!=''">
+                    and aa.status in (${autoArticleStatus})
+                </if>
+            </trim>
         </where>
         order by aa.sort_order desc,aa.article_id desc
     </select>
