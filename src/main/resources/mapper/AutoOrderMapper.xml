@@ -25,6 +25,7 @@
         <result column="buyerName" property="buyerName"/>
         <result column="buyerRealName" property="buyerRealName"/>
         <result column="put_time" property="putTime"/>
+        <result column="carAttrId" property="carAttrId"/>
 
     </resultMap>
 
@@ -138,7 +139,7 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoOrder">
-        select ao.*,aoc.car_number as carNumber,aoc.has_parts as hasParts,
+        select ao.*,aoc.car_number as carNumber,aoc.has_parts as hasParts,aoc.car_attr_id as carAttrId,
         (select au.user_name from auto_user as au where ao.seller_id=au.user_id) as sellerName,
         (select aup.real_name from auto_user_profile as aup where ao.seller_id=aup.user_id) as sellerRealName,
         (select au.user_name from auto_user as au where ao.buyer_id=au.user_id) as buyerName,
@@ -216,7 +217,7 @@
             <if test="payStatus != null and payStatus != ''">
                 and ao.pay_status in (${payStatus})
             </if>
-            <if test="shipStatus != null and shipStatus >0 ">
+            <if test="shipStatus != null and shipStatus >-1 ">
                 and ao.ship_status = ${shipStatus}
             </if>
             <if test="beginTime != null">

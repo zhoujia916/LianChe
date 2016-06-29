@@ -143,6 +143,9 @@
                 <if test="carAttrId != null and carAttrId > 0">
                     and car_attr_id = #{carAttrId}
                 </if>
+                <if test="attrCarId > 0">
+                    and car_id = #{attrCarId}
+                </if>
             </trim>
         </where>
     </select>

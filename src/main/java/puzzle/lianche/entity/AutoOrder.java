@@ -241,6 +241,15 @@ public class AutoOrder implements Serializable{
     private String orderStatusString;
     private String payStatusString;
     private String shipStatusString;
+    private Integer carAttrId;
+
+    public Integer getCarAttrId() {
+        return carAttrId;
+    }
+
+    public void setCarAttrId(Integer carAttrId) {
+        this.carAttrId = carAttrId;
+    }
 
     public String getOrderStatusString() {
         return orderStatusString;

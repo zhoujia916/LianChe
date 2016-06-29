@@ -48,6 +48,20 @@ public class AutoUserController extends ModuleController {
         Result result = new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
+<<<<<<< HEAD
+            map.put("userName",autoUser.getUserName());
+            map.put("shopName",autoUser.getShopName());
+            String pageIndex=request.getParameter("pageIndex");
+            String pageSize=request.getParameter("pageSize");
+            Page page = new Page();
+            page.setPageIndex(ConvertUtil.toInt(pageIndex));
+            page.setPageSize(ConvertUtil.toInt(pageSize));
+            if(autoUser.getStatusString() != null && autoUser.getStatusString() != ""){
+                map.put("status",autoUser.getStatusString());
+            }
+            if(autoUser.getShopTypeString() != null && autoUser.getShopTypeString() != ""){
+                map.put("shopType",autoUser.getShopTypeString());
+=======
             if(autoUser != null) {
                 if(StringUtil.isNotNullOrEmpty(autoUser.getUserName())) {
                     map.put("userName", autoUser.getUserName());
@@ -61,6 +75,7 @@ public class AutoUserController extends ModuleController {
                 if(autoUser.getShopType() != null && autoUser.getShopType() > 0){
                     map.put("shopType", autoUser.getShopType());
                 }
+>>>>>>> 361bac8266b21f9c2edf3351f57d1d40ba088738
             }
 
             List<AutoUser> list = autoUserService.queryList(map,page);
