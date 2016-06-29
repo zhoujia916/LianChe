@@ -1,9 +1,11 @@
 package puzzle.lianche.controller.admin;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
@@ -15,6 +17,7 @@ import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
+import javax.websocket.server.PathParam;
 import java.util.*;
 
 @Controller (value = "adminAutoCarController")
@@ -36,6 +39,9 @@ public class AutoCarController extends ModuleController {
     @Autowired
     private IAutoCarAttrService autoCarAttrService;
 
+    @Autowired
+    private IAutoCarPicService autoCarPicService;
+
     @RequestMapping(value = {"/","/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();
@@ -43,6 +49,34 @@ public class AutoCarController extends ModuleController {
 
 
         return Constants.UrlHelper.ADMIN_AUTO_CAR;
+    }
+
+    @RequestMapping(value = "/show/{carId}")
+    public String show(@PathVariable("carId")Integer carId){
+        if(carId != null){
+            AutoCar car = autoCarService.query(carId);
+            car.setBeginTimeString(ConvertUtil.toString(ConvertUtil.toDate(car.getStartDate()), Constants.DATE_FORMAT));
+            car.setEndTimeString(ConvertUtil.toString(ConvertUtil.toDate(car.getEndDate()), Constants.DATE_FORMAT));
+            this.setModelAttribute("car", car);
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("carId", carId);
+            List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
+            this.setModelAttribute("attrList", attrs);
+
+            List<AutoCarPic> pics = autoCarPicService.queryList(map);
+            this.setModelAttribute("picList", pics);
+        }
+        List<AutoBrand> brandList = autoBrandService.queryList(null);
+        this.setModelAttribute("brandList", brandList);
+        return Constants.UrlHelper.ADMIN_AUTO_CAR_SHOW;
+    }
+
+    @RequestMapping(value = "/add")
+    public String add(){
+        List<AutoBrand> brandList = autoBrandService.queryList(null);
+        this.setModelAttribute("brandList", brandList);
+        return Constants.UrlHelper.ADMIN_AUTO_CAR_ADD;
     }
 
     @RequestMapping(value = {"/queryBrandCat"})
@@ -81,17 +115,12 @@ public class AutoCarController extends ModuleController {
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result list(AutoCar autoCar){
+    public Result list(AutoCar autoCar, Page page){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("carName",autoCar.getCarName());
-            map.put("carType",autoCar.getCarType());
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
+            map.put("carName", autoCar.getCarName());
+            map.put("carType", autoCar.getCarType());
             if(autoCar.getBeginTimeString()!=null && autoCar.getBeginTimeString()!=""){
                 map.put("startDate",ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getBeginTimeString() + " 00:00:00")));
             }
@@ -132,7 +161,7 @@ public class AutoCarController extends ModuleController {
                     if(car.getRealName()!=null){
                         jsonObject.put("userName",car.getUserName()+"("+car.getRealName()+")");
                     }
-                    jsonObject.put("status",car.getStatus());
+                    jsonObject.put("status", car.getStatus());
                     jsonObject.put("hasParts",car.getHasParts());
                     jsonObject.put("parts",car.getParts());
                     jsonObject.put("partsPrice",car.getPartsPrice());
@@ -149,12 +178,8 @@ public class AutoCarController extends ModuleController {
         return result;
     }
 
-    @RequestMapping(value = "/show")
-    public String show(){
-        List<AutoBrand> brandList = autoBrandService.queryList(null);
-        this.setModelAttribute("brandList", brandList);
-        return Constants.UrlHelper.ADMIN_AUTO_CAR_SHOW;
-    }
+
+
 
     @RequestMapping(value = "/action.do")
     @ResponseBody
@@ -241,7 +266,8 @@ public class AutoCarController extends ModuleController {
                 }else{
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"添加车源信息");
                 }
-            }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
+            }
+            else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
                 String spliter = "※";
                 //添加多个颜色
                 if(StringUtil.isNotNullOrEmpty(autoCar.getOutsideColor()) &&
@@ -315,7 +341,8 @@ public class AutoCarController extends ModuleController {
                 }else{
                     insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改车源信息");
                 }
-            }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
+            }
+            else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
                 Map<String, Object> map=new HashMap<String, Object>();
                 String id = getParameter("id");
                 String ids = getParameter("ids");

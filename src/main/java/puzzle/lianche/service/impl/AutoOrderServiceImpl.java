@@ -160,81 +160,72 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
     @Override
     public List<String> queryOperate(AutoOrder order, int userType) {
         List<String> operates = new ArrayList<String>();
-        if(order.getOrderStatus() == Constants.OS_SUBMIT
-            && order.getPayStatus() == Constants.PS_WAIT_BUYER_DEPOSIT
-            && order.getShipStatus() == Constants.SS_UNSHIP) {
-            if(userType == Constants.ORDER_USER_BUYER){
-                operates.add(Constants.OO_CANCEL);
-                operates.add(Constants.OO_PAYMENT);
-            }
-            else if(userType == Constants.ORDER_USER_SELLER){
+        if(order != null) {
+            if (order.getOrderStatus() == Constants.OS_SUBMIT
+                    && order.getPayStatus() == Constants.PS_WAIT_BUYER_DEPOSIT
+                    && order.getShipStatus() == Constants.SS_UNSHIP) {
+                if (userType == Constants.ORDER_USER_BUYER) {
+                    operates.add(Constants.OO_CANCEL);
+                    operates.add(Constants.OO_PAYMENT);
+                } else if (userType == Constants.ORDER_USER_SELLER) {
 
+                } else if (userType == Constants.ORDER_USER_ADMIN) {
+                    operates.add(Constants.OO_CANCEL);
+                    operates.add(Constants.OO_PAYMENT);
+                }
             }
-            else if(userType == Constants.ORDER_USER_ADMIN){
-                operates.add(Constants.OO_CANCEL);
-                operates.add(Constants.OO_PAYMENT);
-            }
-        }
-        if(order.getOrderStatus() == Constants.OS_SUBMIT
-            && order.getPayStatus() == Constants.PS_BUYER_PAY_DEPOSIT
-            && order.getShipStatus() == Constants.SS_UNSHIP){
-            if(userType == Constants.ORDER_USER_BUYER){
-                operates.add(Constants.OO_CANCEL);
-            }
-            else if(userType == Constants.ORDER_USER_SELLER){
-                operates.add(Constants.OO_ACCEPT);
-                operates.add(Constants.OO_REJECT);
-            }
-            else if(userType == Constants.ORDER_USER_ADMIN){
-                operates.add(Constants.OO_CANCEL);
-                operates.add(Constants.OO_ACCEPT);
-                operates.add(Constants.OO_REJECT);
-                operates.add(Constants.OO_UNPAYMENT);
-            }
-        }
-        else if(order.getOrderStatus() == Constants.OS_EXECUTE
-            && order.getPayStatus() == Constants.PS_SELLER_PAY_DEPOSIT
-            && order.getShipStatus() == Constants.SS_UNSHIP){
-            if(userType == Constants.ORDER_USER_BUYER){
-                operates.add(Constants.OO_REQUEST_CANCEL);
-                operates.add(Constants.OO_RECEIVE);
-                operates.add(Constants.OO_CONTACT_SELLER);
-            }
-            else if(userType == Constants.ORDER_USER_SELLER){
-                operates.add(Constants.OO_CONTACT_BUYER);
-                operates.add(Constants.OO_NOTIFY_RECEIVE);
-            }
-            else if(userType == Constants.ORDER_USER_ADMIN){
-                operates.add(Constants.OO_CANCEL);
-                operates.add(Constants.OO_UNACCEPT);
-                operates.add(Constants.OO_RECEIVE);
-                operates.add(Constants.OO_NOTIFY_RECEIVE);
-            }
-        }
-        else if(order.getOrderStatus() == Constants.OS_SUCCESS
-            && order.getPayStatus() == Constants.PS_WAIT_SYSTEM_DEPOSIT
-            && order.getShipStatus() == Constants.SS_SHIPED){
-            if(userType == Constants.ORDER_USER_BUYER){
-                operates.add(Constants.OO_CONTACT_SELLER);
-            }
-            else if(userType == Constants.ORDER_USER_SELLER){
-                operates.add(Constants.OO_CONTACT_BUYER);
-            }
-            else if(userType == Constants.ORDER_USER_ADMIN){
-                if(order.getSellerDeposit() > 0){
+            if (order.getOrderStatus() == Constants.OS_SUBMIT
+                    && order.getPayStatus() == Constants.PS_BUYER_PAY_DEPOSIT
+                    && order.getShipStatus() == Constants.SS_UNSHIP) {
+                if (userType == Constants.ORDER_USER_BUYER) {
+                    operates.add(Constants.OO_CANCEL);
+                } else if (userType == Constants.ORDER_USER_SELLER) {
+                    operates.add(Constants.OO_ACCEPT);
+                    operates.add(Constants.OO_REJECT);
+                } else if (userType == Constants.ORDER_USER_ADMIN) {
+                    operates.add(Constants.OO_CANCEL);
+                    operates.add(Constants.OO_ACCEPT);
+                    operates.add(Constants.OO_REJECT);
+                    operates.add(Constants.OO_UNPAYMENT);
+                }
+            } else if (order.getOrderStatus() == Constants.OS_EXECUTE
+                    && order.getPayStatus() == Constants.PS_SELLER_PAY_DEPOSIT
+                    && order.getShipStatus() == Constants.SS_UNSHIP) {
+                if (userType == Constants.ORDER_USER_BUYER) {
+                    operates.add(Constants.OO_REQUEST_CANCEL);
+                    operates.add(Constants.OO_RECEIVE);
+                    operates.add(Constants.OO_CONTACT_SELLER);
+                } else if (userType == Constants.ORDER_USER_SELLER) {
+                    operates.add(Constants.OO_CONTACT_BUYER);
+                    operates.add(Constants.OO_NOTIFY_RECEIVE);
+                } else if (userType == Constants.ORDER_USER_ADMIN) {
+                    operates.add(Constants.OO_CANCEL);
+                    operates.add(Constants.OO_UNACCEPT);
+                    operates.add(Constants.OO_RECEIVE);
+                    operates.add(Constants.OO_NOTIFY_RECEIVE);
+                }
+            } else if (order.getOrderStatus() == Constants.OS_SUCCESS
+                    && order.getPayStatus() == Constants.PS_WAIT_SYSTEM_DEPOSIT
+                    && order.getShipStatus() == Constants.SS_SHIPED) {
+                if (userType == Constants.ORDER_USER_BUYER) {
+                    operates.add(Constants.OO_CONTACT_SELLER);
+                } else if (userType == Constants.ORDER_USER_SELLER) {
+                    operates.add(Constants.OO_CONTACT_BUYER);
+                } else if (userType == Constants.ORDER_USER_ADMIN) {
+                    if (order.getSellerDeposit() > 0) {
+                        operates.add(Constants.OO_RETURN_SELLER_DEPOSIT);
+                    }
+                    if (order.getBuyerDeposit() > 0) {
+                        operates.add(Constants.OO_RETURN_BUYER_DEPOSIT);
+                    }
+                }
+            } else if (order.getOrderStatus() == Constants.OS_CANCEL) {
+                if (order.getSellerDeposit() > 0) {
                     operates.add(Constants.OO_RETURN_SELLER_DEPOSIT);
                 }
-                if(order.getBuyerDeposit() > 0){
+                if (order.getBuyerDeposit() > 0) {
                     operates.add(Constants.OO_RETURN_BUYER_DEPOSIT);
                 }
-            }
-        }
-        else if(order.getOrderStatus() == Constants.OS_CANCEL){
-            if(order.getSellerDeposit() > 0){
-                operates.add(Constants.OO_RETURN_SELLER_DEPOSIT);
-            }
-            if(order.getBuyerDeposit() > 0){
-                operates.add(Constants.OO_RETURN_BUYER_DEPOSIT);
             }
         }
         return operates;

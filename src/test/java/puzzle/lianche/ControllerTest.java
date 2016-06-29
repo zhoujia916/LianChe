@@ -73,4 +73,6 @@ public class ControllerTest {
         mockMvc.perform(post("/phone/autouser/register.do").param("userName", "13501656316").param("password", "111111").param("code", "123456"))
                 .andExpect(status().isOk()).andDo(print());
     }
+
+
 }

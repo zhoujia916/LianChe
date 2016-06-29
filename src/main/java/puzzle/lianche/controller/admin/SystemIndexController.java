@@ -33,6 +33,9 @@ public class SystemIndexController extends ModuleController {
     @Autowired
     private IAutoOrderService autoOrderService;
 
+    @Autowired
+    private IAutoBrandCatService autoBrandCatService;
+
     //region request page
     @RequestMapping(value = {"/admin", "/admin/", "/admin/login"})
     public String login(){
@@ -67,6 +70,7 @@ public class SystemIndexController extends ModuleController {
 
     @RequestMapping(value = "/admin/index")
     public String index(){
+
         if(this.getCurrentUser() != null) {
             //region 账户信息
             SystemUser user = (SystemUser)this.getCurrentUser();

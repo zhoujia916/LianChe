@@ -1,21 +1,36 @@
 package puzzle.lianche;
 
+import org.aspectj.lang.annotation.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.context.support.XmlWebApplicationContext;
+import puzzle.lianche.entity.AutoBrand;
+import puzzle.lianche.entity.AutoBrandCat;
 import puzzle.lianche.entity.SystemConfig;
+import puzzle.lianche.service.IAutoBrandCatService;
+import puzzle.lianche.service.IAutoBrandService;
+import puzzle.lianche.service.impl.AutoBrandCatServiceImpl;
 import puzzle.lianche.utils.EncryptUtil;
 import puzzle.lianche.utils.RSAUtil;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+import javax.annotation.Resource;
 import java.io.*;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-*.xml"})
+@ContextConfiguration(locations = {"classpath*:spring-*.xml"})
 public class CommonTest {
+
 
 //    @Test
 //    public void testBase64(){
@@ -101,26 +116,33 @@ public class CommonTest {
 //        System.out.println("Minute:" + calendar.get(Calendar.MILLISECOND));
 //    }
 
-    @Test
-    public void testEncrypt(){
-        String text = "这里是需要加密的文字内容。。。。。。。。。阿娇丹佛weurapejrpwe";
-        System.out.println("text:" + text);
-        RSAUtil rsa = new RSAUtil();
-        try {
-            rsa.initKey();
-            String privateKey = rsa.getPrivateKey();
-            String publicKey = rsa.getPublicKey();
-            System.out.println("privateKey:" + privateKey);
-            System.out.println("publicKey:" + publicKey);
-            String data1 = rsa.encrypt(publicKey, text);
-            System.out.println("encrypt text:" + data1);
-            String data2 = rsa.decrypt(privateKey, data1);
-            System.out.println("decrypt text:" + data2);
+//    @Test
+//    public void testEncrypt(){
+//        String text = "这里是需要加密的文字内容。。。。。。。。。阿娇丹佛weurapejrpwe";
+//        System.out.println("text:" + text);
+//        RSAUtil rsa = new RSAUtil();
+//        try {
+//            rsa.initKey();
+//            String privateKey = rsa.getPrivateKey();
+//            String publicKey = rsa.getPublicKey();
+//            System.out.println("privateKey:" + privateKey);
+//            System.out.println("publicKey:" + publicKey);
+//            String data1 = rsa.encrypt(publicKey, text);
+//            System.out.println("encrypt text:" + data1);
+//            String data2 = rsa.decrypt(privateKey, data1);
+//            System.out.println("decrypt text:" + data2);
+//
+//            System.out.println(data2.equals(text));
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
-            System.out.println(data2.equals(text));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+
+    @Test
+    public void updateBrandCat(){
+
     }
+
 }

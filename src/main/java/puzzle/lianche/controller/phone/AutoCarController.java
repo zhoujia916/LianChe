@@ -83,7 +83,7 @@ public class AutoCarController extends BaseController {
             }
 
             if(car.getSort() != null && car.getSort() == 1){
-                map.put("sort", " au.points desc ");
+                map.put("sort", " au.point desc ");
             }
             List<AutoCar> list = autoCarService.queryList(map, page);
             if(list != null && list.size() > 0){

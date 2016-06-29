@@ -33,15 +33,17 @@
     <update id="update" parameterType="AutoBrandCat">
         update auto_brand_cat
         <set>
-        	<if test="brandId != null">  
-        		brand_id = ${brandId},
-        	</if>
-        	<if test="catName != null">  
-        		cat_name = #{catName},
-        	</if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder},
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="brandId != null">
+                    brand_id = ${brandId},
+                </if>
+                <if test="catName != null">
+                    cat_name = #{catName},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder},
+                </if>
+            </trim>
         </set>
         where cat_id = ${catId}
     </update>

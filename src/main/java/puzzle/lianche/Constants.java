@@ -402,8 +402,10 @@ public class Constants {
     public static final Integer AUTO_AUTHORITY_TARGET_TYPE_MENU = 1;
     public static final Integer AUTO_AUTHORITY_TARGET_TYPE_ACTION = 2;
 
+    //上拉刷新
     public static final Integer PULLREFRESH_UP = 1;
 
+    //下拉加载
     public static final Integer PULLREFRESH_DOWN = 2;
 
     public class UrlHelper{
@@ -466,6 +468,8 @@ public class Constants {
         public static final String ADMIN_AUTO_CAR = "admin/auto/car/index";
 
         public static final String ADMIN_AUTO_CAR_SHOW = "admin/auto/car/show";
+
+        public static final String ADMIN_AUTO_CAR_ADD = "admin/auto/car/add";
 
         public static final String ADMIN_AUTO_AD_POSITION = "admin/auto/adposition/index";
 
