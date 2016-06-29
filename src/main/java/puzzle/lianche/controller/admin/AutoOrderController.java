@@ -58,7 +58,7 @@ public class AutoOrderController extends ModuleController {
         try{
             Map<String, Object> map=new HashMap<String, Object>();
             if(autoOrder != null) {
-                if (autoOrder.getOrderStatus() != null && autoOrder.getOrderStatus() > 0) {
+                if (autoOrder.getOrderStatus() != null && autoOrder.getOrderStatus() > -1) {
                     map.put("orderStatus", autoOrder.getOrderStatus());
                 }
                 if (autoOrder.getPayStatus() != null && autoOrder.getPayStatus() > 0) {

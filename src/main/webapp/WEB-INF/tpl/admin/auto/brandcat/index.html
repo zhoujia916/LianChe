@@ -164,7 +164,7 @@
 
         $("#btn-view").on("click", function(){
             var keys = $("#brandcat-gridview").gridview("getKeys");
-            var hash = "admin/brandmodel/";
+            var hash = "admin/autobrandmodel/";
             if(keys.length > 0){
                 hash = hash + "index/" + keys.join(",");
             }
@@ -172,7 +172,7 @@
         });
 
         $("#brandcat-gridview").gridview({
-            url: "autobrandmodel/list.do",
+            url: "autobrandcat/list.do",
             filter:{
                 brandString: $("#brandString").val()
             },
