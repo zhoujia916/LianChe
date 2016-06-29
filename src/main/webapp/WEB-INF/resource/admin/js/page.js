@@ -7,7 +7,7 @@ function showTip(content, delay){
 	delay = delay || 3000;
     var tip = $(".page-content #tip-box");
     if(tip.length == 0){
-        tip = $('<div id="tip" class="alert alert-info alert-tip">' + content + '</div>').appendTo(".page-content");
+        tip = $('<div id="tip-box" class="alert alert-info alert-tip">' + content + '</div>').appendTo(".page-content");
     }else{
         tip.html(content);
     }

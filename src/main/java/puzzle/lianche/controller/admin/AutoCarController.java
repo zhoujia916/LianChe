@@ -212,6 +212,7 @@ public class AutoCarController extends ModuleController {
                 autoCar.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getEndTimeString() + " 23:59:59")));
                 autoCar.setStatus(Constants.AUTO_CAR_STATUS_ON);
                 autoCar.setCarType(Constants.AUTO_CAR_TYPE_COMMON);
+                autoCar.setAddUserId(ConvertUtil.toInt(initConfig.getConfig("addcar_userid").toString()));
                 for(int i = 0; i < autoCar.getAttrs().size(); i++){
                     AutoCarAttr carAttr = autoCar.getAttrs().get(i);
                     autoCar.getAttrs().get(i).setLockNumber(0);

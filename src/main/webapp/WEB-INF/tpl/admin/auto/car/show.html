@@ -70,7 +70,7 @@
                                 车系
                             </label>
                             <div class="col-sm-9">
-                                <select id="catId" name="catId" data-init="0" style="width:200px">
+                                <select id="catId" name="brandCatId" data-init="0" style="width:200px">
                                     <option value="0">请选择车系</option>
                                     {{if $catList}}
                                     {{foreach from=$catList item=catItem}}
@@ -85,7 +85,7 @@
                                 车型
                             </label>
                             <div class="col-sm-9">
-                                <select id="modelId" name="modelId" data-init="0" style="width:200px">
+                                <select id="modelId" name="brandModelId" data-init="0" style="width:200px">
                                     <option value="0">请选择车型</option>
                                     {{if $modelList}}
                                     {{foreach from=$modelList item=modelItem}}
@@ -108,8 +108,8 @@
                                 车源有效期
                             </label>
                             <div class="col-sm-9">
-                                <input type="text" class="input-sm col-sm-2" placeholder="开始日期" name="startDateString">
-                                <input type="text" class="input-sm col-sm-2" placeholder="结束日期" name="endDateString" style="margin-left:20px;">
+                                <input type="text" class="input-sm col-sm-2" placeholder="开始日期" id="datepicker1" name="beginTimeString">
+                                <input type="text" class="input-sm col-sm-2" placeholder="结束日期" id="datepicker2" name="endTimeString" style="margin-left:20px;">
                             </div>
                         </div>
                         <div class="form-group">
@@ -117,8 +117,17 @@
                                 是否特卖会
                             </label>
                             <div class="col-sm-9">
-                                <input type="checkbox" data-init="1" value="0" offval="1" name="carType" role="checkbox" class="ace ace-switch ace-switch-5">
-                                <span class="lbl"></span>
+                                <div class="position-relative">
+                                    <label>
+                                        <input value="1" type="radio" name="carType" class="ace" checked="checked">
+                                        <span class="lbl">否</span>
+                                    </label>
+
+                                    <label style="margin-left:20px;">
+                                        <input value="2" type="radio" name="carType" class="ace">
+                                        <span class="lbl">是</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
@@ -148,6 +157,14 @@
                                 <input type="text" data-init="0" id="sortOrder" value="0" name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                车源备注
+                            </label>
+                            <div class="col-sm-9">
+                                <textarea name="remark" class="txt input-sm col-sm-10" style="height:50px;"></textarea>
+                            </div>
+                        </div>
                     </div>
 
                     <div id="edit-parts" class="tab-pane">
@@ -157,7 +174,8 @@
                                 是否加配
                             </label>
                             <div class="col-sm-9">
-                                <input type="checkbox" data-init="1" value="0" offval="1" id="cbHasParts" name="hasParts" role="checkbox" class="ace ace-switch ace-switch-5">
+                                <input type="hidden" name="hasParts" id="hidHasParts" value="1" >
+                                <input type="checkbox" data-init="1" value="2" offval="1" id="cbHasParts" role="checkbox" class="ace ace-switch ace-switch-5">
                                 <span class="lbl"></span>
                             </div>
                         </div>
@@ -182,29 +200,41 @@
                     <div id="edit-attrs" class="tab-pane">
                         <div class="space-10"></div>
                         <div class="row">
+                            <input type="hidden" id="hidOutsideColor" name="outsideColor" />
+
+                            <input type="hidden" id="hidInsideColor" name="insideColor" />
+
+                            <input type="hidden" id="hidQuoteType" name="quoteType" />
+
+                            <input type="hidden" id="hidSalePriceType" name="salePriceType" />
+
+                            <input type="hidden" id="hidSaleAmount" name="saleAmount" />
+
+                            <input type="hidden" id="hidTotalNumber" name="totalNumber" />
+
                             <div class="col-xs-2 attr-item" data-index="0">
                                 <div class="widget-box widget-color-blue">
                                     <div class="widget-body">
                                         <div class="widget-main">
-                                            <input type="text" data-name="outsideColor" style="margin-bottom:15px;" placeholder="外观" name="attrs[0].outsiderColor" class="txt input-sm col-sm-12">
+                                            <input data-name="outsideColor" type="text" style="margin-bottom:15px;" placeholder="外观" class="txt input-sm col-sm-12">
 
-                                            <input type="text" data-name="insideColor" style="margin-bottom:15px;" placeholder="内饰" name="attrs[0].insideColor" class="txt input-sm col-sm-12">
+                                            <input data-name="insideColor" type="text" style="margin-bottom:15px;" placeholder="内饰" class="txt input-sm col-sm-12">
 
-                                            <select name="attrs[0].quoteType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
+                                            <select data-name="quoteType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
                                                 <option value="0">请选择行情</option>
                                                 <option value="1">上</option>
                                                 <option value="2">下</option>
                                             </select>
 
-                                            <select name="attrs[0].salePriceType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
+                                            <select data-name="salePriceType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
                                                 <option value="0">请选择优惠类型</option>
                                                 <option value="1">优惠点数</option>
                                                 <option value="2">优惠价格</option>
                                             </select>
 
-                                            <input type="text" data-name="saleAmount" style="margin-bottom:15px;" placeholder="优惠价格" name="attrs[0].saleAmount" class="txt input-sm col-sm-12">
+                                            <input data-name="saleAmount" type="text" style="margin-bottom:15px;" placeholder="优惠价格或点数(数字)" class="txt input-sm col-sm-12">
 
-                                            <input type="text" data-name="number"style="margin-bottom:15px;" placeholder="数量" name="attrs[0].number" class="txt input-sm col-sm-12">
+                                            <input data-name="totalNumber" type="text" style="margin-bottom:15px;" placeholder="数量" class="txt input-sm col-sm-12">
 
                                         </div>
 
@@ -280,9 +310,9 @@
                         <option value="2">优惠价格</option>
                     </select>
 
-                    <input type="text" data-name="saleAmount" style="margin-bottom:15px;" placeholder="优惠价格" class="txt input-sm col-sm-12">
+                    <input type="text" data-name="saleAmount" style="margin-bottom:15px;" placeholder="优惠价格或点数(数字)" class="txt input-sm col-sm-12">
 
-                    <input type="text" data-name="number"style="margin-bottom:15px;" placeholder="数量" class="txt input-sm col-sm-12">
+                    <input type="text" data-name="totalNumber" style="margin-bottom:15px;" placeholder="数量" class="txt input-sm col-sm-12">
 
                 </div>
 
@@ -300,6 +330,7 @@
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         var spliter = '※';
         $("#btnSubmit").on("click", function(){
+            console.log("submit");
             var brandId = $("#brandId").val();
             if(brandId == "0"){
                 showTip("请选择品牌");
@@ -316,8 +347,12 @@
                 return;
             }
             var officalPrice = $("#officalPrice").val();
-            if(officalPrice == "" || isNaN(officalPrice)){
-                showTip("官方指导价不能为空，且必须为数字");
+            if(officalPrice == ""){
+                showTip("官方指导价不能为空");
+                return;
+            }
+            if(isNaN(officalPrice)){
+                showTip("官方指导价必须为数字");
                 return;
             }
             var startDate = $("#startDate").val();
@@ -354,27 +389,86 @@
                 return;
             }
 
-            var str = $("form").serialize();
-            console.log(str);
 
-//            var outsideColor = [];
-//            var insideColor = [];
-//            var quoteType = [];
-//            var salePriceType = [];
-//            var saleAmount = [];
-//            var number = [];
-//            $("#edit-attrs .attr-item").each(function(){
-//                outsideColor = this.find("input[data-name='']")
-//            });
+
+            var outsideColor = [];
+            var insideColor = [];
+            var quoteType = [];
+            var salePriceType = [];
+            var saleAmount = [];
+            var totalNumber = [];
+            $("#edit-attrs .attr-item").each(function(){
+                outsideColor.push($.trim($(this).find("input[data-name='outsideColor']").val()));
+                insideColor.push($.trim($(this).find("input[data-name='insideColor']").val()));
+                quoteType.push($(this).find("select[data-name='quoteType']").val());
+                salePriceType.push($(this).find("select[data-name='salePriceType']").val());
+                saleAmount.push($.trim($(this).find("input[data-name='saleAmount']").val()));
+                totalNumber.push($.trim($(this).find("input[data-name='totalNumber']").val()));
+            });
+            if(!(outsideColor.length == insideColor.length && quoteType.length == salePriceType.length && saleAmount.length == totalNumber.length &&
+                 outsideColor.length == quoteType.length &&   quoteType.length == saleAmount.length)){
+                showTip("请填写价格属性");
+                return;
+            }
+            $("#hidOutsideColor").val(outsideColor.join(spliter));
+            $("#hidInsideColor").val(insideColor.join(spliter));
+            $("#hidQuoteType").val(quoteType.join(spliter));
+            $("#hidSalePriceType").val(salePriceType.join(spliter));
+            $("#hidSaleAmount").val(saleAmount.join(spliter));
+            $("#hidTotalNumber").val(totalNumber.join(spliter));
+
+
+            var pic = $("#hidPic").val();
+
+            if(pic == ""){
+                showConfirm("您确定不上传车源图片?", save);
+            }
+            save();
+
+            function save(){
+                console.log($("form").serialize());
+
+                $.post("{{$contextPath}}/admin/autocar/action.do", "action=CREATE&" + $("form").serialize(), function(result){
+                    if(result.code == 0){
+                        changeHash("admin/autocar/index");
+                    }else{
+                        showTip(result.msg);
+                    }
+                }, "json");
+            }
+        });
+
+        var date = new Date();
+        var month = date.getMonth();
+        var day = date.getDate();
+
+        var date1 = date.getFullYear() + "-" + (month < 9 ? ("0" + (1 + month)) : (1 + month)) + "-" + day;
+
+        $( "#datepicker1").val(date1);
+
+        $( "#datepicker1" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        var date2 = month < 10 ? (date.getFullYear() + "-" + ((month + 2) < 9 ? ("0" + (3 + month)) : (3 + month)) + "-" + (day - 1)) :
+                                 ((date.getFullYear() + 1) + "-" + ("0" + ((month + 3) % 12)) + "-" + (day - 1));
+
+        $( "#datepicker2").val(date2);
+        $( "#datepicker2" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
         });
 
         $("#cbHasParts").on("change", function(){
             if(this.checked){
                 $("#txtParts").removeAttr("disabled").removeClass("disabled");
                 $("#txtPartsPrice").removeAttr("disabled").removeClass("disabled");
+                $("#hidHasParts").val("2");
             }else{
                 $("#txtParts").attr("disabled", "disabled").addClass("disabled");
                 $("#txtPartsPrice").attr("disabled", "disabled").addClass("disabled");
+                $("#hidHasParts").val("1");
             }
         });
 
@@ -383,9 +477,6 @@
             var index = parseInt($(this).attr("data-index"));
             newNode.attr("data-index", index);
             newNode.find(".btn-delete").attr("data-index", index);
-            newNode.find("input, select").each(function(){
-                $(this).attr("name", "attrs[" + index + "]." + $(this).attr("data-name"));
-            });
             newNode.insertBefore(this);
 
             $(this).attr("data-index", index+1);
@@ -396,7 +487,6 @@
             $(".attr-item[data-index='" + (index) + "']").remove();
         });
 
-        $("#")
 
         $("#brandId").change(function(){
             var val = $(this).val();
@@ -423,7 +513,7 @@
                     if(response.code == 0){
                         var html = "<option value='0'>请选择车型</option>";
                         $.each(response.data, function(){
-                            html += "<option value='" + this['catId'] + "'>" + this['catName'] + "</option>";
+                            html += "<option value='" + this['modelId'] + "'>" + this['modelName'] + "</option>";
                         });
                         $("#modelId").html(html);
                     }
@@ -446,11 +536,10 @@
                 var result = $.parseJSON(file.xhr.response);
                 if(result.code == 0){
 
-
                     file.path = result.data;
-                    var pic = $("#hicPic").val();
-                    pic += pic != "" ? ("," + result.data) : result.data;
-                    $("#hicPic").val(pic);
+                    var pic = $("#hidPic").val();
+                    pic += pic != "" ? (spliter + result.data) : result.data;
+                    $("#hidPic").val(pic);
 
                     $(".dz-details img[data-dz-thumbnail]", file.previewTemplate).attr("src", file.path);
 
@@ -465,14 +554,14 @@
             },
             removedfile: function(file){
                 console.log("removedfile");
-                var pics = $("#hicPic").val().split(",");
+                var pics = $("#hidPic").val().split(spliter);
                 for(var i = 0; i < pics.length; i++){
                     if(pics[i] == file.path){
                         pics = pics.splice(i, 1);
                         break;
                     }
                 }
-                $("#hicPic").val(pics.join(","));
+                $("#hicPic").val(pics.join(spliter));
 
 
                 var _ref;
