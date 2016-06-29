@@ -16,10 +16,9 @@
                 <select data-init="0" name="orderStatus" style="height: 29px;">
                     <option value="0">请选择订单状态</option>
                     <option value="1">买家已提交</option>
-                    <option value="2">卖家已同意</option>
-                    <option value="3">交易中</option>
-                    <option value="4">交易成功</option>
-                    <option value="5">交易取消</option>
+                    <option value="2">交易中</option>
+                    <option value="3">交易成功</option>
+                    <option value="0">交易取消</option>
                 </select>
                 <select data-init="0" name="payStatus" style="height: 29px;">
                     <option value="0">请选择支付状态</option>
@@ -252,6 +251,7 @@
                     var carAttrId=$("#carAttrId").val();
                     var surplusNumber=$("#"+carAttrId+"").val();
                     var carNumber=$("#carNumber").val();
+                    var putTime=$("#putTime").val();
                     if(buyerId==0){
                         console.log("check form");
                         $("#buyerId").focus();
@@ -272,10 +272,14 @@
                         console.log("check form");
                         $("#carAttrId").focus();
                         return "该车源属性库存为0,请重新选择";
-                    }else if(carNumber>surplusNumber){
+                    }else if(parseInt(carNumber)>parseInt(surplusNumber)){
                         console.log("check form");
                         $("#carNumber").focus();
                         return "数量大于库存,请重新输入";
+                    }else if(!putTime){
+                        console.log("check form");
+                        $("#putTime").focus();
+                        return "请选择提车时间";
                     }else{
                         return true;
                     }
@@ -320,7 +324,7 @@
                 },
                 {
                     name: "actions",
-                    list:["edit", "delete", "view"]
+                    list:["delete"]
                 }
             ]
         });
