@@ -211,13 +211,13 @@
         inner join auto_car as ac on aoc.car_id=ac.car_id
         inner join auto_car_attr as aca on ac.car_id=aca.car_id and aoc.car_attr_id=aca.car_attr_id
         <where>
-            <if test="orderStatus != null and orderStatus != ''">
-                and ao.order_status in (${orderStatus})
+            <if test="orderStatus != null and orderStatus >-1">
+                and ao.order_status = ${orderStatus}
             </if>
-            <if test="payStatus != null and payStatus != ''">
-                and ao.pay_status in (${payStatus})
+            <if test="payStatus != null and payStatus >0">
+                and ao.pay_status = ${payStatus}
             </if>
-            <if test="shipStatus != null and shipStatus >-1 ">
+            <if test="shipStatus != null and shipStatus >0 ">
                 and ao.ship_status = ${shipStatus}
             </if>
             <if test="beginTime != null">

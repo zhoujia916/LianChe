@@ -13,14 +13,14 @@
         <div id="order-gridview" class="gridview">
 
             <div class="grid-filter">
-                <select data-init="0" name="orderStatus" style="height: 29px;">
-                    <option value="0">请选择订单状态</option>
+                <select data-init="-1" name="orderStatus" style="height: 29px;width: 160px;">
+                    <option value="-1">请选择订单状态</option>
                     <option value="1">买家已提交</option>
                     <option value="2">交易中</option>
                     <option value="3">交易成功</option>
                     <option value="0">交易取消</option>
                 </select>
-                <select data-init="0" name="payStatus" style="height: 29px;">
+                <select data-init="0" name="payStatus" style="height: 29px;width: 160px;">
                     <option value="0">请选择支付状态</option>
                     <option value="1">等待买家支付订金</option>
                     <option value="2">买家已支付订金</option>
@@ -29,7 +29,7 @@
                     <option value="5">等待系统退还订金</option>
                     <option value="6">系统已退还订金</option>
                 </select>
-                <select data-init="0" name="shipStatus" style="height: 29px;">
+                <select data-init="0" name="shipStatus" style="height: 29px;width: 160px;">
                     <option value="0">请选择物流状态</option>
                     <option value="1">未提车</option>
                     <option value="2">已提车</option>
@@ -143,7 +143,7 @@
                                     </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="txt input-sm col-sm-2input-mini" id="carNumber" name="car.carNumber" />
+                                        <input type="text" data-init="1" class="txt input-sm col-sm-2input-mini" id="carNumber" name="car.carNumber" />
                                     </div>
                                 </div>
                                 <div class="form-group" id="rowHasParts">
@@ -156,9 +156,17 @@
                                         <span class="lbl" style="top:6px;"></span>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        提车时间
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="txt input-sm col-sm-2input-mini" placeholder="提车时间" id="putTime" name="putTimeString" />
+                                    </div>
+                                </div>
                                 <div class="clearfix">
                                     <input type="hidden" name="orderId" value="" />
-
                                 </div>
                             </form>
                         </div>
@@ -187,6 +195,15 @@
 </div><!-- /.row -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $(".btn-action[data-action='select']").click(function(){
+            var key = $("#order-gridview").gridview("getKey");
+            if(!key){
+                showAlert("请选择记录！");
+                return;
+            }
+            changeHash("admin/autoorderdetails/index/"+ key);
+        });
+
         $('#carNumber').ace_spinner({value:1,min:0,max:10,step:1, btn_up_class:'btn-info' , btn_down_class:'btn-info'});
 
         var attr = [];
@@ -201,7 +218,7 @@
                 $.post("autoorder/queryCarAttr.do", { carId: carId }, function (result) {
                     if (result.code == 0) {
                         var html = "<option value='0'>请选择属性</option>";
-                        attr = result.data.attr;
+                        attr = result.data;
                         $.each(attr, function () {
                             html += "<option data-surplus='" + this["surplusNumber"] + "' value='" + this["carAttrId"] + "'>外观:" + this["outsideColor"] + "---内饰:" + this["insideColor"] + "(库存:" + this["surplusNumber"] + ")" + "</option>";
                         });
@@ -237,6 +254,11 @@
         });
 
         $( "#datepicker2" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $( "#putTime" ).datepicker({
             showOtherMonths: true,
             selectOtherMonths: false
         });

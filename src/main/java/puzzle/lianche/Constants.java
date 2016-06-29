@@ -352,13 +352,13 @@ public class Constants {
     /**
      * 物流状态(未提车,已提车)
      */
-    public static final Integer SS_UNSHIP = 0;
-    public static final Integer SS_SHIPED = 1;
+    public static final Integer SS_UNSHIP = 1;
+    public static final Integer SS_SHIPED = 2;
 
     public static final Map<Integer, String> SHIP_STATUS=new HashMap<Integer, String>(){
         {
-            put(0,"未提车");
-            put(1,"已提车");
+            put(1,"未提车");
+            put(2,"已提车");
         }
     };
 

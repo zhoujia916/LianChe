@@ -48,6 +48,8 @@ public class AutoUserController extends ModuleController {
         Result result = new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
+<<<<<<< HEAD
+=======
             map.put("userName",autoUser.getUserName());
             map.put("shopName",autoUser.getShopName());
             if(StringUtil.isNotNullOrEmpty(autoUser.getStatusString())){
@@ -56,6 +58,7 @@ public class AutoUserController extends ModuleController {
             if(StringUtil.isNotNullOrEmpty(autoUser.getShopTypeString())) {
                 map.put("shopType", autoUser.getShopTypeString());
             }
+>>>>>>> c1f548d92afb0e3bd0669132ace26d009448e162
             if(autoUser != null) {
                 if(StringUtil.isNotNullOrEmpty(autoUser.getUserName())) {
                     map.put("userName", autoUser.getUserName());
@@ -63,14 +66,13 @@ public class AutoUserController extends ModuleController {
                 if(StringUtil.isNotNullOrEmpty(autoUser.getShopName())) {
                     map.put("shopName", autoUser.getShopName());
                 }
-                if(autoUser.getStatus() != null && autoUser.getStatus() > 0){
+                if(autoUser.getStatus() != null && autoUser.getStatus() > -1){
                     map.put("status", autoUser.getStatus());
                 }
                 if(autoUser.getShopType() != null && autoUser.getShopType() > 0){
                     map.put("shopType", autoUser.getShopType());
                 }
             }
-
             List<AutoUser> list = autoUserService.queryList(map,page);
             if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
