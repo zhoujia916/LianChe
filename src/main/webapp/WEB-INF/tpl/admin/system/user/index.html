@@ -13,19 +13,19 @@
         <div id="user-gridview" class="gridview">
             <div class="grid-filter">
                 <input type="text input-sm" style="height: 29px" class="txt" name="userName" placeholder="用户名" />
-                <select data-init="0" name="roleId" class="select2" data-placeholder="请选择角色">
+                <select name="roleId" style="height: 29px;width: 160px;">
                     <option value="0">请选择角色</option>
                     {{foreach from=$roleList item=roleItem}}
                         <option value="{{$roleItem.roleId}}">{{$roleItem.roleName}}</option>
                     {{/foreach}}
                 </select>
-                <select name="groupId" data-placeholder="请选择用户组">
+                <select name="groupId" style="height: 29px;width: 160px;">
                     <option value="0">请选择用户组</option>
                     {{foreach from=$userGroupList item=userGroupItem}}
                         <option value="{{$userGroupItem.groupId}}">{{$userGroupItem.groupName}}</option>
                     {{/foreach}}
                 </select>
-                <select data-init="0" name="deptId" class="select2" data-placeholder=" 请选择部门">
+                <select name="deptId" style="height: 29px;width: 160px;">
                     <option value="0">请选择部门</option>
                     {{foreach from=$deptList item=deptItem}}
                         <option value="{{$deptItem.deptId}}">{{$deptItem.deptName}}</option>
@@ -143,7 +143,8 @@
                                         角色
                                     </label>
                                     <div class="col-sm-9">
-                                        <select multiple="" data-init="0" id="roleId" name="roleId" class="select2" data-placeholder="请选择角色">
+                                        <select data-init="0" id="roleId" name="roleId">
+                                            <option value="0">请选择角色</option>
                                             {{foreach from=$roleList item=roleItem}}
                                                 <option value="{{$roleItem.roleId}}">{{$roleItem.roleName}}</option>
                                             {{/foreach}}
@@ -155,7 +156,8 @@
                                         用户组
                                     </label>
                                     <div class="col-sm-9">
-                                        <select multiple="" data-init="0" name="groupId" id="groupId" class="select2" placeholder="请选择用户组">
+                                        <select data-init="0" name="groupId" id="groupId">
+                                            <option value="0">请选择用户组</option>
                                             {{foreach from=$userGroupList item=userGroupItem}}
                                                 <option value="{{$userGroupItem.groupId}}">{{$userGroupItem.groupName}}</option>
                                             {{/foreach}}
@@ -167,7 +169,8 @@
                                         部门
                                     </label>
                                     <div class="col-sm-9">
-                                        <select multiple="" data-init="0" name="deptId" id="deptId" class="select2" placeholder="请选择部门">
+                                        <select data-init="0" name="deptId" id="deptId">
+                                            <option value="0">请选择部门</option>
                                             {{foreach from=$deptList item=deptItem}}
                                                 <option value="{{$deptItem.deptId}}">{{$deptItem.deptName}}</option>
                                             {{/foreach}}
