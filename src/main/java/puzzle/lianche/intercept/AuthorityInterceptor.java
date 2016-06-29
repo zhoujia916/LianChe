@@ -21,10 +21,6 @@ import java.util.Map;
 
 
 public class AuthorityInterceptor extends HandlerInterceptor {
-    @Autowired
-    private ISystemMenuService systemMenuService;
-
-    private Logger logger = LoggerFactory.getLogger(AuthorityInterceptor.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

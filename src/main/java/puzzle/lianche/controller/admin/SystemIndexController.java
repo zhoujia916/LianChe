@@ -34,7 +34,7 @@ public class SystemIndexController extends ModuleController {
     private IAutoOrderService autoOrderService;
 
     //region request page
-    @RequestMapping(value = {"", "/", "/admin/", "/admin/login"})
+    @RequestMapping(value = {"/admin", "/admin/", "/admin/login"})
     public String login(){
         String returnUrl = this.getParameter(Constants.UrlHelper.PARAM_RETURN_URL);
         if(this.getCurrentUser() != null){
@@ -175,19 +175,19 @@ public class SystemIndexController extends ModuleController {
                     List<Integer> menuIds = new ArrayList<Integer>();
                     List<Integer> actionIds = new ArrayList<Integer>();
                     for (SystemAuthority item : authorities) {
-                        if (item.getTargetType() == 1) {
-                            menuIds.add(item.getAuthorityId());
-                        } else if (item.getTargetType() == 2) {
-                            actionIds.add(item.getAuthorityId());
+                        if (item.getTargetType() == Constants.AUTO_AUTHORITY_TARGET_TYPE_MENU) {
+                            menuIds.add(item.getTargetId());
+                        } else if (item.getTargetType() == Constants.AUTO_AUTHORITY_TARGET_TYPE_ACTION) {
+                            actionIds.add(item.getTargetId());
                         }
                     }
 
                     map.clear();
-                    map.put("menuIds", menuIds);
+                    map.put("menuIds", StringUtil.concat(menuIds, ","));
                     List<SystemMenu> menus = systemMenuService.queryList(map);
 
                     map.clear();
-                    map.put("actionIds", actionIds);
+                    map.put("actionIds", StringUtil.concat(actionIds, ","));
                     List<SystemMenuAction> actions = systemMenuActionService.queryList(map);
                     if (menus != null && menus.size() > 0 && actions != null && actions.size() > 0) {
                         for (SystemMenu menu : menus) {
@@ -203,11 +203,26 @@ public class SystemIndexController extends ModuleController {
                     }
                     user.setMenus(CommonUtil.showMenuTree(menus, 0));
                     //endregion
+
+                    //region Debug Authory
+                    StringBuffer authory = new StringBuffer();
+                    authory.append("-------------------------------------------------------------------------------");
+                    authory.append(System.getProperty(System.getProperty("line.separator")));
+                    authory.append("AUTHORY MENU:").append(System.getProperty(System.getProperty("line.separator")));
+                    for(SystemMenu menu : menus){
+                        authory.append(menu.toString()).append(System.getProperty(System.getProperty("line.separator")));
+                    }
+                    authory.append("AUTHORY ACTION:").append(System.getProperty(System.getProperty("line.separator")));
+                    for(SystemMenuAction action : actions){
+                        authory.append(action.toString()).append(System.getProperty(System.getProperty("line.separator")));
+                    }
+                    authory.append("-------------------------------------------------------------------------------");
+                    logger.debug(authory.toString());
+                    //endregion
                 }
                 //endregion
 
                 this.setCurrentUser(user);
-
                 //
                 if(remember == 1) {
                     JSONObject info = new JSONObject();

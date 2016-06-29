@@ -155,23 +155,23 @@ public class Constants {
     //endregion
 
     //region AUTO_CAR_STATUS
-    public static final Integer AUTO_CAR_STATUS_OFF = 0;
-    public static final Integer AUTO_CAR_STATUS_ON = 1;
+    public static final Integer AUTO_CAR_STATUS_OFF = 1;
+    public static final Integer AUTO_CAR_STATUS_ON = 2;
     public static final Map<Integer, String> MAP_AUTO_CAR_STATUS = new HashMap<Integer, String>(){
         {
-            put(0,"下架");
-            put(1,"正常");
+            put(1,"下架");
+            put(2,"正常");
         }
     };
     //endregion
 
     //region AUTO_CAR_TYPE
-    public static final Integer AUTO_CAR_HAS_PARTS_NO = 0;
-    public static final Integer AUTO_CAR_HAS_PARTS_YES = 1;
+    public static final Integer AUTO_CAR_HAS_PARTS_NO = 1;
+    public static final Integer AUTO_CAR_HAS_PARTS_YES = 2;
     public static final Map<Integer, String> MAP_AUTO_CAR_HAS_PARTS = new HashMap<Integer, String>(){
         {
-            put(0,"没有配件");
-            put(1,"有配件");
+            put(1,"没有配件");
+            put(2,"有配件");
         }
     };
     //endregion

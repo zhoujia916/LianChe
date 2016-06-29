@@ -83,13 +83,13 @@
         inner join auto_brand as ab on ab.brand_id = abc.brand_id
         <where>
             <trim prefixOverrides="and | or">
-                <if test="modelId > 0">
+                <if test="modelId != null and modelId > 0">
                     and abm.model_id = #{modelId}
                 </if>
-                <if test="catId > 0">
+                <if test="catId != null and catId > 0">
                     and abc.cat_id = #{catId}
                 </if>
-                <if test="brandId > 0">
+                <if test="brandId != null and brandId > 0">
                     and ab.brand_id = #{brandId}
                 </if>
             </trim>

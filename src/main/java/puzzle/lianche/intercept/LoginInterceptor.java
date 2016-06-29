@@ -27,6 +27,8 @@ public class LoginInterceptor extends HandlerInterceptor {
 
             response.getWriter().write(script);
 
+            logger.error("you have not login");
+
             return false;
         }
 
