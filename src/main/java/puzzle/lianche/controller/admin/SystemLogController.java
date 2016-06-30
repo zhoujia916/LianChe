@@ -49,7 +49,7 @@ public class SystemLogController extends ModuleController{
             insertLog(Constants.PageHelper.PAGE_ACTION_SELECT,"查看日志信息");
             Map<String, Object> map=new HashMap<String, Object>();
             if(systemLog!=null) {
-                if(systemLog.getUserName()!=null && systemLog.getUserName()!=""){
+                if(StringUtil.isNotNullOrEmpty(systemLog.getUserName())){
                     map.put("userName",systemLog.getUserName());
                 }
                 if(systemLog.getLogIp()!=null && systemLog.getLogIp()!=""){
@@ -58,10 +58,10 @@ public class SystemLogController extends ModuleController{
                 if (systemLog.getLogType() != null && systemLog.getLogType()>0) {
                     map.put("logType", systemLog.getLogType());
                 }
-                if (systemLog.getBeginTimeString() != null && systemLog.getBeginTimeString() != "") {
+                if (StringUtil.isNotNullOrEmpty(systemLog.getBeginTimeString())) {
                     map.put("beginTime", ConvertUtil.toLong(ConvertUtil.toDateTime(systemLog.getBeginTimeString() + " 00:00:00")));
                 }
-                if (systemLog.getEndTimeString() != null && systemLog.getEndTimeString() != "") {
+                if (StringUtil.isNotNullOrEmpty(systemLog.getEndTimeString())) {
                     map.put("endTime", ConvertUtil.toLong(ConvertUtil.toDateTime(systemLog.getEndTimeString() + " 23:59:59")));
                 }
             }

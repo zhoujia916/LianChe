@@ -53,7 +53,7 @@ public class SystemRoleController extends ModuleController {
                 if(systemRole.getRoleType()!=null && systemRole.getRoleType()>0) {
                     map.put("roleType", systemRole.getRoleType());
                 }
-                if(systemRole.getRoleName()!=null && systemRole.getRoleName()!="") {
+                if(StringUtil.isNotNullOrEmpty(systemRole.getRoleName())) {
                     map.put("roleName", systemRole.getRoleName());
                 }
             }

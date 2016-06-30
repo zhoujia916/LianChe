@@ -119,16 +119,16 @@ public class AutoCarController extends ModuleController {
         try{
             Map<String, Object> map=new HashMap<String, Object>();
             if(autoCar!=null) {
-                if (autoCar.getCarName() != null && autoCar.getCarName() != "") {
+                if (StringUtil.isNotNullOrEmpty(autoCar.getCarName())) {
                     map.put("carName", autoCar.getCarName());
                 }
                 if (autoCar.getCarType() != null && autoCar.getCarType() > 0) {
                     map.put("carType", autoCar.getCarType());
                 }
-                if (autoCar.getBeginTimeString() != null && autoCar.getBeginTimeString() != "") {
+                if (StringUtil.isNotNullOrEmpty(autoCar.getBeginTimeString())) {
                     map.put("startDate", ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getBeginTimeString() + " 00:00:00")));
                 }
-                if (autoCar.getEndTimeString() != null && autoCar.getEndTimeString() != "") {
+                if (StringUtil.isNotNullOrEmpty(autoCar.getEndTimeString())) {
                     map.put("endDate", ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getEndTimeString() + " 23:59:59")));
                 }
             }

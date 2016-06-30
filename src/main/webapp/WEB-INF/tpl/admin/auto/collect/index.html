@@ -20,19 +20,15 @@
     <div class="col-xs-12">
         <div id="collect-gridview" class="gridview">
             <div class="grid-filter">
-                <input type="hidden" id="userString" name="userString" value="{{$userId}}">
+                <input type="hidden" id="userId" name="userId" value="{{$userId}}">
                 <input type="text input-sm" style="height: 29px" class="txt" name="carName" placeholder="商品名称" />
-                <input type="text input-sm" style="height: 29px" class="txt" name="userName" placeholder="用户名" />
+                <input type="text input-sm" style="height: 29px" class="txt" name="userName" {{if $userName!=null}}value={{$userName}}{{/if}} placeholder="用户名" />
                 <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>
             </div>
 
             <div class="hr hr-18 dotted"></div>
 
-            <div class="grid-action" style="margin:10px 0;">
-                <a data-action="delete" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-trash-o"></i>删除</a>
-
-                <a data-action="refresh" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-refresh"></i>刷新</a>
-            </div>
+            {{include file="/inc/module_action.html"}}
 
             <div class="grid-table">
                 <table class="table table-striped table-bordered table-hover table-list table-tree">
@@ -79,7 +75,7 @@
         $("#collect-gridview").gridview({
             url: "autocollect/list.do",
             filter:{
-                userString: $("#userString").val()
+                userIdString: $("#userId").val()
             },
             form: {
                 url: "autocollect/action.do"

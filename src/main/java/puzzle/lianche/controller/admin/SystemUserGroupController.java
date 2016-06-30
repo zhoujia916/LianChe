@@ -40,17 +40,16 @@ public class SystemUserGroupController extends ModuleController {
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Result list(){
+    public Result list(SystemUserGroup systemUserGroup,Page page){
         Result result=new Result();
         try{
             insertLog(Constants.PageHelper.PAGE_ACTION_SELECT, "查看用户组信息");
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("groupName",request.getParameter("groupName"));
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
+            if(systemUserGroup!=null) {
+                if(StringUtil.isNotNullOrEmpty(systemUserGroup.getGroupName())) {
+                    map.put("groupName", systemUserGroup.getGroupName());
+                }
+            }
             List<SystemUserGroup> userGroupList=userGroupService.queryList(map,page);
             if(userGroupList!=null && userGroupList.size()>0){
                 JSONArray array=new JSONArray();

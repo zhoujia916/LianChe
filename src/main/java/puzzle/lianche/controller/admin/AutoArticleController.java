@@ -64,16 +64,16 @@ public class AutoArticleController extends ModuleController {
         try{
             Map<String, Object> map=new HashMap<String, Object>();
             if(autoArticle!=null) {
-                if(autoArticle.getTitle()!=null && autoArticle.getTitle()!="") {
+                if(StringUtil.isNotNullOrEmpty(autoArticle.getTitle())){
                     map.put("title", autoArticle.getTitle());
                 }
-                if(autoArticle.getName()!=null && autoArticle.getName()!=""){
+                if(StringUtil.isNotNullOrEmpty(autoArticle.getName())){
                     map.put("name", autoArticle.getName());
                 }
-                if (autoArticle.getBeginTimeString() != null && autoArticle.getBeginTimeString() != "") {
+                if (StringUtil.isNotNullOrEmpty(autoArticle.getBeginTimeString())) {
                     map.put("beginTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoArticle.getBeginTimeString() + " 00:00:00")));
                 }
-                if (autoArticle.getEndTimeString() != null && autoArticle.getEndTimeString() != "") {
+                if (StringUtil.isNotNullOrEmpty(autoArticle.getEndTimeString())) {
                     map.put("endTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoArticle.getEndTimeString() + " 23:59:59")));
                 }
                 if (autoArticle.getStatus() != null && autoArticle.getStatus() >0) {

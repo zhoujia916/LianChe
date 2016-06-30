@@ -68,7 +68,7 @@ public class SystemUserController extends ModuleController {
                 if(systemUser.getDeptId()!=null && ConvertUtil.toInt(systemUser.getDeptId())>0){
                     map.put("deptId",ConvertUtil.toInt(systemUser.getDeptId()));
                 }
-                if(systemUser.getUserName()!=null && systemUser.getUserName()!=""){
+                if(StringUtil.isNotNullOrEmpty(systemUser.getUserName())){
                     map.put("userName",systemUser.getUserName());
                 }
             }

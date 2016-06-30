@@ -211,7 +211,7 @@
         inner join auto_car as ac on aoc.car_id=ac.car_id
         inner join auto_car_attr as aca on ac.car_id=aca.car_id and aoc.car_attr_id=aca.car_attr_id
         <where>
-            <if test="orderStatus != null and orderStatus >-1">
+            <if test="orderStatus != null and orderStatus >0">
                 and ao.order_status = ${orderStatus}
             </if>
             <if test="payStatus != null and payStatus >0">

@@ -46,7 +46,7 @@ public class AutoArticleTemplateController extends ModuleController {
             }
             Map<String,Object> map = new HashMap<String, Object>();
             if(autoArticleTemplate!=null){
-                if(autoArticleTemplate.getName()!=null && autoArticleTemplate.getName()!=""){
+                if(StringUtil.isNotNullOrEmpty(autoArticleTemplate.getName())){
                     map.put("name",autoArticleTemplate.getName());
                 }
             }

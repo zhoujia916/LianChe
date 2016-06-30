@@ -11,6 +11,7 @@ import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.AutoBrand;
 import puzzle.lianche.entity.AutoBrandCat;
+import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.IAutoBrandCatService;
 import puzzle.lianche.service.IAutoBrandService;
 import puzzle.lianche.utils.ConvertUtil;
@@ -35,16 +36,20 @@ public class AutoBrandCatController extends ModuleController {
 
     @RequestMapping (value = {"/","/index"})
     public String index(){
+        List<SystemMenuAction> actions = getActions();
         List<AutoBrand> brandList=autoBrandService.queryList(null);
         this.setModelAttribute("brandList",brandList);
+        this.setModelAttribute("actions", actions);
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_CAT;
     }
 
     @RequestMapping (value = "/index/{brandId}")
     public String show(@PathVariable String brandId){
+        List<SystemMenuAction> actions = getActions();
         List<AutoBrand> list = autoBrandService.queryList(null);
         this.setModelAttribute("brandId", brandId);
         this.setModelAttribute("brandList",list);
+        this.setModelAttribute("actions", actions);
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_CAT;
     }
 
@@ -55,10 +60,10 @@ public class AutoBrandCatController extends ModuleController {
         try{
             Map<String, Object> map=new HashMap<String, Object>();
             if(autoBrandCat!=null) {
-                if(autoBrandCat.getCatName()!=null && autoBrandCat.getCatName()!="") {
+                if(StringUtil.isNotNullOrEmpty(autoBrandCat.getCatName())) {
                     map.put("catName", autoBrandCat.getCatName());
                 }
-                if(autoBrandCat.getBrandString()!=null && autoBrandCat.getBrandString()!=""){
+                if(StringUtil.isNotNullOrEmpty(autoBrandCat.getBrandString())){
                     if (!autoBrandCat.getBrandString().equalsIgnoreCase("null")) {
                         map.put("brandId", autoBrandCat.getBrandString());
                     }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
+import puzzle.lianche.controller.plugin.ueditor.UEditorController;
 import puzzle.lianche.entity.AutoAdPosition;
 import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.IAutoAdPositionService;
@@ -33,16 +34,14 @@ public class AutoAdPositionController extends ModuleController{
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Result list(AutoAdPosition autoAdPosition){
+    public Result list(AutoAdPosition autoAdPosition,Page page){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("positionName",autoAdPosition.getPositionName());
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
+            if(autoAdPosition!=null) {
+                if(StringUtil.isNotNullOrEmpty(autoAdPosition.getPositionName()))
+                map.put("positionName", autoAdPosition.getPositionName());
+            }
             List<AutoAdPosition> list=autoAdPositionService.queryList(map,page);
             if(list!=null && list.size()>0){
                 result.setData(list);

@@ -49,14 +49,14 @@ public class SystemDeptController extends ModuleController {
 
     @RequestMapping(value = { "/list.do" })
     @ResponseBody
-    public Result list(){
+    public Result list(SystemDept systemDept){
         Result result = new Result();
         Map<String,Object> map = new HashMap<String, Object>();
-        if(StringUtil.isNotNullOrEmpty(request.getParameter("parentId"))){
-            map.put("parentId", ConvertUtil.toInt(request.getParameter("parentId")));
+        if(StringUtil.isNotNullOrEmpty(ConvertUtil.toString(systemDept.getParentId()))){
+            map.put("parentId", systemDept.getParentId());
         }
-        if(StringUtil.isNotNullOrEmpty(request.getParameter("deptName"))){
-            map.put("deptName", request.getParameter("deptName"));
+        if(StringUtil.isNotNullOrEmpty(systemDept.getDeptName())){
+            map.put("deptName", systemDept.getDeptName());
         }
         try {
             List<SystemDept> list = systemDeptService.queryList(map);
