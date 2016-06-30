@@ -21,16 +21,21 @@
         <div id="brandmodel-gridview" class="gridview">
             <div class="grid-filter">
                 <input type="hidden" id="catString" name="catString" value="{{$catId}}">
-                <select name="brandId" style="height: 29px;width: 160px;">
+                <select id="brandId" name="brandId" style="height: 29px;width: 160px;">
                     <option value="0">请选择品牌</option>
-                    {{foreach from=$brandList item=brand}}
-                    <option value="{{$brand.brandId}}">{{$brand.brandName}}</option>
+                    {{foreach from=$brandList item=brandItem}}
+                    <option value="{{$brandItem.brandId}}" {{if $brandId eq $brandItem.brandId }} selected="selected"{{/if}}>{{$brandItem.brandName}}</option>
                     {{/foreach}}
                 </select>
-                <select name="brandCatId" style="height: 29px;width: 160px;">
+                <select id="catId" name="brandCatId" style="height: 29px;width: 160px;">
                     <option value="0">请选择车系</option>
                     {{foreach from=$catList item=cat}}
+                    {{if $brandId == null}}
                     <option value="{{$cat.catId}}">{{$cat.catName}}</option>
+                    {{/if}}
+                    {{if $cat.brandId eq $brandId}}
+                    <option value="{{$cat.catId}}" {{if $catId eq $cat.catId }} selected="selected"{{/if}}>{{$cat.catName}}</option>
+                    {{/if}}
                     {{/foreach}}
                 </select>
                 <input type="text input-sm" style="height: 29px" class="txt" name="modelName" placeholder="车型名称" />
@@ -112,7 +117,7 @@
                                     <div class="col-sm-9">
                                         <select id="brandCatId" name="brandCatId" data-init="0">
                                             <option value="0">请选择车系</option>
-                                            {{foreach from=$list item=cat}}
+                                            {{foreach from=$catList item=cat}}
                                             <option value="{{$cat.catId}}">{{$cat.catName}}</option>
                                             {{/foreach}}
                                         </select>
@@ -156,16 +161,24 @@
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $('.select2').css('width','160px').select2({allowClear:true})
-        $('#select2-multiple-style .btn').on('click', function(e){
-            var target = $(this).find('input[type=radio]');
-            var which = parseInt(target.val());
-            if(which == 2) $('.select2').addClass('tag-input-style');
-            else $('.select2').removeClass('tag-input-style');
-        });
+        $("#brandId").on("change",function(){
+            var brandId=$(this).val();
+            var html="<option value='0'>请选择车系</option>";
+            if(brandId != "0"){
+                $.post("autobrandcat/list.do",{brandId:brandId,catId:0},function(result){
+                    var item=result.data;
+                    $.each(item, function () {
+                        html+="<option value='"+this["catId"]+"'>"+this["catName"]+"</option>";
+                    });
+                    $("#catId").html(html);
+                });
+            }else{
+                html+="{{foreach from=$catList item=cat}}" +
+                        "<option value='{{$cat.catId}}'>{{$cat.catName}}</option>" +
+                        "{{/foreach}}";
 
-        $(document).one('ajaxloadstart.page', function(e) {
-            $('[class*=select2]').remove();
+                $("#catId").html(html);
+            }
         });
 
         $("#brandmodel-gridview").gridview({

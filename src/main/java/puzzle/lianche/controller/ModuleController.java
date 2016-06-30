@@ -34,7 +34,6 @@ public class ModuleController extends BaseController {
             log.setUserId(userId);
             log.setLogTime(ConvertUtil.toLong(new Date()));
             log.setLogType(Constants.MAP_ACTION_LOG_MAPPING.get(action));
-            log.setLogTypeId(action);
             log.setLogIp(CommonUtil.getClientIp(request));
             systemLogService.insert(log);
         }

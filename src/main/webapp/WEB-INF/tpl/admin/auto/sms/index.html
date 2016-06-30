@@ -12,8 +12,8 @@
     <div class="col-xs-12">
         <div id="sms-gridview" class="gridview">
             <div class="grid-filter">
-                <select multiple="" data-init="0" name="smsType" class="select2" data-placeholder=" 请选择短信类型">
-                    <option value="">&nbsp;</option>
+                <select name="smsType" style="height: 29px;width: 160px;">
+                    <option value="0">请选择短信类型</option>
                     <option value="1">注册验证码</option>
                     <option value="2">找回密码</option>
                     <option value="3">修改密码</option>
@@ -62,9 +62,9 @@
                 </div>
             </div>
 
-            <div class="grid-form save-form">
+            <div class="grid-form save-form" style="">
                 <div class="overlay"></div>
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">
                     <div class="widget-header">
                         <h5 class="widget-title smaller"></h5>
 
@@ -131,18 +131,6 @@
 </div><!-- /.row -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $('.select2').css('width','160px').select2({allowClear:true})
-        $('#select2-multiple-style .btn').on('click', function(e){
-            var target = $(this).find('input[type=radio]');
-            var which = parseInt(target.val());
-            if(which == 2) $('.select2').addClass('tag-input-style');
-            else $('.select2').removeClass('tag-input-style');
-        });
-
-        $(document).one('ajaxloadstart.page', function(e) {
-            $('[class*=select2]').remove();
-        });
-
         $('.multiselect').multiselect({
             enableFiltering: true,
             buttonClass: 'btn btn-white btn-primary',
@@ -208,7 +196,10 @@
                     name : "phone"
                 },
                 {
-                    name : "status"
+                    name : "status",
+                    format: function(opts, column, row){
+                        return row["status"]==2 ? "<td><span class='label label-sm label-warning'>发送失败</span></td>" : "<td><span class='label label-sm label-success'>发送成功</span></td>";
+                    }
                 },
                 {
                     name: "actions",

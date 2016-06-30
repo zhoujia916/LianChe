@@ -46,26 +46,24 @@ public class AutoSmsController extends ModuleController{
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result list(){
+    public Result list(AutoSms autoSms,Page page){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("smsType",request.getParameter("smsType"));
-            if(request.getParameter("status")!=null && request.getParameter("status")!=""){
-                map.put("status", ConvertUtil.toInt(request.getParameter("status")));
+            if(autoSms!=null) {
+                if(autoSms.getSmsType()!=null && autoSms.getSmsType()>0) {
+                    map.put("smsType", autoSms.getSmsType());
+                }
+                if(autoSms.getStatus()!=null && autoSms.getStatus()>0){
+                    map.put("status", autoSms.getStatus());
+                }
             }
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page=new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
             List<AutoSms> list=autoSmsService.queryList(map,page);
             if(list!=null && list.size()>0){
                 JSONArray array=new JSONArray();
                 for(AutoSms sms:list){
                     JSONObject jsonObject=JSONObject.fromObject(sms);
                     jsonObject.put("smsType",Constants.MAP_AUTO_SMS_TYPE.get(sms.getSmsType()));
-                    jsonObject.put("status",Constants.MAP_AUTO_SMS_STATUS.get(sms.getStatus()));
                     array.add(jsonObject);
                 }
                 result.setData(array);

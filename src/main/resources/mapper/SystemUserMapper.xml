@@ -190,24 +190,24 @@
             <if test="userName != null and userName!=''">
                 and user_name like CONCAT('%',#{userName},'%')
             </if>
-            <if test="roleId!=null and roleId!=''">
+            <if test="roleId!=null and roleId>0">
                 and exists(
                 select map_id from system_user_map as sum
-                where sum.target_type = 1 and sum.target_id in (${roleId})
+                where sum.target_type = 1 and sum.target_id = ${roleId}
                 and sum.user_id = su.user_id)
             </if>
-            <if test="groupId!=null and groupId!=''">
+            <if test="groupId!=null and groupId>0">
                 and exists(
                 select map_id from system_user_map as sum
-                where sum.target_type = 2 and sum.target_id in (${groupId})
+                where sum.target_type = 2 and sum.target_id = ${groupId}
                 and su.user_id=sum.user_id)
             </if>
-            <if test="deptId!=null and deptId!=''">
+            <if test="deptId!=null and deptId>0">
                 and exists(
                 select map_id from system_user_map as sum
                 where sum.target_type = 3 and sum.target_id in
-                (select sd.dept_id from system_dept as sd where sd.dept_id in (${deptId})
-                or sd.parent_id in (${deptId})) and su.user_id=sum.user_id)
+                (select sd.dept_id from system_dept as sd where sd.dept_id = ${deptId}
+                or sd.parent_id = ${deptId}) and su.user_id=sum.user_id)
             </if>
         </where>
         order by sort_order desc,su.user_id desc

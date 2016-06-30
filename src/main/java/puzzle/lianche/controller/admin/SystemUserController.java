@@ -53,27 +53,25 @@ public class SystemUserController extends ModuleController {
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Result list(SystemUser systemUser){
+    public Result list(SystemUser systemUser,Page page){
         Result result=new Result();
         StringBuffer str=new StringBuffer();
         try{
-            insertLog(Constants.PageHelper.PAGE_ACTION_SELECT, "查看用户信息");
             Map<String, Object> map=new HashMap<String, Object>();
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
-            if(systemUser.getRoleId()!=null && systemUser.getRoleId()!=""){
-                map.put("roleId",systemUser.getRoleId());
+            if(systemUser!=null){
+                if(systemUser.getRoleId()!=null && ConvertUtil.toInt(systemUser.getRoleId())>0){
+                    map.put("roleId",ConvertUtil.toInt(systemUser.getRoleId()));
+                }
+                if(systemUser.getGroupId()!=null && ConvertUtil.toInt(systemUser.getGroupId())>0){
+                    map.put("groupId",ConvertUtil.toInt(systemUser.getGroupId()));
+                }
+                if(systemUser.getDeptId()!=null && ConvertUtil.toInt(systemUser.getDeptId())>0){
+                    map.put("deptId",ConvertUtil.toInt(systemUser.getDeptId()));
+                }
+                if(systemUser.getUserName()!=null && systemUser.getUserName()!=""){
+                    map.put("userName",systemUser.getUserName());
+                }
             }
-            if(systemUser.getGroupId()!=null && systemUser.getGroupId()!=""){
-                map.put("groupId",systemUser.getGroupId());
-            }
-            if(systemUser.getDeptId()!=null && systemUser.getDeptId()!=""){
-                map.put("deptId",systemUser.getDeptId());
-            }
-            map.put("userName",systemUser.getUserName());
             List<SystemUser> list=systemUserService.queryList(map,page);
             if(list!=null && list.size()>0){
                 JSONArray array=new JSONArray();

@@ -12,14 +12,14 @@
         <div id="log-gridview" class="gridview">
             <div class="grid-filter">
                 <input type="text input-sm" style="height: 29px" class="txt" name="userName" placeholder="用户" />
-                <select multiple="" data-init="0" name="logTypeId" class="select2" data-placeholder=" 请选择日志类型">
-                    <option value="">&nbsp;</option>
-                    <option value="1" class="tag-input-style">查看</option>
-                    <option value="2" class="tag-input-style">增加</option>
-                    <option value="3" class="tag-input-style">删除</option>
-                    <option value="4" class="tag-input-style">修改</option>
-                    <option value="5" class="tag-input-style">导入</option>
-                    <option value="6" class="tag-input-style">导出</option>
+                <select name="logType" style="height: 29px;width: 160px;">
+                    <option value="0">请选择日志类型</option>
+                    <option value="1">查看</option>
+                    <option value="2">增加</option>
+                    <option value="3">删除</option>
+                    <option value="4">修改</option>
+                    <option value="5">导入</option>
+                    <option value="6">导出</option>
                 </select>
                 <input type="text input-sm" style="height: 29px" class="txt" name="logIp" placeholder="访问地址" />
                 <input type="text input-sm" style="height: 29px" id="datepicker1" name="beginTimeString" placeholder="开始时间"/>
@@ -71,17 +71,6 @@
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $('.select2').css('width','160px').select2({allowClear:true})
-        $('#select2-multiple-style .btn').on('click', function(e){
-            var target = $(this).find('input[type=radio]');
-            var which = parseInt(target.val());
-            if(which == 2) $('.select2').addClass('tag-input-style');
-            else $('.select2').removeClass('tag-input-style');
-        });
-
-        $(document).one('ajaxloadstart.page', function(e) {
-            $('[class*=select2]').remove();
-        });
 
         $( "#datepicker1" ).datepicker({
             showOtherMonths: true,

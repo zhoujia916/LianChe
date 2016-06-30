@@ -44,18 +44,19 @@ public class SystemRoleController extends ModuleController {
 
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Result list(SystemRole systemRole){
+    public Result list(SystemRole systemRole,Page page){
         Result result=new Result();
         try{
             insertLog(Constants.PageHelper.PAGE_ACTION_SELECT,"查看角色信息");
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("roleType",systemRole.getRoleType());
-            map.put("roleName",systemRole.getRoleName());
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
+            if(systemRole!=null){
+                if(systemRole.getRoleType()!=null && systemRole.getRoleType()>0) {
+                    map.put("roleType", systemRole.getRoleType());
+                }
+                if(systemRole.getRoleName()!=null && systemRole.getRoleName()!="") {
+                    map.put("roleName", systemRole.getRoleName());
+                }
+            }
             List<SystemRole> list=systemRoleService.queryList(map,page);
             if(list!=null && list.size()>0){
                 JSONArray array=new JSONArray();

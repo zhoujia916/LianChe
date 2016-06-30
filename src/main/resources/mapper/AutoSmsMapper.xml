@@ -128,8 +128,8 @@
     <select id="queryList" parameterType="Map" resultMap="AutoSms">
         select * from auto_sms
         <where>
-            <if test="smsType!=null and smsType!=''">
-                and sms_type in (${smsType})
+            <if test="smsType!=null and smsType>0">
+                and sms_type = ${smsType}
             </if>
             <if test="status!=null and status>0">
                 and status = ${status}

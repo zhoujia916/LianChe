@@ -39,9 +39,9 @@ public class AutoBrandModelController extends ModuleController {
 
     @RequestMapping (value = {"/","/index"})
     public String modelIndex(){
-        Map<String, Object> map=new HashMap<String, Object>();
         List<AutoBrandCat> catList=autoBrandCatService.queryList(null);
-        if(catList.size()>0){
+        if(catList.size()>0 && catList!=null){
+            Map map=new HashMap();
             StringBuffer str=new StringBuffer();
             for(int i=0;i<catList.size();i++){
                 str.append(catList.get(i).getBrandId());
@@ -50,36 +50,40 @@ public class AutoBrandModelController extends ModuleController {
                 }
             }
             map.put("brandId",str.toString());
+            List<AutoBrand> brandList=autoBrandService.queryList(map);
+            if(brandList!=null && brandList.size()>0){
+                this.setModelAttribute("brandList",brandList);
+            }
         }
-        List<AutoBrand> brandList=autoBrandService.queryList(map);
-        List<AutoBrandCat> list=autoBrandCatService.queryList(null);
         this.setModelAttribute("catList",catList);
-        this.setModelAttribute("brandList",brandList);
-        this.setModelAttribute("list",list);
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_MODEL;
     }
 
     @RequestMapping (value = "/index/{catId}")
     public String show(@PathVariable String catId){
-        Map<String, Object> map=new HashMap<String, Object>();
-        map.put("catIds",catId);
-        List<AutoBrandCat> catList=autoBrandCatService.queryList(map);
-        if(catList.size()>0){
-            map.clear();
+        List<AutoBrandCat> list=autoBrandCatService.queryList(null);
+        if(list.size()>0 && list!=null){
+            Map map=new HashMap();
             StringBuffer str=new StringBuffer();
-            for(int i=0;i<catList.size();i++){
-                str.append(catList.get(i).getBrandId());
-                if(catList.size()-i>1){
+            for(int i=0;i<list.size();i++){
+                str.append(list.get(i).getBrandId());
+                if(list.size()-i>1){
                     str.append(",");
                 }
             }
             map.put("brandId",str.toString());
+            List<AutoBrand> brandList=autoBrandService.queryList(map);
+            if(brandList.size()>0 && brandList!=null){
+                this.setModelAttribute("brandList",brandList);
+            }
         }
-        List<AutoBrand> brandList=autoBrandService.queryList(map);
-        List<AutoBrandCat> list=autoBrandCatService.queryList(null);
-        this.setModelAttribute("catList",catList);
-        this.setModelAttribute("brandList",brandList);
-        this.setModelAttribute("list",list);
+        for(AutoBrandCat brandCat:list){
+            if(catId.equalsIgnoreCase(ConvertUtil.toString(brandCat.getCatId()))){
+                this.setModelAttribute("brandId",brandCat.getBrandId());
+                break;
+            }
+        }
+        this.setModelAttribute("catList",list);
         this.setModelAttribute("catId",catId);
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_MODEL;
     }
@@ -95,7 +99,7 @@ public class AutoBrandModelController extends ModuleController {
                     map.put("modelName", autoBrandModel.getModelName());
                 }
                 if (!autoBrandModel.getCatString().equalsIgnoreCase("null")) {
-                    map.put("catIds", autoBrandModel.getCatString());
+                    map.put("catId", autoBrandModel.getCatString());
                 }
                 if (autoBrandModel.getBrandId() != null && autoBrandModel.getBrandId()>0 ) {
                     map.put("brandId", autoBrandModel.getBrandId());
