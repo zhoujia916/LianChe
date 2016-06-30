@@ -220,12 +220,21 @@ ul,li,ol{
 }
 
 .position-relative{
-    margin-top:8px;
+    margin-top: 8px;
     margin-right: 5px;
 }
 
 .gridview .pagination-box{
     text-align: right;
+}
+
+.ace-file-multiple .ace-file-container:before{
+    margin: 4px;
+}
+.ace-file-multiple .ace-file-container .ace-file-name .ace-icon{
+    font-size: 24px;
+    line-height: 24px;
+    margin: 0;
 }
 
 /* 分页样式 */

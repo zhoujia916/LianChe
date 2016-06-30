@@ -247,7 +247,7 @@ public class AutoUserController extends BaseController {
             map.clear();
             map.put("userId",user.getUserId());
 
-            AutoUserProfile profile=autoUserProfileService.query(map);
+            AutoUserProfile profile = autoUserProfileService.query(map);
             if(profile!=null){
                 jsonObject.put("profile",profile);
             }
@@ -646,14 +646,26 @@ public class AutoUserController extends BaseController {
                 result.setMsg("该账户被禁用！");
                 return result;
             }
+
             //加载个人资料
-            JSONArray array = new JSONArray();
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("point", find.getPoint());
+            jsonObject.put("userId",find.getUserId());
+            jsonObject.put("userName",find.getUserName());
+            jsonObject.put("userAvatar",find.getUserAvatar());
+            jsonObject.put("point",find.getPoint());
+            jsonObject.put("phone",find.getPhone());
             jsonObject.put("orderNumber", find.getOrderNumber());
             jsonObject.put("carNumber", find.getCarNumber());
-            array.add(jsonObject);
-            result.setData(array);
+            jsonObject.put("isAuth",find.getStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
+            map.clear();
+            map.put("userId", find.getUserId());
+
+            AutoUserProfile profile = autoUserProfileService.query(map);
+            if(profile!=null){
+                jsonObject.put("profile",profile);
+            }
+
+            result.setData(jsonObject);
 
         }catch (Exception e){
             result.setCode(1);

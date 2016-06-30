@@ -1,0 +1,321 @@
+
+<title>Puzzle Admin</title>
+<style type="text/css">
+
+</style>
+<div class="page-header">
+    <h4>
+        <i class="glyphicon glyphicon-signal"></i>
+        会员管理
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            新建会员
+        </small>
+
+        <a class="btn btn-xs orange pull-right btn-warning" href="#page/autouser/index">
+            <i class="glyphicon glyphicon-arrow-left"></i>返回会员管理</span></a>
+    </h4>
+</div>
+
+<div class="row" id="">
+    <div class="col-xs-12">
+        <form class="form-horizontal">
+            <div class="tabbable">
+                <ul class="nav nav-tabs padding-16">
+                    <li class="active">
+                        <a data-toggle="tab" href="#edit-basic">
+                            <i class="green ace-icon fa fa-pencil-square-o bigger-125"></i>
+                            基本信息
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="tab" href="#edit-profile">
+                            <i class="purple ace-icon ace-icon fa fa-globe bigger-125"></i>
+                            认证资料
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="tab" href="#edit-pics">
+                            <i class="orange ace-icon fa fa fa-picture-o bigger-125"></i>
+                            认证图片
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content profile-edit-tab-content">
+                    <div id="edit-basic" class="tab-pane in active">
+                        <div class="space-10"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                用户名
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="userName" name="userName" placeholder="用户名,请使用手机号码" class="txt input-sm col-sm-6">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                生日
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" data-init="0" id="birthday"  name="birthday" placeholder="生日" class="txt input-sm col-sm-2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                手机号码
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="phone" placeholder="手机号码" class="txt input-sm col-sm-6">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                邮箱地址
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="email" placeholder="邮箱地址" class="txt input-sm col-sm-6">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                用户图像
+                            </label>
+                            <div class="col-sm-3" style="height:62px;">
+                                <input type="file" id="userAvatar" name="userAvatar" placeholder="用户图像">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                状态
+                            </label>
+                            <div class="col-sm-9">
+                                <select name="status">
+                                    <option value="1">禁用</option>
+                                    <option value="2" selected="selected">新建或注册</option>
+                                    <option value="3">等待实名认证</option>
+                                    <option value="4">实名认证通过</option>
+                                    <option value="5">实名认证未通过</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                信誉积分
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="point" placeholder="信誉积分" value="100" class="txt input-sm col-sm-2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                生份证号码
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="idNumber" placeholder="生份证号码" class="txt input-sm col-sm-4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="edit-profile" class="tab-pane">
+                        <div class="space-10"></div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                真实姓名
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="profile.realName" placeholder="真实姓名" class="txt input-sm col-sm-6">
+                            </div>
+                        </div>
+                        <div class="form-group" id="rowParts">
+                            <label class="col-sm-3 control-label">
+                                店铺名称
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="profile.shopName" placeholder="店铺名称" class="txt input-sm col-sm-6">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                店铺类型
+                            </label>
+                            <div class="col-sm-9">
+                                <select name="profile.shopType">
+                                    <option value="1" selected="selected">请选择店铺类型</option>
+                                    <option value="1">4S 店</option>
+                                    <option value="2">有实体店二网</option>
+                                    <option value="3">无实体店二网</option>
+                                    <option value="4">个人</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                店铺描述
+                            </label>
+                            <div class="col-sm-6">
+                                <textarea id="profile.shopDesc" placeholder="店铺描述" name="profile.shopDesc" style="max-height:150px;min-height:150px;width:100%;"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                主营品牌
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="profile.shopBrands" placeholder="主营品牌" class="txt input-sm col-sm-4">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                店铺位置
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="profile.shopBase" placeholder="店铺位置" class="txt input-sm col-sm-4">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="edit-pics" class="tab-pane">
+                        <div class="space-10"></div>
+                        <input type="hidden" id="hidPic" name="pic" />
+                        <div class="dropzone" id="dropzone">
+                            <div class="fallback">
+                                <input type="file" multiple="" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix form-actions">
+                <button id="btnReset" class="btn" type="reset">
+                    <i class="ace-icon fa fa-undo bigger-110"></i>
+                    重置
+                </button>
+                &nbsp; &nbsp;
+                <button id="btnSubmit" class="btn btn-info" type="button">
+                    <i class="ace-icon fa fa-check bigger-110"></i>
+                    确定
+                </button>
+            </div>
+        </form>
+
+
+    </div><!-- /.col -->
+</div><!-- /.row -->
+<script type="text/javascript">
+    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $("#btnSubmit").on("click", function(){
+
+        });
+        $('#userAvatar').ace_file_input({
+            style:'well',
+            allowExt: ["jpeg", "jpg", "png", "gif" , "bmp"],
+            allowMime: ["image/jpg", "image/jpeg", "image/png", "image/gif", "image/bmp"],
+
+            btn_choose:'拖放或点击选择图片',
+            btn_change:null,
+            no_icon:'ace-icon fa fa-cloud-upload',
+            droppable:true,
+            thumbnail:'small',
+            //,icon_remove:null//set null, to hide remove/reset button
+            /**,before_change:function(files, dropped) {
+						//Check an example below
+						//or examples/file-upload.html
+						return true;
+					}*/
+            before_remove : function() {
+                $("#hidCover").val("");
+                return true;
+            },
+            preview_error : function(filename, error_code) {
+                var errorMsg = '';
+                if(error_code == 2){
+                    errorMsg = "加载读取图片出错";
+                }else if(error_code == 3){
+                    errorMsg = "创建缩列图出错";
+                }
+                showTip(errorMsg);
+                //name of the file that failed
+                //error_code values
+                //1 = 'FILE_LOAD_FAILED',
+                //2 = 'IMAGE_LOAD_FAILED',
+                //3 = 'THUMBNAIL_FAILED'
+                //alert(error_code);
+            }
+        });
+
+        Dropzone.autoDiscover = false;
+        var dropZone = new Dropzone("#dropzone" , {
+            paramName: "upfile",
+            params: {type:"userauth"},
+            maxFilesize: 1, // MB
+            maxFiles: 5,
+            method:"post",
+            url: "{{$contextPath}}/plugin/uploader",
+            success:function(file){
+                console.log("success");
+                var result = $.parseJSON(file.xhr.response);
+                if(result.code == 0){
+
+                    file.path = result.data;
+                    var pic = $("#hidPic").val();
+                    pic += pic != "" ? (spliter + result.data) : result.data;
+                    $("#hidPic").val(pic);
+
+                    $(".dz-details img[data-dz-thumbnail]", file.previewTemplate).attr("src", file.path);
+
+                }
+                else{
+                    showAlert("上传失败....");
+                }
+
+                if (file.previewElement) {
+                    return file.previewElement.classList.add("dz-success");
+                }
+            },
+            removedfile: function(file){
+                console.log("removedfile");
+                var pics = $("#hidPic").val().split(spliter);
+                for(var i = 0; i < pics.length; i++){
+                    if(pics[i] == file.path){
+                        pics = pics.splice(i, 1);
+                        break;
+                    }
+                }
+                $("#hicPic").val(pics.join(spliter));
+
+
+                var _ref;
+                if (file.previewElement) {
+                    if ((_ref = file.previewElement) != null) {
+                        _ref.parentNode.removeChild(file.previewElement);
+                    }
+                }
+                return this._updateMaxFilesReachedClass();
+            },
+            dictCancelUpload: "取消上传",
+            dictCancelUploadConfirmation: "您确定取消上传?",
+            dictRemoveFile: "移除文件",
+            dictRemoveFileConfirmation: null,
+            dictMaxFilesExceeded: "您不能上传更多文件了.",
+            dictDefaultMessage: "拖放文件上传",
+            dictFallbackMessage: "您的浏览器不知拖放",
+            addRemoveLinks : true,
+            dictDefaultMessage :
+                    '<span class="bigger-120 bolder"><i class="ace-icon fa fa-caret-right red"></i>拖放</span>文件上传 \
+                    <span class="smaller-80 grey">(或单击)</span> <br /> \
+                    <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-2x"></i>'
+            ,
+            dictResponseError: '上传文件出错!',
+            //change the previewTemplate to use Bootstrap progress bars
+            previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
+        });
+    });
+</script>

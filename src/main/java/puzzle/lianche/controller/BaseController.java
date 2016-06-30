@@ -15,6 +15,8 @@ import puzzle.lianche.init.InitConfig;
 import puzzle.lianche.utils.StringUtil;
 
 import java.io.IOException;
+import java.net.HttpCookie;
+
 public class BaseController {
 
     protected static Logger logger;
@@ -68,14 +70,20 @@ public class BaseController {
     }
 
     public void setCookie(String name, String value){
-        Cookie cookie = new Cookie(name, value);
-        this.setCookie(cookie);
+       setCookie(name, value, 0, "/");
     }
 
     public void setCookie(String name, String value, int expiry){
+        setCookie(name, value, expiry, "/");
+    }
+
+    public void setCookie(String name, String value, int expiry, String path){
         Cookie cookie = new Cookie(name, value);
-        cookie.setMaxAge(expiry);
-        this.setCookie(cookie);
+        if(expiry > 0) {
+            cookie.setMaxAge(expiry);
+        }
+        cookie.setPath(path);
+        response.addCookie(cookie);
     }
 
     public void setCookie(Cookie cookie){
@@ -127,7 +135,7 @@ public class BaseController {
 
     public void setModelAttribute(String name, Object value){
         if(this.map != null){
-            map.addAttribute(name, value);
+            this.map.addAttribute(name, value);
         }
     }
 

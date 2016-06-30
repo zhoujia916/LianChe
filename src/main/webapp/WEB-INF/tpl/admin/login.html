@@ -99,7 +99,7 @@
                       }
                       $.post("{{$contextPath}}/admin/sign.do", {username: username, password: password, remember: remember}, function(result){
                           if(result.code == 0){
-                              window.location = "{{$contextPath}}{{if $ReturnUrl}}{{$ReturnUrl}}{{else}}/admin/index{{/if}}";
+                              window.location = "{{$contextPath}}/{{if $ReturnUrl}}{{$ReturnUrl}}{{else}}admin/index{{/if}}";
                           }else{
                               $("#msg").html(result.msg).show();
                           }

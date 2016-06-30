@@ -1,0 +1,113 @@
+
+<title>Puzzle Admin</title>
+
+<div class="page-header">
+    <h4>
+        <i class="glyphicon glyphicon-signal"></i>
+        用户管理
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            个人资料
+        </small>
+    </h4>
+</div>
+
+<div class="row" id="">
+    <div class="col-xs-12">
+        <form class="form-horizontal">
+            <div class="tabbable">
+                <ul class="nav nav-tabs padding-16">
+                    <li class="active">
+                        <a data-toggle="tab" href="#edit-basic">
+                            <i class="green ace-icon fa fa-pencil-square-o bigger-125"></i>
+                            基本信息
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="tab" href="#edit-pwd">
+                            <i class="purple ace-icon ace-icon fa fa-globe bigger-125"></i>
+                            更新密码
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content profile-edit-tab-content">
+                    <div id="edit-basic" class="tab-pane in active">
+                        <div class="space-10"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                登录名称
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" data-init="0" id="sortOrder" value="0" name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                车源备注
+                            </label>
+                            <div class="col-sm-9">
+                                <textarea name="remark" class="txt input-sm col-sm-10" style="height:50px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="edit-pwd" class="tab-pane">
+                        <div class="space-10"></div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                是否加配
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="hidden" name="hasParts" id="hidHasParts" value="1" >
+                                <input type="checkbox" data-init="1" value="2" offval="1" id="cbHasParts" role="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" id="rowParts">
+                            <label class="col-sm-3 control-label">
+                                加配描述
+                            </label>
+                            <div class="col-sm-9">
+                                <textarea name="parts" id="txtParts" class="txt disabled input-sm col-sm-10" disabled style="width:80%;max-width:80%;min-width:80%;height:300px;max-height:300px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" id="rowPartsPrice">
+                            <label class="col-sm-3 control-label">
+                                加配价格
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="txtPartsPrice" data-init="0" name="partsPrice" disabled placeholder="加配价格" class="txt disabled input-sm col-sm-4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix form-actions">
+                <button id="btnReset" class="btn" type="reset">
+                    <i class="ace-icon fa fa-undo bigger-110"></i>
+                    重置
+                </button>
+                &nbsp; &nbsp;
+                <button id="btnSubmit" class="btn btn-info" type="button">
+                    <i class="ace-icon fa fa-check bigger-110"></i>
+                    确定
+                </button>
+            </div>
+        </form>
+
+
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<script type="text/javascript">
+    $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+
+        $("#btnSubmit").on("click", function(){
+
+        });
+    });
+</script>
