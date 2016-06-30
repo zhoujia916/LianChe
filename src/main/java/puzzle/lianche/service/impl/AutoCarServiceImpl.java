@@ -149,11 +149,6 @@ public class AutoCarServiceImpl implements IAutoCarService {
         return sqlMapper.queryList("AutoCarMapper.queryUserCollect", map,page);
     }
 
-    @Override
-    public List<AutoCar> queryOrderList(Map<String, Object> map,Page page) {
-        return sqlMapper.queryList("AutoCarMapper.queryOrderList", map,page);
-    }
-
     /**
      * 统计车源总数
      * @param map

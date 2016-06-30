@@ -122,11 +122,13 @@
                                         性别
                                     </label>
                                     <div class="col-sm-9">
-                                        <input type="radio" data-init="1" value="1" offval="2" name="sex" class="ace" checked>
-                                        <label class="lbl">男</label>
-                                        &nbsp;&nbsp;
-                                        <input type="radio" data-init="1" value="2" offval="1" name="sex" class="ace" checked>
-                                        <label class="lbl">女</label>
+                                        <div class="position-relative">
+                                            <input type="radio" data-init="1" value="1" offval="2" name="sex" class="ace" checked>
+                                            <label class="lbl">男</label>
+                                            &nbsp;&nbsp;
+                                            <input type="radio" data-init="1" value="2" offval="1" name="sex" class="ace">
+                                            <label class="lbl">女</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -143,7 +145,7 @@
                                         角色
                                     </label>
                                     <div class="col-sm-9">
-                                        <select multiple="" data-init="0" id="roleId" name="roleId" class="select2" data-placeholder="请选择角色">
+                                        <select multiple="" data-init="0" id="roleId" name="roleId" class="select2 tag-input-style" data-placeholder="请选择角色">
                                             {{foreach from=$roleList item=roleItem}}
                                             <option value="{{$roleItem.roleId}}">{{$roleItem.roleName}}</option>
                                             {{/foreach}}
@@ -155,7 +157,7 @@
                                         用户组
                                     </label>
                                     <div class="col-sm-9">
-                                        <select multiple="" data-init="0" name="groupId" id="groupId" class="select2" placeholder="请选择用户组">
+                                        <select multiple="" data-init="0" name="groupId" id="groupId" class="select2 tag-input-style" placeholder="请选择用户组">
                                             {{foreach from=$userGroupList item=userGroupItem}}
                                             <option value="{{$userGroupItem.groupId}}">{{$userGroupItem.groupName}}</option>
                                             {{/foreach}}
@@ -167,7 +169,7 @@
                                         部门
                                     </label>
                                     <div class="col-sm-9">
-                                        <select multiple="" data-init="0" name="deptId" id="deptId" class="select2" placeholder="请选择部门">
+                                        <select multiple="" data-init="0" name="deptId" id="deptId" class="select2 tag-input-style" placeholder="请选择部门">
                                             {{foreach from=$deptList item=deptItem}}
                                             <option value="{{$deptItem.deptId}}">{{$deptItem.deptName}}</option>
                                             {{/foreach}}

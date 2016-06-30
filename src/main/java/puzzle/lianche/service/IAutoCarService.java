@@ -23,7 +23,5 @@ public interface IAutoCarService{
 
     public List<AutoCar> queryUserCollect(Map<String, Object> map,Page page);
 
-    public List<AutoCar> queryOrderList(Map<String, Object> map,Page page);
-
     public Integer queryCount(Map<String, Object> map);
 }

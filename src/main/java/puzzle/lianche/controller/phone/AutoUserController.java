@@ -246,6 +246,7 @@ public class AutoUserController extends BaseController {
             jsonObject.put("isAuth",user.getStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
             map.clear();
             map.put("userId",user.getUserId());
+
             AutoUserProfile profile=autoUserProfileService.query(map);
             if(profile!=null){
                 jsonObject.put("profile",profile);
@@ -1016,29 +1017,29 @@ public class AutoUserController extends BaseController {
             map.put("addUserId",order.getSellerId());
 
             if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
-                String sql = " (ao.order_id is null"
-                            + " or (ao.order_status = " + Constants.OS_SUBMIT
-                            + " and ao.pay_status = " + Constants.PS_WAIT_BUYER_DEPOSIT
-                            + " and ao.ship_status = " + Constants.SS_UNSHIP + "))";
+                String sql = " and (ao.order_id is null" +
+                             " or (ao.order_status = " + Constants.OS_SUBMIT +
+                             " and ao.pay_status = " + Constants.PS_WAIT_BUYER_DEPOSIT +
+                             " and ao.ship_status = " + Constants.SS_UNSHIP + "))";
                 map.put("filter", sql);
             }
             else if(order.getClientStatus().equals(Constants.CS_DEPOSIT)){
-                String sql = " ao.order_status in(" + Constants.OS_SUBMIT + "," + Constants.OS_EXECUTE + ") " +
+                String sql = " and ao.order_status in(" + Constants.OS_SUBMIT + "," + Constants.OS_EXECUTE + ") " +
                              " and ao.pay_status in(" + Constants.PS_BUYER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SELLER_DEPOSIT + "," + Constants.PS_SELLER_PAY_DEPOSIT + ") " +
                              " and ao.ship_status = " + Constants.SS_UNSHIP;
                 map.put("filter", sql);
             }
             else if(order.getClientStatus().equals(Constants.CS_SUCCESS)){
-                String sql = " ao.order_status  = " + Constants.OS_SUCCESS +
+                String sql = " and ao.order_status  = " + Constants.OS_SUCCESS +
                              " and ao.pay_status in(" + Constants.PS_SELLER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SYSTEM_DEPOSIT + "," + Constants.PS_SYSTEM_RETURN_DEPOSIT + ") " +
                              " and ao.ship_status = " + Constants.SS_SHIPED;
                 map.put("filter", sql);
             }
             else if(order.getClientStatus().equals(Constants.CS_CANCEL)){
-                String sql = " ao.order_status = " + Constants.OS_CANCEL;
+                String sql = " and ao.order_status = " + Constants.OS_CANCEL;
                 map.put("filter", sql);
             }
-            List<AutoCar> carList = autoCarService.queryOrderList(map,page);
+            List<AutoCar> carList = autoCarService.queryList(map,page);
             if(carList!=null && carList.size()>0){
                 JSONArray array=new JSONArray();
                 for(AutoCar car:carList){

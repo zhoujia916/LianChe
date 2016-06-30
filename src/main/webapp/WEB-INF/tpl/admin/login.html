@@ -90,18 +90,18 @@
                       var password = $.trim($("#txtPassword").val());
                       var remember = document.getElementById("cbRemember").checked ? "1" : "0";
                       if(username == ""){
-                          showAlert("用户名不能为空！");
+                          $("#msg").html("用户名不能为空！").show();
                           return;
                       }
                       if(password == ""){
-                         showAlert("密码不能为空！");
+                         $("#msg").html("密码不能为空！").show();
                          return;
                       }
                       $.post("{{$contextPath}}/admin/sign.do", {username: username, password: password, remember: remember}, function(result){
                           if(result.code == 0){
                               window.location = "{{$contextPath}}{{if $ReturnUrl}}{{$ReturnUrl}}{{else}}/admin/index{{/if}}";
                           }else{
-                              showAlert(result.msg);
+                              $("#msg").html(result.msg).show();
                           }
                       }, "json");
                       e.preventDefault();

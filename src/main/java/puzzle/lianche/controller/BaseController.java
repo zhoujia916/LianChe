@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import puzzle.lianche.init.InitConfig;
+import puzzle.lianche.utils.StringUtil;
 
 import java.io.IOException;
 public class BaseController {
@@ -46,20 +47,20 @@ public class BaseController {
 
     public String redirect(String url){
         String contextPath = session.getServletContext().getContextPath();
-        if(url.startsWith(contextPath)) {
-            try{
-                this.response.sendRedirect(url);
-            }
-            catch (Exception e){
-
-            }
-            return null;
+        if (StringUtil.isNullOrEmpty(contextPath) && !url.startsWith("/")) {
+            url = "/" + url;
         }
-        else if(url.startsWith("/")){
-            return "redirect:" + url;
-        }else{
-            return "redirect:" + "/" + url;
+        else if(StringUtil.isNotNullOrEmpty(contextPath) && !url.startsWith(contextPath)){
+            url = contextPath + (url.startsWith("/") ? "" : "/") + url;
         }
+        try {
+            this.response.sendRedirect(url);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+//        return "redirect:" + url;
     }
 
     public String getParameter(String name){
