@@ -114,14 +114,6 @@
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $(".btn-action[data-action='select']").click(function(){
-            var keys = $("#brand-gridview").gridview("getKeys");
-            var hash = "admin/autobrandcat/";
-            if(keys.length > 0){
-                hash = hash + "index/" + keys.join(",");
-            }
-            changeHash(hash);
-        });
         $("#brand-gridview").gridview({
             url: "autobrand/list.do",
             form: {
@@ -171,7 +163,21 @@
                     name: "actions",
                     list: ["edit", "delete"]
                 }
-            ]
+            ],
+            buttons:{
+                select:{
+                    handler:function(){
+                        var key = this.gridview("getKey");
+                        var hash = "";
+                        if(!key){
+                            hash = "admin/autobrandcat/index";
+                        }else{
+                            hash = "admin/autobrandcat/index/"+key;
+                        }
+                        changeHash(hash);
+                    }
+                }
+            }
         });
     });
 </script>
