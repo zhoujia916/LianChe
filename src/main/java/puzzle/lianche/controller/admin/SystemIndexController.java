@@ -53,7 +53,12 @@ public class SystemIndexController extends ModuleController {
             this.setModelAttribute("remember", info.getInt("remember"));
         }
         if(StringUtil.isNotNullOrEmpty(returnUrl)){
-            this.setModelAttribute(Constants.UrlHelper.PARAM_RETURN_URL, Constants.UrlHelper.ADMIN_SYSTEM_INDEX + returnUrl.replace("/admin/", "#page/"));
+            if(returnUrl.equals(Constants.UrlHelper.ADMIN_SYSTEM_INDEX)){
+                returnUrl = Constants.UrlHelper.ADMIN_SYSTEM_INDEX;
+            }else{
+                returnUrl = Constants.UrlHelper.ADMIN_SYSTEM_INDEX + returnUrl.replace("/admin/", "#page/");
+            }
+            this.setModelAttribute(Constants.UrlHelper.PARAM_RETURN_URL, returnUrl);
         }
         return Constants.UrlHelper.ADMIN_SYSTEM_LOGIN;
     }
