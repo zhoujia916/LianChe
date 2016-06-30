@@ -345,7 +345,11 @@
                 view:{
                     handler:function(key){
                         key = key || this.gridview("getKey");
-                        changeHash("page/autoorder/show/" + key);
+                        if(key==null){
+                            showAlert("请选择记录！");
+                        }else {
+                            changeHash("page/autoorder/show/" + key);
+                        }
                     }
                 }
             }

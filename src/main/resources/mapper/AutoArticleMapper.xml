@@ -156,7 +156,7 @@
         from auto_article as aa
         inner join auto_article_cat as aac on aa.cat_id=aac.cat_id
         left join system_user as asu on asu.user_id = aa.add_user_id
-        left join system_user as csu on csu.check_user_id = aa.add_user_id
+        left join system_user as csu on csu.user_id = aa.check_user_id
         <where>  
         	<if test="articleId > 0">
                 article_id = #{articleId}
@@ -169,7 +169,7 @@
         from auto_article as aa
         inner join auto_article_cat as aac on aa.cat_id=aac.cat_id
         left join system_user as asu on asu.user_id = aa.add_user_id
-        left join system_user as csu on csu.check_user_id = aa.add_user_id
+        left join system_user as csu on csu.user_id = aa.check_user_id
         <where>
             <trim prefixOverrides="and | or">
                 <if test="title!=null and title!=''">
