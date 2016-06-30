@@ -590,5 +590,12 @@
             previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
         });
 
+        var mockFile = { name: "115427113840.jpeg", size: 12345 };
+
+        dropZone.emit("addedfile", mockFile);
+
+        dropZone.emit("thumbnail", mockFile, "/upload/avatar/160630/115427113840.jpeg");
+
+        dropZone.emit("complete", mockFile);
     });
 </script>

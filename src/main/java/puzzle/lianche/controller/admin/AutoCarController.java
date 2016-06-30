@@ -50,8 +50,8 @@ public class AutoCarController extends ModuleController {
         return Constants.UrlHelper.ADMIN_AUTO_CAR;
     }
 
-    @RequestMapping(value = "/show/{carId}")
-    public String show(@PathVariable("carId")Integer carId){
+    @RequestMapping(value = "/view/{carId}")
+    public String view(@PathVariable("carId")Integer carId){
         if(carId != null){
             AutoCar car = autoCarService.query(carId);
             car.setBeginTimeString(ConvertUtil.toString(ConvertUtil.toDate(car.getStartDate()), Constants.DATE_FORMAT));
@@ -68,6 +68,30 @@ public class AutoCarController extends ModuleController {
         }
         List<AutoBrand> brandList = autoBrandService.queryList(null);
         this.setModelAttribute("brandList", brandList);
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_VIEW);
+        return Constants.UrlHelper.ADMIN_AUTO_CAR_SHOW;
+    }
+
+    @RequestMapping(value = "/edit/{carId}")
+    public String edit(@PathVariable("carId")Integer carId){
+        if(carId != null){
+            AutoCar car = autoCarService.query(carId);
+            car.setBeginTimeString(ConvertUtil.toString(ConvertUtil.toDate(car.getStartDate()), Constants.DATE_FORMAT));
+            car.setEndTimeString(ConvertUtil.toString(ConvertUtil.toDate(car.getEndDate()), Constants.DATE_FORMAT));
+            this.setModelAttribute("car", car);
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("carId", carId);
+            List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
+            this.setModelAttribute("attrList", attrs);
+
+            List<AutoCarPic> pics = autoCarPicService.queryList(map);
+            this.setModelAttribute("picList", pics);
+        }
+        List<AutoBrand> brandList = autoBrandService.queryList(null);
+        this.setModelAttribute("brandList", brandList);
+
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_UPDATE);
         return Constants.UrlHelper.ADMIN_AUTO_CAR_SHOW;
     }
 
@@ -75,7 +99,8 @@ public class AutoCarController extends ModuleController {
     public String add(){
         List<AutoBrand> brandList = autoBrandService.queryList(null);
         this.setModelAttribute("brandList", brandList);
-        return Constants.UrlHelper.ADMIN_AUTO_CAR_ADD;
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_CREATE);
+        return Constants.UrlHelper.ADMIN_AUTO_CAR_SHOW;
     }
 
     @RequestMapping(value = {"/queryBrandCat"})

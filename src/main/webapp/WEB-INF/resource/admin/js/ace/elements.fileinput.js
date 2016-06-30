@@ -135,9 +135,19 @@
 			else {
 				this.$label.append('<span class="ace-file-name" data-title="'+filename+'"><i class="'+ ace.vars['icon'] + fileIcon+'"></i></span>');
 				var type = (inner_call === true && hasFile && files[i] instanceof File) ? $.trim(files[i].type) : '';
-				var can_preview = hasFileReader && this.settings.thumbnail 
+				var can_preview = (hasFileReader && this.settings.thumbnail
 						&&
-						( (type.length > 0 && type.match('image')) || (type.length == 0 && format == 'image') )//the second one is for older Android's default browser which gives an empty text for file.type
+						( (type.length > 0 && type.match('image')) || (type.length == 0 && format == 'image') ))
+                        ||
+                       (typeof $files[i] === "string" && ($files[i].indexOf("http:") > -1 || $files[i].indexOf("https:") > -1) && this.settings.thumbnail
+                         &&
+                           (type.length == 0 && format == 'image')
+                         )
+                        ||
+                        ($files[i] instanceof Object && ($files[i].path.indexOf("http:") > -1 || $files[i].path.indexOf("https:") > -1) && this.settings.thumbnail
+                         &&
+                            (type.length == 0 && format == 'image'));
+						//the second one is for older Android's default browser which gives an empty text for file.type
 				if(can_preview) {
 					var self = this;
 					$.when(preview_image.call(this, files[i])).fail(function(result){

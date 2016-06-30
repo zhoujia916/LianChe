@@ -185,6 +185,26 @@
                     handler: function(){
                         changeHash("page/autoarticle/add");
                     }
+                },
+                edit:{
+                    handler: function(key){
+                        key = key || this.gridview("getKey");
+                        if(!key){
+                            showTip("请选择记录");
+                            return;
+                        }
+                        changeHash("page/autoarticle/edit/" + key);
+                    }
+                },
+                view:{
+                    handler: function(key){
+                        key = key || this.gridview("getKey");
+                        if(!key){
+                            showTip("请选择记录");
+                            return;
+                        }
+                        changeHash("page/autoarticle/view/" + key);
+                    }
                 }
             }
         });
