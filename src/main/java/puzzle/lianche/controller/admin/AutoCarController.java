@@ -1,6 +1,5 @@
 package puzzle.lianche.controller.admin;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,16 +114,15 @@ public class AutoCarController extends ModuleController {
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-<<<<<<< HEAD
     public Result list(AutoCar autoCar,Page page){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
             if(autoCar!=null) {
-                if(autoCar.getCarName()!=null && autoCar.getCarName()!=""){
+                if (autoCar.getCarName() != null && autoCar.getCarName() != "") {
                     map.put("carName", autoCar.getCarName());
                 }
-                if(autoCar.getCarType()!=null && autoCar.getCarType()>0){
+                if (autoCar.getCarType() != null && autoCar.getCarType() > 0) {
                     map.put("carType", autoCar.getCarType());
                 }
                 if (autoCar.getBeginTimeString() != null && autoCar.getBeginTimeString() != "") {
@@ -133,19 +131,6 @@ public class AutoCarController extends ModuleController {
                 if (autoCar.getEndTimeString() != null && autoCar.getEndTimeString() != "") {
                     map.put("endDate", ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getEndTimeString() + " 23:59:59")));
                 }
-=======
-    public Result list(AutoCar autoCar, Page page){
-        Result result=new Result();
-        try{
-            Map<String, Object> map=new HashMap<String, Object>();
-            map.put("carName", autoCar.getCarName());
-            map.put("carType", autoCar.getCarType());
-            if(autoCar.getBeginTimeString()!=null && autoCar.getBeginTimeString()!=""){
-                map.put("startDate",ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getBeginTimeString() + " 00:00:00")));
-            }
-            if(autoCar.getEndTimeString()!=null && autoCar.getEndTimeString()!=""){
-                map.put("endDate",ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getEndTimeString() + " 23:59:59")));
->>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
             }
             List<AutoCar> list=autoCarService.queryList(map,page);
             if(list!=null && list.size()>0){

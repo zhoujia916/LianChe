@@ -126,12 +126,7 @@
                 {
                     name: "status",
                     format: function(opts, column, row){
-<<<<<<< HEAD
                         return row["status"]==1 ? "<td><span class='label label-sm label-warning'>下架</span></td>" : "<td><span class='label label-sm label-success'>正常</span></td>";
-=======
-                        var text = ["<span class='label label-sm label-warning'>下架</span>", "<span class='label label-sm label-success'>正常</span>"];
-                        return "<td>" + text[row[column.name] - 1] + "</td>";
->>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
                     }
                 },
                 {

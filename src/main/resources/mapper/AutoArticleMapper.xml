@@ -11,22 +11,13 @@
     	<result column="source_url" property="sourceUrl" /> 
     	<result column="add_time" property="addTime" /> 
     	<result column="add_user_id" property="addUserId" />
-<<<<<<< HEAD
     	<result column="check_time" property="checkTime" /> 
     	<result column="status" property="status" /> 
     	<result column="check_user_id" property="checkUserId" /> 
     	<result column="sort_order" property="sortOrder" />
-        <result column="catName" property="catName"/>
-        <result column="userName" property="userName"/>
-=======
         <result column="add_user_name" property="addUserName"/>
-    	<result column="check_time" property="checkTime" /> 
-    	<result column="status" property="status" /> 
-    	<result column="check_user_id" property="checkUserId" />
         <result column="check_user_name" property="checkUserName" />
-        <result column="sort_order" property="sortOrder" />
         <result column="cat_name" property="catName"/>
->>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
     </resultMap>
 
     <sql id="allColumn">
@@ -165,7 +156,7 @@
         from auto_article as aa
         inner join auto_article_cat as aac on aa.cat_id=aac.cat_id
         left join system_user as asu on asu.user_id = aa.add_user_id
-        left join system_user as csu on csu.user_id = aa.add_user_id
+        left join system_user as csu on csu.check_user_id = aa.add_user_id
         <where>  
         	<if test="articleId > 0">
                 article_id = #{articleId}
@@ -174,38 +165,12 @@
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoArticle">
-<<<<<<< HEAD
-        select aa.*,aac.cat_name as catName
-        ,(select user_name from system_user as su where su.user_id = aa.add_user_id
-        <if test="name!=null and name!=''">
-            and su.user_name like concat('%',#{name},'%')
-        </if>
-        ) as userName
-=======
         select aa.*, aac.cat_name as cat_name, asu.user_name as add_user_name, csu.user_name as check_user_name
->>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
         from auto_article as aa
         inner join auto_article_cat as aac on aa.cat_id=aac.cat_id
         left join system_user as asu on asu.user_id = aa.add_user_id
-        left join system_user as csu on csu.user_id = aa.add_user_id
+        left join system_user as csu on csu.check_user_id = aa.add_user_id
         <where>
-<<<<<<< HEAD
-            <if test="title!=null and title!=''">
-                and title like concat('%',#{title},'%')
-            </if>
-            <if test="beginTime!=null">
-                and add_time &gt;= #{beginTime}
-            </if>
-            <if test="endTime!=null">
-                and add_time &lt;= #{endTime}
-            </if>
-            <if test="status!=null and status >0">
-                and aa.status = ${status}
-            </if>
-            <if test="catId!=null and catId >0">
-                and aa.cat_id = ${catId}
-            </if>
-=======
             <trim prefixOverrides="and | or">
                 <if test="title!=null and title!=''">
                     and title like concat('%',#{title},'%')
@@ -216,11 +181,16 @@
                 <if test="endTime!=null">
                     and add_time &lt;= #{endTime}
                 </if>
-                <if test="autoArticleStatus!=null and autoArticleStatus!=''">
-                    and aa.status in (${autoArticleStatus})
+                <if test="status!=null and status >0">
+                    and aa.status = ${status}
+                </if>
+                <if test="catId!=null and catId >0">
+                    and aa.cat_id = ${catId}
+                </if>
+                <if test="name!=null and name!=''">
+                    and asu.user_name like concat('%',#{name},'%')
                 </if>
             </trim>
->>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
         </where>
         order by aa.sort_order desc,aa.article_id desc
     </select>

@@ -21,17 +21,10 @@
         <div id="brandcat-gridview" class="gridview">
             <div class="grid-filter">
                 <input type="hidden" id="brandString" name="brandString" value="{{$brandId}}" />
-<<<<<<< HEAD
                 <select name="brandId" style="height: 29px;width: 160px;">
                     <option value="0">请选择品牌</option>
-                    {{foreach from=$brandList item=brand}}
-                    <option value="{{$brand.brandId}}">{{$brand.brandName}}</option>
-=======
-                <select name="brandId" placeholder="请选择品牌">
-                    <option value="0">请选择品牌</option>
                     {{foreach from=$brandList item=brandItem}}
-                    <option value="{{$brandItem.brandId}}"{{if $brandId eq $brandItem.brandId }} selected="selected"{{/if}}>{{$brandItem.brandName}}</option>
->>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
+                    <option value="{{$brandItem.brandId}}" {{if $brandId eq $brandItem.brandId }} selected="selected"{{/if}}>{{$brandItem.brandName}}</option>
                     {{/foreach}}
                 </select>
                 <input type="text input-sm" style="height: 29px" class="txt" name="catName" placeholder="车系名称" />
