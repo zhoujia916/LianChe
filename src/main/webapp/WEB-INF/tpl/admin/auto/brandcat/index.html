@@ -42,7 +42,7 @@
 
                 <a data-action="refresh" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-refresh"></i>刷新</a>
 
-                <a id="btnView" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-search-plus"></i>查看车型</a>
+                <a data-action="select" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-search-plus"></i>查看车型</a>
             </div>
 
             <div class="grid-table">
@@ -107,7 +107,7 @@
                                     <div class="col-sm-9">
                                         <select id="brandId" name="brandId" data-init="0">
                                             <option value="0">请选择品牌</option>
-                                            {{foreach from=$list item=brand}}
+                                            {{foreach from=$brandList item=brand}}
                                             <option value="{{$brand.brandId}}">{{$brand.brandName}}</option>
                                             {{/foreach}}
                                         </select>
@@ -151,14 +151,6 @@
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $("#btnview").on("click", function(){
-            var key = $("#brandcat-gridview").gridview("getKey");
-            var hash = "page/autobrandmodel/index";
-            if(key){
-                hash = hash + "/" + key;
-            }
-            changeHash(hash);
-        });
 
         $("#brandcat-gridview").gridview({
             url: "autobrandcat/list.do",
@@ -214,7 +206,22 @@
                     name: "actions",
                     list: ["edit", "delete"]
                 }
-            ]
+            ],
+            buttons:{
+                select:{
+                    handler:function(){
+                        var key = this.gridview("getKey");
+                        var hash = "";
+                        if(!key){
+                            hash = "page/autobrandmodel/index";
+                        }else{
+
+                            hash = "page/autobrandmodel/index/"+key;
+                        }
+                        changeHash(hash);
+                    }
+                }
+            }
         });
     });
 </script>

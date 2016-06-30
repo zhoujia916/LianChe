@@ -110,7 +110,6 @@ public class SystemLog implements Serializable{
 
     //新增属性
     private String userName;
-    private String logTypeId;
     private Long beginTime;
     private Long endTime;
     private String beginTimeString;
@@ -146,14 +145,6 @@ public class SystemLog implements Serializable{
 
     public void setEndTimeString(String endTimeString) {
         this.endTimeString = endTimeString;
-    }
-
-    public String getLogTypeId() {
-        return logTypeId;
-    }
-
-    public void setLogTypeId(String logTypeId) {
-        this.logTypeId = logTypeId;
     }
 
     public String getUserName(){

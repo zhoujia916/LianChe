@@ -97,14 +97,8 @@
                 <if test="brandId != null and brandId > 0">
                     and abc.brand_id = #{brandId}
                 </if>
-                <if test="brandIds != null and brandIds != ''">
-                    and abc.brand_id in (${brandIds})
-                </if>
                 <if test="catName !=null and catName != ''">
                     and abc.cat_name like concat('%',#{catName},'%')
-                </if>
-                <if test="catIds != null and catIds !=''">
-                    and abc.cat_id in (${catIds})
                 </if>
             </trim>
         </where>

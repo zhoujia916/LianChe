@@ -59,6 +59,8 @@ public class Constants {
     public static final Integer SMS_TYPE_RETRIEVE = 2;
     public static final Integer SMS_TYPE_MODIFY=3;
     public static final Integer SMS_TYPE_NOTICE=4;
+
+    //SystemUser Type
     public static final Integer USER_MAP_TARGET_TYPE_ROLE = 1;
     public static final Integer USER_MAP_TARGET_TYPE_GROUP = 2;
     public static final Integer USER_MAP_TARGET_TYPE_DEPT = 3;
@@ -205,13 +207,6 @@ public class Constants {
             put(2,"找回密码");
             put(3,"修改密码");
             put(4,"通知短信");
-        }
-    };
-
-    public static final Map<Integer, String> MAP_AUTO_SMS_STATUS = new HashMap<Integer, String>(){
-        {
-            put(1,"发送成功");
-            put(2,"发送失败");;
         }
     };
 

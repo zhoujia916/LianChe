@@ -42,26 +42,28 @@ public class SystemLogController extends ModuleController{
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Result list(SystemLog systemLog)
+    public Result list(SystemLog systemLog,Page page)
     {
         Result result=new Result();
         try{
             insertLog(Constants.PageHelper.PAGE_ACTION_SELECT,"查看日志信息");
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("logIp",systemLog.getLogIp());
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
-            if(systemLog.getLogTypeId()!=null && systemLog.getLogTypeId()!=""){
-                map.put("logType",systemLog.getLogTypeId());
-            }
-            if(systemLog.getBeginTimeString()!=null && systemLog.getBeginTimeString()!=""){
-                map.put("beginTime",ConvertUtil.toLong(ConvertUtil.toDateTime(systemLog.getBeginTimeString()+" 00:00:00")));
-            }
-            if(systemLog.getEndTimeString()!=null && systemLog.getEndTimeString()!=""){
-                map.put("endTime",ConvertUtil.toLong(ConvertUtil.toDateTime(systemLog.getEndTimeString()+" 23:59:59")));
+            if(systemLog!=null) {
+                if(systemLog.getUserName()!=null && systemLog.getUserName()!=""){
+                    map.put("userName",systemLog.getUserName());
+                }
+                if(systemLog.getLogIp()!=null && systemLog.getLogIp()!=""){
+                    map.put("logIp", systemLog.getLogIp());
+                }
+                if (systemLog.getLogType() != null && systemLog.getLogType()>0) {
+                    map.put("logType", systemLog.getLogType());
+                }
+                if (systemLog.getBeginTimeString() != null && systemLog.getBeginTimeString() != "") {
+                    map.put("beginTime", ConvertUtil.toLong(ConvertUtil.toDateTime(systemLog.getBeginTimeString() + " 00:00:00")));
+                }
+                if (systemLog.getEndTimeString() != null && systemLog.getEndTimeString() != "") {
+                    map.put("endTime", ConvertUtil.toLong(ConvertUtil.toDateTime(systemLog.getEndTimeString() + " 23:59:59")));
+                }
             }
             List<SystemLog> list=systemLogService.queryList(map,page);
             if(list!=null&&list.size()>0){

@@ -18,6 +18,7 @@ import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,21 +36,15 @@ public class AutoBrandCatController extends ModuleController {
     @RequestMapping (value = {"/","/index"})
     public String index(){
         List<AutoBrand> brandList=autoBrandService.queryList(null);
-        List<AutoBrand> list=autoBrandService.queryList(null);
         this.setModelAttribute("brandList",brandList);
-        this.setModelAttribute("list",list);
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_CAT;
     }
 
     @RequestMapping (value = "/index/{brandId}")
     public String show(@PathVariable String brandId){
-        Map map = new HashMap();
-        map.put("brandId",brandId);
-        List<AutoBrand> brandList = autoBrandService.queryList(map);
         List<AutoBrand> list = autoBrandService.queryList(null);
         this.setModelAttribute("brandId", brandId);
-        this.setModelAttribute("brandList",brandList);
-        this.setModelAttribute("list",list);
+        this.setModelAttribute("brandList",list);
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_CAT;
     }
 
@@ -63,14 +58,21 @@ public class AutoBrandCatController extends ModuleController {
                 if(autoBrandCat.getCatName()!=null && autoBrandCat.getCatName()!="") {
                     map.put("catName", autoBrandCat.getCatName());
                 }
-                if (!autoBrandCat.getBrandString().equalsIgnoreCase("null")) {
-                    map.put("brandIds", autoBrandCat.getBrandString());
+                if(autoBrandCat.getBrandString()!=null && autoBrandCat.getBrandString()!=""){
+                    if (!autoBrandCat.getBrandString().equalsIgnoreCase("null")) {
+                        map.put("brandId", autoBrandCat.getBrandString());
+                    }
                 }
                 if (autoBrandCat.getBrandId() != null && autoBrandCat.getBrandId() > 0) {
                     map.put("brandId", autoBrandCat.getBrandId());
                 }
             }
-            List<AutoBrandCat> list=autoBrandCatService.queryList(map,page);
+            List<AutoBrandCat> list=new ArrayList<AutoBrandCat>();
+            if(autoBrandCat.getCatId()==null) {
+                list = autoBrandCatService.queryList(map, page);
+            }else{
+                list = autoBrandCatService.queryList(map);
+            }
             if(list!=null && list.size()>0){
                 JSONArray array=new JSONArray();
                 for(AutoBrandCat brandCat:list){
