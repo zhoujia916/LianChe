@@ -98,7 +98,6 @@ public class AutoBrandCat implements Serializable{
     }
     private String brandName;
     private String brandString;
-    private String brands;
 
     public String getBrandString() {
         return brandString;
@@ -106,14 +105,6 @@ public class AutoBrandCat implements Serializable{
 
     public void setBrandString(String brandString) {
         this.brandString = brandString;
-    }
-
-    public String getBrands() {
-        return brands;
-    }
-
-    public void setBrands(String brands) {
-        this.brands = brands;
     }
 
 }

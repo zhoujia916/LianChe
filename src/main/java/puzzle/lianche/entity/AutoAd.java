@@ -125,15 +125,7 @@ public class AutoAd implements Serializable{
     private Integer height;
     private String beginTimeString;
     private String endTimeString;
-    private String adPositionIdString;
 
-    public String getAdPositionIdString() {
-        return adPositionIdString;
-    }
-
-    public void setAdPositionIdString(String adPositionIdString) {
-        this.adPositionIdString = adPositionIdString;
-    }
     public String getBeginTimeString() {
         return beginTimeString;
     }

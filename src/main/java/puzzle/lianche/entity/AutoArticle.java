@@ -68,8 +68,6 @@ public class AutoArticle implements Serializable{
 	private Long addTime;
 	@Column(name="add_user_id", nullable=true)
 	private Integer addUserId;
-    @Column(name="add_user_type", nullable=true)
-    private Integer addUserType;
 	@Column(name="check_time", nullable=true)
 	private Long checkTime;
 	@Column(name="status", nullable=true)
@@ -187,30 +185,12 @@ public class AutoArticle implements Serializable{
 		this.sortOrder = sortOrder;
 	}
 
-    public Integer getAddUserType() {
-        return addUserType;
-    }
-
-    public void setAddUserType(Integer addUserType) {
-        this.addUserType = addUserType;
-    }
-
     //新增属性
     private String catName;
-    private String adminName;
     private String userName;
     private String name;
-    private String statusString;
     private String beginTimeString;
     private String endTimeString;
-
-    public String getAdminName() {
-        return adminName;
-    }
-
-    public void setAdminName(String adminName) {
-        this.adminName = adminName;
-    }
 
     public String getName() {
         return name;
@@ -236,13 +216,6 @@ public class AutoArticle implements Serializable{
         this.endTimeString = endTimeString;
     }
 
-    public String getStatusString() {
-        return statusString;
-    }
-
-    public void setStatusString(String statusString) {
-        this.statusString = statusString;
-    }
     public String getCatName() {
         return catName;
     }

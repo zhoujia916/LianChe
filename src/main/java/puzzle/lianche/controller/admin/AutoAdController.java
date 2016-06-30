@@ -44,23 +44,20 @@ public class AutoAdController extends ModuleController {
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result list(AutoAd autoAd){
+    public Result list(AutoAd autoAd,Page page){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
-            if(autoAd.getAdPositionIdString()!=null && autoAd.getAdPositionIdString()!=""){
-                map.put("adPositionIds",autoAd.getAdPositionIdString());
-            }
-            if(autoAd.getBeginTimeString()!=null && autoAd.getBeginTimeString()!=""){
-                map.put("startDate",ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getBeginTimeString()+" 00:00:00")));
-            }
-            if(autoAd.getEndTimeString()!=null && autoAd.getEndTimeString()!=""){
-                map.put("endDate",ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getEndTimeString() + " 23:59:59")));
+            if(autoAd!=null) {
+                if (autoAd.getAdPositionId() != null && autoAd.getAdPositionId() > 0) {
+                    map.put("adPositionId", autoAd.getAdPositionId());
+                }
+                if (autoAd.getBeginTimeString() != null && autoAd.getBeginTimeString() != "") {
+                    map.put("startDate", ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getBeginTimeString() + " 00:00:00")));
+                }
+                if (autoAd.getEndTimeString() != null && autoAd.getEndTimeString() != "") {
+                    map.put("endDate", ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getEndTimeString() + " 23:59:59")));
+                }
             }
             List<AutoAd> list=autoAdService.queryList(map,page);
             if(list!=null && list.size()>0){

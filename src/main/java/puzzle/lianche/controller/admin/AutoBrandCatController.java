@@ -55,21 +55,20 @@ public class AutoBrandCatController extends ModuleController {
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result catList(AutoBrandCat autoBrandCat){
+    public Result catList(AutoBrandCat autoBrandCat,Page page){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("catName",autoBrandCat.getCatName());
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
-            if(!autoBrandCat.getBrandString().equalsIgnoreCase("null")){
-                map.put("brandId",autoBrandCat.getBrandString());
-            }
-            if(autoBrandCat.getBrands()!=null && autoBrandCat.getBrands()!=""){
-                map.put("brandId",autoBrandCat.getBrands());
+            if(autoBrandCat!=null) {
+                if(autoBrandCat.getCatName()!=null && autoBrandCat.getCatName()!="") {
+                    map.put("catName", autoBrandCat.getCatName());
+                }
+                if (!autoBrandCat.getBrandString().equalsIgnoreCase("null")) {
+                    map.put("brandIds", autoBrandCat.getBrandString());
+                }
+                if (autoBrandCat.getBrandId() != null && autoBrandCat.getBrandId() > 0) {
+                    map.put("brandId", autoBrandCat.getBrandId());
+                }
             }
             List<AutoBrandCat> list=autoBrandCatService.queryList(map,page);
             if(list!=null && list.size()>0){

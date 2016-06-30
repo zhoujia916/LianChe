@@ -109,6 +109,9 @@
                 <if test="catId > 0">
                     and abc.cat_id = #{catId}
                 </if>
+                <if test="catIds != null and catIds != ''">
+                    and abc.cat_id in (#{catIds})
+                </if>
                 <if test="brandId > 0">
                     and ab.brand_id = #{brandId}
                 </if>

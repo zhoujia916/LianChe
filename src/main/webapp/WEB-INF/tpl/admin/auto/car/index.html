@@ -14,9 +14,9 @@
             <div class="grid-filter">
                 <input type="text input-sm" style="height: 29px" class="txt" name="carName" placeholder="名称" />
                 <select name="carType" style="height: 29px;width: 160px;">
-                    <option value="-1">请选择车源类型</option>
-                    <option value="0">销车资源</option>
-                    <option value="1">特卖会</option>
+                    <option value="0">请选择车源类型</option>
+                    <option value="1">销车资源</option>
+                    <option value="2">特卖会</option>
                 </select>
                 <input type="text input-sm" style="height: 29px" id="datepicker1" name="beginTimeString" placeholder="开始时间"/>
                 <input type="text input-sm" style="height: 29px" id="datepicker2" name="endTimeString" placeholder="结束时间"/>
@@ -274,8 +274,7 @@
                 {
                     name: "status",
                     format: function(opts, column, row){
-                        var text = ["<span class='label label-sm label-warning'>下架</span>", "<span class='label label-sm label-success'>正常</span>"];
-                        return "<td>" + text[row[column.name]] + "</td>";
+                        return row["status"]==1 ? "<td><span class='label label-sm label-warning'>下架</span></td>" : "<td><span class='label label-sm label-success'>正常</span></td>";
                     }
                 },
                 {

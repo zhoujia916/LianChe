@@ -14,7 +14,7 @@
     <div class="col-xs-12">
         <div id="role-gridview" class="gridview">
             <div class="grid-filter">
-                <select data-init="0" name="positionId" >
+                <select data-init="0" name="adPositionId" style="height: 29px;width: 160px;">
                     <option value="0">请选择广告位置</option>
                     {{foreach from=$list item=aap}}
                         <option value="{{$aap.positionId}}">{{$aap.positionName}}</option>
@@ -72,7 +72,8 @@
                 </div>
             </div>
             <div class="grid-form save-form" style="">
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                <div class="overlay"></div>
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">
                     <div class="widget-header">
                         <h5 class="widget-title smaller"></h5>
 
@@ -290,8 +291,7 @@
                 {
                     name: "status",
                     format: function(opts, column, row){
-                        var text = ["<span class='label label-sm label-warning'>无效</span>", "<span class='label label-sm label-success'>有效</span>"];
-                        return "<td>" + text[row[column.name]] + "</td>";
+                        return row["status"]==2 ? "<td><span class='label label-sm label-warning'>无效</span></td>" : "<td><span class='label label-sm label-success'>有效</span></td>";
                     }
                 },
                 {

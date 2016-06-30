@@ -106,8 +106,8 @@
         from auto_ad as aa
         inner join auto_ad_position as aap on aa.ad_position_id=aap.position_id
         <where>
-            <if test="adPositionIds!=null and adPositionIds!=''">
-                and aa.ad_position_id in (${adPositionIds})
+            <if test="adPositionId!=null and adPositionId >0">
+                and aa.ad_position_id = ${adPositionId}
             </if>
             <if test="startDate!=null">
                 and start_date &gt;= #{startDate}

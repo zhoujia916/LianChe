@@ -16,14 +16,14 @@
                 <input type="text input-sm" style="height: 29px" class="txt" name="fromUserName" placeholder="发送方" />
                 <input type="text input-sm" style="height: 29px" class="txt" name="toUserName" placeholder="接收方" />
                 <select name="msgType" style="height: 29px;width: 160px;">
-                    <option value="-1">请选择消息类型</option>
-                    <option value="0">系统发给用户的消息</option>
-                    <option value="1">用户发给用户的消息</option>
+                    <option value="0">请选择消息类型</option>
+                    <option value="1">系统发给用户的消息</option>
+                    <option value="2">用户发给用户的消息</option>
                 </select>
                 <select name="status" style="height: 29px;width: 160px;">
-                    <option value="-1">请选择消息状态</option>
-                    <option value="0">待阅读</option>
-                    <option value="1">已阅读</option>
+                    <option value="0">请选择消息状态</option>
+                    <option value="1">待阅读</option>
+                    <option value="2">已阅读</option>
                 </select>
                 <input type="text input-sm" style="height: 29px" id="datepicker1" name="beginTimeString" placeholder="开始时间"/>
                 <input type="text input-sm" style="height: 29px" id="datepicker2" name="endTimeString" placeholder="结束时间"/>
@@ -73,7 +73,8 @@
             -->
             <!--edit form-->
             <div class="grid-form save-form" style="">
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                <div class="overlay"></div>
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">
                     <div class="widget-header">
                         <h5 class="widget-title smaller"></h5>
 
@@ -280,7 +281,10 @@
                     name: "msgTitle"
                 },
                 {
-                    name: "msgType"
+                    name: "msgType",
+                    format: function(opts, column, row){
+                        return row["msgType"]==1 ? "<td>系统发给用户的消息</td>" : "<td>用户发给用户的消息</td>";
+                    }
                 },
                 {
                     name: "addTime"
@@ -297,8 +301,7 @@
                 {
                     name: "status",
                     format: function(opts, column, row){
-                        var text = ["<span class='label label-sm label-warning'>待阅读</span>", "<span class='label label-sm label-success'>已阅读</span>"];
-                        return "<td>" + text[row[column.name]] + "</td>";
+                        return row["status"]==1 ? "<td><span class='label label-sm label-warning'>待阅读</span></td>" : "<td><span class='label label-sm label-success'>已阅读</span></td>";
                     }
                 },
                 {

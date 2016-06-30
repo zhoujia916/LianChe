@@ -11,6 +11,7 @@ import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.AutoArticle;
 import puzzle.lianche.entity.AutoArticleCat;
 import puzzle.lianche.entity.SystemMenuAction;
+import puzzle.lianche.entity.SystemUser;
 import puzzle.lianche.service.IAutoArticleCatService;
 import puzzle.lianche.service.IAutoArticleService;
 import puzzle.lianche.utils.ConvertUtil;
@@ -43,46 +44,37 @@ public class AutoArticleController extends ModuleController {
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result list(AutoArticle autoArticle){
+    public Result list(AutoArticle autoArticle,Page page){
         Result result=new Result();
-        List<AutoArticle> articleList=new ArrayList<AutoArticle>();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("title",autoArticle.getTitle());
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
-            if(autoArticle.getBeginTimeString()!=null && autoArticle.getBeginTimeString()!=""){
-                map.put("beginTime",ConvertUtil.toLong(ConvertUtil.toDateTime(autoArticle.getBeginTimeString()+" 00:00:00")));
-            }
-            if(autoArticle.getEndTimeString()!=null && autoArticle.getEndTimeString()!=""){
-                map.put("endTime",ConvertUtil.toLong(ConvertUtil.toDateTime(autoArticle.getEndTimeString()+" 23:59:59")));
-            }
-            if(autoArticle.getStatusString()!=null &&autoArticle.getStatusString()!=""){
-                map.put("autoArticleStatus",autoArticle.getStatusString());
-            }
-            if(autoArticle.getCatName()!=null && autoArticle.getCatName()!=""){
-                map.put("catNames",autoArticle.getCatName());
+            if(autoArticle!=null) {
+                if(autoArticle.getTitle()!=null && autoArticle.getTitle()!="") {
+                    map.put("title", autoArticle.getTitle());
+                }
+                if(autoArticle.getName()!=null && autoArticle.getName()!=""){
+                    map.put("name", autoArticle.getName());
+                }
+                if (autoArticle.getBeginTimeString() != null && autoArticle.getBeginTimeString() != "") {
+                    map.put("beginTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoArticle.getBeginTimeString() + " 00:00:00")));
+                }
+                if (autoArticle.getEndTimeString() != null && autoArticle.getEndTimeString() != "") {
+                    map.put("endTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoArticle.getEndTimeString() + " 23:59:59")));
+                }
+                if (autoArticle.getStatus() != null && autoArticle.getStatus() >0) {
+                    map.put("status", autoArticle.getStatus());
+                }
+                if (autoArticle.getCatId() != null && autoArticle.getCatId() >0) {
+                    map.put("catId", autoArticle.getCatName());
+                }
             }
             List<AutoArticle> list=autoArticleService.queryList(map,page);
             if(list!=null && list.size()>0){
                 JSONArray array=new JSONArray();
-                for(int i=0;i<list.size();i++){
-                    if(list.get(i).getAdminName()!=null && list.get(i).getUserName()==null){
-                        list.get(i).setName(list.get(i).getAdminName());
-                        articleList.add(list.get(i));
-                    }else if(list.get(i).getAdminName()==null && list.get(i).getUserName()!=null){
-                        list.get(i).setName(list.get(i).getUserName());
-                        articleList.add(list.get(i));
-                    }
-                }
-                for(AutoArticle article:articleList){
+                for(AutoArticle article:list){
                     JSONObject jsonObject=JSONObject.fromObject(article);
                     jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(article.getAddTime())));
                     jsonObject.put("status",Constants.MAP_AUTO_ARTICLE_STATUS.get(article.getStatus()));
-                    jsonObject.put("addUserType",Constants.MAP_AUTO_ARTICLE_USER_TYPE.get(article.getAddUserType()));
                     array.add(jsonObject);
                 }
                 result.setData(array);
@@ -103,9 +95,12 @@ public class AutoArticleController extends ModuleController {
         Map<String, Object> map=new HashMap<String, Object>();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
-                autoArticle.setAddUserType(2);
-                autoArticle.setAddUserId(1);
-                autoArticle.setStatus(1);
+                int userId = 0;
+                if(getCurrentUser() != null){
+                    userId = ((SystemUser)getCurrentUser()).getUserId();
+                }
+                autoArticle.setAddUserId(userId);
+                autoArticle.setStatus(2);
                 autoArticle.setAddTime(ConvertUtil.toLong(new Date()));
                 if(!autoArticleService.insert(autoArticle)){
                     result.setCode(1);

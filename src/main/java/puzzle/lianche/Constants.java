@@ -105,9 +105,9 @@ public class Constants {
 
     public static final Map<Integer, String> MAP_AUTO_ARTICLE_STATUS = new HashMap<Integer, String>(){
         {
-            put(0,"已保存");
-            put(1,"已提交");
-            put(2,"已审核");
+            put(1,"已保存");
+            put(2,"已提交");
+            put(3,"已审核");
         }
     };
 
@@ -118,28 +118,11 @@ public class Constants {
         }
     };
 
-    public static final Map<Integer, String> MAP_AUTO_MSG_TYPE = new HashMap<Integer, String>(){
-        {
-            put(0,"系统发给用户的消息");
-            put(1,"用户发给用户的消息");
-        }
-    };
-
-
     public static final Integer AUTO_COLLECT_TYPE_CAR = 1;
 
     public static final Map<Integer, String> MAP_AUTO_COLLECT_TYPE = new HashMap<Integer, String>(){
         {
             put(1,"销车资源");
-        }
-    };
-
-    public static final Integer AUTO_COLLECT_STATUS_NORMAL = 1;
-    public static final Integer AUTO_COLLECT_STATUS_DELETE = 0;
-    public static final Map<Integer, String> MAP_AUTO_COLLECT_STATUS = new HashMap<Integer, String>(){
-        {
-            put(0,"已删除");
-            put(1,"正常");
         }
     };
 
@@ -154,17 +137,6 @@ public class Constants {
     };
     //endregion
 
-    //region AUTO_CAR_STATUS
-    public static final Integer AUTO_CAR_STATUS_OFF = 1;
-    public static final Integer AUTO_CAR_STATUS_ON = 2;
-    public static final Map<Integer, String> MAP_AUTO_CAR_STATUS = new HashMap<Integer, String>(){
-        {
-            put(1,"下架");
-            put(2,"正常");
-        }
-    };
-    //endregion
-
     //region AUTO_CAR_TYPE
     public static final Integer AUTO_CAR_HAS_PARTS_NO = 1;
     public static final Integer AUTO_CAR_HAS_PARTS_YES = 2;
@@ -175,6 +147,14 @@ public class Constants {
         }
     };
     //endregion
+
+    //region AUTO_CAR_STATUS
+    public static final Integer AUTO_CAR_STATUS_OFF = 1;
+    public static final Integer AUTO_CAR_STATUS_ON = 2;
+
+    //region AUTO_COLLECT_STATUS
+    public static final Integer AUTO_COLLECT_STATUS_NORMAL = 1;
+    public static final Integer AUTO_COLLECT_STATUS_DELETE = 2;
 
     //region AUTO_CAR_QUOTE_TYPE
     public static final Integer AUTO_CAR_QUOTE_TYPE_UP = 1;

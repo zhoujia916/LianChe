@@ -62,7 +62,7 @@ public class AutoBrandModelController extends ModuleController {
     @RequestMapping (value = "/index/{catId}")
     public String show(@PathVariable String catId){
         Map<String, Object> map=new HashMap<String, Object>();
-        map.put("catId",catId);
+        map.put("catIds",catId);
         List<AutoBrandCat> catList=autoBrandCatService.queryList(map);
         if(catList.size()>0){
             map.clear();
@@ -86,24 +86,23 @@ public class AutoBrandModelController extends ModuleController {
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result modelList(AutoBrandModel autoBrandModel){
+    public Result modelList(AutoBrandModel autoBrandModel,Page page){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("modelName",autoBrandModel.getModelName());
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
-            if(!autoBrandModel.getCatString().equalsIgnoreCase("null")){
-                map.put("catId",autoBrandModel.getCatString());
-            }
-            if(autoBrandModel.getBrands()!=null && autoBrandModel.getBrands()!=""){
-                map.put("brandId",autoBrandModel.getBrands());
-            }
-            if(autoBrandModel.getCats()!=null && autoBrandModel.getCats()!=""){
-                map.put("catId",autoBrandModel.getCats());
+            if(autoBrandModel!=null) {
+                if(autoBrandModel.getModelName()!=null && autoBrandModel.getModelName()!="") {
+                    map.put("modelName", autoBrandModel.getModelName());
+                }
+                if (!autoBrandModel.getCatString().equalsIgnoreCase("null")) {
+                    map.put("catIds", autoBrandModel.getCatString());
+                }
+                if (autoBrandModel.getBrandId() != null && autoBrandModel.getBrandId()>0 ) {
+                    map.put("brandId", autoBrandModel.getBrandId());
+                }
+                if (autoBrandModel.getBrandCatId() != null && autoBrandModel.getBrandCatId() >0) {
+                    map.put("catId", autoBrandModel.getBrandCatId());
+                }
             }
             List<AutoBrandModel> list=autoBrandModelService.queryList(map,page);
             if(list!=null && list.size()>0){

@@ -11,13 +11,13 @@
             <div class="grid-filter">
                 <input type="text input-sm" style="height: 29px" class="txt" name="title" placeholder="标题" />
                 <input type="text input-sm" style="height: 29px" class="txt" name="name" placeholder="发布者" />
-                <select data-init="0" name="status" data-placeholder=" 请选择状态">
+                <select name="status" style="height: 29px;width: 160px;">
                     <option value="0">请选择状态</option>
                     <option value="1">已保存</option>
                     <option value="2">已提交</option>
                     <option value="3">已审核</option>
                 </select>
-                <select data-init="0" name="catId" ata-placeholder=" 请选择类型">
+                <select name="catId" style="height: 29px;width: 160px;">
                     <option value="0">请选择类型</option>
                     {{foreach from=$autoArticleCatList item=autoArticleCat}}
                     <option value="{{$autoArticleCat.catId}}">{{$autoArticleCat.catName}}</option>
@@ -45,7 +45,6 @@
                         <th>类型</th>
                         <th>发布时间</th>
                         <th>发布者</th>
-                        <th>发布者类型</th>
                         <th>状态</th>
                         <th>排序号</th>
                         <th width="120">操作</th>
@@ -415,9 +414,7 @@
             },{
                 name:"addTime"
             },{
-                name:"name"
-            },{
-                name:"addUserType"
+                name:"userName"
             },{
                 name:"status"
             },{

@@ -55,7 +55,7 @@ public class AutoUserController extends ModuleController {
                 if(StringUtil.isNotNullOrEmpty(autoUser.getShopName())) {
                     map.put("shopName", autoUser.getShopName());
                 }
-                if(autoUser.getStatus() != null && autoUser.getStatus() > -1){
+                if(autoUser.getStatus() != null && autoUser.getStatus() > 0){
                     map.put("status", autoUser.getStatus());
                 }
                 if(autoUser.getShopType() != null && autoUser.getShopType() > 0){

@@ -214,13 +214,13 @@
             <if test="fromUserName!=null and fromUserName!=''">
                 and am.from_user_id in (select user_id from auto_user where user_name like concat('%',#{fromUserName},'%'))
             </if>
-            <if test="fromUserName==null">
-                and am.msg_type=0
+            <if test="adminUserName!=null and adminUserName!=''">
+                and ${adminUserName}
             </if>
-            <if test="msgType>-1 and msgType!=null">
+            <if test="msgType>0 and msgType!=null">
                 and am.msg_type=#{msgType}
             </if>
-            <if test="status>-1 and status!=null">
+            <if test="status>0 and status!=null">
                 and am.status=#{status}
             </if>
             <if test="beginTime!=null">

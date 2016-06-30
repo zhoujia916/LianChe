@@ -79,7 +79,7 @@
 	        	<if test="templateId > 0">
                     and template_id = #{templateId}
 	            </if>
-	        	<if test="name != null">
+	        	<if test="name != null and name != ''">
                     and name like concat('%', #{name}, '%')
 	            </if>
 	        </trim>

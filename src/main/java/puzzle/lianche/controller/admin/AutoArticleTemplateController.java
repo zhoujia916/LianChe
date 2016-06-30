@@ -45,6 +45,11 @@ public class AutoArticleTemplateController extends ModuleController {
                 page.setPageSize(ConvertUtil.toInt(request.getParameter("pageSize")));
             }
             Map<String,Object> map = new HashMap<String, Object>();
+            if(autoArticleTemplate!=null){
+                if(autoArticleTemplate.getName()!=null && autoArticleTemplate.getName()!=""){
+                    map.put("name",autoArticleTemplate.getName());
+                }
+            }
             List<AutoArticleTemplate> list = autoArticleTemplateService.queryList(map, page);
             result.setData(list);
         }catch(Exception e){

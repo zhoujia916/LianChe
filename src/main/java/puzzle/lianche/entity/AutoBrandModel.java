@@ -80,9 +80,16 @@ public class AutoBrandModel implements Serializable{
     //新增属性
     private String catName;
     private String brandName;
-    private String brands;
-    private String cats;
     private String catString;
+    private Integer brandId;
+
+    public Integer getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
+    }
 
     public String getCatString() {
         return catString;
@@ -106,21 +113,5 @@ public class AutoBrandModel implements Serializable{
 
     public void setBrandName(String brandName) {
         this.brandName = brandName;
-    }
-
-    public String getBrands() {
-        return brands;
-    }
-
-    public void setBrands(String brands) {
-        this.brands = brands;
-    }
-
-    public String getCats() {
-        return cats;
-    }
-
-    public void setCats(String cats) {
-        this.cats = cats;
     }
 }

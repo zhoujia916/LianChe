@@ -31,9 +31,6 @@ public class AutoMsgController extends ModuleController {
     @Autowired
     private IAutoUserService autoUserService;
 
-    @Autowired
-    private ISystemMenuActionService systemMenuActionService;
-
     @RequestMapping (value = {"/","/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();
@@ -45,28 +42,33 @@ public class AutoMsgController extends ModuleController {
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result list(AutoMsg autoMsg){
+    public Result list(AutoMsg autoMsg,Page page){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
-            map.put("toUserName",autoMsg.getToUserName());
-            map.put("msgType",autoMsg.getMsgType());
-            map.put("status",autoMsg.getStatus());
-            if("系统".equalsIgnoreCase(autoMsg.getFromUserName())){
-                map.put("fromUserName",null);
-            }else{
-                map.put("fromUserName",autoMsg.getFromUserName());
-            }
-            if(autoMsg.getBeginTimeString()!=null && autoMsg.getBeginTimeString()!=""){
-                map.put("beginTime",ConvertUtil.toLong(ConvertUtil.toDateTime(autoMsg.getBeginTimeString() + " 00:00:00")));
-            }
-            if(autoMsg.getEndTimeString()!=null && autoMsg.getEndTimeString()!=""){
-                map.put("endTime",ConvertUtil.toLong(ConvertUtil.toDateTime(autoMsg.getEndTimeString()+" 23:59:59")));
+            if(autoMsg!=null) {
+                if(autoMsg.getToUserName()!=null && autoMsg.getToUserName()!="") {
+                    map.put("toUserName", autoMsg.getToUserName());
+                }
+                if(autoMsg.getMsgType()!=null && autoMsg.getMsgType() >0) {
+                    map.put("msgType", autoMsg.getMsgType());
+                }
+                if(autoMsg.getStatus()!=null && autoMsg.getStatus() >0) {
+                    map.put("status", autoMsg.getStatus());
+                }
+                if(autoMsg.getFromUserName()!=null && autoMsg.getFromUserName()!=""){
+                    if ("系统".equalsIgnoreCase(autoMsg.getFromUserName())) {
+                        map.put("adminUserName", "am.msg_type=1");
+                    } else {
+                        map.put("fromUserName", autoMsg.getFromUserName());
+                    }
+                }
+                if (autoMsg.getBeginTimeString() != null && autoMsg.getBeginTimeString() != "") {
+                    map.put("beginTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoMsg.getBeginTimeString() + " 00:00:00")));
+                }
+                if (autoMsg.getEndTimeString() != null && autoMsg.getEndTimeString() != "") {
+                    map.put("endTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoMsg.getEndTimeString() + " 23:59:59")));
+                }
             }
             List<AutoMsg> list=autoMsgService.queryList(map,page);
             if(list!=null && list.size()>0){
@@ -79,9 +81,7 @@ public class AutoMsgController extends ModuleController {
                         msg.setToUserName(msg.getToUserName()+"("+msg.getToRealName()+")");
                     }
                     JSONObject jsonObject=JSONObject.fromObject(msg);
-                    jsonObject.put("msgType",Constants.MAP_AUTO_MSG_TYPE.get(msg.getMsgType()));
                     jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(msg.getAddTime())));
-
                     array.add(jsonObject);
                 }
                 result.setData(array);

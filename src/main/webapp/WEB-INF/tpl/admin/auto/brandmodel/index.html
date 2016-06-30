@@ -25,14 +25,14 @@
         <div id="brandmodel-gridview" class="gridview">
             <div class="grid-filter">
                 <input type="hidden" id="catString" name="catString" value="{{$catId}}">
-                <select multiple="" data-init="0" name="brands" class="select2" placeholder=" 请选择品牌">
-                    <option value="">&nbsp;</option>
+                <select name="brandId" style="height: 29px;width: 160px;">
+                    <option value="0">请选择品牌</option>
                     {{foreach from=$brandList item=brand}}
                     <option value="{{$brand.brandId}}">{{$brand.brandName}}</option>
                     {{/foreach}}
                 </select>
-                <select multiple="" data-init="0" name="cats" class="select2" placeholder=" 请选择车系">
-                    <option value="">&nbsp;</option>
+                <select name="brandCatId" style="height: 29px;width: 160px;">
+                    <option value="0">请选择车系</option>
                     {{foreach from=$catList item=cat}}
                     <option value="{{$cat.catId}}">{{$cat.catName}}</option>
                     {{/foreach}}
@@ -85,7 +85,8 @@
                 </div>
             </div>
             <div class="grid-form save-form" style="">
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+                <div class="overlay"></div>
+                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">
                     <div class="widget-header">
                         <h5 class="widget-title smaller"></h5>
 
