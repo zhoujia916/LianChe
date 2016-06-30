@@ -11,6 +11,8 @@ import puzzle.lianche.entity.*;
 import puzzle.lianche.service.*;
 import puzzle.lianche.utils.*;
 
+import javax.servlet.http.Cookie;
+import java.net.HttpCookie;
 import java.util.*;
 
 @Controller(value="adminSystemIndexController")
@@ -39,7 +41,7 @@ public class SystemIndexController extends ModuleController {
         String returnUrl = this.getParameter(Constants.UrlHelper.PARAM_RETURN_URL);
         if(this.getCurrentUser() != null){
             if(StringUtil.isNotNullOrEmpty(returnUrl)){
-                return this.redirect(returnUrl);
+                return this.redirect(Constants.UrlHelper.ADMIN_SYSTEM_INDEX + returnUrl.replace("/admin/", "#page/"));
             }else {
                 return this.redirect(Constants.UrlHelper.ADMIN_SYSTEM_INDEX);
             }
@@ -51,7 +53,7 @@ public class SystemIndexController extends ModuleController {
             this.setModelAttribute("remember", info.getInt("remember"));
         }
         if(StringUtil.isNotNullOrEmpty(returnUrl)){
-            this.setModelAttribute(Constants.UrlHelper.PARAM_RETURN_URL, returnUrl);
+            this.setModelAttribute(Constants.UrlHelper.PARAM_RETURN_URL, Constants.UrlHelper.ADMIN_SYSTEM_INDEX + returnUrl.replace("/admin/", "#page/"));
         }
         return Constants.UrlHelper.ADMIN_SYSTEM_LOGIN;
     }
@@ -282,7 +284,8 @@ public class SystemIndexController extends ModuleController {
                     JSONObject info = new JSONObject();
                     info.put("user", username);
                     info.put("remember", 1);
-                    this.setCookie(Constants.COOKIE_ADMIN, info.toString(), 30 * 24 * 3600);
+                    this.setCookie(Constants.COOKIE_ADMIN, info.toString(), 30 * 24 * 3600, "/admin/");
+
                 }
                 result.setCode(0);
             }else{

@@ -37,6 +37,21 @@ public class AutoUserController extends ModuleController {
         return Constants.UrlHelper.ADMIN_AUTO_USER;
     }
 
+    @RequestMapping (value = {"/add"})
+    public String add(){
+        return Constants.UrlHelper.ADMIN_AUTO_USER_ADD;
+    }
+
+    @RequestMapping (value = {"/edit"})
+    public String edit(){
+        return Constants.UrlHelper.ADMIN_AUTO_USER_EDIT;
+    }
+
+    @RequestMapping (value = {"/show"})
+    public String show(){
+        return Constants.UrlHelper.ADMIN_AUTO_USER_SHOW;
+    }
+
     /**
      * 获取会员信息
      * @param autoUser

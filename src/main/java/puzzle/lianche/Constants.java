@@ -420,6 +420,12 @@ public class Constants {
 
         public static final String ADMIN_AUTO_USER = "admin/auto/user/index";
 
+        public static final String ADMIN_AUTO_USER_ADD = "admin/auto/user/add";
+
+        public static final String ADMIN_AUTO_USER_EDIT = "admin/auto/user/edit";
+
+        public static final String ADMIN_AUTO_USER_SHOW = "admin/auto/user/show";
+
         public static final String ADMIN_AUTO_ARTICLE = "admin/auto/article/index";
 
         public static final String ADMIN_AUTO_ARTICLE_ADD = "admin/auto/article/add";
