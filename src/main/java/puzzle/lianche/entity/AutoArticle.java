@@ -187,11 +187,45 @@ public class AutoArticle implements Serializable{
 
     //新增属性
     private String catName;
+<<<<<<< HEAD
     private String userName;
+=======
+    private String checkUserName;
+    private String addUserName;
+>>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
     private String name;
     private String beginTimeString;
     private String endTimeString;
 
+<<<<<<< HEAD
+=======
+    public String getAddTimeString() {
+        return addTimeString;
+    }
+
+    public void setAddTimeString(String addTimeString) {
+        this.addTimeString = addTimeString;
+    }
+
+    private String addTimeString;
+
+    public String getAddUserName() {
+        return addUserName;
+    }
+
+    public void setAddUserName(String addUserName) {
+        this.addUserName = addUserName;
+    }
+
+    public String getCheckUserName() {
+        return checkUserName;
+    }
+
+    public void setCheckUserName(String checkUserName) {
+        this.checkUserName = checkUserName;
+    }
+
+>>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
     public String getName() {
         return name;
     }
@@ -216,6 +250,17 @@ public class AutoArticle implements Serializable{
         this.endTimeString = endTimeString;
     }
 
+<<<<<<< HEAD
+=======
+    public String getStatusString() {
+        return statusString;
+    }
+
+    public void setStatusString(String statusString) {
+        this.statusString = statusString;
+    }
+
+>>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
     public String getCatName() {
         return catName;
     }
@@ -224,11 +269,5 @@ public class AutoArticle implements Serializable{
         this.catName = catName;
     }
 
-    public String getUserName() {
-        return userName;
-    }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 }

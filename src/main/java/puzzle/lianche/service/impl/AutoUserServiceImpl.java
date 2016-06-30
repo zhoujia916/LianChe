@@ -142,4 +142,13 @@ public class AutoUserServiceImpl implements IAutoUserService {
     public List<AutoUser> queryList(Map<String, Object> map, Page page){
     	return sqlMapper.queryList("AutoUserMapper.queryList", map, page);
     }
+
+    /**
+     * 统计用户总数
+     * @param map
+     * @return
+     */
+    public Integer queryCount(Map<String, Object> map){
+        return (Integer)sqlMapper.query("AutoUserMapper.queryCount", map);
+    }
 }

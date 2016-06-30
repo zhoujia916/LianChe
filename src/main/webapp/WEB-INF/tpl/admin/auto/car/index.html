@@ -2,10 +2,10 @@
 <title>Puzzle Admin-车源管理</title>
 
 <div class="page-header">
-    <h1>
+    <h4>
         <i class="glyphicon glyphicon-signal"></i>
         车源管理
-    </h1>
+    </h4>
 </div>
 
 <div class="row" id="">
@@ -62,153 +62,6 @@
 
                 </div>
             </div>
-            <div class="grid-form save-form" style="">
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:1000px;">
-                    <div class="widget-header">
-                        <h5 class="widget-title smaller"></h5>
-
-                        <div class="widget-toolbar">
-                            <a href="#" class="btn-action" data-action="hide">
-                                <i class="ace-icon fa fa-close white"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="widget-body">
-                        <div class="widget-main" style="max-height:500px;">
-                            <div class="alert-info red"></div>
-                            <form class="form-horizontal" role="form">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        品牌车型
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <select id="brandId" name="brandId" data-init="0">
-                                            <option value="0">请选择品牌</option>
-                                            {{foreach from=$brandList item=barndItem}}
-                                            <option value="{{$barndItem.brandId}}">{{$barndItem.brandName}}</option>
-                                            {{/foreach}}
-                                        </select>
-                                        <select id="catId" name="catId" data-init="0">
-                                            <option value="0">请选择车系</option>
-                                        </select>
-                                        <select id="modelId" name="modelId" data-init="0">
-                                            <option value="0">请选择车型</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        官方指导价
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" data-init="0" id="officalPrice"  name="officalPrice" placeholder="官方指导价" class="txt input-sm col-sm-4">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        有效期
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <div class="input-daterange input-group">
-                                            <input type="text" class="input-sm col-sm-2 form-control" name="startDateString">
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-exchange"></i>
-                                            </span>
-                                            <input type="text" class="input-sm col-sm-2 form-control" name="endDateString">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        是否特卖会
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="checkbox" data-init="1" value="0" offval="1" name="carType" role="checkbox" class="ace ace-switch ace-switch-5">
-                                        <span class="lbl"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        是否加配
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="checkbox" data-init="1" value="0" offval="1" name="hasParts" role="checkbox" class="ace ace-switch ace-switch-5">
-                                        <span class="lbl"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group" id="rowParts">
-                                    <label class="col-sm-3 control-label">
-                                        加配描述
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <textarea name="parts" class="txt input-sm col-sm-10"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group" id="rowPartsPrice">
-                                    <label class="col-sm-3 control-label">
-                                        加配价格
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" data-init="0" name="partsPrice" placeholder="加配价格" class="txt input-sm col-sm-4">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        发票信息
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <div class="position-relative">
-                                            <input type="radio" data-init="1" value="1" offval="0" name="carType" class="ace" checked="checked">
-                                            <label class="lbl">普票</label>
-                                        &nbsp;&nbsp;
-                                            <input type="radio" value="2" offval="0" name="carType" class="ace">
-                                            <label class="lbl">增票</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        车源图片
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <div class="dropzone" id="dropzone" style="min-height:250px !important;">
-                                            <div class="fallback">
-                                                <input name="file" type="file" multiple="" />
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        排序号
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" data-init="0" id="sortOrder" value="0" name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
-                                    </div>
-                                </div>
-                                <div class="clearfix">
-                                    <input type="hidden" name="carId" value="" />
-                                    <input type="hidden" id="hicPic" data-map="dropzone" name="pic" value="" />
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="widget-footer form-actions">
-                        <a class="btn btn-sm btn-action" data-action="reset">
-                            <i class="ace-icon fa fa-undo"></i>
-                            重置
-                        </a>
-                        &nbsp; &nbsp; &nbsp;
-                        <a class="btn btn-sm btn-primary btn-action" data-action="save">
-                            <i class="ace-icon fa fa-check"></i>
-                            提交
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="grid-form search-form "></div>
-            <input type="hidden" id="carId" value="{{$carId}}"/>
         </div>
         <!-- PAGE CONTENT ENDS -->
     </div><!-- /.col -->
@@ -222,19 +75,18 @@
             selectOtherMonths: false
         });
 
-
-
         $( "#datepicker2" ).datepicker({
             showOtherMonths: true,
             selectOtherMonths: false
         });
 
-        $('.input-daterange').datepicker({autoclose:true});
-
         $("#car-gridview").gridview({
             url: "autocar/list.do",
             form: {
                 url: "autocar/action.do"
+            },
+            jsonReader:{
+                key_field: "carId"
             },
             columns: [
                 {
@@ -274,7 +126,12 @@
                 {
                     name: "status",
                     format: function(opts, column, row){
+<<<<<<< HEAD
                         return row["status"]==1 ? "<td><span class='label label-sm label-warning'>下架</span></td>" : "<td><span class='label label-sm label-success'>正常</span></td>";
+=======
+                        var text = ["<span class='label label-sm label-warning'>下架</span>", "<span class='label label-sm label-success'>正常</span>"];
+                        return "<td>" + text[row[column.name] - 1] + "</td>";
+>>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
                     }
                 },
                 {
@@ -289,13 +146,21 @@
                 },
                 {
                     name: "actions",
-                    list: ["edit", "delete"]
+                    list: ["edit", "delete", "view"]
                 }
             ],
             buttons:{
                 add:{
                     handler: function(){
-                        changeHash("page/autocar/show");
+                        changeHash("page/autocar/add");
+                    }
+                },
+                view:{
+                    handler: function(key){
+                        console.log("view");
+                        key = key || this.gridview("getKey");
+                        var hash = "page/autocar/show/" + key;
+                        changeHash(hash);
                     }
                 }
             }

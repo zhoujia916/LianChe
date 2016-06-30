@@ -20,7 +20,7 @@
      * window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
      */
 
-    window.UEDITOR_HOME_URL = "/LianChe/ueditor/";
+    window.UEDITOR_HOME_URL = "/ueditor/";
 
     var URL = window.UEDITOR_HOME_URL || getUEBasePath();
 
@@ -42,8 +42,7 @@
         , imageInsertAlign: "none" /* 插入的图片浮动方式 */
         //--------自补充配置结束---------//
         // 服务器统一请求接口路径
-        //, serverUrl: URL + "net/controller.ashx"
-        , serverUrl: "/LianChe/ueditor"
+        , serverUrl: "/plugin/ueditor"
 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义
 //        , toolbars: [[

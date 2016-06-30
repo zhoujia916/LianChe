@@ -3,16 +3,16 @@
 
 <div class="page-header">
 
-    <h1>
+    <h4>
         <i class="glyphicon glyphicon-signal"></i>
             品牌管理
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            查看车系动作
+            车系管理
         </small>
-        <a class="btn btn-xs orange pull-right btn-warning" onclick="goBack()">
+        <a class="btn btn-xs orange pull-right btn-warning" href="#page/autobrand/index">
             <i class="glyphicon glyphicon-arrow-left"></i>返回品牌管理</span></a>
-    </h1>
+    </h4>
 
 </div>
 
@@ -21,10 +21,17 @@
         <div id="brandcat-gridview" class="gridview">
             <div class="grid-filter">
                 <input type="hidden" id="brandString" name="brandString" value="{{$brandId}}" />
+<<<<<<< HEAD
                 <select name="brandId" style="height: 29px;width: 160px;">
                     <option value="0">请选择品牌</option>
                     {{foreach from=$brandList item=brand}}
                     <option value="{{$brand.brandId}}">{{$brand.brandName}}</option>
+=======
+                <select name="brandId" placeholder="请选择品牌">
+                    <option value="0">请选择品牌</option>
+                    {{foreach from=$brandList item=brandItem}}
+                    <option value="{{$brandItem.brandId}}"{{if $brandId eq $brandItem.brandId }} selected="selected"{{/if}}>{{$brandItem.brandName}}</option>
+>>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
                     {{/foreach}}
                 </select>
                 <input type="text input-sm" style="height: 29px" class="txt" name="catName" placeholder="车系名称" />
@@ -42,7 +49,7 @@
 
                 <a data-action="refresh" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-refresh"></i>刷新</a>
 
-                <a id="btn-view" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-search-plus"></i>查看车型</a>
+                <a id="btnView" class=" btn btn-action btn-primary btn-xs"><i class="ace-icon fa fa-search-plus"></i>查看车型</a>
             </div>
 
             <div class="grid-table">
@@ -151,23 +158,11 @@
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $('.select2').css('width','160px').select2({allowClear:true})
-        $('#select2-multiple-style .btn').on('click', function(e){
-            var target = $(this).find('input[type=radio]');
-            var which = parseInt(target.val());
-            if(which == 2) $('.select2').addClass('tag-input-style');
-            else $('.select2').removeClass('tag-input-style');
-        });
-
-        $(document).one('ajaxloadstart.page', function(e) {
-            $('[class*=select2]').remove();
-        });
-
-        $("#btn-view").on("click", function(){
-            var keys = $("#brandcat-gridview").gridview("getKeys");
-            var hash = "admin/autobrandmodel/";
-            if(keys.length > 0){
-                hash = hash + "index/" + keys.join(",");
+        $("#btnview").on("click", function(){
+            var key = $("#brandcat-gridview").gridview("getKey");
+            var hash = "page/autobrandmodel/index";
+            if(key){
+                hash = hash + "/" + key;
             }
             changeHash(hash);
         });
@@ -229,9 +224,4 @@
             ]
         });
     });
-</script>
-<script type="text/javascript">
-    function goBack(){
-        window.history.back();
-    }
 </script>

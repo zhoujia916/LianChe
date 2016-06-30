@@ -103,8 +103,11 @@
 		jq.on("click", opts.gridtable + " .btn-action", function(){
 			var action = $(this).attr("data-action").toLowerCase();
 			var key = $(this).attr("data-key");
-			
-			
+            var action = $(this).attr("data-action");
+            if(!isUndefinedOrNull(opts.buttons) && !isUndefinedOrNull(opts.buttons[action]) && $.isFunction(opts.buttons[action].handler)){
+                opts.buttons[action].handler.call(jq, key);
+                return;
+            }
 			if(action == "edit" || action == "view"){
 				showForm(jq, action, getRowData(jq, key));
 			}
@@ -242,7 +245,7 @@
 		return rowData;
 	}
 
-    function handleAction(jq, action){
+    function handleAction(jq, action, isRowAction){
         var opts = getOption(jq);
         if(action == "add"){
             showForm(jq, action);

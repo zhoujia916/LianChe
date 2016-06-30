@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
+import puzzle.lianche.controller.plugin.uploader.PathFormatter;
 import puzzle.lianche.entity.AutoArticle;
 import puzzle.lianche.entity.AutoArticleCat;
 import puzzle.lianche.entity.SystemMenuAction;
@@ -19,6 +23,8 @@ import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.*;
 
 @Controller (value = "adminAutoArticleController")
@@ -42,8 +48,18 @@ public class AutoArticleController extends ModuleController {
         return Constants.UrlHelper.ADMIN_AUTO_ARTICLE;
     }
 
+
+
+    @RequestMapping (value = "/add")
+    public String add(){
+        List<AutoArticleCat> cats = autoArticleCatService.queryList(null);
+        this.setModelAttribute("catList", cats);
+        return Constants.UrlHelper.ADMIN_AUTO_ARTICLE_ADD;
+    }
+
     @RequestMapping (value = "/list.do")
     @ResponseBody
+<<<<<<< HEAD
     public Result list(AutoArticle autoArticle,Page page){
         Result result=new Result();
         try{
@@ -76,10 +92,40 @@ public class AutoArticleController extends ModuleController {
                     jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(article.getAddTime())));
                     jsonObject.put("status",Constants.MAP_AUTO_ARTICLE_STATUS.get(article.getStatus()));
                     array.add(jsonObject);
+=======
+    public Result list(AutoArticle autoArticle, Page page){
+        Result result=new Result();
+        try{
+            Map<String, Object> map=new HashMap<String, Object>();
+            if(autoArticle != null) {
+                map.put("title", autoArticle.getTitle());
+                if (StringUtil.isNotNullOrEmpty(autoArticle.getBeginTimeString())) {
+                    map.put("beginTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoArticle.getBeginTimeString() + " 00:00:00")));
+                }
+                if (StringUtil.isNotNullOrEmpty(autoArticle.getEndTimeString())) {
+                    map.put("endTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoArticle.getEndTimeString() + " 23:59:59")));
+                }
+                if (StringUtil.isNotNullOrEmpty(autoArticle.getStatusString())) {
+                    map.put("autoArticleStatus", autoArticle.getStatusString());
+                }
+                if (StringUtil.isNotNullOrEmpty(autoArticle.getCatName())) {
+                    map.put("catNames", autoArticle.getCatName());
+                }
+            }
+            List<AutoArticle> list = autoArticleService.queryList(map,page);
+            if(list != null && !list.isEmpty()){
+                JSONArray array = new JSONArray();
+                for(AutoArticle article : list){
+                    JSONObject object = JSONObject.fromObject(article);
+                    object.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(article.getAddTime())));
+                    object.put("status",Constants.MAP_AUTO_ARTICLE_STATUS.get(article.getStatus()));
+                    array.add(object);
+>>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
                 }
                 result.setData(array);
-                result.setTotal(page.getTotal());
             }
+
+            result.setTotal(page.getTotal());
         }catch(Exception e){
             result.setCode(1);
             result.setMsg("获取文章信息出错");
@@ -102,6 +148,36 @@ public class AutoArticleController extends ModuleController {
                 autoArticle.setAddUserId(userId);
                 autoArticle.setStatus(2);
                 autoArticle.setAddTime(ConvertUtil.toLong(new Date()));
+                CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(session.getServletContext());
+                if(multipartResolver.isMultipart(request)) {
+                    MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                    MultipartFile cover = multiRequest.getFile("cover");
+
+                    String rootPath = session.getServletContext().getRealPath("");
+                    String relativePath = request.getContextPath();
+                    String typePath = "article";
+                    String savePath = rootPath + "/upload/" + typePath + "/";
+                    String relativeUrl = relativePath + "/upload/" + typePath + "/";
+                    String saveName = PathFormatter.format(cover.getOriginalFilename(), "{yy}{MM}{dd}/{hh}{mm}{rand:6}");
+                    String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
+                    File dir = new File(dirName);
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    }
+
+                    FileOutputStream fos = new FileOutputStream(savePath + saveName);
+                    fos.write(cover.getBytes());
+                    fos.close();
+
+                    String url = request.getScheme() + "://" + request.getServerName();
+                    if(request.getServerPort() != 80){
+                        url += ":" + request.getServerPort();
+                    }
+                    url += relativeUrl + saveName;
+
+                    autoArticle.setCover(url);
+                }
+
                 if(!autoArticleService.insert(autoArticle)){
                     result.setCode(1);
                     result.setMsg("添加文章时出错");

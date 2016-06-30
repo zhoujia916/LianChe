@@ -382,8 +382,10 @@ public class Constants {
     public static final Integer AUTO_AUTHORITY_TARGET_TYPE_MENU = 1;
     public static final Integer AUTO_AUTHORITY_TARGET_TYPE_ACTION = 2;
 
+    //上拉刷新
     public static final Integer PULLREFRESH_UP = 1;
 
+    //下拉加载
     public static final Integer PULLREFRESH_DOWN = 2;
 
     public class UrlHelper{
@@ -425,6 +427,8 @@ public class Constants {
 
         public static final String ADMIN_AUTO_ARTICLE = "admin/auto/article/index";
 
+        public static final String ADMIN_AUTO_ARTICLE_ADD = "admin/auto/article/add";
+
         public static final String ADMIN_AUTO_ARTICLE_CAT = "admin/auto/articlecat/index";
 
         public static final String ADMIN_AUTO_ARTICLE_TEMPLATE = "admin/auto/articletemplate/index";
@@ -447,11 +451,13 @@ public class Constants {
 
         public static final String ADMIN_AUTO_CAR_SHOW = "admin/auto/car/show";
 
+        public static final String ADMIN_AUTO_CAR_ADD = "admin/auto/car/add";
+
         public static final String ADMIN_AUTO_AD_POSITION = "admin/auto/adposition/index";
 
         public static final String ADMIN_AUTO_SMS = "admin/auto/sms/index";
 
-        public static final String ADMIN_ORDER_DETAILS = "admin/auto/orderdetails/index";
+        public static final String ADMIN_AUTO_ORDER_SHOW = "admin/auto/order/show";
 
         public static final String ADMIN_AUTO_ORDER = "admin/auto/order/index";
     }

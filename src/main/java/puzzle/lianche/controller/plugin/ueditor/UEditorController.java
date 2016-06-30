@@ -8,9 +8,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import puzzle.lianche.controller.BaseController;
 
 @Controller(value = "pluginUEditorController")
-@RequestMapping(value = {"/ueditor"})
+@RequestMapping(value = {"/plugin"})
 public class UEditorController extends BaseController {
-    @RequestMapping(value = {""})
+    @RequestMapping(value = {"/ueditor"})
     public void index(){
         UploadFile uploadFile = null;
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(session.getServletContext());

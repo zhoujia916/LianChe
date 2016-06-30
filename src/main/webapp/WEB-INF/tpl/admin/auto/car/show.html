@@ -7,7 +7,7 @@
         车源管理
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            新建车源
+            查看车源详情
         </small>
 
         <a class="btn btn-xs orange pull-right btn-warning" href="#page/autocar/index">
@@ -56,78 +56,52 @@
                             <label class="col-sm-3 control-label">
                                 品牌
                             </label>
-                            <div class="col-sm-9">
-                                <select id="brandId" name="brandId" data-init="0" style="width:200px">
-                                    <option value="0">请选择品牌</option>
-                                    {{foreach from=$brandList item=barndItem}}
-                                    <option value="{{$barndItem.brandId}}">{{$barndItem.brandName}}</option>
-                                    {{/foreach}}
-                                </select>
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{$car.brandName}}
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 车系
                             </label>
-                            <div class="col-sm-9">
-                                <select id="catId" name="brandCatId" data-init="0" style="width:200px">
-                                    <option value="0">请选择车系</option>
-                                    {{if $catList}}
-                                    {{foreach from=$catList item=catItem}}
-                                    <option value="{{$catItem.brandId}}">{{$catItem.catName}}</option>
-                                    {{/foreach}}
-                                    {{/if}}
-                                </select>
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{$car.catName}}
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 车型
                             </label>
-                            <div class="col-sm-9">
-                                <select id="modelId" name="brandModelId" data-init="0" style="width:200px">
-                                    <option value="0">请选择车型</option>
-                                    {{if $modelList}}
-                                    {{foreach from=$modelList item=modelItem}}
-                                    <option value="{{$modelItem.brandId}}">{{$modelItem.modelName}}</option>
-                                    {{/foreach}}
-                                    {{/if}}
-                                </select>
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{$car.modelName}}
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 官方指导价
                             </label>
-                            <div class="col-sm-9">
-                                <input type="text" data-init="0" id="officalPrice"  name="officalPrice" placeholder="官方指导价" class="txt input-sm col-sm-2">
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{$car.officalPrice}}
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 车源有效期
                             </label>
-                            <div class="col-sm-9">
-                                <input type="text" class="input-sm col-sm-2" placeholder="开始日期" id="datepicker1" name="beginTimeString">
-                                <input type="text" class="input-sm col-sm-2" placeholder="结束日期" id="datepicker2" name="endTimeString" style="margin-left:20px;">
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{$car.beginTimeString}} - {{$car.endTimeString}}
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 是否特卖会
                             </label>
-                            <div class="col-sm-9">
-                                <div class="position-relative">
-                                    <label>
-                                        <input value="1" type="radio" name="carType" class="ace" checked="checked">
-                                        <span class="lbl">否</span>
-                                    </label>
-
-                                    <label style="margin-left:20px;">
-                                        <input value="2" type="radio" name="carType" class="ace">
-                                        <span class="lbl">是</span>
-                                    </label>
-                                </div>
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{if $car.carType eq 1}}
+                                否
+                                {{else if $car.carType eq 2}}
+                                是
+                                {{/if}}
                             </div>
                         </div>
 
@@ -135,34 +109,28 @@
                             <label class="col-sm-3 control-label">
                                 发票信息
                             </label>
-                            <div class="col-sm-9">
-                                <div class="position-relative">
-                                    <label>
-                                        <input value="1" type="radio" name="invoiceType" class="ace" checked="checked">
-                                        <span class="lbl">普票</span>
-                                    </label>
-
-                                    <label style="margin-left:20px;">
-                                        <input value="2" type="radio" name="invoiceType" class="ace">
-                                        <span class="lbl">增票</span>
-                                    </label>
-                                </div>
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{if $car.carType eq 1}}
+                                普票
+                                {{else if $car.carType eq 2}}
+                                增票
+                                {{/if}}
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 排序号
                             </label>
-                            <div class="col-sm-9">
-                                <input type="text" data-init="0" id="sortOrder" value="0" name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{$car.sortOrder}}
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
                                 车源备注
                             </label>
-                            <div class="col-sm-9">
-                                <textarea name="remark" class="txt input-sm col-sm-10" style="height:50px;"></textarea>
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{$car.remark}}
                             </div>
                         </div>
                     </div>
@@ -173,26 +141,28 @@
                             <label class="col-sm-3 control-label">
                                 是否加配
                             </label>
-                            <div class="col-sm-9">
-                                <input type="hidden" name="hasParts" id="hidHasParts" value="1" >
-                                <input type="checkbox" data-init="1" value="2" offval="1" id="cbHasParts" role="checkbox" class="ace ace-switch ace-switch-5">
-                                <span class="lbl"></span>
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{if $car.carType eq 1}}
+                                否
+                                {{else if $car.carType eq 2}}
+                                是
+                                {{/if}}
                             </div>
                         </div>
                         <div class="form-group" id="rowParts">
                             <label class="col-sm-3 control-label">
                                 加配描述
                             </label>
-                            <div class="col-sm-9">
-                                <textarea name="parts" id="txtParts" class="txt disabled input-sm col-sm-10" disabled style="width:80%;max-width:80%;min-width:80%;height:300px;max-height:300px;"></textarea>
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{$car.parts}}
                             </div>
                         </div>
                         <div class="form-group" id="rowPartsPrice">
                             <label class="col-sm-3 control-label">
                                 加配价格
                             </label>
-                            <div class="col-sm-9">
-                                <input type="text" id="txtPartsPrice" data-init="0" name="partsPrice" disabled placeholder="加配价格" class="txt disabled input-sm col-sm-4">
+                            <div class="col-sm-9" style="padding-top: 9px;">
+                                {{$car.partsPrice}}
                             </div>
                         </div>
                     </div>
@@ -200,395 +170,58 @@
                     <div id="edit-attrs" class="tab-pane">
                         <div class="space-10"></div>
                         <div class="row">
-                            <input type="hidden" id="hidOutsideColor" name="outsideColor" />
-
-                            <input type="hidden" id="hidInsideColor" name="insideColor" />
-
-                            <input type="hidden" id="hidQuoteType" name="quoteType" />
-
-                            <input type="hidden" id="hidSalePriceType" name="salePriceType" />
-
-                            <input type="hidden" id="hidSaleAmount" name="saleAmount" />
-
-                            <input type="hidden" id="hidTotalNumber" name="totalNumber" />
-
-                            <div class="col-xs-2 attr-item" data-index="0">
+                            {{foreach from=$attrList item=attrItem}}
+                            <div class="col-xs-3 attr-item" data-index="0">
                                 <div class="widget-box widget-color-blue">
                                     <div class="widget-body">
                                         <div class="widget-main">
-                                            <input data-name="outsideColor" type="text" style="margin-bottom:15px;" placeholder="外观" class="txt input-sm col-sm-12">
+                                            <div style="margin-bottom:15px;" class="input-sm col-sm-12">
+                                                外观: {{$attrItem.outsideColor}}
+                                            </div>
+                                            <div style="margin-bottom:15px;" class="input-sm col-sm-12">
+                                                内饰: {{$attrItem.insideColor}}
+                                            </div>
+                                            <div style="margin-bottom:15px;" class="input-sm col-sm-12">
+                                                行情: {{if $attrItem.quoteType eq 1}}上{{else if $attrItem.quoteType eq 2}}下{{/if}}
+                                            </div>
+                                            <div style="margin-bottom:15px;" class="input-sm col-sm-12">
+                                                优惠类型: {{if $attrItem.salePriceType eq 1}}优惠点数{{else if $attrItem.salePriceType eq 2}}优惠价格{{/if}}
+                                            </div>
+                                            <div style="margin-bottom:15px;" class="input-sm col-sm-12">
+                                                {{if $attrItem.salePriceType eq 1}}
+                                                    优惠点数:{{$attrItem.saleAmount}}%
+                                                {{else if $attrItem.salePriceType eq 2}}
+                                                    优惠金额:{{$attrItem.saleAmount}}
+                                                {{/if}}
 
-                                            <input data-name="insideColor" type="text" style="margin-bottom:15px;" placeholder="内饰" class="txt input-sm col-sm-12">
-
-                                            <select data-name="quoteType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
-                                                <option value="0">请选择行情</option>
-                                                <option value="1">上</option>
-                                                <option value="2">下</option>
-                                            </select>
-
-                                            <select data-name="salePriceType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
-                                                <option value="0">请选择优惠类型</option>
-                                                <option value="1">优惠点数</option>
-                                                <option value="2">优惠价格</option>
-                                            </select>
-
-                                            <input data-name="saleAmount" type="text" style="margin-bottom:15px;" placeholder="优惠价格或点数(数字)" class="txt input-sm col-sm-12">
-
-                                            <input data-name="totalNumber" type="text" style="margin-bottom:15px;" placeholder="数量" class="txt input-sm col-sm-12">
-
-                                        </div>
-
-                                        <div>
-                                            <a href="#" class="btn btn-delete btn-block btn-primary" data-index="0">
-                                                <i class="ace-icon fa fa-trash-o bigger-110"></i>
-                                                <span>删除</span>
-                                            </a>
+                                            </div>
+                                            <div style="margin-bottom:15px;" class="input-sm col-sm-12">
+                                                车源数量: {{$attrItem.totalNumber}}
+                                            </div>
+                                            <div class="clear"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-2" id="btnAddAttr" data-index="1">
-                                <div class="widget-box widget-color-blue" style="border-style:dotted">
-                                    <div class="widget-body blue" style="height:324px;line-height:324px;text-align:center;">
-                                        <i class="ace-icon glyphicon glyphicon-plus fa-5x"></i>
-                                    </div>
-                                </div>
-                            </div>
+                            {{/foreach}}
                         </div>
                     </div>
 
                     <div id="edit-pics" class="tab-pane">
                         <div class="space-10"></div>
-                        <input type="hidden" id="hidPic" name="pic" />
                         <div class="dropzone" id="dropzone">
-                            <div class="fallback">
-                                <input type="file" multiple="" />
-                            </div>
+                            {{foreach from=$picList item=picItem}}
+                            <img src="{{$picItem.path}}" style="width:100px;" />
+                            {{/foreach}}
                         </div>
-
                     </div>
                 </div>
             </div>
-
-            <div class="clearfix form-actions">
-                <div class="col-md-offset-3 col-md-9">
-
-                    <button id="btnReset" class="btn" type="reset">
-                        <i class="ace-icon fa fa-undo bigger-110"></i>
-                        重置
-                    </button>
-                    &nbsp; &nbsp;
-                    <button id="btnSubmit" class="btn btn-info" type="button">
-                        <i class="ace-icon fa fa-check bigger-110"></i>
-                        确定
-                    </button>
-                </div>
-            </div>
         </form>
-
-
     </div><!-- /.col -->
 </div><!-- /.row -->
-<div id="template" style="display:none">
-    <div class="col-xs-2 attr-item">
-        <div class="widget-box widget-color-blue">
-            <div class="widget-body">
-                <div class="widget-main">
-                    <input type="text" data-name="outsideColor" style="margin-bottom:15px;" placeholder="外观" class="txt input-sm col-sm-12">
-
-                    <input type="text" data-name="insideColor" style="margin-bottom:15px;" placeholder="内饰" class="txt input-sm col-sm-12">
-
-                    <select data-name="quoteType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
-                        <option value="0">请选择行情</option>
-                        <option value="1">上</option>
-                        <option value="2">下</option>
-                    </select>
-
-                    <select data-name="salePriceType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
-                        <option value="0">请选择优惠类型</option>
-                        <option value="1">优惠点数</option>
-                        <option value="2">优惠价格</option>
-                    </select>
-
-                    <input type="text" data-name="saleAmount" style="margin-bottom:15px;" placeholder="优惠价格或点数(数字)" class="txt input-sm col-sm-12">
-
-                    <input type="text" data-name="totalNumber" style="margin-bottom:15px;" placeholder="数量" class="txt input-sm col-sm-12">
-
-                </div>
-
-                <div>
-                    <a href="#" class="btn btn-delete btn-block btn-primary" data-index="0">
-                        <i class="ace-icon fa fa-trash-o bigger-110"></i>
-                        <span>删除</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        var spliter = '※';
-        $("#btnSubmit").on("click", function(){
-            console.log("submit");
-            var brandId = $("#brandId").val();
-            if(brandId == "0"){
-                showTip("请选择品牌");
-                return;
-            }
-            var catId = $("#catId").val();
-            if(catId == "0"){
-                showTip("请选择车系");
-                return;
-            }
-            var modelId = $("#modelId").val();
-            if(modelId == "0"){
-                showTip("请选择车型");
-                return;
-            }
-            var officalPrice = $("#officalPrice").val();
-            if(officalPrice == ""){
-                showTip("官方指导价不能为空");
-                return;
-            }
-            if(isNaN(officalPrice)){
-                showTip("官方指导价必须为数字");
-                return;
-            }
-            var startDate = $("#startDate").val();
-            if(startDate == ""){
-                showTip("有效期开始时间不能为空");
-                return;
-            }
-            var endDate = $("#endDate").val();
-            if(endDate == ""){
-                showTip("有效期结束时间不能为空");
-                return;
-            }
-            var sortOrder = $("#sortOrder").val();
-            if(sortOrder != "" && isNaN(sortOrder)){
-                showTip("排序号必须为数字");
-                return;
-            }
-
-            var hasParts = $("#cbHasParts")[0].checked;
-            if(hasParts){
-                var parts = $.trim($("#txtParts").val());
-                if(parts == ""){
-                    showTip("加配时，加配描述不能为空");
-                    return;
-                }
-                var partsPrice = $.trim($("#txtPartsPrice").val());
-                if(partsPrice == "" || isNaN(partsPrice)){
-                    showTip("加配时，加配价格不能为空");
-                    return;
-                }
-            }
-            if($("#edit-attrs .attr-item").length == 0){
-                showTip("价格属性不能为空");
-                return;
-            }
-
-
-
-            var outsideColor = [];
-            var insideColor = [];
-            var quoteType = [];
-            var salePriceType = [];
-            var saleAmount = [];
-            var totalNumber = [];
-            $("#edit-attrs .attr-item").each(function(){
-                outsideColor.push($.trim($(this).find("input[data-name='outsideColor']").val()));
-                insideColor.push($.trim($(this).find("input[data-name='insideColor']").val()));
-                quoteType.push($(this).find("select[data-name='quoteType']").val());
-                salePriceType.push($(this).find("select[data-name='salePriceType']").val());
-                saleAmount.push($.trim($(this).find("input[data-name='saleAmount']").val()));
-                totalNumber.push($.trim($(this).find("input[data-name='totalNumber']").val()));
-            });
-            if(!(outsideColor.length == insideColor.length && quoteType.length == salePriceType.length && saleAmount.length == totalNumber.length &&
-                 outsideColor.length == quoteType.length &&   quoteType.length == saleAmount.length)){
-                showTip("请填写价格属性");
-                return;
-            }
-            $("#hidOutsideColor").val(outsideColor.join(spliter));
-            $("#hidInsideColor").val(insideColor.join(spliter));
-            $("#hidQuoteType").val(quoteType.join(spliter));
-            $("#hidSalePriceType").val(salePriceType.join(spliter));
-            $("#hidSaleAmount").val(saleAmount.join(spliter));
-            $("#hidTotalNumber").val(totalNumber.join(spliter));
-
-
-            var pic = $("#hidPic").val();
-
-            if(pic == ""){
-                showConfirm("您确定不上传车源图片?", save);
-            }
-            save();
-
-            function save(){
-                console.log($("form").serialize());
-
-                $.post("{{$contextPath}}/admin/autocar/action.do", "action=CREATE&" + $("form").serialize(), function(result){
-                    if(result.code == 0){
-                        changeHash("admin/autocar/index");
-                    }else{
-                        showTip(result.msg);
-                    }
-                }, "json");
-            }
-        });
-
-        var date = new Date();
-        var month = date.getMonth();
-        var day = date.getDate();
-
-        var date1 = date.getFullYear() + "-" + (month < 9 ? ("0" + (1 + month)) : (1 + month)) + "-" + day;
-
-        $( "#datepicker1").val(date1);
-
-        $( "#datepicker1" ).datepicker({
-            showOtherMonths: true,
-            selectOtherMonths: false
-        });
-
-        var date2 = month < 10 ? (date.getFullYear() + "-" + ((month + 2) < 9 ? ("0" + (3 + month)) : (3 + month)) + "-" + (day - 1)) :
-                                 ((date.getFullYear() + 1) + "-" + ("0" + ((month + 3) % 12)) + "-" + (day - 1));
-
-        $( "#datepicker2").val(date2);
-        $( "#datepicker2" ).datepicker({
-            showOtherMonths: true,
-            selectOtherMonths: false
-        });
-
-        $("#cbHasParts").on("change", function(){
-            if(this.checked){
-                $("#txtParts").removeAttr("disabled").removeClass("disabled");
-                $("#txtPartsPrice").removeAttr("disabled").removeClass("disabled");
-                $("#hidHasParts").val("2");
-            }else{
-                $("#txtParts").attr("disabled", "disabled").addClass("disabled");
-                $("#txtPartsPrice").attr("disabled", "disabled").addClass("disabled");
-                $("#hidHasParts").val("1");
-            }
-        });
-
-        $("#btnAddAttr").on("click", function(){
-            var newNode = $("#template .attr-item").clone();
-            var index = parseInt($(this).attr("data-index"));
-            newNode.attr("data-index", index);
-            newNode.find(".btn-delete").attr("data-index", index);
-            newNode.insertBefore(this);
-
-            $(this).attr("data-index", index+1);
-        });
-
-        $("#edit-attrs").on("click", ".btn-delete", function(){
-            var index = $(this).attr("data-index");
-            $(".attr-item[data-index='" + (index) + "']").remove();
-        });
-
-
-        $("#brandId").change(function(){
-            var val = $(this).val();
-            if(val != "0"){
-                $.post("{{$contextPath}}/admin/autocar/queryBrandCat.do", { brandId: val }, function(response){
-                    if(response.code == 0){
-                        var html = "<option value='0'>请选择车系</option>";
-                        $.each(response.data, function(){
-                            html += "<option value='" + this['catId'] + "'>" + this['catName'] + "</option>";
-                        });
-                        $("#catId").html(html);
-                    }
-                });
-            }else{
-                $("#catId").html("<option value='0'>请选择车系</option>");
-            }
-            $("#modelId").html("<option value='0'>请选择车型</option>");
-        });
-
-        $("#catId").change(function(){
-            var val = $(this).val();
-            if(val != "0"){
-                $.post("{{$contextPath}}/admin/autocar/queryBrandModel.do", { catId: val }, function(response){
-                    if(response.code == 0){
-                        var html = "<option value='0'>请选择车型</option>";
-                        $.each(response.data, function(){
-                            html += "<option value='" + this['modelId'] + "'>" + this['modelName'] + "</option>";
-                        });
-                        $("#modelId").html(html);
-                    }
-                });
-            }else{
-                $("#modelId").html("<option value='0'>请选择车型</option>");
-            }
-        });
-
-        Dropzone.autoDiscover = false;
-        var dropZone = new Dropzone("#dropzone" , {
-            paramName: "upfile",
-            params: {type:"car"},
-            maxFilesize: 1, // MB
-            maxFiles: 5,
-            method:"post",
-            url: "{{$contextPath}}/plugin/uploader",
-            success:function(file){
-                console.log("success");
-                var result = $.parseJSON(file.xhr.response);
-                if(result.code == 0){
-
-                    file.path = result.data;
-                    var pic = $("#hidPic").val();
-                    pic += pic != "" ? (spliter + result.data) : result.data;
-                    $("#hidPic").val(pic);
-
-                    $(".dz-details img[data-dz-thumbnail]", file.previewTemplate).attr("src", file.path);
-
-                }
-                else{
-                    showAlert("上传失败....");
-                }
-
-                if (file.previewElement) {
-                    return file.previewElement.classList.add("dz-success");
-                }
-            },
-            removedfile: function(file){
-                console.log("removedfile");
-                var pics = $("#hidPic").val().split(spliter);
-                for(var i = 0; i < pics.length; i++){
-                    if(pics[i] == file.path){
-                        pics = pics.splice(i, 1);
-                        break;
-                    }
-                }
-                $("#hicPic").val(pics.join(spliter));
-
-
-                var _ref;
-                if (file.previewElement) {
-                    if ((_ref = file.previewElement) != null) {
-                        _ref.parentNode.removeChild(file.previewElement);
-                    }
-                }
-                return this._updateMaxFilesReachedClass();
-            },
-            dictCancelUpload: "取消上传",
-            dictCancelUploadConfirmation: "您确定取消上传?",
-            dictRemoveFile: "移除文件",
-            dictRemoveFileConfirmation: null,
-            dictMaxFilesExceeded: "您不能上传更多文件了.",
-            dictDefaultMessage: "拖放文件上传",
-            dictFallbackMessage: "您的浏览器不知拖放",
-            addRemoveLinks : true,
-            dictDefaultMessage :
-                    '<span class="bigger-120 bolder"><i class="ace-icon fa fa-caret-right red"></i>拖放</span>文件上传 \
-                    <span class="smaller-80 grey">(或单击)</span> <br /> \
-                    <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-2x"></i>'
-            ,
-            dictResponseError: '上传文件出错!',
-            //change the previewTemplate to use Bootstrap progress bars
-            previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
-        });
 
     });
 </script>

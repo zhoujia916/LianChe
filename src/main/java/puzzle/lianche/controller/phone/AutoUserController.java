@@ -47,6 +47,9 @@ public class AutoUserController extends BaseController {
     @Autowired
     private IAutoFeedbackService autoFeedbackService;
 
+    @Autowired
+    private IAutoOrderService autoOrderService;
+
     /**
      * 发送短信验证码用于注册和找回密码
      * @param phone
@@ -720,7 +723,7 @@ public class AutoUserController extends BaseController {
                     }
                     object.put("status",car.getStatus());
                     object.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(car.getAddTime()),"MM-dd HH:mm"));
-                    object.put("addUserAuth", car.getUserStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
+                    object.put("addUserAuth", car.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
                     array.add(object);
                 }
                 result.setData(array);
@@ -1064,11 +1067,18 @@ public class AutoUserController extends BaseController {
                     }
                     object.put("status",car.getStatus());
                     object.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(car.getAddTime()),"MM-dd HH:mm"));
-                    if(car.getUserStatus()==Constants.AUTO_USER_STATUS_AUTH_SUCCESS){
-                        object.put("addUserAuth",1);
-                    }else{
-                        object.put("addUserAuth",0);
+                    object.put("addUserAuth", car.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
+
+
+                    List<String> operate = new ArrayList<String>();
+                    if(car.getOrderStatus() != null && car.getOrderPayStatus() != null && car.getOrderShipStatus() != null){
+                        order = new AutoOrder();
+                        order.setOrderStatus(car.getOrderStatus());
+                        order.setPayStatus(car.getOrderPayStatus());
+                        order.setShipStatus(car.getOrderShipStatus());
+                        operate = autoOrderService.queryOperate(order, Constants.ORDER_USER_SELLER);
                     }
+                    object.put("operate", operate);
                     array.add(object);
                 }
                 result.setData(array);

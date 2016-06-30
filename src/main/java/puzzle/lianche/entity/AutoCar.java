@@ -266,8 +266,11 @@ public class AutoCar implements Serializable{
     private String realName;
     private String beginTimeString;
     private String endTimeString;
-    private Integer userStatus;
-    private Long addOrderTime;
+    private Integer addUserStatus;
+    private Long orderAddTime;
+    private Integer orderStatus;
+    private Integer orderPayStatus;
+    private Integer orderShipStatus;
     private String outsideColor;
     private String insideColor;
     private String quoteType;
@@ -341,20 +344,44 @@ public class AutoCar implements Serializable{
         this.totalNumber = totalNumber;
     }
 
-    public Long getAddOrderTime() {
-        return addOrderTime;
+    public Long getOrderAddTime() {
+        return orderAddTime;
     }
 
-    public void setAddOrderTime(Long addOrderTime) {
-        this.addOrderTime = addOrderTime;
+    public void setOrderAddTime(Long orderAddTime) {
+        this.orderAddTime = orderAddTime;
     }
 
-    public Integer getUserStatus() {
-        return userStatus;
+    public Integer getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setUserStatus(Integer userStatus) {
-        this.userStatus = userStatus;
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public Integer getOrderPayStatus() {
+        return orderPayStatus;
+    }
+
+    public void setOrderPayStatus(Integer orderPayStatus) {
+        this.orderPayStatus = orderPayStatus;
+    }
+
+    public Integer getOrderShipStatus() {
+        return orderShipStatus;
+    }
+
+    public void setOrderShipStatus(Integer orderShipStatus) {
+        this.orderShipStatus = orderShipStatus;
+    }
+
+    public Integer getAddUserStatus() {
+        return addUserStatus;
+    }
+
+    public void setAddUserStatus(Integer addUserStatus) {
+        this.addUserStatus = addUserStatus;
     }
 
     public String getBeginTimeString() {
@@ -528,16 +555,6 @@ public class AutoCar implements Serializable{
 
     private List<AutoCarAttr> attrs;
 
-    public int getAddUserStatus() {
-        return addUserStatus;
-    }
-
-    public void setAddUserStatus(int addUserStatus) {
-        this.addUserStatus = addUserStatus;
-    }
-
-    private int addUserStatus;
-
     public int getCollectCount() {
         return collectCount;
     }
@@ -577,4 +594,6 @@ public class AutoCar implements Serializable{
     }
 
     private Double price;
+
+
 }

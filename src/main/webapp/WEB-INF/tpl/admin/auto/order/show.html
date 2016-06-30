@@ -1,29 +1,303 @@
 
-<title>Puzzle Admin-订单管理</title>
+<title>Puzzle Admin-订单详情</title>
 
 <div class="page-header">
-    <h3>
+
+    <h1>
         <i class="glyphicon glyphicon-signal"></i>
         订单管理
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
             查看订单详情
         </small>
-
         <a class="btn btn-xs orange pull-right btn-warning" href="#page/autoorder/index">
             <i class="glyphicon glyphicon-arrow-left"></i>返回订单管理</span></a>
-    </h3>
-
+    </h1>
 
 </div>
 
 <div class="row" id="">
-    <div class="col-xs-12">
+<div class="col-xs-12">
+    <table class="table table-bordered table-form">
+        <thead>
+            <tr>
+                <th colspan="4" class="center">订单信息</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="lab w15">编号</td>
+                <td class="w35">{{$order.orderId}}</td>
+                <td class="lab w15">订单序号</td>
+                <td class="w35">{{$order.orderSn}}</td>
+            </tr>
+            <tr>
+                <td class="lab w15">订单状态</td>
+                <td class="w35">{{$order.orderStatusString}}</td>
+                <td class="lab w15">支付状态</td>
+                <td class="w35">{{$order.payStatusString}}</td>
+            </tr>
+            <tr>
+                <td class="lab w15">物流状态</td>
+                <td class="w35">{{$order.shipStatusString}}</td>
+                <td class="lab w15">数量</td>
+                <td class="w35">{{$order.carNumber}}</td>
+            </tr>
+            <tr>
+                <td class="lab w15">支付方式</td>
+                <td class="w35">
+                    {{if $order.payMethod==1}}
+                    微信
+                    {{elseif $order.payMethod==2}}
+                    支付宝
+                    {{else}}
+                    未知
+                    {{/if}}
+                </td>
+                <td class="lab w15">总金额</td>
+                <td class="w35">{{$order.amount}}</td>
+            </tr>
+            <tr>
+                <td class="lab w15">订购时间</td>
+                <td class="w35">{{$order.addTimeString}}</td>
+                <td class="lab w15">买家所付订金</td>
+                <td class="w35">{{$order.buyerDeposit}}</td>
+            </tr>
+            <tr>
+                <td class="lab w15">卖家所付订金</td>
+                <td class="w35">{{$order.sellerDeposit}}</td>
+                <td class="lab w15">提车时间</td>
+                <td class="w35">{{$order.putTimeString}}</td>
+            </tr>
 
-    </div><!-- /.col -->
-</div><!-- /.row -->
+            <tr>
+                <td class="lab w15">是否加配</td>
+                <td class="w35">
+                    {{if $order.hasParts==2}}是{{else $order.hasParts==1}}否{{/if}}
+                </td>
+                <td class="lab w15">加配价格</td>
+                <td class="w35">
+                    {{if $order.hasParts==2}}
+                    {{$car.partsPrice}}
+                    {{else}}
+                    0
+                    {{/if}}
+                </td>
+            </tr>
+            {{if $order.hasParts==2}}
+            <tr>
+                <td class="lab w15">是否加配</td>
+                <td colspan="3">
+                    {{$order.parts}}
+                </td>
+            </tr>
+            {{/if}}
+        </tbody>
+    </table>
+    <table class="table table-bordered table-form">
+        <thead>
+        <tr>
+            <th colspan="4"class="center" style="width:50%;">卖家信息</th>
+            <th colspan="4"class="center" style="width:50%;">买家信息</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="lab w10">编号</td>
+            <td class="w15">{{$seller.userId}}</td>
+            <td class="lab w10">姓名</td>
+            <td class="w15">
+                {{if $seller.realName}}
+                {{$seller.userName}}({{$seller.realName}})
+                {{else}}
+                {{$seller.userName}}
+                {{/if}}
+            </td>
+            <td class="lab w10">编号</td>
+            <td class="w15">{{$buyer.userId}}</td>
+            <td class="lab w10">姓名</td>
+            <td class="w15">
+                {{if $buyer.realName}}
+                {{$buyer.userName}}({{$buyer.realName}})
+                {{else}}
+                {{$buyer.userName}}
+                {{/if}}
+            </td>
+        </tr>
+        <tr>
+            <td class="lab w10">电话号码</td>
+            <td class="w15">
+                {{if $seller.phone}}
+                {{$seller.phone}}
+                {{/if}}
+            </td>
+            <td class="lab w10">邮箱</td>
+            <td class="w15">
+                {{if $seller.email}}
+                {{$seller.email}}
+                {{/if}}
+            </td>
+            <td class="lab w10">电话号码</td>
+            <td class="w15">
+                {{if $buyer.phone}}
+                {{$buyer.phone}}
+                {{/if}}
+            </td>
+            <td class="lab w10">邮箱</td>
+            <td class="w15">
+                {{if $buyer.email}}
+                {{$buyer.email}}
+                {{/if}}
+            </td>
+        </tr>
+        <tr>
+            <td class="lab w10">店铺名称</td>
+            <td class="w15">
+                {{if $seller.shopName}}
+                {{$seller.shopName}}
+                {{/if}}
+            </td>
+            <td class="lab w10">店铺类型</td>
+            <td class="w15">
+                {{if $seller.shopTypeString}}
+                {{$seller.shopTypeString}}
+                {{/if}}
+            </td>
+            <td class="lab w10">店铺名称</td>
+            <td class="w15">
+                {{if $buyer.shopName}}
+                {{$buyer.shopName}}
+                {{/if}}
+            </td>
+            <td class="lab w10">店铺类型</td>
+            <td class="w15">
+                {{if $buyer.shopTypeString}}
+                {{$buyer.shopTypeString}}
+                {{/if}}
+            </td>
+        </tr>
+        <tr>
+            <td class="lab w10">身份证号</td>
+            <td class="w15">
+                {{if $seller.idNumber}}
+                {{$seller.idNumber}}
+                {{/if}}
+            </td>
+            <td class="lab w10">积分</td>
+            <td class="w15">{{$seller.point}}</td>
+            <td class="lab w10">身份证号</td>
+            <td>
+                {{if $buyer.idNumber}}
+                {{$buyer.idNumber}}
+                {{/if}}
+            </td>
+            <td class="lab w10">积分</td>
+            <td class="w15">{{$buyer.point}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered table-form">
+        <thead>
+        <tr>
+            <th colspan="4"class="center">车源信息</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="lab w15">编号</td>
+            <td class="w35">{{$car.carId}}</td>
+            <td class="lab w15">名称</td>
+            <td class="w35"><a href="index#page/autocar/show/{{$car.carId}}" title="点击查看车源详情">{{$car.carName}}</a></td>
+        </tr>
+        <tr>
+            <td class="lab w15">类型</td>
+            <td class="w35">{{$car.carTypeString}}</td>
+            <td class="lab w15">所选属性</td>
+            <td class="w35">{{$carAttr.outsideColor}}</td>
+        </tr>
+        <tr>
+            <td class="lab w15">所属品牌</td>
+            <td class="w35">{{$car.brandName}}</td>
+            <td class="lab w15">所属车系</td>
+            <td class="w35">{{$car.catName}}</td>
+        </tr>
+        <tr>
+            <td class="lab w15">所属车型</td>
+            <td class="w35">{{$car.modelName}}</td>
+            <td class="lab w15">官方指导价</td>
+            <td class="w35">{{$car.officalPrice}}</td>
+        </tr>
+        <tr>
+            <td class="lab w15">行情类型</td>
+            <td class="w35">
+                {{if $carAttr.quoteType==1}}
+                高于指导价
+                {{else}}
+                低于指导价
+                {{/if}}
+            </td>
+            <td class="lab w15">优惠类型</td>
+            <td class="w35">
+                {{if $carAttr.salePriceType==1}}
+                价格优惠
+                {{else}}
+                点数优惠
+                {{/if}}
+            </td>
+        </tr>
+        <tr>
+            <td class="lab w15">优惠量</td>
+            <td class="w35">{{$carAttr.saleAmount}}</td>
+            <td class="lab w15">最终售价</td>
+            <td class="w35">{{$carAttr.price}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered table-form">
+        {{if $orderActions}}
+        <thead>
+        <tr>
+            <th colspan="4" class="center">可执行操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="4">
+                {{foreach from=$operateList item=operate}}
+                <a data-action="{{$operate}}" class="btn btn-xs btn-action btn-purple" style="margin-top: -2px;margin-left: 10px;">{{$operate}}</a>&nbsp;&nbsp;
+                {{/foreach}}
+            </td>
+        </tr>
+        </tbody>
+        {{else}}
+        <tbody>
+            <tr>
+                <th colspan="4" class="center">无可执行操作</th>
+            </tr>
+        </tbody>
+        {{/if}}
+    </table>
+</div>
+<input type="hidden" id="orderId" value="{{$orderId}}"/>
+<input type="hidden" id="sellerId" value="{{$order.sellerId}}"/>
+<input type="hidden" id="buyerId" value="{{$order.buyerId}}"/>
+</div>
+</div>
+</div>
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-
+        $(".btn-action").on("click", function(){
+            var action=$(this).attr("data-action");
+            $.post('action.do',{
+                action: action,
+                orderId: '{{$order.orderId}}'
+            },function(result){
+                if(result.code==0){
+                    changeHash("page/autoorder/show/{{$order.orderId}}");
+                }else{
+                    showAlert("修改失败！");
+                }
+            });
+        });
     });
 </script>

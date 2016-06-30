@@ -1,8 +1,8 @@
 <div class="page-header">
-    <h1>
+    <h4>
         <i class="glyphicon glyphicon-signal"></i>
         文章管理
-    </h1>
+    </h4>
 </div>
 
 <div class="row" id="">
@@ -10,8 +10,12 @@
         <div id="user-gridview" class="gridview">
             <div class="grid-filter">
                 <input type="text input-sm" style="height: 29px" class="txt" name="title" placeholder="标题" />
+<<<<<<< HEAD
                 <input type="text input-sm" style="height: 29px" class="txt" name="name" placeholder="发布者" />
                 <select name="status" style="height: 29px;width: 160px;">
+=======
+                <select data-init="0" name="status" data-placeholder=" 请选择状态">
+>>>>>>> 02c2f1c165a2ffff20780cae043e422a59f69a61
                     <option value="0">请选择状态</option>
                     <option value="1">已保存</option>
                     <option value="2">已提交</option>
@@ -62,241 +66,6 @@
                 <div class="pagination-box">
 
                 </div>
-                <a class="btn" href="#save-form" data-toggle="modal">LINK</a>
-            </div>
-
-            <div id="save-form" class="modal" style="display:none;">
-                <div class="modal-dialog" style="width:1000px;">
-                    <div class="modal-content" style="width:1000px;height:600px;overflow-y:auto;">
-                        <div class="modal-body">
-                            <ul class="nav nav-tabs" id="myTab2">
-                                <li class="active">
-                                    <a data-toggle="tab" href="#home2">基本信息</a>
-                                </li>
-
-                                <li>
-                                    <a data-toggle="tab" href="#profile2">文章内容</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content padding-4">
-                                <div id="home2" class="tab-pane in active">
-                                    <form class="form-horizontal" role="form">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">
-                                                文章标题
-                                            </label>
-                                            <div class="col-sm-9">
-                                                <input type="text" id="title" name="title" placeholder="标题" class="txt input-sm col-sm-12 ">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">
-                                                文章副标题
-                                            </label>
-                                            <div class="col-sm-9">
-                                                <input type="text" id="title2" name="title2" placeholder="副标题" class="txt input-sm col-sm-12 ">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">
-                                                封面图
-                                            </label>
-                                            <div class="col-sm-9">
-                                                <input type="file" id="cover" name="cover" placeholder="封面图片" class="txt input-sm col-sm-12 ">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">
-                                                所属分类
-                                            </label>
-                                            <div class="col-sm-9">
-                                                <select id="catId" name="catId" data-init="0">
-                                                    <option value="0">请选择分类</option>
-                                                    {{foreach from=$autoArticleCatList item=autoArticleCat}}
-                                                    <option value="{{$autoArticleCat.catId}}">{{$autoArticleCat.catName}}</option>
-                                                    {{/foreach}}
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">
-                                                来源地址
-                                            </label>
-
-                                            <div class="col-sm-9">
-                                                <input type="text"  id="sourceUrl"  name="sourceUrl" placeholder="来源地址" class="txt input-sm col-sm-5">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">
-                                                排序号
-                                            </label>
-
-                                            <div class="col-sm-9">
-                                                <input type="text" data-init="0" id="sortOrder"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
-                                            </div>
-                                        </div>
-                                        <div class="clear"></div>
-                                    </form>
-                                </div>
-
-                                <div id="profile2" class="tab-pane">
-                                    <textarea id="content" name="content" placeholder="文章内容" style="height:300px;max-height:300px;width:100%;"></textarea>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" name="articleId" value="" />
-                        <input type="hidden" name="cover" value="" />
-
-                        <a class="btn btn-sm" data-dismiss="modal">
-                            <i class="ace-icon fa fa-times"></i>
-                            关闭
-                        </a>
-
-                        <a class="btn btn-sm" data-action="reset">
-                            <i class="ace-icon fa fa-undo"></i>
-                            重置
-                        </a>
-                        &nbsp; &nbsp; &nbsp;
-                        <a class="btn btn-sm btn-primary" data-action="save">
-                            <i class="ace-icon fa fa-check"></i>
-                            提交
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-
-            <!--<div id="save-form" class="modal" style="display:none;">-->
-                <!--<div class="modal-dialog" style="width:1000px;">-->
-                    <!--<div class="modal-content" style="width:1000px;">-->
-                        <!--<div class="modal-header">-->
-                            <!--<button type="button" class="close" data-dismiss="modal">×</button>-->
-                            <!--<h4 class="blue bigger">Please fill the following form fields</h4>-->
-                        <!--</div>-->
-                        <!--<div class="modal-body">-->
-                            <!--<form class="form-horizontal" role="form">-->
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-sm-3 control-label">-->
-                                    <!--文章标题-->
-                                <!--</label>-->
-                                <!--<div class="col-sm-9">-->
-                                    <!--<input type="text" id="title" name="title" placeholder="标题" class="txt input-sm col-sm-12 ">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-sm-3 control-label">-->
-                                    <!--文章副标题-->
-                                <!--</label>-->
-                                <!--<div class="col-sm-9">-->
-                                    <!--<input type="text" id="title2" name="title2" placeholder="副标题" class="txt input-sm col-sm-12 ">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-sm-3 control-label">-->
-                                    <!--文章所属分类-->
-                                <!--</label>-->
-                                <!--<div class="col-sm-9">-->
-                                    <!--<select id="catId" name="catId" data-init="0">-->
-                                        <!--<option value="0">请选择分类</option>-->
-                                        <!--{{foreach from=$autoArticleCatList item=autoArticleCat}}-->
-                                        <!--<option value="{{$autoArticleCat.catId}}">{{$autoArticleCat.catName}}</option>-->
-                                        <!--{{/foreach}}-->
-                                    <!--</select>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-sm-3 control-label">-->
-                                    <!--文章内容-->
-                                <!--</label>-->
-                                <!--<div class="col-sm-9">-->
-                                    <!--<textarea id="content" name="content" placeholder="文章内容" style="height:300px;max-height:300px;width:100%;"></textarea>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-sm-3 control-label">-->
-                                    <!--来源地址-->
-                                <!--</label>-->
-
-                                <!--<div class="col-sm-9">-->
-                                    <!--<input type="text"  id="sourceUrl"  name="sourceUrl" placeholder="来源地址" class="txt input-sm col-sm-5">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label class="col-sm-3 control-label">-->
-                                    <!--排序号-->
-                                <!--</label>-->
-
-                                <!--<div class="col-sm-9">-->
-                                    <!--<input type="text" data-init="0" id="sortOrder"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="clear"></div>-->
-                                <!--</form>-->
-                        <!--</div>-->
-                        <!--<div class="modal-footer">-->
-                            <!--<input type="hidden" name="articleId" value="" />-->
-                            <!--<input type="hidden" name="cover" value="" />-->
-
-                            <!--<a class="btn btn-sm" data-dismiss="modal">-->
-                                <!--<i class="ace-icon fa fa-times"></i>-->
-                                <!--关闭-->
-                            <!--</a>-->
-
-                            <!--<a class="btn btn-sm" data-action="reset">-->
-                                <!--<i class="ace-icon fa fa-undo"></i>-->
-                                <!--重置-->
-                            <!--</a>-->
-                            <!--&nbsp; &nbsp; &nbsp;-->
-                            <!--<a class="btn btn-sm btn-primary" data-action="save">-->
-                                <!--<i class="ace-icon fa fa-check"></i>-->
-                                <!--提交-->
-                            <!--</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-
-            <!--</div>-->
-
-            <!--edit form-->
-            <div class="grid-form save-form">
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:1000px;margin-left:-500px;margin-top:-350px">
-                    <div class="widget-header">
-                        <h5 class="widget-title smaller"></h5>
-
-                        <div class="widget-toolbar">
-                            <a href="#" class="btn-action" data-action="hide">
-                                <i class="ace-icon fa fa-close white"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            <div class="alert-info red"></div>
-                            <form class="form-horizontal" role="form">
-
-                                <div class="clearfix form-actions">
-                                    <input type="hidden" name="articleId" value="" />
-                                    <input type="hidden" name="cover" value="" />
-                                    <a class="btn btn-sm btn-action" data-action="reset">
-                                        <i class="ace-icon fa fa-undo"></i>
-                                        重置
-                                    </a>
-                                    &nbsp; &nbsp; &nbsp;
-                                    <a class="btn btn-sm btn-primary btn-action" data-action="save">
-                                        <i class="ace-icon fa fa-check"></i>
-                                        提交
-                                    </a>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="grid-form search-form "></div>
@@ -309,17 +78,7 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-    var scripts = [
-        null,
-        "{{$contextPath}}/ueditor/ueditor.config.js",
-        "{{$contextPath}}/ueditor/ueditor.all.min.js",
-        "{{$contextPath}}/ueditor/lang/zh-cn/zh-cn.js",
-         null
-    ];
-    $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-
-        var ueContent = UE.getEditor("content");
-
+    $('.page-content-area').ace_ajax('loadScripts', [null,null], function() {
         $( "#datepicker1" ).datepicker({
             showOtherMonths: true,
             selectOtherMonths: false
@@ -331,7 +90,6 @@
         });
 
         $("#user-gridview").gridview({
-            debug: true,
             url: "autoarticle/list.do",
             form:{
                 url: "autoarticle/action.do",
@@ -425,7 +183,14 @@
             },{
                 name:"actions",
                 list:["edit", "delete", "view"]
-            }]
+            }],
+            buttons:{
+                add:{
+                    handler: function(){
+                        changeHash("page/autoarticle/add");
+                    }
+                }
+            }
         });
     });
 

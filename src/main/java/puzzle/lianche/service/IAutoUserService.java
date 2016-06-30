@@ -22,5 +22,5 @@ public interface IAutoUserService{
 
     public List<AutoUser> queryList(Map<String, Object> map, Page page);
 
-    
+    public Integer queryCount(Map<String, Object> map);
 }
