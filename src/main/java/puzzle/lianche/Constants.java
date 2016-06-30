@@ -292,14 +292,14 @@ public class Constants {
     public static final Integer OS_SUBMIT = 1;
     public static final Integer OS_EXECUTE = 2;
     public static final Integer OS_SUCCESS = 3;
-    public static final Integer OS_CANCEL = 0;
+    public static final Integer OS_CANCEL = 4;
 
     public static final  Map<Integer,String> ORDER_STATUS=new HashMap<Integer, String>(){
         {
             put(1,"买家已提交");
             put(2,"交易中");
             put(3,"交易成功");
-            put(0,"交易取消");
+            put(4,"交易取消");
         }
     };
 

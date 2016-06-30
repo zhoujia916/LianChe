@@ -12,6 +12,7 @@ import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.AutoBrand;
 import puzzle.lianche.entity.AutoBrandCat;
 import puzzle.lianche.entity.AutoBrandModel;
+import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.IAutoBrandCatService;
 import puzzle.lianche.service.IAutoBrandModelService;
 import puzzle.lianche.service.IAutoBrandService;
@@ -39,6 +40,7 @@ public class AutoBrandModelController extends ModuleController {
 
     @RequestMapping (value = {"/","/index"})
     public String modelIndex(){
+        List<SystemMenuAction> actions = getActions();
         List<AutoBrandCat> catList=autoBrandCatService.queryList(null);
         if(catList.size()>0 && catList!=null){
             Map map=new HashMap();
@@ -56,11 +58,13 @@ public class AutoBrandModelController extends ModuleController {
             }
         }
         this.setModelAttribute("catList",catList);
+        this.setModelAttribute("actions", actions);
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_MODEL;
     }
 
     @RequestMapping (value = "/index/{catId}")
     public String show(@PathVariable String catId){
+        List<SystemMenuAction> actions = getActions();
         List<AutoBrandCat> list=autoBrandCatService.queryList(null);
         if(list.size()>0 && list!=null){
             Map map=new HashMap();
@@ -85,6 +89,7 @@ public class AutoBrandModelController extends ModuleController {
         }
         this.setModelAttribute("catList",list);
         this.setModelAttribute("catId",catId);
+        this.setModelAttribute("actions", actions);
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_MODEL;
     }
 
@@ -95,11 +100,11 @@ public class AutoBrandModelController extends ModuleController {
         try{
             Map<String, Object> map=new HashMap<String, Object>();
             if(autoBrandModel!=null) {
-                if(autoBrandModel.getModelName()!=null && autoBrandModel.getModelName()!="") {
+                if(StringUtil.isNotNullOrEmpty(autoBrandModel.getModelName())) {
                     map.put("modelName", autoBrandModel.getModelName());
                 }
                 if (!autoBrandModel.getCatString().equalsIgnoreCase("null")) {
-                    map.put("catId", autoBrandModel.getCatString());
+                    map.put("catId", ConvertUtil.toInt(autoBrandModel.getCatString()));
                 }
                 if (autoBrandModel.getBrandId() != null && autoBrandModel.getBrandId()>0 ) {
                     map.put("brandId", autoBrandModel.getBrandId());

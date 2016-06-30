@@ -36,17 +36,16 @@ public class AutoFeedbackController extends ModuleController {
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result list(AutoFeedback autoFeedback){
+    public Result list(AutoFeedback autoFeedback,Page page){
         Result result=new Result();
         StringBuffer stringBuffer=new StringBuffer();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            map.put("userName",autoFeedback.getUserName());
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
+            if(autoFeedback!=null){
+                if(StringUtil.isNotNullOrEmpty(autoFeedback.getUserName())){
+                    map.put("userName",autoFeedback.getUserName());
+                }
+            }
             List<AutoFeedback> list=autoFeedbackService.queryList(map,page);
             if(list!=null && list.size()>0){
                 JSONArray array=new JSONArray();

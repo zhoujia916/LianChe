@@ -47,7 +47,7 @@ public class AutoMsgController extends ModuleController {
         try{
             Map<String, Object> map=new HashMap<String, Object>();
             if(autoMsg!=null) {
-                if(autoMsg.getToUserName()!=null && autoMsg.getToUserName()!="") {
+                if(StringUtil.isNotNullOrEmpty(autoMsg.getToUserName())) {
                     map.put("toUserName", autoMsg.getToUserName());
                 }
                 if(autoMsg.getMsgType()!=null && autoMsg.getMsgType() >0) {
@@ -56,17 +56,17 @@ public class AutoMsgController extends ModuleController {
                 if(autoMsg.getStatus()!=null && autoMsg.getStatus() >0) {
                     map.put("status", autoMsg.getStatus());
                 }
-                if(autoMsg.getFromUserName()!=null && autoMsg.getFromUserName()!=""){
+                if(StringUtil.isNotNullOrEmpty(autoMsg.getFromUserName())){
                     if ("系统".equalsIgnoreCase(autoMsg.getFromUserName())) {
                         map.put("adminUserName", "am.msg_type=1");
                     } else {
                         map.put("fromUserName", autoMsg.getFromUserName());
                     }
                 }
-                if (autoMsg.getBeginTimeString() != null && autoMsg.getBeginTimeString() != "") {
+                if (StringUtil.isNotNullOrEmpty(autoMsg.getBeginTimeString())) {
                     map.put("beginTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoMsg.getBeginTimeString() + " 00:00:00")));
                 }
-                if (autoMsg.getEndTimeString() != null && autoMsg.getEndTimeString() != "") {
+                if (StringUtil.isNotNullOrEmpty(autoMsg.getEndTimeString())) {
                     map.put("endTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoMsg.getEndTimeString() + " 23:59:59")));
                 }
             }

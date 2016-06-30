@@ -52,10 +52,10 @@ public class AutoAdController extends ModuleController {
                 if (autoAd.getAdPositionId() != null && autoAd.getAdPositionId() > 0) {
                     map.put("adPositionId", autoAd.getAdPositionId());
                 }
-                if (autoAd.getBeginTimeString() != null && autoAd.getBeginTimeString() != "") {
+                if (StringUtil.isNotNullOrEmpty(autoAd.getBeginTimeString())) {
                     map.put("startDate", ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getBeginTimeString() + " 00:00:00")));
                 }
-                if (autoAd.getEndTimeString() != null && autoAd.getEndTimeString() != "") {
+                if (StringUtil.isNotNullOrEmpty(autoAd.getEndTimeString())) {
                     map.put("endDate", ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getEndTimeString() + " 23:59:59")));
                 }
             }

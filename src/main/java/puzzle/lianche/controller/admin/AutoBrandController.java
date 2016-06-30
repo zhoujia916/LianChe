@@ -36,17 +36,15 @@ public class AutoBrandController extends ModuleController {
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result list(){
+    public Result list(AutoBrand autoBrand,Page page){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            String pageIndex=request.getParameter("pageIndex");
-            String pageSize=request.getParameter("pageSize");
-            String brandName=request.getParameter("brandName");
-            Page page = new Page();
-            page.setPageIndex(ConvertUtil.toInt(pageIndex));
-            page.setPageSize(ConvertUtil.toInt(pageSize));
-            map.put("brandName",brandName);
+            if(autoBrand!=null){
+                if(StringUtil.isNotNullOrEmpty(autoBrand.getBrandName())){
+                    map.put("brandName",autoBrand.getBrandName());
+                }
+            }
             List<AutoBrand> list=autoBrandService.queryList(map,page);
             if(list!=null && list.size()>0){
                 JSONArray array=new JSONArray();

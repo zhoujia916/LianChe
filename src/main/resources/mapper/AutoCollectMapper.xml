@@ -133,8 +133,8 @@
             <if test="userName!=null and userName!=''">
                 and au.user_name like concat('%',#{userName},'%')
             </if>
-            <if test="userId!=null and userId!=''">
-                and acl.user_id in (${userId})
+            <if test="userId!=null and userId>0">
+                and acl.user_id = ${userId}
             </if>
         </where>
         order by acl.add_time desc,acl.collect_id desc

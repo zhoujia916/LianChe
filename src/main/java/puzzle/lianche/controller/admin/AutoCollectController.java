@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.AutoCollect;
+import puzzle.lianche.entity.AutoUser;
+import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.IAutoCollectService;
+import puzzle.lianche.service.IAutoUserService;
+import puzzle.lianche.service.impl.AutoUserServiceImpl;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
@@ -27,14 +31,25 @@ public class AutoCollectController extends ModuleController {
     @Autowired
     private IAutoCollectService autoCollectService;
 
+    @Autowired
+    private IAutoUserService autoUserService;
+
     @RequestMapping (value = {"/","/index"})
     public String index(){
+        List<SystemMenuAction> actions = getActions();
+        this.setModelAttribute("actions", actions);
         return Constants.UrlHelper.ADMIN_AUTO_COLLECT;
     }
 
     @RequestMapping (value = "/index/{userId}")
     public String show(@PathVariable String userId){
+       List<SystemMenuAction> actions = getActions();
+       Map map=new HashMap();
+       map.put("userId",ConvertUtil.toInt(userId));
+       AutoUser user=autoUserService.query(map);
+       this.setModelAttribute("actions", actions);
        this.setModelAttribute("userId",userId);
+       this.setModelAttribute("userName",user.getUserName());
        return Constants.UrlHelper.ADMIN_AUTO_COLLECT;
     }
 
@@ -51,8 +66,8 @@ public class AutoCollectController extends ModuleController {
                 if(StringUtil.isNotNullOrEmpty(autoCollect.getUserName())) {
                     map.put("userName", autoCollect.getUserName());
                 }
-                if (autoCollect.getUserId() != null && autoCollect.getUserId() > 0) {
-                    map.put("userId", autoCollect.getUserString());
+                if (StringUtil.isNotNullOrEmpty(autoCollect.getUserString())) {
+                    map.put("userId", ConvertUtil.toInt(autoCollect.getUserString()));
                 }
             }
             List<AutoCollect> list=autoCollectService.queryList(map,page);
