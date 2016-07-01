@@ -192,7 +192,7 @@ public class AutoUser implements Serializable{
     private String shopName;
     private Integer shopType;
     private String shopTypeString;
-    private String birthDay;
+    private String birthString;
     private String code;
     private Integer orderNumber;
     private Integer carNumber;
@@ -221,12 +221,12 @@ public class AutoUser implements Serializable{
         this.code = code;
     }
 
-    public String getBirthDay() {
-        return birthDay;
+    public String getBirthString() {
+        return birthString;
     }
 
-    public void setBirthDay(String birthDay) {
-        this.birthDay = birthDay;
+    public void setBirthString(String birthString) {
+        this.birthString = birthString;
     }
 
     public String getShopTypeString() {

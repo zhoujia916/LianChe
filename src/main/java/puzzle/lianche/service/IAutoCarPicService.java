@@ -17,7 +17,9 @@ public interface IAutoCarPicService{
     public boolean delete(Map<String, Object> map);
 
     public AutoCarPic query(Map<String, Object> map);
-    
+
+    public List<AutoCarPic> queryList(Integer carId);
+
     public List<AutoCarPic> queryList(Object param);
 
     public List<AutoCarPic> queryList(Map<String, Object> map, Page page);

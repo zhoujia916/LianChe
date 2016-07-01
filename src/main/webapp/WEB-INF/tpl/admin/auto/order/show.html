@@ -207,7 +207,7 @@
             <td class="lab w15">编号</td>
             <td class="w35">{{$car.carId}}</td>
             <td class="lab w15">名称</td>
-            <td class="w35"><a href="index#page/autocar/show/{{$car.carId}}" title="点击查看车源详情">{{$car.carName}}</a></td>
+            <td class="w35"><a href="index#page/autocar/view/{{$car.carId}}" title="点击查看车源详情">{{$car.carName}}</a></td>
         </tr>
         <tr>
             <td class="lab w15">类型</td>
@@ -293,8 +293,12 @@
                 orderId: '{{$order.orderId}}'
             },function(result){
                 if(result.code==0){
+<<<<<<< HEAD
                     window.location.reload();
 //                    window.location=window.location;
+=======
+                    window.location.href = window.location.href;
+>>>>>>> 4a89d5cee47f100a3a13954b6929cf79a6f4f836
 //                    changeHash("page/autoorder/show/{{$order.orderId}}");
                 }else{
                     showAlert("修改失败！");

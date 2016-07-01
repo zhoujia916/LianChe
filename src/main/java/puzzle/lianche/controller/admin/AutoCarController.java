@@ -11,10 +11,7 @@ import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.*;
 import puzzle.lianche.service.*;
-import puzzle.lianche.utils.ConvertUtil;
-import puzzle.lianche.utils.Page;
-import puzzle.lianche.utils.Result;
-import puzzle.lianche.utils.StringUtil;
+import puzzle.lianche.utils.*;
 
 import javax.websocket.server.PathParam;
 import java.util.*;
@@ -62,12 +59,9 @@ public class AutoCarController extends ModuleController {
             map.put("carId", carId);
             List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
             this.setModelAttribute("attrList", attrs);
-
-            List<AutoCarPic> pics = autoCarPicService.queryList(map);
-            this.setModelAttribute("picList", pics);
         }
-        List<AutoBrand> brandList = autoBrandService.queryList(null);
-        this.setModelAttribute("brandList", brandList);
+
+
         this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_VIEW);
         return Constants.UrlHelper.ADMIN_AUTO_CAR_SHOW;
     }
@@ -87,6 +81,20 @@ public class AutoCarController extends ModuleController {
 
             List<AutoCarPic> pics = autoCarPicService.queryList(map);
             this.setModelAttribute("picList", pics);
+
+
+            List<AutoBrand> brandList = autoBrandService.queryList(null);
+            this.setModelAttribute("brandList", brandList);
+
+            map.clear();
+            map.put("brandId", car.getBrandId());
+            List<AutoBrandCat> catList = autoBrandCatService.queryList(map);
+            this.setModelAttribute("catList", catList);
+
+            map.clear();
+            map.put("catId", car.getBrandCatId());
+            List<AutoBrandModel> modelList = autoBrandModelService.queryList(map);
+            this.setModelAttribute("modelList", modelList);
         }
         List<AutoBrand> brandList = autoBrandService.queryList(null);
         this.setModelAttribute("brandList", brandList);
@@ -216,6 +224,7 @@ public class AutoCarController extends ModuleController {
     public Result action(String action,AutoCar autoCar){
         Result result=new Result();
         try{
+            //region CREATE
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)) {
                 String spliter = "※";
                 //添加多个颜色
@@ -251,6 +260,7 @@ public class AutoCarController extends ModuleController {
                     for(String pic : pics){
                         AutoCarPic autoCarPic = new AutoCarPic();
                         autoCarPic.setPath(pic);
+                        autoCarPic.setName(FileUtil.getFileName(pic));
                         list.add(autoCarPic);
                     }
                     autoCar.setPics(list);
@@ -265,9 +275,10 @@ public class AutoCarController extends ModuleController {
                 autoCar.setRefreshTime(autoCar.getAddTime());
                 autoCar.setStartDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getBeginTimeString() + " 00:00:00")));
                 autoCar.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getEndTimeString() + " 23:59:59")));
-                autoCar.setStatus(Constants.AUTO_CAR_STATUS_ON);
-                autoCar.setCarType(Constants.AUTO_CAR_TYPE_COMMON);
                 autoCar.setAddUserId(ConvertUtil.toInt(initConfig.getConfig("addcar_userid").toString()));
+                if(autoCar.getSortOrder() == null){
+                    autoCar.setSortOrder(0);
+                }
                 for(int i = 0; i < autoCar.getAttrs().size(); i++){
                     AutoCarAttr carAttr = autoCar.getAttrs().get(i);
                     autoCar.getAttrs().get(i).setLockNumber(0);
@@ -289,7 +300,6 @@ public class AutoCarController extends ModuleController {
                     }
                     autoCar.getAttrs().get(i).setPrice(price);
                 }
-                autoCar.setSortOrder(0);
                 if(!autoCarService.insert(autoCar)){
                     result.setCode(1);
                     result.setMsg("发布车源信息失败！");
@@ -297,6 +307,8 @@ public class AutoCarController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"添加车源信息");
                 }
             }
+            //endregion
+            //region UPDATE
             else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
                 String spliter = "※";
                 //添加多个颜色
@@ -307,14 +319,17 @@ public class AutoCarController extends ModuleController {
                         StringUtil.isNotNullOrEmpty(autoCar.getSaleAmount()) &&
                         StringUtil.isNotNullOrEmpty(autoCar.getTotalNumber())) {
                     List<AutoCarAttr> attrList = new ArrayList<AutoCarAttr>();
+                    String[] carAttrId = autoCar.getCarAttrId().split(spliter);
                     String[] outsideColors = autoCar.getOutsideColor().split(spliter);
                     String[] insideColors = autoCar.getInsideColor().split(spliter);
                     String[] quoteTypes = autoCar.getQuoteType().split(spliter);
                     String[] salePriceTypes = autoCar.getSalePriceType().split(spliter);
                     String[] saleAmounts = autoCar.getSaleAmount().split(spliter);
                     String[] totalNumbers = autoCar.getTotalNumber().split(spliter);
-                    for (int i = 0; i < outsideColors.length; i++) {
+                    for (int i = 0; i < carAttrId.length; i++) {
                         AutoCarAttr autoCarAttr = new AutoCarAttr();
+                        autoCarAttr.setCarId(autoCar.getCarId());
+                        autoCarAttr.setCarAttrId(ConvertUtil.toInt(carAttrId[i]));
                         autoCarAttr.setOutsideColor(outsideColors[i]);
                         autoCarAttr.setInsideColor(insideColors[i]);
                         autoCarAttr.setQuoteType(ConvertUtil.toInt(quoteTypes[i]));
@@ -331,7 +346,10 @@ public class AutoCarController extends ModuleController {
                     String[] pics = autoCar.getPic().split(spliter);
                     for(String pic : pics){
                         AutoCarPic autoCarPic = new AutoCarPic();
+                        autoCarPic.setCarId(autoCar.getCarId());
                         autoCarPic.setPath(pic);
+
+                        autoCarPic.setName(FileUtil.getFileName(pic));
                         list.add(autoCarPic);
                     }
                     autoCar.setPics(list);
@@ -340,14 +358,27 @@ public class AutoCarController extends ModuleController {
                 map.put("brandId", autoCar.getBrandId());
                 map.put("catId", autoCar.getBrandCatId());
                 map.put("modelId", autoCar.getBrandModelId());
-                AutoBrandModel model=autoBrandModelService.query(map);
+                AutoBrandModel model = autoBrandModelService.query(map);
                 autoCar.setCarName(model.getBrandName() + model.getCatName() + model.getModelName());
                 autoCar.setStartDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getBeginTimeString() + " 00:00:00")));
                 autoCar.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getEndTimeString() + " 23:59:59")));
                 for(int i = 0; i < autoCar.getAttrs().size(); i++){
                     AutoCarAttr carAttr = autoCar.getAttrs().get(i);
-                    autoCar.getAttrs().get(i).setLockNumber(0);
-                    autoCar.getAttrs().get(i).setSurplusNumber(carAttr.getTotalNumber());
+                    if(carAttr.getCarAttrId() != null && carAttr.getCarAttrId() > 0){
+                        AutoCarAttr find = autoCarAttrService.query(carAttr.getCarAttrId());
+                        if(find != null) {
+                            if (carAttr.getTotalNumber() < find.getLockNumber()) {
+                                result.setCode(1);
+                                result.setMsg("价格属性项总数不能小于锁定数目");
+                                return result;
+                            }
+                            autoCar.getAttrs().get(i).setSurplusNumber(carAttr.getTotalNumber() - find.getLockNumber());
+                        }
+                    }else{
+                        autoCar.getAttrs().get(i).setLockNumber(0);
+                        autoCar.getAttrs().get(i).setSurplusNumber(carAttr.getTotalNumber());
+                    }
+
                     double price = autoCar.getOfficalPrice();
                     if(carAttr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP) {
                         if (carAttr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY) {
@@ -372,6 +403,7 @@ public class AutoCarController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改车源信息");
                 }
             }
+            //endregion
             else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
                 Map<String, Object> map=new HashMap<String, Object>();
                 String id = getParameter("id");

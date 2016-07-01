@@ -43,14 +43,17 @@
         delete from auto_car_pic
         <where>
             <trim prefixOverrides="and | or">
+                <if test="picId != null and picId > 0">
+                    pic_id = #{picId}
+                </if>
+                <if test="picIds != null and picIds != ''">
+                    pic_id in (${picIds})
+                </if>
                 <if test="carId > 0">
                     car_id = #{carId}
                 </if>
-                <if test="carIds!=null and carIds.length>0">
-                    car_id in
-                    <foreach collection="carIds" item="carId" open="(" separator="," close=")">
-                        #{carId}
-                    </foreach>
+                <if test="carIds != null and carIds != ''">
+                    car_id in (${carIds})
                 </if>
             </trim>
         </where>

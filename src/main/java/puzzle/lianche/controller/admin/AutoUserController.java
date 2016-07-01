@@ -6,21 +6,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.controller.ModuleController;
-import puzzle.lianche.entity.AutoUser;
-import puzzle.lianche.entity.SystemAuthority;
-import puzzle.lianche.entity.SystemMenuAction;
-import puzzle.lianche.entity.SystemUser;
+import puzzle.lianche.controller.plugin.uploader.PathFormatter;
+import puzzle.lianche.entity.*;
+import puzzle.lianche.service.IAutoUserPicService;
+import puzzle.lianche.service.IAutoUserProfileService;
 import puzzle.lianche.service.IAutoUserService;
 import puzzle.lianche.service.ISystemMenuActionService;
 import puzzle.lianche.service.impl.AutoUserServiceImpl;
 import puzzle.lianche.service.impl.SystemUserServiceImpl;
 import puzzle.lianche.utils.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.*;
 
 @Controller(value = "adminAutoUserController")
@@ -29,6 +35,12 @@ public class AutoUserController extends ModuleController {
 
     @Autowired
     private IAutoUserService autoUserService;
+
+    @Autowired
+    private IAutoUserProfileService autoUserProfileService;
+
+    @Autowired
+    private IAutoUserPicService autoUserPicService;
 
     @RequestMapping (value = {"/","/index"})
     public String index(){
@@ -39,16 +51,57 @@ public class AutoUserController extends ModuleController {
 
     @RequestMapping (value = {"/add"})
     public String add(){
-        return Constants.UrlHelper.ADMIN_AUTO_USER_ADD;
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_CREATE);
+        return Constants.UrlHelper.ADMIN_AUTO_USER_SHOW;
     }
 
-    @RequestMapping (value = {"/edit"})
-    public String edit(){
-        return Constants.UrlHelper.ADMIN_AUTO_USER_EDIT;
+    @RequestMapping (value = {"/edit/{userId}"})
+    public String edit(@PathVariable Integer userId){
+        if(userId != null && userId > 0){
+            AutoUser user = autoUserService.query(userId, null);
+            if(user != null) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("userId", userId);
+
+                AutoUserProfile profile = autoUserProfileService.query(map);
+                user.setProfile(profile);
+
+                if (user.getBirth() != null && user.getBirth() > 0) {
+                    user.setBirthString(ConvertUtil.toString(new Date(user.getBirth()), Constants.DATE_FORMAT));
+                }
+
+                this.setModelAttribute("user", user);
+
+                List<AutoUserPic> picList = autoUserPicService.queryList(map);
+                this.setModelAttribute("picList", picList);
+            }
+        }
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_UPDATE);
+        return Constants.UrlHelper.ADMIN_AUTO_USER_SHOW;
     }
 
-    @RequestMapping (value = {"/show"})
-    public String show(){
+    @RequestMapping (value = {"/view/{userId}"})
+    public String view(@PathVariable Integer userId){
+        if(userId != null && userId > 0){
+            AutoUser user = autoUserService.query(userId, null);
+            if(user != null) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("userId", userId);
+
+                AutoUserProfile profile = autoUserProfileService.query(map);
+                user.setProfile(profile);
+
+                if (user.getBirth() != null && user.getBirth() > 0) {
+                    user.setBirthString(ConvertUtil.toString(new Date(user.getBirth()), Constants.DATE_FORMAT));
+                }
+
+                this.setModelAttribute("user", user);
+
+                List<AutoUserPic> picList = autoUserPicService.queryList(map);
+                this.setModelAttribute("picList", picList);
+            }
+        }
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_VIEW);
         return Constants.UrlHelper.ADMIN_AUTO_USER_SHOW;
     }
 
@@ -126,7 +179,7 @@ public class AutoUserController extends ModuleController {
                 AutoUser find = autoUserService.query(null, autoUser.getUserName());
                 if(find != null){
                     result.setCode(-1);
-                    result.setMsg("该账户已存在，请换个账户试试！");
+                    result.setMsg("该账户已存在！");
                     return result;
                 }
 
@@ -134,12 +187,19 @@ public class AutoUserController extends ModuleController {
                     autoUser.setPassword("666666");
                 }
                 autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
-                if(autoUser.getBirthDay() != null && autoUser.getBirthDay() != ""){
-                    autoUser.setBirth(ConvertUtil.toLong(ConvertUtil.toDate(autoUser.getBirthDay())));
+                if(StringUtil.isNotNullOrEmpty(autoUser.getBirthString())){
+                    autoUser.setBirth(ConvertUtil.toLong(ConvertUtil.toDate(autoUser.getBirthString())));
                 }else{
                     autoUser.setBirth(new Long(0));
                 }
-                autoUser.setUserAvatar("/resource/admin/avatars/profile-pic.jpg");
+
+                String avatar = saveAvatar();
+                if(StringUtil.isNotNullOrEmpty(avatar)){
+                    autoUser.setUserAvatar(avatar);
+                }else{
+                    autoUser.setUserAvatar("/resource/admin/avatars/profile-pic.jpg");
+                }
+
                 autoUser.setAddTime(ConvertUtil.toLong(new Date()));
                 autoUser.setPhone(autoUser.getUserName());
                 autoUser.setStatus(Constants.AUTO_USER_STATUS_NORMAL);
@@ -153,8 +213,8 @@ public class AutoUserController extends ModuleController {
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
                 autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
-                if(autoUser.getBirthDay() != null && autoUser.getBirthDay() != ""){
-                    autoUser.setBirth(ConvertUtil.toLong(ConvertUtil.toDate(autoUser.getBirthDay()+" 00:00:00")));
+                if(StringUtil.isNotNullOrEmpty(autoUser.getBirthString())){
+                    autoUser.setBirth(ConvertUtil.toLong(ConvertUtil.toDate(autoUser.getBirthString()+" 00:00:00")));
                 }
                 if(!autoUserService.update(autoUser)){
                     result.setCode(1);
@@ -173,7 +233,7 @@ public class AutoUserController extends ModuleController {
                 }
                 if(!autoUserService.delete(map)){
                     result.setCode(1);
-                    result.setMsg("删除会员信息出错");
+                    result.setMsg("删除会员信息失败");
                 }else{
                     //添加日志
                     insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除特定的会员信息");
@@ -181,7 +241,7 @@ public class AutoUserController extends ModuleController {
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("操作会员信息时出错");
+            result.setMsg("操作会员信息出错");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
@@ -219,4 +279,39 @@ public class AutoUserController extends ModuleController {
         return result;
     }
 
+    public String saveAvatar(){
+        try {
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(session.getServletContext());
+            if (multipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                MultipartFile cover = multiRequest.getFile("file");
+
+                String typePath = "avatar";
+                String savePath = session.getServletContext().getRealPath("") + "/upload/" + typePath + "/";
+                String relativeUrl = request.getContextPath() + "/upload/" + typePath + "/";
+                String saveName = PathFormatter.format(cover.getOriginalFilename(), "{yy}{MM}{dd}/{hh}{mm}{rand:6}");
+                String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
+                File dir = new File(dirName);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                FileOutputStream fos = new FileOutputStream(savePath + saveName);
+                fos.write(cover.getBytes());
+                fos.close();
+
+                String url = request.getScheme() + "://" + request.getServerName();
+                if (request.getServerPort() != 80) {
+                    url += ":" + request.getServerPort();
+                }
+                url += relativeUrl + saveName;
+
+                return url;
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

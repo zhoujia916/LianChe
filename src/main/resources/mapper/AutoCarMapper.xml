@@ -53,52 +53,51 @@
     <insert id="insert" parameterType="AutoCar" useGeneratedKeys="true" keyProperty="carId">
         insert into auto_car
         (
-        <if test="carName != null">car_name, </if>
-        <if test="brandId != null">brand_id, </if>
-        <if test="brandCatId != null">brand_cat_id, </if>
-        <if test="brandModelId != null">brand_model_id, </if>
-        <if test="officalPrice != null">offical_price, </if>
-        <if test="province != null">province, </if>
-        <if test="city != null">city, </if>
-        <if test="area != null">area, </if>
-        <if test="refreshTime != null">refresh_time, </if>
-        <if test="hasParts != null">has_parts, </if>
-        <if test="parts != null">parts, </if>
-        <if test="partsPrice != null">parts_price, </if>
-        <if test="addTime != null">add_time, </if>
-        <if test="addUserId != null">add_user_id, </if>
-        <if test="startDate != null">start_date, </if>
-        <if test="endDate != null">end_date, </if>
-        <if test="carType != null">car_type, </if>
-        <if test="status != null">status, </if>
-        <if test="invoiceType != null">invoice_type, </if>
-        <if test="remark != null">remark, </if>
-        <if test="sortOrder != null">sort_order</if>
+            <if test="carName != null">car_name, </if>
+            <if test="brandId != null">brand_id, </if>
+            <if test="brandCatId != null">brand_cat_id, </if>
+            <if test="brandModelId != null">brand_model_id, </if>
+            <if test="officalPrice != null">offical_price, </if>
+            <if test="province != null">province, </if>
+            <if test="city != null">city, </if>
+            <if test="area != null">area, </if>
+            <if test="refreshTime != null">refresh_time, </if>
+            <if test="hasParts != null">has_parts, </if>
+            <if test="parts != null">parts, </if>
+            <if test="partsPrice != null">parts_price, </if>
+            <if test="addTime != null">add_time, </if>
+            <if test="addUserId != null">add_user_id, </if>
+            <if test="startDate != null">start_date, </if>
+            <if test="endDate != null">end_date, </if>
+            <if test="carType != null">car_type, </if>
+            <if test="status != null">status, </if>
+            <if test="invoiceType != null">invoice_type, </if>
+            <if test="remark != null">remark, </if>
+            <if test="sortOrder != null">sort_order</if>
         )
         values
         (
-
-        <if test="carName != null">#{carName}, </if>
-        <if test="brandId != null">#{brandId}, </if>
-        <if test="brandCatId != null">#{brandCatId}, </if>
-        <if test="brandModelId != null">#{brandModelId}, </if>
-        <if test="officalPrice != null">#{officalPrice}, </if>
-        <if test="province != null">#{province}, </if>
-        <if test="city != null">#{city}, </if>
-        <if test="area != null">#{area}, </if>
-        <if test="refreshTime != null">#{refreshTime}, </if>
-        <if test="hasParts != null">#{hasParts}, </if>
-        <if test="parts != null">#{parts}, </if>
-        <if test="partsPrice != null">#{partsPrice}, </if>
-        <if test="addTime != null">#{addTime}, </if>
-        <if test="addUserId != null">#{addUserId}, </if>
-        <if test="startDate != null">#{startDate}, </if>
-        <if test="endDate != null">#{endDate}, </if>
-        <if test="carType != null">#{carType}, </if>
-        <if test="status != null">#{status}, </if>
-        <if test="invoiceType != null">#{invoiceType}, </if>
-        <if test="remark != null">#{remark}, </if>
-        <if test="sortOrder != null">#{sortOrder}</if>
+            <if test="carName != null">#{carName}, </if>
+            <if test="brandId != null">#{brandId}, </if>
+            <if test="brandCatId != null">#{brandCatId}, </if>
+            <if test="brandModelId != null">#{brandModelId}, </if>
+            <if test="officalPrice != null">#{officalPrice}, </if>
+            <if test="province != null">#{province}, </if>
+            <if test="city != null">#{city}, </if>
+            <if test="area != null">#{area}, </if>
+            <if test="refreshTime != null">#{refreshTime}, </if>
+            <if test="hasParts != null">#{hasParts}, </if>
+            <if test="parts != null">#{parts}, </if>
+            <if test="partsPrice != null">#{partsPrice}, </if>
+            <if test="addTime != null">#{addTime}, </if>
+            <if test="addUserId != null">#{addUserId}, </if>
+            <if test="startDate != null">#{startDate}, </if>
+            <if test="endDate != null">#{endDate}, </if>
+            <if test="carType != null">#{carType}, </if>
+            <if test="status != null">#{status}, </if>
+            <if test="invoiceType != null">#{invoiceType}, </if>
+            <if test="remark != null">#{remark}, </if>
+            <if test="sortOrder != null">#{sortOrder}</if>
         )
     </insert>
 

@@ -15,6 +15,8 @@ public interface IAutoUserProfileService{
     public boolean delete(Map<String, Object> map);
 
     public AutoUserProfile query(Map<String, Object> map);
+
+    public AutoUserProfile query(Integer userId);
     
     public List<AutoUserProfile> queryList(Object param);
 

@@ -61,8 +61,18 @@ public class AutoCarAttrServiceImpl implements IAutoCarAttrService {
     @Override
     public AutoCarAttr query(Integer carAttrId) {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("carAttId", carAttrId);
+        map.put("carAttrId", carAttrId);
         return query(map);
+    }
+
+    /**
+     * 查询车源属性
+     */
+    @Override
+    public List<AutoCarAttr> queryList(Integer carId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("carId", carId);
+        return queryList(map);
     }
 
     /**

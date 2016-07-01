@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import puzzle.lianche.entity.AutoCarAttr;
 import puzzle.lianche.entity.AutoCarPic;
 import puzzle.lianche.service.IAutoCarPicService;
 import puzzle.lianche.utils.Page;
@@ -57,6 +58,16 @@ public class AutoCarPicServiceImpl implements IAutoCarPicService {
 	@Override
     public AutoCarPic query(Map<String, Object> map){
     	return sqlMapper.query("AutoCarPicMapper.query", map);
+    }
+
+    /**
+     * 查询车源图片
+     */
+    @Override
+    public List<AutoCarPic> queryList(Integer carId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("carId", carId);
+        return queryList(map);
     }
 
 	/**

@@ -60,19 +60,19 @@
             {{if $action eq 'CREATE'}}
             <select id="brandId" name="brandId" style="width:200px">
                 <option value="0">请选择品牌</option>
-                {{foreach from=$brandList item=barndItem}}
-                <option value="{{$barndItem.brandId}}">{{$barndItem.brandName}}</option>
+                {{foreach from=$brandList item=brandItem}}
+                <option value="{{$brandItem.brandId}}">{{$brandItem.brandName}}</option>
                 {{/foreach}}
             </select>
             {{elseif $action eq 'UPDATE'}}
             <select id="brandId" name="brandId" style="width:200px">
                 <option value="0">请选择品牌</option>
-                {{foreach from=$brandList item=barndItem}}
-                <option value="{{$barndItem.brandId}}"{{if $brandItem.brandId eq $car.brandId}} selected="selected"{{/if}}>{{$barndItem.brandName}}</option>
+                {{foreach from=$brandList item=brandItem}}
+                <option value="{{$brandItem.brandId}}"{{if $brandItem.brandId eq $car.brandId}} selected="selected"{{/if}}>{{$brandItem.brandName}}</option>
                 {{/foreach}}
             </select>
             {{elseif $action eq 'VIEW'}}
-                {{$brandName}}
+                {{$car.brandName}}
             {{/if}}
 
         </div>
@@ -87,14 +87,14 @@
                 <option value="0">请选择车系</option>
             </select>
             {{elseif $action eq 'UPDATE'}}
-            <select id="catId" name="brandId" style="width:200px">
+            <select id="catId" name="brandCatId" style="width:200px">
                 <option value="0">请选择车系</option>
                 {{foreach from=$catList item=catItem}}
-                <option value="{{$catItem.catId}}"{{if $catItem.catId eq $car.catId}} selected="selected"{{/if}}>{{$catItem.catName}}</option>
+                <option value="{{$catItem.catId}}"{{if $catItem.catId eq $car.brandCatId}} selected="selected"{{/if}}>{{$catItem.catName}}</option>
                 {{/foreach}}
             </select>
             {{elseif $action eq 'VIEW'}}
-            {{$catName}}
+            {{$car.catName}}
             {{/if}}
         </div>
     </div>
@@ -111,11 +111,11 @@
             <select id="modelId" name="brandModelId" style="width:200px">
                 <option value="0">请选择车型</option>
                 {{foreach from=$modelList item=modelItem}}
-                <option value="{{$modelItem.catId}}"{{if $modelItem.modelId eq $car.modelId}} selected="selected"{{/if}}>{{$modelItem.catName}}</option>
+                <option value="{{$modelItem.modelId}}"{{if $modelItem.modelId eq $car.brandModelId}} selected="selected"{{/if}}>{{$modelItem.modelName}}</option>
                 {{/foreach}}
             </select>
             {{elseif $action eq 'VIEW'}}
-            {{$modelName}}
+            {{$car.modelName}}
             {{/if}}
         </div>
     </div>
@@ -127,7 +127,7 @@
             {{if $action eq 'CREATE'}}
             <input type="text" id="officalPrice"  name="officalPrice" placeholder="官方指导价" class="txt input-sm col-sm-2">
             {{elseif $action eq 'UPDATE'}}
-            <input type="text" id="officalPrice"  name="officalPrice" value="{{$car.officalPrice}}" placeholder="官方指导价" class="txt input-sm col-sm-2">
+            <input type="text" id="officalPrice" name="officalPrice" value="{{$car.officalPrice}}" placeholder="官方指导价" class="txt input-sm col-sm-2">
             {{elseif $action eq 'VIEW'}}
             {{$car.officalPrice}}
             {{/if}}
@@ -145,7 +145,7 @@
             <input type="text" class="input-sm col-sm-2" placeholder="开始日期" value="{{$car.beginTimeString}}" id="datepicker1" name="beginTimeString">
             <input type="text" class="input-sm col-sm-2" placeholder="结束日期" value="{{$car.endTimeString}}" id="datepicker2" name="endTimeString" style="margin-left:20px;">
             {{elseif $action eq 'VIEW'}}
-            {{$car.beginTimeString}}---{{$car.endTimeString}}
+            {{$car.beginTimeString}}→{{$car.endTimeString}}
             {{/if}}
 
         </div>
@@ -187,6 +187,41 @@
 
     <div class="form-group">
         <label class="col-sm-3 control-label">
+            是否在售
+        </label>
+        <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px;"{{/if}}>
+            {{if $action eq 'CREATE'}}
+            <div class="position-relative">
+                <label>
+                    <input value="1" type="radio" name="status" class="ace" >
+                    <span class="lbl">否</span>
+                </label>
+
+                <label style="margin-left:20px;">
+                    <input value="2" type="radio" name="status" class="ace" checked="checked">
+                    <span class="lbl">是</span>
+                </label>
+            </div>
+            {{elseif $action eq 'UPDATE'}}
+            <div class="position-relative">
+                <label>
+                    <input value="1" type="radio" name="status" class="ace" {{if $car.status eq 1}}checked="checked{{/if}}">
+                    <span class="lbl">否</span>
+                </label>
+
+                <label style="margin-left:20px;">
+                    <input value="2" type="radio" name="status" class="ace" {{if $car.status eq 2}}checked="checked{{/if}}">
+                    <span class="lbl">是</span>
+                </label>
+            </div>
+            {{elseif $action eq 'VIEW'}}
+            {{if $car.status eq 1}}否{{elseif $car.status eq 2}}是{{/if}}
+            {{/if}}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">
             发票信息
         </label>
         <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px;"{{/if}}>
@@ -205,17 +240,17 @@
             {{elseif $action eq 'UPDATE'}}
             <div class="position-relative">
                 <label>
-                    <input value="1" type="radio" name="invoiceType" class="ace" {{if $car.carType eq 1}}checked="checked{{/if}}">
+                    <input value="1" type="radio" name="invoiceType" class="ace" {{if $car.invoiceType eq 1}}checked="checked{{/if}}">
                     <span class="lbl">普票</span>
                 </label>
 
                 <label style="margin-left:20px;">
-                    <input value="2" type="radio" name="invoiceType" class="ace" {{if $car.carType eq 2}}checked="checked{{/if}}">
+                    <input value="2" type="radio" name="invoiceType" class="ace" {{if $car.invoiceType eq 2}}checked="checked{{/if}}">
                     <span class="lbl">增票</span>
                 </label>
             </div>
             {{elseif $action eq 'VIEW'}}
-            {{if $car.carType eq 1}}否{{elseif $car.carType eq 2}}是{{/if}}
+            {{if $car.invoiceType eq 1}}普票{{elseif $car.invoiceType eq 2}}增票{{/if}}
             {{/if}}
         </div>
     </div>
@@ -231,7 +266,6 @@
             {{elseif $action eq 'VIEW'}}
             {{$car.sortOrder}}
             {{/if}}
-
         </div>
     </div>
     <div class="form-group">
@@ -242,9 +276,9 @@
             {{if $action eq 'CREATE'}}
             <textarea name="remark" class="txt input-sm col-sm-10" style="height:50px;"></textarea>
             {{elseif $action eq 'UPDATE'}}
-            <textarea name="remark" class="txt input-sm col-sm-10" style="height:50px;">{{$car.remark}}</textarea>
+            <textarea name="remark" class="txt input-sm col-sm-10" style="height:50px;">{{if $car.remark}}{{$car.remark}}{{/if}}</textarea>
             {{elseif $action eq 'VIEW'}}
-            {{$car.remark}}
+            {{if $car.remark}}{{$car.remark}}{{/if}}
             {{/if}}
 
         </div>
@@ -258,17 +292,16 @@
             是否加配
         </label>
         <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px;"{{/if}}>
-
             {{if $action eq 'CREATE'}}
             <input type="hidden" name="hasParts" id="hidHasParts" value="1" >
             <input type="checkbox" value="2" offval="1" id="cbHasParts" class="ace ace-switch ace-switch-5">
             <span class="lbl"></span>
             {{elseif $action eq 'UPDATE'}}
-            <input type="hidden" name="hasParts" id="hidHasParts" value="1" >
+            <input type="hidden" name="hasParts" id="hidHasParts" value="{{$car.hasParts}}" >
             <input type="checkbox" value="2" offval="1" id="cbHasParts" {{if $car.hasParts eq 2}}checked="checked"{{/if}} class="ace ace-switch ace-switch-5">
             <span class="lbl"></span>
             {{elseif $action eq 'VIEW'}}
-            {{if $car.carType eq 1}}否{{elseif $car.carType eq 2}}是{{/if}}
+            {{if $car.hasParts eq 1}}否{{elseif $car.hasParts eq 2}}是{{/if}}
             {{/if}}
         </div>
     </div>
@@ -280,9 +313,9 @@
             {{if $action eq 'CREATE'}}
             <textarea name="parts" id="txtParts" class="txt disabled input-sm col-sm-10" {{if $car.hasParts eq 1}}disabled="disabled"{{/if}} style="width:80%;max-width:80%;min-width:80%;height:300px;max-height:300px;"></textarea>
             {{elseif $action eq 'UPDATE'}}
-            <textarea name="parts" id="txtParts" class="txt disabled input-sm col-sm-10" {{if $car.hasParts eq 1}}disabled="disabled"{{/if}} style="width:80%;max-width:80%;min-width:80%;height:300px;max-height:300px;">{{$car.parts}}</textarea>
+            <textarea name="parts" id="txtParts" class="txt disabled input-sm col-sm-10" {{if $car.hasParts eq 1}}disabled="disabled"{{/if}} style="width:80%;max-width:80%;min-width:80%;height:300px;max-height:300px;">{{if $car.hasParts eq 2 and $car.parts}}{{$car.parts}}{{/if}}</textarea>
             {{elseif $action eq 'VIEW'}}
-            {{$car.parts}}
+            {{if $car.hasParts eq 2}}{{$car.parts}}{{/if}}
             {{/if}}
 
         </div>
@@ -295,9 +328,9 @@
             {{if $action eq 'CREATE'}}
             <input type="text" id="txtPartsPrice" name="partsPrice" {{if $car.hasParts eq 1}}disabled="disabled"{{/if}}disabled placeholder="加配价格" class="txt disabled input-sm col-sm-4">
             {{elseif $action eq 'UPDATE'}}
-            <input type="text" id="txtPartsPrice" name="partsPrice" {{if $car.hasParts eq 1}}disabled="disabled"{{/if}}value="{{$car.partsPrice}}" placeholder="加配价格" class="txt disabled input-sm col-sm-4">
+            <input type="text" id="txtPartsPrice" name="partsPrice" {{if $car.hasParts eq 1}}disabled="disabled"{{elseif $car.hasParts eq 2}}value="{{$car.partsPrice}}{{/if}}" placeholder="加配价格" class="txt disabled input-sm col-sm-4">
             {{elseif $action eq 'VIEW'}}
-            {{$car.partsPrice}}
+            {{if $car.hasParts eq 1}}0{{elseif $car.hasParts eq 2}}{{$car.partsPrice}}{{/if}}
             {{/if}}
         </div>
     </div>
@@ -306,6 +339,8 @@
 <div id="edit-attrs" class="tab-pane">
     <div class="space-10"></div>
     <div class="row">
+        <input type="hidden" id="hidCarAttrId" name="carAttrId" />
+
         <input type="hidden" id="hidOutsideColor" name="outsideColor" />
 
         <input type="hidden" id="hidInsideColor" name="insideColor" />
@@ -322,23 +357,25 @@
             <div class="widget-box widget-color-blue">
                 <div class="widget-body">
                     <div class="widget-main">
-                        <input data-name="outsideColor" type="text" style="margin-bottom:15px;" placeholder="外观" class="txt input-sm col-sm-12">
+                        <input type="hidden" data-name="carAttrId" value="0" />
 
-                        <input data-name="insideColor" type="text" style="margin-bottom:15px;" placeholder="内饰" class="txt input-sm col-sm-12">
+                        <input data-name="outsideColor" type="text" style="margin-bottom:15px;" title="外观颜色" placeholder="外观颜色" class="txt input-sm col-sm-12">
 
-                        <select data-name="quoteType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
+                        <input data-name="insideColor" type="text" style="margin-bottom:15px;" title="内饰颜色" placeholder="内饰颜色" class="txt input-sm col-sm-12">
+
+                        <select data-name="quoteType" style="margin-bottom:15px;" class="txt input-sm col-sm-12" title="行情">
                             <option value="1" selected="selected">行情上</option>
                             <option value="2">行情下</option>
                         </select>
 
-                        <select data-name="salePriceType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
+                        <select data-name="salePriceType" style="margin-bottom:15px;" class="txt input-sm col-sm-12" title="优惠类型">
                             <option value="1" selected="selected">优惠点数</option>
                             <option value="2">优惠价格</option>
                         </select>
 
-                        <input data-name="saleAmount" type="text" style="margin-bottom:15px;" placeholder="优惠价格或点数(数字)" class="txt input-sm col-sm-12">
+                        <input data-name="saleAmount" type="text" style="margin-bottom:15px;" title="优惠价格或点数(数字)" placeholder="优惠价格或点数(数字)" class="txt input-sm col-sm-12">
 
-                        <input data-name="totalNumber" type="text" style="margin-bottom:15px;" placeholder="车源数量" class="txt input-sm col-sm-12">
+                        <input data-name="totalNumber" type="text" style="margin-bottom:15px;" title="车源数量" placeholder="车源数量" class="txt input-sm col-sm-12">
 
                     </div>
 
@@ -357,23 +394,25 @@
             <div class="widget-box widget-color-blue">
                 <div class="widget-body">
                     <div class="widget-main">
-                        <input data-name="outsideColor" type="text" value="{{$attrItem.outsideColor}}" style="margin-bottom:15px;" placeholder="外观" class="txt input-sm col-sm-12">
+                        <input type="hidden" data-name="carAttrId" value="{{$attrItem.carAttrId}}" />
 
-                        <input data-name="insideColor" type="text" value="{{$attrItem.outsideColor}}" style="margin-bottom:15px;" placeholder="内饰" class="txt input-sm col-sm-12">
+                        <input data-name="outsideColor" type="text" value="{{$attrItem.outsideColor}}" style="margin-bottom:15px;" title="外观颜色" placeholder="外观颜色" class="txt input-sm col-sm-12">
 
-                        <select data-name="quoteType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
+                        <input data-name="insideColor" type="text" value="{{$attrItem.insideColor}}" style="margin-bottom:15px;" title="内饰颜色" placeholder="内饰颜色" class="txt input-sm col-sm-12">
+
+                        <select data-name="quoteType" style="margin-bottom:15px;" class="txt input-sm col-sm-12" title="行情">
                             <option value="1" {{if $attrItem.quoteType eq 1}}selected="selected"{{/if}}>行情上</option>
                             <option value="2" {{if $attrItem.quoteType eq 1}}selected="selected"{{/if}}>行情下</option>
                         </select>
 
-                        <select data-name="salePriceType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
+                        <select data-name="salePriceType" style="margin-bottom:15px;" class="txt input-sm col-sm-12" title="优惠类型">
                             <option value="1" {{if $attrItem.salePriceType eq 1}}selected="selected"{{/if}}>优惠点数</option>
                             <option value="2" {{if $attrItem.salePriceType eq 2}}selected="selected"{{/if}}>优惠价格</option>
                         </select>
 
-                        <input data-name="saleAmount" type="text" value="{{$attrItem.saleAmount}}" style="margin-bottom:15px;" placeholder="优惠价格或点数(数字)" class="txt input-sm col-sm-12">
+                        <input data-name="saleAmount" type="text" value="{{$attrItem.saleAmount}}" style="margin-bottom:15px;" title="优惠价格或点数(数字)" placeholder="优惠价格或点数(数字)" class="txt input-sm col-sm-12">
 
-                        <input data-name="totalNumber" type="text" value="{{$attrItem.totalNumber}}" style="margin-bottom:15px;" placeholder="车源数量" class="txt input-sm col-sm-12">
+                        <input data-name="totalNumber" type="text" value="{{$attrItem.totalNumber}}" style="margin-bottom:15px;" title="车源数量" placeholder="车源数量" class="txt input-sm col-sm-12">
 
                     </div>
 
@@ -385,21 +424,43 @@
                     </div>
                 </div>
             </div>
-        </div
+        </div>
         {{/foreach}}
 
         {{elseif $action eq 'VIEW'}}
         {{foreach from=$attrList item=attrItem key=index}}
-        <div class="col-xs-2 attr-item" data-index="0">
+        <div class="col-xs-3 attr-item" data-index="0">
             <div class="widget-box widget-color-blue">
+                <div class="widget-header center">
+                    <h5 class="widget-title bigger widget-color-blue ">选项{{$index+1}}</h5>
+                </div>
                 <div class="widget-body">
                     <div class="widget-main">
-                        外观:{{$attrItem.outsideColor}}
-                        内饰{{$attrItem.insideColor}}
-                        行情:{{$attrItem.quoteType}}
-                        优惠类型:{{$attrItem.salePriceType}}
-                        优惠量:{{$attrItem.saleAmount}}
-                        车源数量:{{$attrItem.totalNumber}}
+                        <div class="space-6"></div>
+                        <div style="margin-bottom: 15px;"><div style="padding-right:10px;width:80px;text-align:right;float:left">外观:</div>{{$attrItem.outsideColor}}</div>
+                        <div style="margin-bottom: 15px;"><div style="padding-right:10px;width:80px;text-align:right;float:left">内饰:</div>{{$attrItem.insideColor}}</div>
+                        <div style="margin-bottom: 15px;"><div style="padding-right:10px;width:80px;text-align:right;float:left">行情:</div>
+                            {{if $attrItem.quoteType eq 1}}上{{/if}}
+                            {{if $attrItem.quoteType eq 2}}下{{/if}}
+                        </div>
+                        <div style="margin-bottom: 15px;"><div style="padding-right:10px;width:80px;text-align:right;float:left">优惠类型:</div>
+                            {{if $attrItem.salePriceType eq 1}}优惠点数{{/if}}
+                            {{if $attrItem.salePriceType eq 2}}优惠价格{{/if}}
+                        </div>
+                        <div style="margin-bottom: 15px;"><div style="padding-right:10px;width:80px;text-align:right;float:left">优惠量:</div>{{$attrItem.saleAmount}}</div>
+                        <div style="margin-bottom: 15px;"><div style="padding-right:10px;width:80px;text-align:right;float:left">发布数量:</div>{{$attrItem.totalNumber}}</div>
+                        <div style="margin-bottom: 15px;"><div style="padding-right:10px;width:80px;text-align:right;float:left">锁定数量:</div>
+                            {{$attrItem.lockNumber}}
+                        </div>
+                        <div style="margin-bottom: 15px;"><div style="padding-right:10px;width:80px;text-align:right;float:left">剩余数量:</div>
+                            {{$attrItem.surplusNumber}}
+                        </div>
+                        <div style="margin-bottom: 15px;"><div style="padding-right:10px;width:80px;text-align:right;float:left">加配价格:</div>
+                            {{$attrItem.price + $car.partsPrice}}
+                        </div>
+                        <div style="margin-bottom: 15px;"><div style="padding-right:10px;width:80px;text-align:right;float:left">不加配价格:</div>
+                            {{$attrItem.price}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -422,10 +483,10 @@
     <div class="space-10"></div>
     {{if $action eq 'CREATE'}}
     <input type="hidden" id="hidPic" name="pic" value="" />
-    {{elseif $action eq 'UPDATE' || $action eq 'VIEW'}}
-    {{foreach from=$picList item=picItem key=index}}
-    <input type="hidden" id="hidPic" name="pic" value="{{if $index gt 0}}※{{/if}}{{$picItem.path}}" />
-    {{/foreach}}
+    {{elseif $action eq 'UPDATE'}}
+
+    <input type="hidden" id="hidPic" name="pic" value="{{foreach from=$picList item=picItem key=index}}{{if $index gt 0}}※{{/if}}{{$picItem.path}}{{/foreach}}" />
+
     {{/if}}
     <div class="dropzone" id="dropzone">
         <div class="fallback">
@@ -435,8 +496,9 @@
 </div>
 </div>
 </div>
-
+{{if $action eq 'CREATE' || $action eq 'UPDATE'}}
 <div class="clearfix form-actions">
+    {{if $action eq 'UPDATE'}}<input type="hidden" name="carId" value="{{$car.carId}}" />{{/if}}
     <button id="btnReset" class="btn" type="reset">
         <i class="ace-icon fa fa-undo bigger-110"></i>
         重置
@@ -446,7 +508,9 @@
         <i class="ace-icon fa fa-check bigger-110"></i>
         确定
     </button>
+
 </div>
+{{/if}}
 </form>
 
 
@@ -458,23 +522,25 @@
         <div class="widget-box widget-color-blue">
             <div class="widget-body">
                 <div class="widget-main">
-                    <input type="text" data-name="outsideColor" style="margin-bottom:15px;" placeholder="外观" class="txt input-sm col-sm-12">
+                    <input type="hidden" data-name="carAttrId" value="0" />
 
-                    <input type="text" data-name="insideColor" style="margin-bottom:15px;" placeholder="内饰" class="txt input-sm col-sm-12">
+                    <input type="text" data-name="outsideColor" style="margin-bottom:15px;" title="外观颜色" placeholder="外观颜色" class="txt input-sm col-sm-12">
 
-                    <select data-name="quoteType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
-                        <option value="1" selected="selected">上</option>
-                        <option value="2">下</option>
+                    <input type="text" data-name="insideColor" style="margin-bottom:15px;" title="内饰颜色" placeholder="内饰颜色" class="txt input-sm col-sm-12">
+
+                    <select data-name="quoteType" style="margin-bottom:15px;" title="行情" class="txt input-sm col-sm-12">
+                        <option value="1" selected="selected">行情上</option>
+                        <option value="2">行情下</option>
                     </select>
 
-                    <select data-name="salePriceType" style="margin-bottom:15px;" class="txt input-sm col-sm-12">
+                    <select data-name="salePriceType" style="margin-bottom:15px;" title="优惠类型" class="txt input-sm col-sm-12">
                         <option value="1" selected="selected">优惠点数</option>
                         <option value="2">优惠价格</option>
                     </select>
 
-                    <input type="text" data-name="saleAmount" style="margin-bottom:15px;" placeholder="优惠价格或点数(数字)" class="txt input-sm col-sm-12">
+                    <input type="text" data-name="saleAmount" style="margin-bottom:15px;" title="优惠价格或点数(数字)" placeholder="优惠价格或点数(数字)" class="txt input-sm col-sm-12">
 
-                    <input type="text" data-name="totalNumber" style="margin-bottom:15px;" placeholder="车源数量" class="txt input-sm col-sm-12">
+                    <input type="text" data-name="totalNumber" style="margin-bottom:15px;" title="车源数量" placeholder="车源数量" class="txt input-sm col-sm-12">
 
                 </div>
 
@@ -555,7 +621,7 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         }
 
 
-
+        var carAttrId = [];
         var outsideColor = [];
         var insideColor = [];
         var quoteType = [];
@@ -563,6 +629,7 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         var saleAmount = [];
         var totalNumber = [];
         $("#edit-attrs .attr-item").each(function(){
+            carAttrId.push($.trim($(this).find("input[data-name='carAttrId']").val()));
             outsideColor.push($.trim($(this).find("input[data-name='outsideColor']").val()));
             insideColor.push($.trim($(this).find("input[data-name='insideColor']").val()));
             quoteType.push($(this).find("select[data-name='quoteType']").val());
@@ -575,6 +642,7 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
             showTip("请填写价格属性");
             return;
         }
+        $("#hidCarAttrId").val(carAttrId.join(spliter));
         $("#hidOutsideColor").val(outsideColor.join(spliter));
         $("#hidInsideColor").val(insideColor.join(spliter));
         $("#hidQuoteType").val(quoteType.join(spliter));
@@ -587,13 +655,13 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
 
         if(pic == ""){
             showConfirm("您确定不上传车源图片?", save);
+        }else {
+            save();
         }
-        save();
 
         function save(){
             console.log($("form").serialize());
-
-            $.post("{{$contextPath}}/admin/autocar/action.do", "action=CREATE&" + $("form").serialize(), function(result){
+            $.post("{{$contextPath}}/admin/autocar/action.do", "action={{$action}}&" + $("form").serialize(), function(result){
                 if(result.code == 0){
                     changeHash("admin/autocar/index");
                 }else{
@@ -609,14 +677,14 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
     var month = date.getMonth();
     var day = date.getDate();
 
-    var date1 = date.getFullYear() + "-" + (month < 9 ? ("0" + (1 + month)) : (1 + month)) + "-" + day;
+    var date1 = date.getFullYear() + "-" + (month < 9 ? ("0" + (1 + month)) : (1 + month)) + "-" + (day < 10 ? "0" + day : day);
 
     $( "#datepicker1").val(date1);
 
 
 
-    var date2 = month < 10 ? (date.getFullYear() + "-" + ((month + 2) < 9 ? ("0" + (3 + month)) : (3 + month)) + "-" + (day - 1)) :
-            ((date.getFullYear() + 1) + "-" + ("0" + ((month + 3) % 12)) + "-" + (day - 1));
+    var date2 = month < 10 ? (date.getFullYear() + "-" + ((month + 2) < 9 ? ("0" + (3 + month)) : (3 + month)) + "-" + (day < 10 ? "0" + day : day)) :
+            ((date.getFullYear() + 1) + "-" + ("0" + ((month + 3) % 12)) + "-" + (day < 10 ? "0" + day : day));
 
     $( "#datepicker2").val(date2);
     {{/if}}
@@ -695,7 +763,7 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         }
     });
     {{/if}}
-    {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+
     Dropzone.autoDiscover = false;
     var dropZone = new Dropzone("#dropzone" , {
         paramName: "upfile",
@@ -730,11 +798,11 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
             var pics = $("#hidPic").val().split(spliter);
             for(var i = 0; i < pics.length; i++){
                 if(pics[i] == file.path){
-                    pics = pics.splice(i, 1);
+                    pics.splice(i, 1);
                     break;
                 }
             }
-            $("#hicPic").val(pics.join(spliter));
+            $("#hidPic").val(pics.join(spliter));
 
 
             var _ref;
@@ -761,10 +829,10 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         dictResponseError: '上传文件出错!',
         previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
     });
-    {{/if}}
-    {{if $action eq 'UPDATE'}}
+    {{if $action eq 'UPDATE' or $action eq 'VIEW'}}
+    var mockFileList = [];
     {{foreach from=$picList item=picItem}}
-    var mockFileList = { name: "{{$picItem.name}}", size: "{{$picItem.size}}" };
+    mockFileList.push({ name: "temp.jpg", size: "10000", path: "{{$picItem.path}}" });
     {{/foreach}}
     for(var i = 0; i < mockFileList.length; i++){
         dropZone.emit("addedfile", mockFileList[i]);
@@ -773,6 +841,9 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
 
         dropZone.emit("complete", mockFileList[i]);
     }
+    {{/if}}
+    {{if $action eq 'VIEW'}}
+    dropZone.disable();
     {{/if}}
 });
 </script>

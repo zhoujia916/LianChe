@@ -101,6 +101,6 @@
                 </if>
 	        </trim>
         </where>
-        order by sort_order desc,brand_id asc
+        order by sort_order desc, brand_id asc
     </select>
 </mapper>

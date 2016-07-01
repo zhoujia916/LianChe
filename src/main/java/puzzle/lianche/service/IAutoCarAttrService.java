@@ -1,6 +1,5 @@
 package puzzle.lianche.service;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.List;
 import puzzle.lianche.utils.Page;
@@ -19,6 +18,8 @@ public interface IAutoCarAttrService{
     public AutoCarAttr query(Map<String, Object> map);
 
     public AutoCarAttr query(Integer carAttrId);
+
+    public List<AutoCarAttr> queryList(Integer carId);
     
     public List<AutoCarAttr> queryList(Object param);
 
