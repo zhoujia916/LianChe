@@ -3,36 +3,20 @@
     <!-- .sidebar-shortcuts -->
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-            <a class="btn btn-success" title="新建订单" href="#page/autoorder/add">
+            <a class="btn btn-success tooltip-info" title="新建订单" data-rel="tooltip" data-placement="bottom" href="#page/autoorder/add">
                 <i class="ace-icon fa fa-shopping-cart"></i>
             </a>
-            <!--<div class="btn-group">-->
-                <!--<button data-toggle="dropdown" class="btn btn-xs btn-success dropdown-toggle" title="新建订单" >-->
-                    <!--<i class="ace-icon fa fa-shopping-cart"></i>-->
-                    <!--<span class="ace-icon fa fa-caret-down icon-on-right"></span>-->
-                <!--</button>-->
 
-                <!--<ul class="dropdown-menu dropdown-default">-->
-                    <!--<li>-->
-                        <!--<a href="#page/autoorder/add">新建订单</a>-->
-                    <!--</li>-->
-
-                    <!--<li>-->
-                        <!--<a href="#page/autoorder/index">订单列表</a>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</div>-->
-
-            <a class="btn btn-info" title="发布车源" href="#page/autocar/add">
+            <a class="btn btn-info tooltip-info" title="发布车源" data-rel="tooltip" data-placement="bottom" href="#page/autocar/add">
                 <i class="ace-icon fa fa-car"></i>
             </a>
 
-            <a class="btn btn-warning" title="新建会员" href="#page/autouser/add">
+            <a class="btn btn-warning tooltip-info" title="新建会员" data-rel="tooltip" data-placement="bottom" href="#page/autouser/add">
                 <i class="ace-icon fa fa-users"></i>
             </a>
 
-            <a class="btn btn-danger" title="评论列表" href="#page/autocomment/add">
-                <i class="ace-icon fa fa-cogs"></i>
+            <a class="btn btn-danger tooltip-info" title="新建列表" data-rel="tooltip" data-placement="bottom" href="#page/autoarticle/add">
+                <i class="ace-icon fa fa-comment"></i>
             </a>
         </div>
 
@@ -83,7 +67,7 @@
                             {{if $child1Item.children}}
                             <a href="#" class="dropdown-toggle">
                                 {{if $child1Item.menuIco}}<i class="{{$child1Item.menuIco}}"></i>{{/if}}
-                                {{$child1Item.menuName}}
+                                <span class="menu-text">{{$child1Item.menuName}}</span>
                                 <b class="arrow fa fa-angle-down"></b>
                             </a>
                             <b class="arrow"></b>
@@ -93,7 +77,7 @@
                                     {{if $child2Item.children}}
                                     <a href="#" class="dropdown-toggle">
                                         {{if $child2Item.menuIco}}<i class="{{$child2Item.menuIco}}"></i>{{/if}}
-                                        {{$child2Item.menuName}}
+                                        <span class="menu-text">{{$child2Item.menuName}}</span>
                                         <b class="arrow fa fa-angle-down"></b>
                                     </a>
                                     <b class="arrow"></b>
@@ -104,14 +88,14 @@
                                             {{if $child3Item.children}}
                                             <a href="#" class="dropdown-toggle">
                                                 {{if $child3Item.menuIco}}<i class="{{$child3Item.menuIco}}"></i>{{/if}}
-                                                {{$child3Item.menuName}}
+                                                <span class="menu-text">{{$child3Item.menuName}}</span>
                                                 <b class="arrow fa fa-angle-down"></b>
                                             </a>
                                             <b class="arrow"></b>
                                             <ul class="submenu">
                                                 {{foreach from=$child3Item.children item=child4Item}}
                                                 <li>
-                                                    <a data-url="{{$child4Item.menuUrl}}" href="index#page/{{$child4Item.menuUrl}}">
+                                                    <a data-url="page/{{$child4Item.menuUrl}}" href="index#page/{{$child4Item.menuUrl}}">
                                                         {{if $child4Item.menuIco}}<i class="{{$child4Item.menuIco}}"></i>{{/if}}
                                                         {{$child4Item.menuName}}
                                                     </a>
@@ -119,7 +103,7 @@
                                                 {{/foreach}}
                                             </ul>
                                             {{else}}
-                                            <a data-url="{{$child3Item.menuUrl}}" href="index#page/{{$child3Item.menuUrl}}">
+                                            <a data-url="page/{{$child3Item.menuUrl}}" href="index#page/{{$child3Item.menuUrl}}">
                                                 {{if $child3Item.menuIco}}<i class="{{$child3Item.menuIco}}"></i>{{/if}}
                                                 {{$child3Item.menuName}}
                                             </a>
@@ -128,7 +112,7 @@
                                         {{/foreach}}
                                     </ul>
                                     {{else}}
-                                    <a data-url="{{$child2Item.menuUrl}}" href="index#page/{{$child2Item.menuUrl}}">
+                                    <a data-url="page/{{$child2Item.menuUrl}}" href="index#page/{{$child2Item.menuUrl}}">
                                         {{if $child2Item.menuIco}}<i class="{{$child2Item.menuIco}}"></i>{{/if}}
                                         {{$child2Item.menuName}}
                                     </a>
@@ -137,7 +121,7 @@
                                 {{/foreach}}
                             </ul>
                             {{else}}
-                            <a data-url="{{$child1Item.menuUrl}}" href="index#page/{{$child1Item.menuUrl}}">
+                            <a data-url="page/{{$child1Item.menuUrl}}" href="index#page/{{$child1Item.menuUrl}}">
                                 {{if $child1Item.menuIco}}<i class="{{$child1Item.menuIco}}"></i>{{/if}}
                                 {{$child1Item.menuName}}
                             </a>
@@ -146,18 +130,18 @@
                         {{/foreach}}
                     </ul>
                     {{else}}
-                    <a data-url="{{$child0Item.menuUrl}}" href="index#page/{{$child0Item.menuUrl}}">
+                    <a data-url="page/{{$child0Item.menuUrl}}" href="index#page/{{$child0Item.menuUrl}}">
                         {{if $child0Item.menuIco}}<i class="{{$child0Item.menuIco}}"></i>{{/if}}
-                        <span class="menu-text">{{$child0Item.menuName}}</span>
+                        {{$child0Item.menuName}}
                     </a>
                     {{/if}}
                 </li>
                 {{/foreach}}
             </ul>
             {{else}}
-            <a data-url="{{$menuItem.menuUrl}}" href="index#page/{{$menuItem.menuUrl}}">
+            <a data-url="page/{{$menuItem.menuUrl}}" href="index#page/{{$menuItem.menuUrl}}">
                 {{if $menuItem.menuIco}}<i class="{{$menuItem.menuIco}}"></i>{{/if}}
-                <span class="menu-text">{{$menuItem.menuName}}</span>
+                {{$menuItem.menuName}}
             </a>
             {{/if}}
         </li>

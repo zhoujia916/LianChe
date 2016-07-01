@@ -52,11 +52,13 @@ public class SystemDeptController extends ModuleController {
     public Result list(SystemDept systemDept){
         Result result = new Result();
         Map<String,Object> map = new HashMap<String, Object>();
-        if(StringUtil.isNotNullOrEmpty(ConvertUtil.toString(systemDept.getParentId()))){
-            map.put("parentId", systemDept.getParentId());
-        }
-        if(StringUtil.isNotNullOrEmpty(systemDept.getDeptName())){
-            map.put("deptName", systemDept.getDeptName());
+        if(systemDept != null) {
+            if (StringUtil.isNotNullOrEmpty(ConvertUtil.toString(systemDept.getParentId()))) {
+                map.put("parentId", systemDept.getParentId());
+            }
+            if (StringUtil.isNotNullOrEmpty(systemDept.getDeptName())) {
+                map.put("deptName", systemDept.getDeptName());
+            }
         }
         try {
             List<SystemDept> list = systemDeptService.queryList(map);

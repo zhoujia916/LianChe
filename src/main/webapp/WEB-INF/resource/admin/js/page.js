@@ -5,12 +5,12 @@
  */
 function showTip(content, delay){
 //    window.alert(content);
-    console.log(content);
-    return;
+//    console.log(content);
+//    return;
 	delay = delay || 3000;
-    var tip = $(".page-content #tip-box");
+    var tip = $("#tip-box");
     if(tip.length == 0){
-        tip = $('<div id="tip-box" class="alert alert-info alert-tip">' + content + '</div>').appendTo(".page-content");
+        tip = $('<div id="tip-box" class="alert alert-success alert-tip"><i class="ace-icon fa fa-check"></i>' + content + '</div>').appendTo("body");
     }else{
         tip.html(content);
     }
@@ -142,3 +142,13 @@ function showBootDialog(msg, handler){
         buttons: handler
     });
 }
+
+function showToolTip(selector){
+    selector = selector || "[data-rel=tooltip]";
+    $(selector).tooltip();
+}
+
+
+(function(){
+    showToolTip();
+})();
