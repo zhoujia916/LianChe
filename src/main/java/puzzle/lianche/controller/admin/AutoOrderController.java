@@ -180,6 +180,7 @@ public class AutoOrderController extends ModuleController {
     public String show(@PathVariable("orderId")Integer orderId){
         try {
             if(orderId != null && orderId > 0){
+                Map map=new HashMap();
                 AutoOrder order = autoOrderService.query(orderId, null);
                 order.setAddTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getAddTime())));
                 order.setPutTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getPutTime()),Constants.DATE_FORMAT));
@@ -187,12 +188,14 @@ public class AutoOrderController extends ModuleController {
                 order.setPayStatusString(Constants.PAY_STATUS.get(order.getPayStatus()));
                 order.setShipStatusString(Constants.SHIP_STATUS.get(order.getShipStatus()));
                 List<String> list=autoOrderService.queryOperate(order,Constants.ORDER_USER_ADMIN);
+                List<Map> orderActions=new ArrayList<Map>();
                 if(list!=null && list.size()>0){
-                    List<String> orderActions=new ArrayList<String>();
                     for(String action:list){
-                        orderActions.add(Constants.OO_OPERATE.get(action));
+                        Map actionMap=new HashMap();
+                        actionMap.put("key",action);
+                        actionMap.put("value",Constants.OO_OPERATE.get(action));
+                        orderActions.add(actionMap);
                     }
-                    this.setModelAttribute("operateList", orderActions);
                 }
                 AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
                 buyer.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(buyer.getShopType()));
@@ -213,6 +216,7 @@ public class AutoOrderController extends ModuleController {
                 this.setModelAttribute("buyer", buyer);
                 this.setModelAttribute("seller",seller);
                 this.setModelAttribute("carAttr", carAttr);
+                this.setModelAttribute("operateList", orderActions);
             }
         }
         catch(Exception e){
@@ -228,40 +232,42 @@ public class AutoOrderController extends ModuleController {
         try{
             AutoOrder order=autoOrderService.query(orderId, null);
             boolean flag=false;
-            if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_CANCEL)){
+            if(action.equalsIgnoreCase(Constants.OO_CANCEL)){
                 flag=autoOrderService.doCancel(order);
-            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_PAYMENT)){
+            }else if(action.equalsIgnoreCase(Constants.OO_PAYMENT)){
                 flag=autoOrderService.doDeposit(order);
-            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_UNPAYMENT)){
+            }else if(action.equalsIgnoreCase(Constants.OO_UNPAYMENT)){
                 order.setPayStatus(Constants.PS_WAIT_BUYER_DEPOSIT);
                 flag=autoOrderService.update(order);
-            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_ACCEPT)){
+            }else if(action.equalsIgnoreCase(Constants.OO_ACCEPT)){
                 flag=autoOrderService.doAccept(order);
-            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_UNACCEPT)){
+            }else if(action.equalsIgnoreCase(Constants.OO_UNACCEPT)){
                 flag=autoOrderService.doReject(order);
-            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_REJECT)){
+            }else if(action.equalsIgnoreCase(Constants.OO_REJECT)){
                 flag=autoOrderService.doReject(order);
-            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RECEIVE)){
+            }else if(action.equalsIgnoreCase(Constants.OO_RECEIVE)){
                 flag=autoOrderService.doReceive(order);
-            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_NOTIFY_RECEIVE)){
+            }else if(action.equalsIgnoreCase(Constants.OO_NOTIFY_RECEIVE)){
                 flag=autoOrderService.doNotify(order);
-            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RETURN_BUYER_DEPOSIT)){
+            }else if(action.equalsIgnoreCase(Constants.OO_RETURN_BUYER_DEPOSIT)){
                 Integer type=0;
                 if(order.getPayStatus()==Constants.PS_BUYER_PAY_DEPOSIT) {
                     type=Constants.ORDER_USER_BUYER;
                 }
-                if(order.getPayStatus()==Constants.PS_BUYER_PAY_DEPOSIT && order.getPayStatus()==Constants.PS_SELLER_PAY_DEPOSIT){
+                else if(order.getPayStatus()==Constants.PS_SELLER_PAY_DEPOSIT){
+                    type=Constants.ORDER_USER_ALL;
+                }
+                else if(order.getPayStatus()==Constants.PS_WAIT_SYSTEM_DEPOSIT){
                     type=Constants.ORDER_USER_ALL;
                 }
                 flag = autoOrderService.doReturnDeposit(order, type);
-            }else if(Constants.OO_ACTIONS.get(action).equalsIgnoreCase(Constants.OO_RETURN_SELLER_DEPOSIT)){
-                Integer type=0;
-                if(order.getPayStatus()==Constants.PS_SELLER_PAY_DEPOSIT) {
-                    type=Constants.ORDER_USER_SELLER;
-                }
-                if(order.getPayStatus()==Constants.PS_SELLER_PAY_DEPOSIT && order.getPayStatus()==Constants.PS_BUYER_PAY_DEPOSIT){
-                    type=Constants.ORDER_USER_ALL;
-                }
+            }
+            else if(action.equalsIgnoreCase(Constants.OO_RETURN_BUYER_DEPOSIT)){
+                Integer type=Constants.ORDER_USER_BUYER;
+                flag = autoOrderService.doReturnDeposit(order, type);
+            }
+            else if(action.equalsIgnoreCase(Constants.OO_RETURN_SELLER_DEPOSIT)){
+                Integer type=Constants.ORDER_USER_SELLER;
                 flag = autoOrderService.doReturnDeposit(order, type);
             }
             if(flag){

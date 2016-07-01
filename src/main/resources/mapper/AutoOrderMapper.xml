@@ -90,22 +90,22 @@
         		ship_status = #{shipStatus},
         	</if>
             <if test="sellerDeposit != null and sellerDeposit > 0">
-                #{sellerDeposit},
+                seller_deposit = #{sellerDeposit},
             </if>
             <if test="buyerDeposit != null and buyerDeposit > 0">
-                #{buyerDeposit},
+                buyer_deposit = #{buyerDeposit},
             </if>
             <if test="shipTime != null and shipTime > 0">
-                #{shipTime},
+                ship_time = #{shipTime},
             </if>
             <if test="orderRemark != null and orderRemark != ''">
-                #{orderRemark},
+                order_remark = #{orderRemark},
             </if>
             <if test="statusRemark != null and statusRemark != ''">
-                #{statusRemark},
+                status_remark = #{statusRemark},
             </if>
             <if test="remark != null and remark != ''">
-                #{remark},
+                remark = #{remark},
             </if>
         	<if test="addTime != null">
         		add_time = #{addTime}

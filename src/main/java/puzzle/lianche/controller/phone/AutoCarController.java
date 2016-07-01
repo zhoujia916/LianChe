@@ -223,7 +223,7 @@ public class AutoCarController extends BaseController {
                 jsonUser.put("userName", user.getStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS ? user.getRealName() : user.getUserName());
                 jsonUser.put("userAvatar", user.getUserAvatar());
                 jsonUser.put("point", user.getPoint());
-                jsonUser.put("shopName", user.getShopType());
+                jsonUser.put("shopName", user.getShopName());
                 jsonUser.put("isAuth", user.getStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
             }
             jsonCar.put("user", jsonUser);

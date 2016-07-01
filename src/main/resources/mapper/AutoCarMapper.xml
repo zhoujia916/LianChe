@@ -39,8 +39,10 @@
 
         <result column="order_add_time" property="orderAddTime"/>
         <result column="order_status" property="orderStatus"/>
-        <result column="order_pay_status" property="orderPayStatus"/>
-        <result column="order_ship_status" property="orderShipStatus"/>
+        <result column="pay_status" property="orderPayStatus"/>
+        <result column="ship_status" property="orderShipStatus"/>
+        <result column="buyer_id" property="buyerId"/>
+        <result column="order_id" property="orderId"/>
     </resultMap>
 
     <sql id="allColumn">
@@ -222,7 +224,6 @@
         <if test="viewUserId != null and viewUserId > 0">
             ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
         </if>
-
         from auto_car as ac
         left join auto_region as p on p.region_id = ac.province
         left join auto_region as c on c.region_id = ac.city
@@ -241,7 +242,72 @@
 
     <select id="queryList" parameterType="Map" resultMap="AutoCar">
         select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as add_user_status,
-        ao.add_time as order_add_time, ao.order_status, ao.pay_status, ao.ship_status,
+        (select count(1) from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id) as collect_count
+        <if test="viewUserId != null and viewUserId > 0">
+            ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
+        </if>
+        from auto_car as ac
+        inner join auto_user as au on au.user_id = ac.add_user_id
+        left join auto_user_profile as aup on aup.user_id=ac.add_user_id
+        inner join auto_brand as ab on ac.brand_id=ab.brand_id
+        inner join auto_brand_cat as abc on ac.brand_cat_id=abc.cat_id
+        inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
+        <where>
+            <trim prefixOverrides="and | or">
+                <if test="carIdList!=null and carIdList.size()>0">
+                    and ac.car_id in
+                    <foreach collection="carIdList" item="carId" open="(" separator="," close=")">
+                        ${carId}
+                    </foreach>
+                </if>
+                <if test="carName!= null and carName !='' ">
+                    and ac.car_name like concat('%',#{carName},'%')
+                </if>
+                <if test="carType != null and carType > -1">
+                    and ac.car_type=#{carType}
+                </if>
+                <if test="brandId != null and brandId > 0">
+                    and ac.brand_id = #{brandId}
+                </if>
+                <if test="brandIds != null and brandIds != ''">
+                    and ac.brand_id in (${brandIds})
+                </if>
+                <if test="startPrice != null and startPrice > 0">
+                    and ac.shop_price &gt;= #{startPrice}
+                </if>
+                <if test="endPrice != null and endPrice > 0">
+                    and ac.shop_price &lt;= #{endPrice}
+                </if>
+                <if test="startDate != null">
+                    and ac.start_date &gt;= #{startDate}
+                </if>
+                <if test="endDate != null">
+                    and ac.end_date &lt;= #{endDate}
+                </if>
+                <if test="status != null">
+                    and ac.status = #{status}
+                </if>
+                <if test="addUserId > 0">
+                    and ac.add_user_id = ${addUserId}
+                </if>
+                <if test="filter != null and filter != ''">
+                    ${filter}
+                </if>
+                <if test="curTime != null">
+                    and #{curTime} &gt;= ac.start_date and #{curTime} &lt;= ac.end_date
+                </if>
+            </trim>
+        </where>
+        order by
+        <if test="sort != null and sort != ''">
+            ${sort},
+        </if>
+        ac.refresh_time desc, ac.car_id desc
+    </select>
+
+    <select id="queryOrderCar" parameterType="Map" resultMap="AutoCar">
+        select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as add_user_status,
+        ao.add_time as order_add_time, ao.order_status, ao.pay_status, ao.ship_status, ao.buyer_id, ao.order_id
         (select count(1) from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id) as collect_count
         <if test="viewUserId != null and viewUserId > 0">
             ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
@@ -306,7 +372,7 @@
         </if>
         ac.refresh_time desc, ac.car_id desc
     </select>
-
+    
     <select id="queryUserCollect" parameterType="Map" resultMap="AutoCar">
         select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,
         au.status as userStatus,act.collect_id as collectId

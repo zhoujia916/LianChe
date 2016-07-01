@@ -213,9 +213,7 @@
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         //添加用户
         $("#btnSubmit").on("click",function(){
-            var action="create";
-            var autoUser=$("#userForm").serialize();
-            var data="action="+action+"&"+autoUser;
+            var data="action="+"create"+"&"+$("#userForm").serialize();
             $.post("autouser/action.do",data,function(result){
                 if(result.code==0){
                     changeHash("admin/autouser/index");

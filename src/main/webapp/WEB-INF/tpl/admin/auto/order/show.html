@@ -264,7 +264,7 @@
         <tr>
             <td colspan="4" align="center">
                 {{foreach from=$operateList item=operate}}
-                <a data-action="{{$operate}}" class="btn btn-xs btn-action btn-purple" style="margin-top: -2px;margin-left: 10px;">{{$operate}}</a>&nbsp;&nbsp;
+                <a data-action="{{$operate.key}}" class="btn btn-xs btn-action btn-purple" style="margin-top: -2px;margin-left: 10px;">{{$operate.value}}</a>&nbsp;&nbsp;
                 {{/foreach}}
             </td>
         </tr>
@@ -293,7 +293,12 @@
                 orderId: '{{$order.orderId}}'
             },function(result){
                 if(result.code==0){
+<<<<<<< HEAD
+                    window.location.reload();
+//                    window.location=window.location;
+=======
                     window.location.href = window.location.href;
+>>>>>>> 4a89d5cee47f100a3a13954b6929cf79a6f4f836
 //                    changeHash("page/autoorder/show/{{$order.orderId}}");
                 }else{
                     showAlert("修改失败！");
