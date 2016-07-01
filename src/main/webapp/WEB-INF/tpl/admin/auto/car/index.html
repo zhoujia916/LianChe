@@ -133,7 +133,7 @@
                     name: "hasParts",
                     format: function(opts, column, row){
                         var text = "";
-                        if(row["hasParts"] == 1){
+                        if(row["hasParts"] == 2){
                             text += row["parts"] + "<br />加配价格:" + row["partsPrice"];
                         }
                         return "<td>" + text + "</td>";
@@ -150,11 +150,19 @@
                         changeHash("page/autocar/add");
                     }
                 },
+                edit:{
+                    handler: function(key){
+                        console.log("edit");
+                        key = key || this.gridview("getKey");
+                        var hash = "page/autocar/edit/" + key;
+                        changeHash(hash);
+                    }
+                },
                 view:{
                     handler: function(key){
                         console.log("view");
                         key = key || this.gridview("getKey");
-                        var hash = "page/autocar/show/" + key;
+                        var hash = "page/autocar/view/" + key;
                         changeHash(hash);
                     }
                 }

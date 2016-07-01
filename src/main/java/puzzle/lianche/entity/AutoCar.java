@@ -280,6 +280,16 @@ public class AutoCar implements Serializable{
     private String path;
     private String carTypeString;
 
+    public String getCarAttrId() {
+        return carAttrId;
+    }
+
+    public void setCarAttrId(String carAttrId) {
+        this.carAttrId = carAttrId;
+    }
+
+    private String carAttrId;
+
     public String getCarTypeString() {
         return carTypeString;
     }
@@ -295,6 +305,8 @@ public class AutoCar implements Serializable{
     public void setPath(String path) {
         this.path = path;
     }
+
+
 
     public String getOutsideColor() {
         return outsideColor;

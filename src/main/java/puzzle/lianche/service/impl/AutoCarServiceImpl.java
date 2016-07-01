@@ -1,5 +1,6 @@
 package puzzle.lianche.service.impl;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import puzzle.lianche.entity.AutoCar;
+import puzzle.lianche.entity.AutoCarAttr;
+import puzzle.lianche.entity.AutoCarPic;
 import puzzle.lianche.service.*;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.mapper.SqlMapper;
+import puzzle.lianche.utils.StringUtil;
 
 @Service("autoCarService")
 public class AutoCarServiceImpl implements IAutoCarService {
@@ -65,23 +69,101 @@ public class AutoCarServiceImpl implements IAutoCarService {
 	@Override
     public boolean update(AutoCar entity){
         try{
+            Map<String, Object> map = new HashMap<String, Object>();
             if(sqlMapper.update("AutoCarMapper.update", entity)){
-                Map<String, Object> map=new HashMap<String, Object>();
                 if (entity.getAttrs() != null && entity.getAttrs().size() > 0) {
+                    //region Update Attr
+                    map.clear();
                     map.put("carId",entity.getCarId());
-                    autoCarAttrService.delete(map);
-                    for (int i = 0; i < entity.getAttrs().size(); i++) {
-                        entity.getAttrs().get(i).setCarId(entity.getCarId());
+                    List<AutoCarAttr> oldList = autoCarAttrService.queryList(map);
+                    List<AutoCarAttr> insertList = new ArrayList<AutoCarAttr>();
+                    List<AutoCarAttr> updateList = new ArrayList<AutoCarAttr>();
+                    List<Integer> deleteList = new ArrayList<Integer>();
+
+                    for(AutoCarAttr oldItem : oldList){
+                        boolean find = false;
+                        for(AutoCarAttr newItem : entity.getAttrs()){
+                            if(oldItem.getCarAttrId().equals(newItem.getCarAttrId())){
+                                find = true;
+                                updateList.add(newItem);
+                                break;
+                            }
+                        }
+                        if(!find){
+                            deleteList.add(oldItem.getCarAttrId());
+                        }
                     }
-                    autoCarAttrService.insertBatch(entity.getAttrs());
+
+                    for(AutoCarAttr newItem : entity.getAttrs()){
+                        boolean find = false;
+                        for(AutoCarAttr oldItem : oldList) {
+                            if(newItem.getCarAttrId().equals(oldItem.getCarAttrId())){
+                                find = true;
+                                break;
+                            }
+                        }
+                        if(!find){
+                            insertList.add(newItem);
+                        }
+                    }
+
+                    if(insertList.size() > 0){
+                        autoCarAttrService.insertBatch(insertList);
+                    }
+                    if(updateList.size() > 0){
+                        for(AutoCarAttr attr : updateList){
+                            autoCarAttrService.update(attr);
+                        }
+                    }
+                    if(deleteList.size() > 0){
+                        map.clear();
+                        map.put("carAttrIds", StringUtil.concat(deleteList, ","));
+                        autoCarAttrService.delete(map);
+                    }
+                    //endregion
                 }
                 if(entity.getPics() != null && entity.getPics().size() > 0){
-                    map.put("carId",entity.getCarId());
-                    autoCarPicService.delete(map);
-                    for (int i = 0; i < entity.getPics().size(); i++) {
-                        entity.getPics().get(i).setCarId(entity.getCarId());
+                    //region Update Pic
+                    map.put("carId", entity.getCarId());
+                    List<AutoCarPic> oldList = autoCarPicService.queryList(map);
+                    List<AutoCarPic> insertList = new ArrayList<AutoCarPic>();
+                    List<Integer> deleteList = new ArrayList<Integer>();
+
+                    for(AutoCarPic oldItem : oldList){
+                        boolean find = false;
+                        for(AutoCarPic newItem : entity.getPics()){
+                            if(oldItem.getPath().equals(newItem.getPath())){
+                                find = true;
+                                break;
+                            }
+                        }
+                        if(!find){
+                            deleteList.add(oldItem.getPicId());
+                        }
                     }
-                    autoCarPicService.insertBatch(entity.getPics());
+
+                    for(AutoCarPic newItem : entity.getPics()){
+                        boolean find = false;
+                        for(AutoCarPic oldItem : oldList) {
+                            if(newItem.getPath().equals(oldItem.getPath())){
+                                find = true;
+                                break;
+                            }
+                        }
+                        if(!find){
+                            insertList.add(newItem);
+                        }
+                    }
+
+                    if(insertList.size() > 0){
+                        autoCarPicService.insertBatch(insertList);
+                    }
+                    if(deleteList.size() > 0){
+                        map.clear();
+                        map.put("picIds", StringUtil.concat(deleteList, ","));
+                        autoCarPicService.delete(map);
+                    }
+                    //endregion
                 }
             }
             return true;

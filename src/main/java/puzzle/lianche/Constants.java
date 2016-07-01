@@ -170,12 +170,13 @@ public class Constants {
     //endregion
 
     //region AUTO_CAR_SALE_PRICE_TYPE
-    public static final Integer AUTO_CAR_SALE_PRICE_TYPE_MONEY = 1;
-    public static final Integer AUTO_CAR_SALE_PRICE_TYPE_PERCENT = 2;
+
+    public static final Integer AUTO_CAR_SALE_PRICE_TYPE_PERCENT = 1;
+    public static final Integer AUTO_CAR_SALE_PRICE_TYPE_MONEY = 2;
     public static final Map<Integer, String> MAP_AUTO_CAR_SALE_PRICE_TYPE = new HashMap<Integer, String>(){
         {
-            put(1,"价格优惠");
-            put(2,"点数优惠");
+            put(1,"点数优惠");
+            put(2,"价格优惠");
         }
     };
     //endregion
@@ -419,10 +420,6 @@ public class Constants {
          */
 
         public static final String ADMIN_AUTO_USER = "admin/auto/user/index";
-
-        public static final String ADMIN_AUTO_USER_ADD = "admin/auto/user/add";
-
-        public static final String ADMIN_AUTO_USER_EDIT = "admin/auto/user/edit";
 
         public static final String ADMIN_AUTO_USER_SHOW = "admin/auto/user/show";
 

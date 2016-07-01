@@ -30,17 +30,21 @@ public class FileUtil {
 		}
 		return fileName.substring(0, index);
 	}
+
+    public static String getFileName(String fileName){
+        return getFileName(fileName, true);
+    }
 	
 	public static String getFileName(String fileName, boolean hasExt){
 		int index = fileName.lastIndexOf('/');
 		if(index == -1){
 			fileName.lastIndexOf('\\');
 		}
-		return fileName.substring(index);
+		return fileName.substring(index + 1);
 	}
 	
 	public static String getFileExt(String fileName){
-        int index = fileName.lastIndexOf('/');
+        int index = fileName.lastIndexOf('.');
         if(index == -1){
             return "";
         }

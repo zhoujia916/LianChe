@@ -50,7 +50,14 @@ public class AutoUserProfileServiceImpl implements IAutoUserProfileService {
     	return sqlMapper.query("AutoUserProfileMapper.query", map);
     }
 
-	/**
+    @Override
+    public AutoUserProfile query(Integer userId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userId", userId);
+        return sqlMapper.query("AutoUserProfileMapper.query", map);
+    }
+
+    /**
 	* 查询多条记录
 	*/
 	@Override

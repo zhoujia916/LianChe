@@ -4,6 +4,9 @@
  * @param delay    提示消息时长
  */
 function showTip(content, delay){
+//    window.alert(content);
+    console.log(content);
+    return;
 	delay = delay || 3000;
     var tip = $(".page-content #tip-box");
     if(tip.length == 0){
