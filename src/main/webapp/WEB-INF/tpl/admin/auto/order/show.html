@@ -254,7 +254,7 @@
         </tbody>
     </table>
     <table class="table table-bordered table-form">
-        {{if $orderActions}}
+        {{if $operateList}}
         <thead>
         <tr>
             <th colspan="4" class="center">可执行操作</th>
@@ -262,7 +262,7 @@
         </thead>
         <tbody>
         <tr>
-            <td colspan="4">
+            <td colspan="4" align="center">
                 {{foreach from=$operateList item=operate}}
                 <a data-action="{{$operate}}" class="btn btn-xs btn-action btn-purple" style="margin-top: -2px;margin-left: 10px;">{{$operate}}</a>&nbsp;&nbsp;
                 {{/foreach}}
@@ -288,12 +288,13 @@
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         $(".btn-action").on("click", function(){
             var action=$(this).attr("data-action");
-            $.post('action.do',{
+            $.post('autoorder/operate.do',{
                 action: action,
                 orderId: '{{$order.orderId}}'
             },function(result){
                 if(result.code==0){
-                    changeHash("page/autoorder/show/{{$order.orderId}}");
+                    window.location=window.location;
+//                    changeHash("page/autoorder/show/{{$order.orderId}}");
                 }else{
                     showAlert("修改失败！");
                 }
