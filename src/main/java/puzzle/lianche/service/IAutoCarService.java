@@ -21,6 +21,8 @@ public interface IAutoCarService{
 
     public List<AutoCar> queryList(Map<String, Object> map, Page page);
 
+    public List<AutoCar> queryOrderCar(Map<String, Object> map, Page page);
+
     public List<AutoCar> queryUserCollect(Map<String, Object> map,Page page);
 
     public Integer queryCount(Map<String, Object> map);

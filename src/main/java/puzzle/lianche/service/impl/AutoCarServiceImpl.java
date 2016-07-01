@@ -145,6 +145,11 @@ public class AutoCarServiceImpl implements IAutoCarService {
     }
 
     @Override
+    public List<AutoCar> queryOrderCar(Map<String, Object> map, Page page){
+        return sqlMapper.queryList("AutoCarMapper.queryOrderCar", map, page);
+    }
+
+    @Override
     public List<AutoCar> queryUserCollect(Map<String, Object> map,Page page) {
         return sqlMapper.queryList("AutoCarMapper.queryUserCollect", map,page);
     }

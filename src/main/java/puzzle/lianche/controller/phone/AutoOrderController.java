@@ -682,6 +682,11 @@ public class AutoOrderController extends BaseController {
                     JSONObject jsonOrderItem = new JSONObject();
                     jsonOrderItem.put("orderId", orderItem.getOrderId());
                     jsonOrderItem.put("sellerId", orderItem.getSellerId());
+                    map.clear();
+                    map.put("userId",orderItem.getSellerId());
+                    AutoUser user=autoUserService.query(map);
+                    jsonOrderItem.put("sellerPhone", user.getPhone());
+                    jsonOrderItem.put("buyerDeposit",0.01);
                     jsonOrderItem.put("orderSn", orderItem.getOrderSn());
                     jsonOrderItem.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(orderItem.getAddTime()), "MM-dd HH:mm"));
 

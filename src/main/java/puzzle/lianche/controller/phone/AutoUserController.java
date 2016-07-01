@@ -1051,13 +1051,19 @@ public class AutoUserController extends BaseController {
                 String sql = " and ao.order_status = " + Constants.OS_CANCEL;
                 map.put("filter", sql);
             }
-            List<AutoCar> carList = autoCarService.queryList(map,page);
+            List<AutoCar> carList = autoCarService.queryOrderCar(map,page);
             if(carList!=null && carList.size()>0){
                 JSONArray array=new JSONArray();
                 for(AutoCar car:carList){
                     JSONObject object=new JSONObject();
                     object.put("collectId",car.getCollectId());
                     object.put("carId",car.getCarId());
+                    map.clear();
+                    map.put("userId",car.getBuyerId());
+                    AutoUser user=autoUserService.query(map);
+                    object.put("buyerId",car.getBuyerId());
+                    object.put("buyerPhone",user.getPhone());
+                    object.put("sellerDeposit",0.01);
                     object.put("carName",car.getCarName());
                     object.put("brandName",car.getBrandName());
                     object.put("catName",car.getCatName());
