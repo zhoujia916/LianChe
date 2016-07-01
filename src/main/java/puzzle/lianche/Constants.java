@@ -428,6 +428,8 @@ public class Constants {
 
         public static final String ADMIN_AUTO_ARTICLE = "admin/auto/article/index";
 
+        public static final String ADMIN_AUTO_ARTICLE_SHOW = "admin/auto/article/show";
+
         public static final String ADMIN_AUTO_ARTICLE_ADD = "admin/auto/article/add";
 
         public static final String ADMIN_AUTO_ARTICLE_CAT = "admin/auto/articlecat/index";
@@ -486,6 +488,8 @@ public class Constants {
 
         public static final String PAGE_ACTION_SEARCH = "SEARCH";
 
-        public static final String PAGE_ACTION_SAVE = "save";
+        public static final String PAGE_ACTION_SAVE = "SAVE";
+
+        public static final String PAGE_ACTION_VIEW = "VIEW";
     }
 }

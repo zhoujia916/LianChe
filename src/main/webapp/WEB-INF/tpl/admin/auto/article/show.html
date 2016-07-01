@@ -1,0 +1,243 @@
+
+<title>Puzzle Admin</title>
+
+<div class="page-header">
+    <h4>
+        <i class="glyphicon glyphicon-signal"></i>
+        文章管理
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            {{if $action eq 'CREATE'}}新建文章{{elseif $action eq 'UPDATE'}}编辑文章{{elseif $action eq 'VIEW'}}查看文章详情{{/if}}
+        </small>
+
+        <a class="btn btn-xs orange pull-right btn-warning" href="#page/autoarticle/index">
+            <i class="glyphicon glyphicon-arrow-left"></i>返回文章管理</span></a>
+    </h4>
+</div>
+
+<div class="row" id="">
+    <div class="col-xs-12">
+        <form class="form-horizontal">
+            <div class="tabbable">
+                <ul class="nav nav-tabs padding-16">
+                    <li class="active">
+                        <a data-toggle="tab" href="#edit-basic">
+                            <i class="green ace-icon fa fa-pencil-square-o bigger-125"></i>
+                            基本信息
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="tab" href="#edit-content">
+                            <i class="purple ace-icon ace-icon fa fa-globe bigger-125"></i>
+                            文章内容
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content profile-edit-tab-content">
+                    <div id="edit-basic" class="tab-pane in active">
+                        <div class="space-10"></div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                文章标题
+                            </label>
+                            <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
+                                {{if $action eq 'CREATE'}}
+                                <input type="text"  id="title"  name="title" placeholder="文章标题" class="txt input-sm col-sm-6">
+                                {{elseif $action eq 'UPDATE'}}
+                                <input type="text"  id="title" value="{{$article.title}}"  name="title" placeholder="文章标题" class="txt input-sm col-sm-6">
+                                {{elseif $action eq 'VIEW'}}
+                                {{$article.title}}
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                文章副标题
+                            </label>
+                            <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
+                                {{if $action eq 'CREATE'}}
+                                <input type="text"  id="title2"  name="title" placeholder="文章副标题" class="txt input-sm col-sm-6">
+                                {{elseif $action eq 'UPDATE'}}
+                                <input type="text"  id="title2" value="{{$article.title2}}"  name="title" placeholder="文章副标题" class="txt input-sm col-sm-6">
+                                {{elseif $action eq 'VIEW'}}
+                                {{$article.title2}}
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                封面图
+                            </label>
+                            <div class="col-sm-5" style="height:62px;{{if $action eq 'VIEW'}}padding-top:10px{{/if}}">
+                                {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+                                <input type="hidden" id="hidCover" name="cover" />
+                                <input type="file" id="file" name="file" placeholder="封面图片">
+                                {{elseif $action eq 'VIEW'}}
+                                <img src="{{$article.cover}}" style="height:100%;" />
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                所属分类
+                            </label>
+                            <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
+                                {{if $action eq 'CREATE'}}
+                                <select id="catId" name="catId">
+                                    <option value="0">请选择分类</option>
+                                    {{foreach from=$catList item=catItem}}
+                                    <option value="{{$catItem.catId}}">{{$catItem.catName}}</option>
+                                    {{/foreach}}
+                                </select>
+                                {{elseif $action eq 'UPDATE'}}
+                                <select id="catId" name="catId">
+                                    <option value="0">请选择分类</option>
+                                    {{foreach from=$catList item=catItem}}
+                                    <option value="{{$catItem.catId}}"{{if $catItem.catId eq $article.catId}} selected="selected"{{/if}}>{{$catItem.catName}}</option>
+                                    {{/foreach}}
+                                </select>
+                                {{elseif $action eq 'VIEW'}}
+                                {{$article.catName}}
+                                {{/if}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                文章来源地址
+                            </label>
+
+                            <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
+                                {{if $action eq 'CREATE'}}
+                                <input type="text"  id="sourceUrl"  name="sourceUrl" placeholder="来源地址" class="txt input-sm col-sm-6">
+                                {{elseif $action eq 'UPDATE'}}
+                                <input type="text"  id="sourceUrl" value="{{$article.sourceUrl}}"  name="sourceUrl" placeholder="来源地址" class="txt input-sm col-sm-6">
+                                {{elseif $action eq 'VIEW'}}
+                                {{$article.sourceUrl}}
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                排序号
+                            </label>
+
+                            <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
+                                {{if $action eq 'CREATE'}}
+                                <input type="text"  id="sortOrder"  name="sortOrder" placeholder="排序号" value="0" class="txt input-sm col-sm-2">
+                                {{elseif $action eq 'UPDATE'}}
+                                <input type="text"  id="sortOrder" value="{{$article.sortOrder}}"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-6">
+                                {{elseif $action eq 'VIEW'}}
+                                {{$article.sortOrder}}
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div id="edit-content" class="tab-pane">
+                        <div class="space-10"></div>
+                        {{if $action eq 'CREATE'}}
+                        <textarea id="content" name="content" style="min-height:300px;width:100%;"></textarea>
+                        {{elseif $action eq 'UPDATE'}}
+                        <textarea id="content" name="content" style="min-height:300px;width:100%;">{{$article.content}}</textarea>
+                        {{elseif $action eq 'VIEW'}}
+                        {{$article.content}}
+                        {{/if}}
+
+                    </div>
+            </div>
+
+            <div class="clearfix form-actions">
+                {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+                <button id="btnReset" class="btn" type="reset">
+                    <i class="ace-icon fa fa-undo bigger-110"></i>
+                    重置
+                </button>
+                &nbsp; &nbsp;
+                <button id="btnSubmit" data-action="{{$action}}" class="btn btn-info" type="button">
+                    <i class="ace-icon fa fa-check bigger-110"></i>
+                    确定
+                </button>
+                {{elseif $action eq 'VIEW'}}
+
+                {{/if}}
+            </div>
+        </form>
+
+
+    </div><!-- /.col -->
+</div><!-- /.row -->
+<script type="text/javascript">
+
+    $('.page-content-area').ace_ajax('loadScripts', [ null,
+        {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+        "{{$contextPath}}/ueditor/ueditor.config.js",
+        "{{$contextPath}}/ueditor/ueditor.all.min.js",
+        "{{$contextPath}}/ueditor/lang/zh-cn/zh-cn.js",
+        {{/if}}
+        null], function() {
+
+        {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+        UE.getEditor("content");
+        $("#btnSubmit").on("click", function(){
+            var title = $.trim($("#title").val());
+            if(title == ""){
+                showTip("标题不能为空");
+                $("#title").focus();
+                return;
+            }
+            var catId = $("#catId").val();
+            if(catId == "0"){
+                showTip("请选择分类");
+                $("#catId").focus();
+                return;
+            }
+
+            $.post("{{$contextPath}}/admin/autoarticle/action.do", "action=" + $(this).attr("data-action") + "&" + $("form").serialize(), function(result){
+                if(result.code == 0){
+                    changeHash("admin/autoarticle/index");
+                }else{
+                    showTip(result.msg);
+                }
+            }, "json");
+        });
+        {{/if}}
+        {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+        var cover = $('#file').ace_file_input({
+            style:'well',
+            allowExt: ["jpeg", "jpg", "png", "gif" , "bmp"],
+            allowMime: ["image/jpg", "image/jpeg", "image/png", "image/gif", "image/bmp"],
+
+            btn_choose:'拖放或点击选择图片',
+            btn_change:null,
+            no_icon:'ace-icon fa fa-cloud-upload',
+            droppable:true,
+            thumbnail:'small',
+            before_remove : function() {
+                $("#hidCover").val("");
+                return true;
+            },
+            preview_error : function(filename, error_code) {
+                var errorMsg = '';
+                if(error_code == 2){
+                    errorMsg = "加载读取图片出错";
+                }else if(error_code == 3){
+                    errorMsg = "创建缩列图出错";
+                }
+                showTip(errorMsg);
+            }
+        });
+        {{/if}}
+        {{if $action eq 'UPDATE'}}
+        var files = [{
+            name: "115514757189.jpeg",
+            type: "image",
+            path: "{{$article.cover}}"
+        }];
+        cover.ace_file_input("show_file_list", files, false);
+        {{/if}}
+    });
+</script>

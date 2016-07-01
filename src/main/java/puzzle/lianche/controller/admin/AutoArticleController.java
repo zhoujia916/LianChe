@@ -4,6 +4,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,9 +53,37 @@ public class AutoArticleController extends ModuleController {
 
     @RequestMapping (value = "/add")
     public String add(){
-        List<AutoArticleCat> cats = autoArticleCatService.queryList(null);
-        this.setModelAttribute("catList", cats);
-        return Constants.UrlHelper.ADMIN_AUTO_ARTICLE_ADD;
+        List<AutoArticleCat> cats=autoArticleCatService.queryList(null);
+        this.setModelAttribute("catList", addSubAutoArticle(cats,0,"select"));
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_CREATE);
+        return Constants.UrlHelper.ADMIN_AUTO_ARTICLE_SHOW;
+    }
+
+    @RequestMapping (value = "/edit/{articleId}")
+    public String edit(@PathVariable("articleId") Integer articleId){
+        if(articleId != null && articleId > 0){
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("articleId", articleId);
+            AutoArticle article = autoArticleService.query(map);
+            this.setModelAttribute("article", article);
+        }
+        List<AutoArticleCat> cats=autoArticleCatService.queryList(null);
+        this.setModelAttribute("catList", addSubAutoArticle(cats,0,"select"));
+
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_UPDATE);
+        return Constants.UrlHelper.ADMIN_AUTO_ARTICLE_SHOW;
+    }
+
+    @RequestMapping (value = "/view/{articleId}")
+    public String view(@PathVariable("articleId") Integer articleId){
+        if(articleId != null && articleId > 0){
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("articleId", articleId);
+            AutoArticle article = autoArticleService.query(map);
+            this.setModelAttribute("article", article);
+        }
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_VIEW);
+        return Constants.UrlHelper.ADMIN_AUTO_ARTICLE_SHOW;
     }
 
     @RequestMapping (value = "/list.do")
@@ -118,34 +147,9 @@ public class AutoArticleController extends ModuleController {
                 autoArticle.setAddUserId(userId);
                 autoArticle.setStatus(2);
                 autoArticle.setAddTime(ConvertUtil.toLong(new Date()));
-                CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(session.getServletContext());
-                if(multipartResolver.isMultipart(request)) {
-                    MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-                    MultipartFile cover = multiRequest.getFile("cover");
-
-                    String rootPath = session.getServletContext().getRealPath("");
-                    String relativePath = request.getContextPath();
-                    String typePath = "article";
-                    String savePath = rootPath + "/upload/" + typePath + "/";
-                    String relativeUrl = relativePath + "/upload/" + typePath + "/";
-                    String saveName = PathFormatter.format(cover.getOriginalFilename(), "{yy}{MM}{dd}/{hh}{mm}{rand:6}");
-                    String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
-                    File dir = new File(dirName);
-                    if (!dir.exists()) {
-                        dir.mkdirs();
-                    }
-
-                    FileOutputStream fos = new FileOutputStream(savePath + saveName);
-                    fos.write(cover.getBytes());
-                    fos.close();
-
-                    String url = request.getScheme() + "://" + request.getServerName();
-                    if(request.getServerPort() != 80){
-                        url += ":" + request.getServerPort();
-                    }
-                    url += relativeUrl + saveName;
-
-                    autoArticle.setCover(url);
+                String cover = saveCover();
+                if(StringUtil.isNotNullOrEmpty(cover)){
+                    autoArticle.setCover(cover);
                 }
 
                 if(!autoArticleService.insert(autoArticle)){
@@ -156,6 +160,10 @@ public class AutoArticleController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"添加文章信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
+                String cover = saveCover();
+                if(StringUtil.isNotNullOrEmpty(cover)){
+                    autoArticle.setCover(cover);
+                }
                 if(!autoArticleService.update(autoArticle)){
                     result.setCode(1);
                     result.setMsg("修改文章信息时出错");
@@ -245,6 +253,42 @@ public class AutoArticleController extends ModuleController {
             }
         }
         return level;
+    }
+
+    public String saveCover(){
+        try {
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(session.getServletContext());
+            if (multipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                MultipartFile cover = multiRequest.getFile("file");
+
+                String typePath = "article";
+                String savePath = session.getServletContext().getRealPath("") + "/upload/" + typePath + "/";
+                String relativeUrl = request.getContextPath() + "/upload/" + typePath + "/";
+                String saveName = PathFormatter.format(cover.getOriginalFilename(), "{yy}{MM}{dd}/{hh}{mm}{rand:6}");
+                String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
+                File dir = new File(dirName);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                FileOutputStream fos = new FileOutputStream(savePath + saveName);
+                fos.write(cover.getBytes());
+                fos.close();
+
+                String url = request.getScheme() + "://" + request.getServerName();
+                if (request.getServerPort() != 80) {
+                    url += ":" + request.getServerPort();
+                }
+                url += relativeUrl + saveName;
+
+                return url;
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
     //endregion
 }
