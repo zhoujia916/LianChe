@@ -62,6 +62,7 @@ public class AutoUserServiceImpl implements IAutoUserService {
 		try{
             if(sqlMapper.insert("AutoUserMapper.insert", entity)){
                 if(entity.getProfile()!=null){
+                    entity.getProfile().setUserId(entity.getUserId());
                     autoUserProfileService.insert(entity.getProfile());
                 }
                 if(StringUtil.isNotNullOrEmpty(entity.getPic())){
@@ -71,6 +72,7 @@ public class AutoUserServiceImpl implements IAutoUserService {
                     for(String pic:pics){
                         AutoUserPic userPic=new AutoUserPic();
                         userPic.setUserId(entity.getUserId());
+                        userPic.setPicType(0);
                         userPic.setPicPath(pic);
                         userPic.setAddTime(ConvertUtil.toLong(new Date()));
                         picList.add(userPic);
