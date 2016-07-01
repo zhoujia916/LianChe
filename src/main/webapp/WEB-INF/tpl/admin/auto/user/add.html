@@ -61,7 +61,7 @@
                                 生日
                             </label>
                             <div class="col-sm-9">
-                                <input type="text" data-init="0" id="birthday"  name="birthday" placeholder="生日" class="txt input-sm col-sm-2">
+                                <input type="text" data-init="0" id="birthDay"  name="birthDay" placeholder="生日" class="txt input-sm col-sm-2">
                             </div>
                         </div>
                         <div class="form-group">
@@ -96,7 +96,7 @@
                             <div class="col-sm-9">
                                 <select name="status">
                                     <option value="1">禁用</option>
-                                    <option value="2" selected="selected">新建或注册</option>
+                                    <option value="2" selected="selected">注册或添加</option>
                                     <option value="3">等待实名认证</option>
                                     <option value="4">实名认证通过</option>
                                     <option value="5">实名认证未通过</option>
@@ -211,9 +211,21 @@
 </div><!-- /.row -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
-        $("#btnSubmit").on("click", function(){
-
+        $("#btnSubmit").on("click",function(){
+            $.post("autouser/action.do",{action:"create",autoUser:$(".form-horizontal").serialize()},function(result){
+                if(result.code==0){
+                    changeHash("admin/autouser/index");
+                }else{
+                    showAlert(result.msg);
+                }
+            });
         });
+
+        $( "#birthDay" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
         $('#userAvatar').ace_file_input({
             style:'well',
             allowExt: ["jpeg", "jpg", "png", "gif" , "bmp"],
@@ -252,6 +264,7 @@
         });
 
         Dropzone.autoDiscover = false;
+        var spliter = "※";
         var dropZone = new Dropzone("#dropzone" , {
             paramName: "upfile",
             params: {type:"userauth"},
@@ -263,7 +276,6 @@
                 console.log("success");
                 var result = $.parseJSON(file.xhr.response);
                 if(result.code == 0){
-
                     file.path = result.data;
                     var pic = $("#hidPic").val();
                     pic += pic != "" ? (spliter + result.data) : result.data;

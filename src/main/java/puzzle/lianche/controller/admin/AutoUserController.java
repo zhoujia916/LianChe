@@ -135,15 +135,15 @@ public class AutoUserController extends ModuleController {
                 }
                 autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
                 if(autoUser.getBirthDay() != null && autoUser.getBirthDay() != ""){
-                    autoUser.setBirth(ConvertUtil.toLong(ConvertUtil.toDate(autoUser.getBirthDay()+" 00:00:00")));
+                    autoUser.setBirth(ConvertUtil.toLong(ConvertUtil.toDate(autoUser.getBirthDay())));
                 }else{
                     autoUser.setBirth(new Long(0));
                 }
                 autoUser.setUserAvatar("/resource/admin/avatars/profile-pic.jpg");
-
                 autoUser.setAddTime(ConvertUtil.toLong(new Date()));
                 autoUser.setPhone(autoUser.getUserName());
                 autoUser.setStatus(Constants.AUTO_USER_STATUS_NORMAL);
+                autoUser.setSortOrder(0);
                 if(!autoUserService.insert(autoUser)){
                     result.setCode(1);
                     result.setMsg("新建会员信息失败");

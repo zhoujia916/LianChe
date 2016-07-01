@@ -1,9 +1,6 @@
 package puzzle.lianche.service.impl;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import puzzle.lianche.entity.AutoUser;
 import puzzle.lianche.entity.AutoUserPic;
 import puzzle.lianche.service.*;
+import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.mapper.SqlMapper;
 import puzzle.lianche.utils.StringUtil;
@@ -61,7 +59,32 @@ public class AutoUserServiceImpl implements IAutoUserService {
 	*/
 	@Override
 	public boolean insert(AutoUser entity){
-		return sqlMapper.insert("AutoUserMapper.insert", entity);
+		try{
+            if(sqlMapper.insert("AutoUserMapper.insert", entity)){
+                if(entity.getProfile()!=null){
+                    autoUserProfileService.insert(entity.getProfile());
+                }
+                if(StringUtil.isNotNullOrEmpty(entity.getPic())){
+                    String spliter = "※";
+                    String[] pics=entity.getPic().split(spliter);
+                    List<AutoUserPic> picList=new ArrayList<AutoUserPic>();
+                    for(String pic:pics){
+                        AutoUserPic userPic=new AutoUserPic();
+                        userPic.setUserId(entity.getUserId());
+                        userPic.setPicPath(pic);
+                        userPic.setAddTime(ConvertUtil.toLong(new Date()));
+                        picList.add(userPic);
+                    }
+                    if(picList!=null && !picList.isEmpty()){
+                        autoUserPicService.insertBatch(picList);
+                    }
+                }
+                return true;
+            }
+        }catch(Exception e){
+            logger.error(e.getMessage());
+        }
+        return false;
 	}
 
 	/**
