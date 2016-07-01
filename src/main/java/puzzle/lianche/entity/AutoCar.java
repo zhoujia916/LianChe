@@ -617,4 +617,13 @@ public class AutoCar implements Serializable{
 
     private Integer buyerId;
 
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
+    private Integer orderId;
 }

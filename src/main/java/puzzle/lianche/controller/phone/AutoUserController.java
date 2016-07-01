@@ -1058,6 +1058,7 @@ public class AutoUserController extends BaseController {
                     JSONObject object=new JSONObject();
                     object.put("collectId",car.getCollectId());
                     object.put("carId",car.getCarId());
+                    object.put("orderId",car.getOrderId());
                     map.clear();
                     map.put("userId",car.getBuyerId());
                     AutoUser user=autoUserService.query(map);

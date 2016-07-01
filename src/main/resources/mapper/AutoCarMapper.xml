@@ -42,6 +42,7 @@
         <result column="pay_status" property="orderPayStatus"/>
         <result column="ship_status" property="orderShipStatus"/>
         <result column="buyer_id" property="buyerId"/>
+        <result column="order_id" property="orderId"/>
     </resultMap>
 
     <sql id="allColumn">
@@ -306,7 +307,7 @@
 
     <select id="queryOrderCar" parameterType="Map" resultMap="AutoCar">
         select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as add_user_status,
-        ao.add_time as order_add_time, ao.order_status, ao.pay_status, ao.ship_status, ao.buyer_id,
+        ao.add_time as order_add_time, ao.order_status, ao.pay_status, ao.ship_status, ao.buyer_id, ao.order_id
         (select count(1) from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id) as collect_count
         <if test="viewUserId != null and viewUserId > 0">
             ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
