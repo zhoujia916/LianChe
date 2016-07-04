@@ -62,65 +62,65 @@
                 </div>
             </div>
 
-            <div class="grid-form save-form" style="">
-                <div class="overlay"></div>
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">
-                    <div class="widget-header">
-                        <h5 class="widget-title smaller"></h5>
+            <!--<div class="grid-form save-form" style="">-->
+                <!--<div class="overlay"></div>-->
+                <!--<div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">-->
+                    <!--<div class="widget-header">-->
+                        <!--<h5 class="widget-title smaller"></h5>-->
 
-                        <div class="widget-toolbar">
-                            <a href="#" class="btn-action" data-action="hide">
-                                <i class="ace-icon fa fa-close white"></i>
-                            </a>
-                        </div>
-                    </div>
+                        <!--<div class="widget-toolbar">-->
+                            <!--<a href="#" class="btn-action" data-action="hide">-->
+                                <!--<i class="ace-icon fa fa-close white"></i>-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            <div class="alert-info red"></div>
-                            <form class="form-horizontal" role="form">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        内容
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <textarea id="smsContent" style="width: 200px;height: 100px;" name="smsContent" placeholder="内容"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        接收方
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <select id="toUserId" name="toUserId" class="multiselect" multiple="">
-                                            {{foreach from=$userList item=user}}
-                                                <option value="{{$user.userId}}">
-                                                    {{$user.userName}}
-                                                    {{if $user.realName!=null}}
-                                                        ({{$user.realName}})
-                                                    {{/if}}
-                                                </option>
-                                            {{/foreach}}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="clearfix form-actions">
-                                    <input type="hidden" name="smsId" value="" />
-                                    <a class="btn btn-sm btn-action" data-action="reset">
-                                        <i class="ace-icon fa fa-undo"></i>
-                                        重置
-                                    </a>
-                                    &nbsp; &nbsp; &nbsp;
-                                    <a class="btn btn-sm btn-primary btn-action" data-action="save">
-                                        <i class="ace-icon fa fa-check"></i>
-                                        提交
-                                    </a>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <!--<div class="widget-body">-->
+                        <!--<div class="widget-main">-->
+                            <!--<div class="alert-info red"></div>-->
+                            <!--<form class="form-horizontal" role="form">-->
+                                <!--<div class="form-group">-->
+                                    <!--<label class="col-sm-3 control-label">-->
+                                        <!--内容-->
+                                    <!--</label>-->
+                                    <!--<div class="col-sm-9">-->
+                                        <!--<textarea id="smsContent" style="width: 200px;height: 100px;" name="smsContent" placeholder="内容"></textarea>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="form-group">-->
+                                    <!--<label class="col-sm-3 control-label">-->
+                                        <!--接收方-->
+                                    <!--</label>-->
+                                    <!--<div class="col-sm-9">-->
+                                        <!--<select id="toUserId" name="toUserId" class="multiselect" multiple="">-->
+                                            <!--{{foreach from=$userList item=user}}-->
+                                                <!--<option value="{{$user.userId}}">-->
+                                                    <!--{{$user.userName}}-->
+                                                    <!--{{if $user.realName!=null}}-->
+                                                        <!--({{$user.realName}})-->
+                                                    <!--{{/if}}-->
+                                                <!--</option>-->
+                                            <!--{{/foreach}}-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="clearfix form-actions">-->
+                                    <!--<input type="hidden" name="smsId" value="" />-->
+                                    <!--<a class="btn btn-sm btn-action" data-action="reset">-->
+                                        <!--<i class="ace-icon fa fa-undo"></i>-->
+                                        <!--重置-->
+                                    <!--</a>-->
+                                    <!--&nbsp; &nbsp; &nbsp;-->
+                                    <!--<a class="btn btn-sm btn-primary btn-action" data-action="save">-->
+                                        <!--<i class="ace-icon fa fa-check"></i>-->
+                                        <!--提交-->
+                                    <!--</a>-->
+                                <!--</div>-->
+                            <!--</form>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
 
             <div class="grid-form search-form "></div>
 
@@ -152,26 +152,27 @@
         $("#sms-gridview").gridview({
             url: "autosms/list.do",
             form: {
-                url: "autosms/action.do",
-                check:function(){
-                    var smsContent=$("#smsContent").val();
-                    var toUserId=$("#toUserId").val();
-                    if(!smsContent){
-                        console.log("check form");
-                        $("#smsContent").focus();
-                        return "请输入内容";
-                    }else if(smsContent.length>100){
-                        console.log("check form");
-                        $("#smsContent").focus();
-                        return "内容不能大于100个字";
-                    }else if(toUserId=="null" || toUserId==null){
-                        console.log("check form");
-                        $("#toUserId").focus();
-                        return "请选择相关接收方";
-                    }else{
-                        return true;
-                    }
-                }
+                url: "autosms/action.do"
+//                ,
+//                check:function(){
+//                    var smsContent=$("#smsContent").val();
+//                    var toUserId=$("#toUserId").val();
+//                    if(!smsContent){
+//                        console.log("check form");
+//                        $("#smsContent").focus();
+//                        return "请输入内容";
+//                    }else if(smsContent.length>100){
+//                        console.log("check form");
+//                        $("#smsContent").focus();
+//                        return "内容不能大于100个字";
+//                    }else if(toUserId=="null" || toUserId==null){
+//                        console.log("check form");
+//                        $("#toUserId").focus();
+//                        return "请选择相关接收方";
+//                    }else{
+//                        return true;
+//                    }
+//                }
             },
             jsonReader: {
                 key_field: 'smsId'

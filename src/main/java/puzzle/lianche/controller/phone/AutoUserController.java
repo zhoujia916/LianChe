@@ -464,7 +464,12 @@ public class AutoUserController extends BaseController {
                 result.setMsg("该账户被禁用！");
                 return result;
             }
-
+            AutoUserProfile file=autoUserProfileService.query(profile.getUserId());
+            if(file != null){
+                result.setCode(-1);
+                result.setMsg("该用户已实名认证！");
+                return result;
+            }
             profile.setPhone(null);
             Map<String,Object> map = new HashMap<String, Object>();
             map.put("userId", profile.getUserId());

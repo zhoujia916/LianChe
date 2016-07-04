@@ -82,42 +82,44 @@ public class AutoSmsController extends ModuleController{
     public Result action(String action,AutoSms autoSms){
         Result result=new Result();
         try{
-            if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
-                Map<String, Object> map=new HashMap<String, Object>();
-                map.put("userId",autoSms.getToUserId());
-                List<AutoUser> userList=autoUserService.queryList(map);
-                List<String> phone=new ArrayList<String>();
-                for(AutoUser user:userList){
-                    phone.add(user.getPhone());
-                }
-                //调用接口，将返回的结果放到isSuccess里去判断是否发送成功
-                List<AutoSms> list=new ArrayList<AutoSms>();
-                for(String smsPhone:phone){
-                    map.clear();
-                    map.put("content",autoSms.getSmsContent());
-                    if(SmsPush.isSuccess(SmsPush.send(SmsPush.CODE_SENDMSG, smsPhone, autoSms.getSmsContent()))){
-                        AutoSms sms=new AutoSms();
-                        sms.setSmsType(Constants.DEFAULT_SMS_TYPE);
-                        sms.setStatus(Constants.SMS_STATUS_TRUE);
-                        sms.setPhone(smsPhone);
-                        sms.setSmsContent(autoSms.getSmsContent());
-                        list.add(sms);
-                    }else{
-                        AutoSms sms=new AutoSms();
-                        sms.setSmsType(Constants.DEFAULT_SMS_TYPE);
-                        sms.setStatus(Constants.SMS_STATUS_FALSE);
-                        sms.setPhone(smsPhone);
-                        sms.setSmsContent(autoSms.getSmsContent());
-                        list.add(sms);
-                    }
-                }
-                if(!autoSmsService.insertBatch(list)){
-                    result.setCode(1);
-                    result.setMsg("添加短信信息时出错");
-                }else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_CREATE, "添加短信信息");
-                }
-            }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
+//            if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
+//                Map<String, Object> map=new HashMap<String, Object>();
+//                map.put("userId",autoSms.getToUserId());
+//                List<AutoUser> userList=autoUserService.queryList(map);
+//                List<String> phone=new ArrayList<String>();
+//                for(AutoUser user:userList){
+//                    phone.add(user.getPhone());
+//                }
+//                //调用接口，将返回的结果放到isSuccess里去判断是否发送成功
+//                List<AutoSms> list=new ArrayList<AutoSms>();
+//                for(String smsPhone:phone){
+//                    map.clear();
+//                    map.put("content",autoSms.getSmsContent());
+//                    String response=SmsPush.send(SmsPush.CODE_SENDMSG, smsPhone, "您有一笔订单等待收货确认，订单号为-" + "11111111111111" + "，请尽快处理");
+//                    if(SmsPush.isSuccess(response)){
+//                        AutoSms sms=new AutoSms();
+//                        sms.setSmsType(Constants.DEFAULT_SMS_TYPE);
+//                        sms.setStatus(Constants.SMS_STATUS_TRUE);
+//                        sms.setPhone(smsPhone);
+//                        sms.setSmsContent(autoSms.getSmsContent());
+//                        list.add(sms);
+//                    }else{
+//                        AutoSms sms=new AutoSms();
+//                        sms.setSmsType(Constants.DEFAULT_SMS_TYPE);
+//                        sms.setStatus(Constants.SMS_STATUS_FALSE);
+//                        sms.setPhone(smsPhone);
+//                        sms.setSmsContent(autoSms.getSmsContent());
+//                        list.add(sms);
+//                    }
+//                }
+//                if(!autoSmsService.insertBatch(list)){
+//                    result.setCode(1);
+//                    result.setMsg("添加短信信息时出错");
+//                }else{
+//                    insertLog(Constants.PageHelper.PAGE_ACTION_CREATE, "添加短信信息");
+//                }
+//            }else
+            if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
                 Map<String, Object> map=new HashMap<String, Object>();
                 String id=request.getParameter("id");
                 String ids=request.getParameter("ids");

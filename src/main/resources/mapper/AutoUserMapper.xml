@@ -118,7 +118,10 @@
 	                user_id = #{userId}
 	            </if>
                 <if test="userIds !=null and userIds.length > 0">
-                    user_ids in (${userIds})
+                    user_id in
+                    <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                        #{userId}
+                    </foreach>
                 </if>
 	        	<if test="userName != null">
 	                user_name = #{userName}
