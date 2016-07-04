@@ -120,7 +120,7 @@
                                         <select data-init="0" id="carId" name="car.carId" class="chosen-select" data-placeholder="请选择车源" style="width:360px;">
                                             <option value="0">请选择车源</option>
                                             {{foreach from=$cars item=car}}
-                                            <option value="{{$car.carId}}">{{$car.carName}}</option>
+                                            <option data-adduserid="{{$car.addUserId}}" value="{{$car.carId}}">{{$car.carName}}</option>
                                             {{/foreach}}
                                         </select>
                                     </div>
@@ -131,7 +131,6 @@
                                     </label>
 
                                     <div class="col-sm-9">
-                                        <input type="hidden" id="markId"/>
                                         <select data-init="0" id="carAttrId" name="car.carAttrId">
                                             <option value="0">请选择属性</option>
                                         </select>
@@ -262,8 +261,9 @@
                 check:function(){
                     var buyerId=$("#buyerId").val();
                     var carId=$("#carId").val();
+                    var addUserId=$("#carId option:selected").data("adduserid");
                     var carAttrId=$("#carAttrId").val();
-                    var surplusNumber=$("#"+carAttrId+"").val();
+                    var surplusNumber=$("#carAttrId option:selected").data("surplus");
                     var carNumber=$("#carNumber").val();
                     var putTime=$("#putTime").val();
                     if(buyerId==0){
@@ -274,6 +274,10 @@
                         console.log("check form");
                         $("#carId").focus();
                         return "请选择车源";
+                    }else if(addUserId==buyerId){
+                        console.log("check form");
+                        $("#carId").focus();
+                        return "您不能购买您自己发布的车辆";
                     }else if(carAttrId==0){
                         console.log("check form");
                         $("#carAttrId").focus();

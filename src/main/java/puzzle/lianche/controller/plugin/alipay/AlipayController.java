@@ -65,7 +65,7 @@ public class AlipayController extends BaseController {
             }
 
             if(order.getPayStatus() != Constants.PS_WAIT_BUYER_DEPOSIT &&
-                    order.getPayStatus() != Constants.PS_WAIT_SELLER_DEPOSIT) {
+                    order.getPayStatus() != Constants.PS_BUYER_PAY_DEPOSIT) {
                 result.setCode(-1);
                 result.setMsg("该订单不能支付订金！");
                 return result;
