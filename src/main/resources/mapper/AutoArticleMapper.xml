@@ -173,13 +173,13 @@
         <where>
             <trim prefixOverrides="and | or">
                 <if test="title!=null and title!=''">
-                    and title like concat('%',#{title},'%')
+                    and aa.title like concat('%',#{title},'%')
                 </if>
                 <if test="beginTime!=null">
-                    and add_time &gt;= #{beginTime}
+                    and aa.add_time &gt;= #{beginTime}
                 </if>
                 <if test="endTime!=null">
-                    and add_time &lt;= #{endTime}
+                    and aa.add_time &lt;= #{endTime}
                 </if>
                 <if test="status!=null and status >0">
                     and aa.status = ${status}

@@ -293,12 +293,8 @@
                 orderId: '{{$order.orderId}}'
             },function(result){
                 if(result.code==0){
-<<<<<<< HEAD
-                    window.location.reload();
 //                    window.location=window.location;
-=======
                     window.location.href = window.location.href;
->>>>>>> 4a89d5cee47f100a3a13954b6929cf79a6f4f836
 //                    changeHash("page/autoorder/show/{{$order.orderId}}");
                 }else{
                     showAlert("修改失败！");

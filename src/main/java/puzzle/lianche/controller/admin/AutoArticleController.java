@@ -109,7 +109,7 @@ public class AutoArticleController extends ModuleController {
                     map.put("status", autoArticle.getStatus());
                 }
                 if (autoArticle.getCatId() != null && autoArticle.getCatId() >0) {
-                    map.put("catId", autoArticle.getCatName());
+                    map.put("catId", autoArticle.getCatId());
                 }
             }
             List<AutoArticle> list=autoArticleService.queryList(map,page);
