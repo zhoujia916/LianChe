@@ -275,7 +275,7 @@ public class AutoCarController extends ModuleController {
                 autoCar.setRefreshTime(autoCar.getAddTime());
                 autoCar.setStartDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getBeginTimeString() + " 00:00:00")));
                 autoCar.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoCar.getEndTimeString() + " 23:59:59")));
-                autoCar.setAddUserId(ConvertUtil.toInt(initConfig.getConfig("addcar_userid").toString()));
+                autoCar.setAddUserId(ConvertUtil.toInt(initConfig.getConfig("admin_addcar_userid").toString()));
                 if(autoCar.getSortOrder() == null){
                     autoCar.setSortOrder(0);
                 }

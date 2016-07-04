@@ -315,7 +315,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
             // 短信消息通知买家
             AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
 
-            SmsPush.send(SmsPush.CODE_SENDMSG, buyer.getUserName(), "您有一笔订单卖家已接受交易，订单号为-" + order.getOrderSn()+ "。");
+            SmsPush.send(SmsPush.CODE_SENDMSG, buyer.getUserName(), "您有一笔订单卖家已接受交易，订单号为-" + order.getOrderSn());
 
             return true;
         }
@@ -342,7 +342,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
 
             //短信消息通知卖家
             AutoUser seller = autoUserService.query(order.getSellerId(), null);
-            SmsPush.send(SmsPush.CODE_SENDMSG, seller.getUserName(), "您有一笔订单买家已确认收货，订单号为-" + order.getOrderSn()+ "。");
+            SmsPush.send(SmsPush.CODE_SENDMSG, seller.getUserName(), "您有一笔订单买家已确认收货，订单号为-" + order.getOrderSn());
 
             return true;
         }
@@ -363,7 +363,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         //短信通知买家
         AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
 
-        String response = SmsPush.send(SmsPush.CODE_SENDMSG, buyer.getUserName(), "您有一笔订单等待收货确认，订单号为-" + order.getOrderSn() + "，请尽快处理。");
+        String response = SmsPush.send(SmsPush.CODE_SENDMSG, buyer.getUserName(), "您有一笔订单等待收货确认，订单号为-" + order.getOrderSn() + "，请尽快处理");
 
         return SmsPush.isSuccess(response);
     }

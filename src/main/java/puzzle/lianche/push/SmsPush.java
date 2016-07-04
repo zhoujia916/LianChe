@@ -29,12 +29,10 @@ public class SmsPush {
         long time = System.currentTimeMillis() / 1000;
         String content = null;
         if(type == CODE_SENDCODE){
-            content = "您在一车上获取的验证码是:[" + info + "],请勿泄露。【一车官网】";
-            content = "您的验证码是：" + info + "。请不要把验证码泄露给其他人。";
-//            content = "您在一车上获取的验证码是:[" + info + "],请勿泄露。【一车官网】";
+            content = "您的验证码是：" + info + "，请勿泄露。";
         }
         else if(type == CODE_SENDMSG){
-            content = "一车提醒您:" + info + "【一车官网】";
+            content = info;
         }
 
         String result = null;
