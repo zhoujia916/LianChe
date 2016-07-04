@@ -5,7 +5,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import puzzle.lianche.entity.AutoOrder;
 import puzzle.lianche.service.IAutoOrderService;
+import puzzle.lianche.utils.ConvertUtil;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,10 @@ public class RealeseLockCarJob {
     //@Scheduled(cron="* 0/30 * * * ?")
     public void execute(){
         Map<String, Object> map = new HashMap<String, Object>();
+
+        long now = ConvertUtil.toLong(new Date());
+        
+
         List<AutoOrder> list = autoOrderService.queryList(map);
         autoOrderService.realeseLock(list);
     }

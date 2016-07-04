@@ -1,5 +1,7 @@
 package puzzle.lianche.controller.admin;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +15,7 @@ import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
 
+import javax.json.JsonArray;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,32 @@ public class SystemConfigController extends ModuleController {
 
     @RequestMapping(value = {"/", "/index"})
     public String index(){
+        List<SystemConfig> list = systemConfigService.queryList(null);
+        if(list != null && !list.isEmpty()){
+            JSONArray array = new JSONArray();
+            for(SystemConfig config : list){
+                if(config.getGroupId().equals(0)){
+                    JSONObject jsonGroup = JSONObject.fromObject(config);
+                    JSONArray jsonChildren = new JSONArray();
+                    for(SystemConfig child : list){
+                        if(child.getGroupId().equals(config.getConfigId())){
+                            JSONObject jsonChild = JSONObject.fromObject(child);
+                            JSONArray items = new JSONArray();
+                            for(SystemConfig item : list){
+                                if(item.getGroupId().equals(child.getConfigId())){
+                                    items.add(JSONObject.fromObject(item));
+                                }
+                            }
+                            jsonChild.put("items", items);
+                            jsonChildren.add(jsonChild);
+                        }
+                    }
+                    jsonGroup.put("children", jsonChildren);
+                    array.add(jsonGroup);
+                }
+            }
+        }
+
         return Constants.UrlHelper.ADMIN_SYSTEM_CONFIG;
     }
 
