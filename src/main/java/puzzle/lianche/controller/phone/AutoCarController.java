@@ -313,21 +313,44 @@ public class AutoCarController extends BaseController {
                 result.setMsg("总数不能为空！");
                 return result;
             }
-            if(StringUtil.isNullOrEmpty(car.getBeginTimeString())){
-                result.setCode(-1);
-                result.setMsg("开始时间不能为空！");
-                return result;
-            }
+            long now = System.currentTimeMillis();
             if(!StringUtil.isDate(car.getBeginTimeString()) || !StringUtil.isDate(car.getBeginTimeString())){
                 result.setCode(-1);
                 result.setMsg("开始时间不正确！");
                 return result;
             }
+
             if(StringUtil.isNullOrEmpty(car.getEndTimeString()) || !StringUtil.isDate(car.getEndTimeString())){
                 result.setCode(-1);
-                result.setMsg("结束时间不能为空！");
+                result.setMsg("结束时间不正确！");
                 return result;
             }
+            long startTime = ConvertUtil.toLong(ConvertUtil.toDateTime(car.getBeginTimeString() + " 00:00:00"));
+            long endTime = ConvertUtil.toLong(ConvertUtil.toDateTime(car.getEndTimeString() + " 23:59:59"));
+
+            if(startTime > endTime){
+                result.setCode(-1);
+                result.setMsg("开始时间不能大于结束时间！");
+                return result;
+            }
+            if(startTime > now){
+                result.setCode(-1);
+                result.setMsg("开始时间不能小于今天！");
+                return result;
+            }
+            if(now > endTime){
+                result.setCode(-1);
+                result.setMsg("结束时间不能小于今天！");
+                return result;
+            }
+            long twoMonth = 2 * 30 * 24 * 3600 * 1000;
+
+            if((endTime - startTime) > twoMonth){
+                result.setCode(-1);
+                result.setMsg("有效期不能超过两个月！");
+                return result;
+            }
+
             if(car.getHasParts().equals(Constants.AUTO_CAR_HAS_PARTS_YES) && StringUtil.isNullOrEmpty(car.getParts())){
                 result.setCode(-1);
                 result.setMsg("配件描述不能为空！");
@@ -338,6 +361,8 @@ public class AutoCarController extends BaseController {
                 result.setMsg("配件价格不能为空！");
                 return result;
             }
+
+
             //endregion
             //region Init Attr Info
             String spliter = "※";
@@ -382,8 +407,8 @@ public class AutoCarController extends BaseController {
             car.setCarName(model.getBrandName() + model.getCatName() + model.getModelName());
             car.setAddTime(ConvertUtil.toLong(new Date()));
             car.setRefreshTime(car.getAddTime());
-            car.setStartDate(ConvertUtil.toLong(ConvertUtil.toDateTime(car.getBeginTimeString() + " 00:00:00")));
-            car.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(car.getEndTimeString() + " 23:59:59")));
+            car.setStartDate(startTime);
+            car.setEndDate(endTime);
             car.setStatus(Constants.AUTO_CAR_STATUS_ON);
             car.setCarType(Constants.AUTO_CAR_TYPE_COMMON);
             for(int i = 0; i < car.getAttrs().size(); i++){

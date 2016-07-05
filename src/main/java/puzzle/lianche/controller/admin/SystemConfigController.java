@@ -54,6 +54,7 @@ public class SystemConfigController extends ModuleController {
                     array.add(jsonGroup);
                 }
             }
+            this.setModelAttribute("groupConfig", array);
         }
 
         return Constants.UrlHelper.ADMIN_SYSTEM_CONFIG;

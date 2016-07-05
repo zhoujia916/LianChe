@@ -106,7 +106,9 @@ public class UploaderController extends BaseController {
         out.flush();
         out.close();
 
-        ImageUtil.zoomImage(savePath + saveName, savePath + saveName, 640, 160);
+        ImageUtil.zoomImage(savePath + saveName, savePath + saveName, 600, 360);
+
+        ImageUtil.zoomImage(savePath + saveName, savePath + saveName, 100, 60);
 
         String url = request.getScheme() + "://" + request.getServerName();
         if(request.getServerPort() != 80){
@@ -143,13 +145,12 @@ public class UploaderController extends BaseController {
 
         String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
         String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
-
+        saveName = saveName.substring(saveName.lastIndexOf("/") + 1);
         try {
             File dir = new File(dirName);
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-
 
             BASE64Decoder decoder = new BASE64Decoder();
             byte[] b = decoder.decodeBuffer(file);
@@ -163,8 +164,9 @@ public class UploaderController extends BaseController {
             out.write(b);
             out.flush();
             out.close();
+            ImageUtil.zoomImage(dirName + saveName, dirName + saveName, 600, 360);
 
-            ImageUtil.zoomImage(savePath + saveName, savePath + saveName, 640, 160);
+            ImageUtil.zoomImage(dirName + saveName, dirName + "s" + "_" + saveName, 100, 60);
 
             String url = request.getScheme() + "://" + request.getServerName();
             if(request.getServerPort() != 80){

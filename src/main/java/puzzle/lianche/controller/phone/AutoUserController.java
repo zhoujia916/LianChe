@@ -181,6 +181,7 @@ public class AutoUserController extends BaseController {
             user.setPhone(user.getUserName());
             user.setBirth(new Long(0));
             user.setSortOrder(0);
+            user.setStatus(Constants.AUTO_USER_STATUS_NORMAL);
             user.setAddTime(ConvertUtil.toLong(new Date()));
             if(autoUserService.insert(user)){
                 result.setData(user.getUserId());

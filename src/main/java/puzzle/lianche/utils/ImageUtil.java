@@ -84,7 +84,6 @@ public class ImageUtil {
         param.setSourceRegion(rect);
         BufferedImage bi = reader.read(0,param);
         ImageIO.write(bi, ext, new File(dest));
-
     }
 
     /**

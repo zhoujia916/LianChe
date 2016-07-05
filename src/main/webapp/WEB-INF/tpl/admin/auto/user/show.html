@@ -318,13 +318,13 @@
                     确定
                 </button>
                 {{if $action eq 'UPDATE' and $user.status eq 3 }}
-                <button class="btn btn-danger" type="button">
+                <button id="btnReject" class="btn btn-danger" type="button">
                     <i class="ace-icon fa fa-times"></i>
-                    <span class="bigger-110">实名审核通过</span>
+                    实名审核不通过
                 </button>
 
-                <button class="btn btn-success" type="button">
-                    <span class="bigger-110">实名审核通过</span>
+                <button id="btnAccept" class="btn btn-success" type="button">
+                    实名审核通过
 
                     <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
                 </button>
@@ -338,6 +338,28 @@
 </div><!-- /.row -->
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        {{if $action eq 'UPDATE' and $user.status eq 3 }}
+        $("#btnReject").on("click", function(){
+            $.post("{{$contextPath}}/admin/autouser/auth.do","action=reject&userId={{$user.userId}}",function(result){
+                if(result.code==0){
+                    changeHash("page/autouser/index");
+                }else{
+                    showAlert(result.msg);
+                }
+            });
+        });
+
+        $("#btnAccept").on("click", function(){
+            $.post("{{$contextPath}}/admin/autouser/auth.do","action=accept&userId={{$user.userId}}",function(result){
+                if(result.code==0){
+                    changeHash("page/autouser/index");
+                }else{
+                    showAlert(result.msg);
+                }
+            });
+        });
+        {{/if}}
+
 
         {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
         var spliter = "";
