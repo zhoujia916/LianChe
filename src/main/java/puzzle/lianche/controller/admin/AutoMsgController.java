@@ -109,9 +109,9 @@ public class AutoMsgController extends ModuleController {
                     msg.setMsgAuthor(autoMsg.getMsgAuthor());
                     msg.setMsgContentType(autoMsg.getMsgContentType());
                     msg.setMsgContent(autoMsg.getMsgContent());
-                    msg.setMsgType(0);
+                    msg.setMsgType(1);
                     msg.setFromUserId(0);
-                    msg.setStatus(0);
+                    msg.setStatus(1);
                     msg.setAddTime(ConvertUtil.toLong(new Date()));
                     msg.setViewCount(0);
                     if(autoMsg.getMsgContentType()==2){

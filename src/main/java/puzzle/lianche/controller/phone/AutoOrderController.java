@@ -700,6 +700,7 @@ public class AutoOrderController extends BaseController {
                     map.put("carId", orderCar.getCarId());
                     AutoCar car = autoCarService.query(map);
 
+
                     map.clear();
                     map.put("carAttrId", orderCar.getCarAttrId());
                     AutoCarAttr catAttr = autoCarAttrService.query(map);
@@ -712,6 +713,13 @@ public class AutoOrderController extends BaseController {
                     jsonCar.put("carName", car.getCarName());
                     jsonCar.put("officalPrice", car.getOfficalPrice());
                     jsonCar.put("addUserAuth", car.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
+
+                    map.clear();
+                    map.put("carPicId", car.getCarId());
+                    AutoCarPic carPic=autoCarPicService.query(map);
+                    if(carPic!=null){
+                        jsonOrderItem.put("pic",carPic.getPath());
+                    }
 
                     JSONObject jsonAttr = new JSONObject();
                     jsonAttr.put("outsideColor", catAttr.getOutsideColor());

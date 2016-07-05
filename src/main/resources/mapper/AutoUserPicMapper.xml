@@ -35,10 +35,10 @@
     <insert id="insertBatch" parameterType="java.util.List">
         insert into auto_user_pic
         (
-            <if test="userId != null">user_id, </if>
-            <if test="picType != null">pic_type, </if>
-            <if test="picPath != null">pic_path, </if>
-            <if test="addTime != null">add_time</if>
+            user_id,
+            pic_type,
+            pic_path,
+            add_time
         )
         values
         <foreach collection="list" item="pic" index="index" separator=",">

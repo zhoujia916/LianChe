@@ -229,7 +229,8 @@ public class AutoUserController extends ModuleController {
                 if(StringUtil.isNotNullOrEmpty(id)){
                     map.put("userId",ConvertUtil.toInt(id));
                 }else if(StringUtil.isNotNullOrEmpty(ids)){
-                    map.put("userIds", ids);
+                    String[] userIds=ids.split(",");
+                    map.put("userIds", userIds);
                 }
                 if(!autoUserService.delete(map)){
                     result.setCode(1);
