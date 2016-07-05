@@ -1061,8 +1061,8 @@ public class AutoUserController extends BaseController {
                     object.put("carId",car.getCarId());
                     object.put("orderId",car.getOrderId());
                     map.clear();
-                    map.put("userId",car.getBuyerId());
-                    AutoUser user=autoUserService.query(map);
+                    map.put("userId",car.getAddUserId());
+                    AutoUser user = autoUserService.query(map);
                     object.put("buyerId",car.getBuyerId());
                     object.put("buyerPhone",user.getPhone());
                     object.put("sellerDeposit",0.01);

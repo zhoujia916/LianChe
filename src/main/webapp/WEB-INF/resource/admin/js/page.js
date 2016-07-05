@@ -4,18 +4,15 @@
  * @param delay    提示消息时长
  */
 function showTip(content, delay){
-//    window.alert(content);
-//    console.log(content);
-//    return;
 	delay = delay || 3000;
     var tip = $("#tip-box");
     if(tip.length == 0){
-        tip = $('<div id="tip-box" class="alert alert-success alert-tip"><i class="ace-icon fa fa-check"></i>' + content + '</div>').appendTo("body");
+        tip = $('<div id="tip-box" class="alert alert-success alert-tip"><i class="ace-icon fa fa-smile-o"></i>&nbsp;&nbsp;' + content + '</div>').appendTo("body");
     }else{
-        tip.html(content);
+        tip.html('<i class="ace-icon fa fa-smile-o"></i>&nbsp;&nbsp;' + content);
     }
     if(!tip.hasClass("disabled")){
-        tip.addClass("disabled").slideDown(200, function(){
+        tip.addClass("disabled").slideDown(100, function(){
             setTimeout(function(){
                 tip.slideUp(200, function(){
                     tip.removeClass("disabled");
@@ -146,6 +143,10 @@ function showBootDialog(msg, handler){
 function showToolTip(selector){
     selector = selector || "[data-rel=tooltip]";
     $(selector).tooltip();
+}
+
+function showReload(){
+    $(window).trigger("hashchange.ace_ajax");
 }
 
 

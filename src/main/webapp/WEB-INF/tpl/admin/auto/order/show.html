@@ -1,23 +1,119 @@
-
-<title>Puzzle Admin-订单详情</title>
-
 <div class="page-header">
-
-    <h1>
+    <h4>
         <i class="glyphicon glyphicon-signal"></i>
         订单管理
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            查看订单详情
+            {{if $action eq 'CREATE'}}
+                新建订单
+            {{elseif $action eq 'UPDATE'}}
+                编辑订单
+            {{elseif $action eq 'VIEW'}}
+                查看订单详情
+            {{/if}}
         </small>
         <a class="btn btn-xs orange pull-right btn-warning" href="#page/autoorder/index">
             <i class="glyphicon glyphicon-arrow-left"></i>返回订单管理</span></a>
-    </h1>
-
+    </h4>
 </div>
 
 <div class="row" id="">
 <div class="col-xs-12">
+    {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
+    <form id="form" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                买家
+            </label>
+
+            <div class="col-sm-9">
+                <select data-init="0" id="buyerId" name="buyerId" class="chosen-select" data-placeholder="请选择买家">
+                    <option value="0">请选择买家</option>
+                    {{foreach from=$userList item=userItem}}
+                    <option value="{{$userItem.userId}}">
+                        {{$userItem.userName}}{{if $userItem.realName!=null}}({{$userItem.realName}}){{/if}}
+                    </option>
+                    {{/foreach}}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                车源
+            </label>
+
+            <div class="col-sm-9">
+                <select data-init="0" id="carId" name="car.carId" class="chosen-select" data-placeholder="请选择车源" style="width:360px;">
+                    <option value="0">请选择车源</option>
+                    {{foreach from=$carList item=carItem}}
+                    <option data-sellerId="{{$carItem.addUserId}}" data-price="{{$carItem.officalPrice}}" value="{{$carItem.carId}}">{{$carItem.carName}}({{$carItem.officalPrice}})</option>
+                    {{/foreach}}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                车源属性
+            </label>
+
+            <div class="col-sm-9">
+                <select data-init="0" id="carAttrId" name="car.carAttrId">
+                    <option value="0">请选择属性</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                数量
+            </label>
+
+            <div class="col-sm-9">
+                <input type="text" data-init="1" class="txt input-sm col-sm-2 input-mini" id="carNumber" name="car.carNumber" />
+            </div>
+        </div>
+        <div class="form-group" id="rowHasParts" style="display:none;">
+            <label class="col-sm-3 control-label">
+                加配
+            </label>
+
+            <div class="col-sm-9">
+                <input type="checkbox" value="2" offval="1" id="cbHasParts" name="car.hasParts" role="checkbox" class="editable ace ace-switch ace-switch-5">
+                <span class="lbl" style="top:6px;"></span>
+                <span id="spParts"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                提车时间
+            </label>
+
+            <div class="col-sm-9">
+                <input type="text" class="txt input-sm col-sm-2" placeholder="提车时间" id="putTime" name="putTimeString" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                价格信息:
+            </label>
+
+            <div class="col-sm-9" style="padding-top: 10px;">
+                <span id="spPrice">0</span>
+            </div>
+        </div>
+        <div class="clearfix form-actions">
+            <button id="btnReset" class="btn" type="reset">
+                <i class="ace-icon fa fa-undo bigger-110"></i>
+                重置
+            </button>
+            &nbsp; &nbsp;
+            <button id="btnSubmit" data-action="{{$action}}" class="btn btn-info btn-action" type="button">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                确定
+            </button>
+        </div>
+    </form>
+
+    {{elseif $action eq 'VIEW'}}
     <table class="table table-bordered table-form">
         <thead>
             <tr>
@@ -277,15 +373,177 @@
         </tbody>
         {{/if}}
     </table>
+    {{/if}}
 </div>
-<input type="hidden" id="orderId" value="{{$orderId}}"/>
-<input type="hidden" id="sellerId" value="{{$order.sellerId}}"/>
-<input type="hidden" id="buyerId" value="{{$order.buyerId}}"/>
+{{if $action eq 'VIEW'}}
+<input type="hidden" id="orderId" value="{{if $order}}{{$order.orderId}}{{/if}}"/>
+<input type="hidden" id="sellerId" value="{{if $order}}{{$order.sellerId}}{{/if}}"/>
+<input type="hidden" id="buyerId" value="{{if $order}}{{$order.buyerId}}{{/if}}"/>
+{{/if}}
 </div>
 </div>
 </div>
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
+        $('#carNumber').ace_spinner({ value:1, min:1, max:10, step:1, btn_up_class:'btn-info', btn_down_class:'btn-info'});
+
+        var date = new Date().getTime();
+        date += 7 * 24 * 3600 * 1000;
+        date = new Date(date);
+
+        var month = date.getMonth();
+        var day = date.getDate();
+
+        var date1 = date.getFullYear() + "-" + (month < 9 ? ("0" + (1 + month)) : (1 + month)) + "-" + (day < 10 ? "0" + day : day);
+        $( "#putTime").val(date1).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: false
+        });
+
+        $("#carId").on("change",function(){
+            var carId = $(this).val();
+
+            $("#spPrice").html("0");
+            if(carId == "0"){
+                var html = "<option value='0'>请选择属性</option>";
+                $("#carAttrId").html(html);
+                $("#rowHasParts").hide();
+                $("#cbHasParts").attr("data-price", "0").attr("checked", false);
+                $("#spParts").html("");
+
+
+            }else {
+                $.post("autoorder/queryCarAttr.do", { carId: carId }, function (result) {
+                    if (result.code == 0) {
+                        var html = "<option value='0'>请选择属性</option>";
+                        var carPrice = parseFloat($("#carId option:selected").attr("data-price"));
+                        $.each(result.data.attrs, function () {
+                            var attrPrice = 0;
+                            if(this["quoteType"] == 1){ //up
+                                if(this["salePriceType"] == 1){ //percent
+                                    attrPrice = carPrice * this["saleAmount"] / 100;
+                                }
+                                else if(this["salePriceType"] == 2){ //amount
+                                    attrPrice = this["saleAmount"];
+                                }
+                            }else if(this["quoteType"] == 2){ //down
+                                if(this["salePriceType"] == 1){ //percent
+                                    attrPrice = -carPrice * this["saleAmount"] / 100;
+                                }
+                                else if(this["salePriceType"] == 2){ //amount
+                                    attrPrice = -this["saleAmount"];
+                                }
+                            }
+                            html += "<option data-price='" + attrPrice + "' data-surplus='" + this["surplusNumber"] + "' value='" + this["carAttrId"] + "'>外观:" + this["outsideColor"] + "---内饰:" + this["insideColor"] + "(库存:" + this["surplusNumber"] + ")" + "</option>";
+                        });
+                        $("#carAttrId").html(html);
+                        if(result.data.hasParts == 2){
+                            $("#rowHasParts").show();
+                            $("#cbHasParts").attr("data-price", result.data.partsPrice).attr("checked", false);
+                            $("#spParts").html("<br />加配价格---" + result.data.partsPrice + "<br />加配描述---" + result.data.parts);
+                        }else{
+                            $("#rowHasParts").hide();
+                            $("#cbHasParts").attr("data-price", "0").attr("checked", false);
+                            $("#spParts").html("");
+                        }
+                    } else {
+                        showAlert(result.msg);
+                    }
+                });
+            }
+        });
+
+        $(".btn-action").on("click", function(){
+            var buyerId = $("#buyerId").val();
+            if(buyerId == "0"){
+                showTip("请选择买家");
+                return;
+            }
+            var carId = $("#carId").val();
+            if(carId == "0"){
+                showTip("请选择车源");
+                return;
+            }
+            var sellerId = $("#carId option:selected").attr("data-sellerid");
+            if(sellerId == buyerId){
+                showTip("买家不能购买自己的车源");
+                return;
+            }
+
+            var carAttrId = $("#carAttrId").val();
+            if(carAttrId == "0"){
+                showTip("请选择车源属性");
+                return;
+            }
+            var max = parseInt($("#carAttrId option:selected").attr("data-surplus"));
+            var carNumber = $("#carNumber").val();
+            if(carNumber > max){
+                showTip("订购数量超出库存");
+                return;
+            }
+            var putTime = $("#putTime").val();
+            if(putTime == ""){
+                showTip("请输入提车时间");
+                return;
+            }
+//            console.log($("form").serialize());
+//            return;
+            $.post("{{$contextPath}}/admin/autoorder/action.do", "action={{$action}}&" + $("form").serialize(), function(result){
+                if(result.code == 0){
+                    changeHash("admin/autoorder/index");
+                }else{
+                    showTip(result.msg);
+                }
+            }, "json");
+
+        });
+
+        $("#carNumber, #cbHasParts, #carAttrId").on("change", calcPrice);
+
+        function calcPrice(){
+            var carId = $("#carId").val();
+            var carAttrId = $("#carAttrId").val();
+            if(carId == "0" || carAttrId == "0"){
+                $("#spPrice").html("0");
+                return;
+            }
+
+            var price = parseFloat($("#carId option:selected").attr("data-price"));
+            var attrPrice = parseFloat($("#carAttrId option:selected").attr("data-price"));
+
+            var text = price.toFixed(2) + "[官方指导价]";
+            if(attrPrice >= 0){
+                text += " + " + attrPrice.toFixed(2) + "[属性价格]";
+
+            }else{
+                text += " - " + Math.abs(attrPrice).toFixed(2) + "[行情价格]";
+            }
+            price += attrPrice;
+
+            var hasParts = document.getElementById("cbHasParts").checked;
+            if(hasParts){
+                var partsPrice = parseFloat($("#cbHasParts").attr("data-price"));
+
+                price += partsPrice;
+
+                text += " + " + partsPrice.toFixed(2) + "[加配价格]";
+            }
+
+            var carNumber = parseInt($("#carNumber").val());
+
+            if(carNumber > 1){
+                text = "( " + text + " ) * " + carNumber;
+            }
+
+            text += " = " + (price * carNumber).toFixed(2);
+
+
+            $("#spPrice").html(text);
+        }
+        {{/if}}
+
+        {{if $action eq 'VIEW'}}
         $(".btn-action").on("click", function(){
             var action=$(this).attr("data-action");
             $.post('autoorder/operate.do',{
@@ -293,13 +551,12 @@
                 orderId: '{{$order.orderId}}'
             },function(result){
                 if(result.code==0){
-//                    window.location=window.location;
-                    window.location.href = window.location.href;
-//                    changeHash("page/autoorder/show/{{$order.orderId}}");
+                    $(window).trigger("hashchange.ace_ajax");
                 }else{
                     showAlert("修改失败！");
                 }
             });
         });
+        {{/if}}
     });
 </script>

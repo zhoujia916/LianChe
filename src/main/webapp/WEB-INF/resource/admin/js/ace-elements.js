@@ -2093,6 +2093,11 @@ if (typeof jQuery === 'undefined') { throw new Error('Ace\'s JavaScript requires
 			}
 		}
 
+        $parent_div.on('click', "[class='^spinbox]", function(){
+            $element.trigger('change')//trigger the input's change event
+        });
+
+
 		$parent_div.on('changed', function(){
 			$element.trigger('change')//trigger the input's change event
 		});
@@ -2101,7 +2106,6 @@ if (typeof jQuery === 'undefined') { throw new Error('Ace\'s JavaScript requires
 			$spinner[name](arg);
 		}
 	}
-
 
 	$.fn.ace_spinner = function(option, value) {
 		var retval;
@@ -2120,6 +2124,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Ace\'s JavaScript requires
 
 		return (retval === undefined) ? $set : retval;
 	}
+
+
 	
 	$.fn.ace_spinner.defaults = {
 		'icon_up' : 'fa fa-chevron-up',

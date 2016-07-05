@@ -195,50 +195,6 @@
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
 
-        $('#carNumber').ace_spinner({value:1,min:0,max:10,step:1, btn_up_class:'btn-info' , btn_down_class:'btn-info'});
-
-        var attr = [];
-
-        $("#carId").on("change",function(){
-            var carId = $(this).val();
-            if(carId == "0"){
-                var html = "<option value='0'>请选择属性</option>";
-                $("#carAttrId").html(html);
-                $("#rowHasParts").hide().find("input").val("0");
-            }else {
-                $.post("autoorder/queryCarAttr.do", { carId: carId }, function (result) {
-                    if (result.code == 0) {
-                        var html = "<option value='0'>请选择属性</option>";
-                        attr = result.data;
-                        $.each(attr, function () {
-                            html += "<option data-surplus='" + this["surplusNumber"] + "' value='" + this["carAttrId"] + "'>外观:" + this["outsideColor"] + "---内饰:" + this["insideColor"] + "(库存:" + this["surplusNumber"] + ")" + "</option>";
-                        });
-                        $("#carAttrId").html(html);
-                        if(result.data.hasParts == 1){
-                            $("#rowHasParts").show().find("input").val("0");
-                        }else{
-                            $("#rowHasParts").hide().find("input").val("0");
-                        }
-                    } else {
-                        showAlert(result.msg);
-                    }
-                });
-
-            }
-        });
-
-        $("#carAttrId").on("change", function(){
-            var max = 10;
-            var carAttrId = parseInt($(this).val());
-            $.each(attr, function(){
-                if(this["carAttrId"] == carAttrId){
-                    max = this['surplusNumber'];
-                    return false;
-                }
-            });
-            $('#carNumber').ace_spinner({value:1,min:1,max:max,step:1, btn_up_class:'btn-info' , btn_down_class:'btn-info'});
-        });
-
         $( "#datepicker1" ).datepicker({
             showOtherMonths: true,
             selectOtherMonths: false
@@ -350,10 +306,25 @@
                     handler:function(key){
                         key = key || this.gridview("getKey");
                         if(!key){
-                            showAlert("请选择记录");
+                            showTip("请选择记录");
                             return;
                         }
-                        changeHash("page/autoorder/show/" + key);
+                        changeHash("page/autoorder/view/" + key);
+                    }
+                },
+                add: {
+                    handler:function(){
+                        changeHash("page/autoorder/add");
+                    }
+                },
+                edit: {
+                    handler:function(key){
+                        key = key || this.gridview("getKey");
+                        if(!key){
+                            showTip("请选择记录");
+                            return;
+                        }
+                        changeHash("page/autoorder/edit/" + key);
                     }
                 }
             }

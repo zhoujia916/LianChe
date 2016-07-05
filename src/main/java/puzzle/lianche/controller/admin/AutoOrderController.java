@@ -41,12 +41,122 @@ public class AutoOrderController extends ModuleController {
     @RequestMapping(value = {"/","/index"})
     public String index(){
         List<SystemMenuAction> actions=getActions();
+
+        this.setModelAttribute("actions", actions);
+
+        return Constants.UrlHelper.ADMIN_AUTO_ORDER;
+    }
+
+    @RequestMapping(value = {"/add"})
+    public String add(){
+
         List<AutoUser> users=autoUserService.queryList(null);
         List<AutoCar> cars=autoCarService.queryList(null);
-        this.setModelAttribute("actions", actions);
-        this.setModelAttribute("users",users);
-        this.setModelAttribute("cars",cars);
-        return Constants.UrlHelper.ADMIN_AUTO_ORDER;
+        this.setModelAttribute("userList",users);
+        this.setModelAttribute("carList",cars);
+
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_CREATE);
+        return Constants.UrlHelper.ADMIN_AUTO_ORDER_SHOW;
+    }
+
+    @RequestMapping(value = {"/edit/{orderId}"})
+    public String edit(@PathVariable Integer orderId){
+        if(orderId != null && orderId > 0){
+
+            List<AutoUser> users=autoUserService.queryList(null);
+            List<AutoCar> cars=autoCarService.queryList(null);
+            this.setModelAttribute("userList",users);
+            this.setModelAttribute("carList",cars);
+
+            AutoOrder order = autoOrderService.query(orderId, null);
+            if(order != null){
+                order.setAddTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getAddTime())));
+                order.setPutTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getPutTime()),Constants.DATE_FORMAT));
+                order.setOrderStatusString(Constants.ORDER_STATUS.get(order.getOrderStatus()));
+                order.setPayStatusString(Constants.PAY_STATUS.get(order.getPayStatus()));
+                order.setShipStatusString(Constants.SHIP_STATUS.get(order.getShipStatus()));
+                List<String> list=autoOrderService.queryOperate(order,Constants.ORDER_USER_ADMIN);
+                List<Map> orderActions=new ArrayList<Map>();
+                if(list!=null && list.size()>0){
+                    for(String action:list){
+                        Map actionMap=new HashMap();
+                        actionMap.put("key",action);
+                        actionMap.put("value",Constants.OO_OPERATE.get(action));
+                        orderActions.add(actionMap);
+                    }
+                }
+                AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
+                buyer.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(buyer.getShopType()));
+
+                AutoUser seller = autoUserService.query(order.getSellerId(), null);
+                seller.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(seller.getShopType()));
+
+                map.put("orderId",order.getOrderId());
+                AutoCar car = autoCarService.query(map);
+                car.setCarTypeString(Constants.MAP_AUTO_CAR_TYPE.get(car.getCarType()));
+                map.clear();
+                map.put("attrCarId",car.getCarId());
+                map.put("carAttrId",order.getCarAttrId());
+                AutoCarAttr carAttr = autoCarAttrService.query(map);
+
+                this.setModelAttribute("order",order);
+                this.setModelAttribute("car", car);
+                this.setModelAttribute("buyer", buyer);
+                this.setModelAttribute("seller",seller);
+                this.setModelAttribute("carAttr", carAttr);
+                this.setModelAttribute("operateList", orderActions);
+            }
+        }
+
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_UPDATE);
+        return Constants.UrlHelper.ADMIN_AUTO_ORDER_SHOW;
+    }
+
+    @RequestMapping(value = {"/view/{orderId}"})
+    public String view(@PathVariable Integer orderId){
+        if(orderId != null && orderId > 0){
+            AutoOrder order = autoOrderService.query(orderId, null);
+            if(order != null){
+                order.setAddTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getAddTime())));
+                order.setPutTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getPutTime()),Constants.DATE_FORMAT));
+                order.setOrderStatusString(Constants.ORDER_STATUS.get(order.getOrderStatus()));
+                order.setPayStatusString(Constants.PAY_STATUS.get(order.getPayStatus()));
+                order.setShipStatusString(Constants.SHIP_STATUS.get(order.getShipStatus()));
+                List<String> list=autoOrderService.queryOperate(order,Constants.ORDER_USER_ADMIN);
+                List<Map> orderActions=new ArrayList<Map>();
+                if(list!=null && list.size()>0){
+                    for(String action:list){
+                        Map actionMap=new HashMap();
+                        actionMap.put("key",action);
+                        actionMap.put("value",Constants.OO_OPERATE.get(action));
+                        orderActions.add(actionMap);
+                    }
+                }
+                AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
+                buyer.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(buyer.getShopType()));
+
+                AutoUser seller = autoUserService.query(order.getSellerId(), null);
+                seller.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(seller.getShopType()));
+
+                map.put("orderId",order.getOrderId());
+                AutoCar car = autoCarService.query(map);
+                car.setCarTypeString(Constants.MAP_AUTO_CAR_TYPE.get(car.getCarType()));
+                map.clear();
+                map.put("attrCarId",car.getCarId());
+                map.put("carAttrId",order.getCarAttrId());
+                AutoCarAttr carAttr = autoCarAttrService.query(map);
+
+                this.setModelAttribute("order",order);
+                this.setModelAttribute("car", car);
+                this.setModelAttribute("buyer", buyer);
+                this.setModelAttribute("seller",seller);
+                this.setModelAttribute("carAttr", carAttr);
+                this.setModelAttribute("operateList", orderActions);
+            }
+        }
+
+        this.setModelAttribute("action", Constants.PageHelper.PAGE_ACTION_VIEW);
+        return Constants.UrlHelper.ADMIN_AUTO_ORDER_SHOW;
     }
 
     @RequestMapping(value = "/list.do")
@@ -111,6 +221,7 @@ public class AutoOrderController extends ModuleController {
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("carId", autoOrder.getCar().getCarId());
                 AutoCar car = autoCarService.query(map);
+
                 double price = car.getOfficalPrice();
                 map.clear();
                 map.put("carId", autoOrder.getCar().getCarId());
@@ -127,6 +238,8 @@ public class AutoOrderController extends ModuleController {
                 }
                 if(autoOrder.getCar().getHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
                     price += car.getPartsPrice();
+                }else{
+                    autoOrder.getCar().setHasParts(Constants.AUTO_CAR_HAS_PARTS_NO);
                 }
                 autoOrder.setOrderSn(autoOrderService.createSn(ConvertUtil.toString(autoOrder.getBuyerId())));
                 autoOrder.setOrderStatus(Constants.OS_SUBMIT);
@@ -142,6 +255,7 @@ public class AutoOrderController extends ModuleController {
                 autoOrder.getCar().setSendNumber(0);
                 autoOrder.setCar(autoOrder.getCar());
                 autoOrder.setPutTime(ConvertUtil.toLong(ConvertUtil.toDateTime(autoOrder.getPutTimeString()+" 23:59:59")));
+
                 if(!autoOrderService.insert(autoOrder)){
                     result.setCode(1);
                     result.setData("保存订单信息出错！");
@@ -173,56 +287,6 @@ public class AutoOrderController extends ModuleController {
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
-    }
-
-
-    @RequestMapping(value = "/show/{orderId}")
-    public String show(@PathVariable("orderId")Integer orderId){
-        try {
-            if(orderId != null && orderId > 0){
-                Map map=new HashMap();
-                AutoOrder order = autoOrderService.query(orderId, null);
-                order.setAddTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getAddTime())));
-                order.setPutTimeString(ConvertUtil.toString(ConvertUtil.toDate(order.getPutTime()),Constants.DATE_FORMAT));
-                order.setOrderStatusString(Constants.ORDER_STATUS.get(order.getOrderStatus()));
-                order.setPayStatusString(Constants.PAY_STATUS.get(order.getPayStatus()));
-                order.setShipStatusString(Constants.SHIP_STATUS.get(order.getShipStatus()));
-                List<String> list=autoOrderService.queryOperate(order,Constants.ORDER_USER_ADMIN);
-                List<Map> orderActions=new ArrayList<Map>();
-                if(list!=null && list.size()>0){
-                    for(String action:list){
-                        Map actionMap=new HashMap();
-                        actionMap.put("key",action);
-                        actionMap.put("value",Constants.OO_OPERATE.get(action));
-                        orderActions.add(actionMap);
-                    }
-                }
-                AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
-                buyer.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(buyer.getShopType()));
-
-                AutoUser seller = autoUserService.query(order.getSellerId(), null);
-                seller.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(seller.getShopType()));
-
-                map.put("orderId",order.getOrderId());
-                AutoCar car = autoCarService.query(map);
-                car.setCarTypeString(Constants.MAP_AUTO_CAR_TYPE.get(car.getCarType()));
-                map.clear();
-                map.put("attrCarId",car.getCarId());
-                map.put("carAttrId",order.getCarAttrId());
-                AutoCarAttr carAttr = autoCarAttrService.query(map);
-
-                this.setModelAttribute("order",order);
-                this.setModelAttribute("car", car);
-                this.setModelAttribute("buyer", buyer);
-                this.setModelAttribute("seller",seller);
-                this.setModelAttribute("carAttr", carAttr);
-                this.setModelAttribute("operateList", orderActions);
-            }
-        }
-        catch(Exception e){
-
-        }
-        return Constants.UrlHelper.ADMIN_AUTO_ORDER_SHOW;
     }
 
     @RequestMapping("/operate.do")
@@ -300,7 +364,7 @@ public class AutoOrderController extends ModuleController {
             orderCar = autoCarService.query(map);
             List<AutoCarAttr> list= autoCarAttrService.queryList(map);
             orderCar.setAttr(list);
-            result.setData(list);
+            result.setData(orderCar);
         }catch(Exception e){
             logger.error(e.getMessage());
             System.out.println(e.getMessage());

@@ -329,7 +329,6 @@
 	}//AceAjax
 
 
-
 	$.fn.aceAjax = $.fn.ace_ajax = function (option, value, value2) {
 		var method_call;
 
@@ -344,7 +343,6 @@
 				else method_call = data[option](value);
 			}
 		});
-
 		return (method_call === undefined) ? $set : method_call;
 	}
 

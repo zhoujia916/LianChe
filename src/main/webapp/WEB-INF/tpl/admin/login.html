@@ -15,7 +15,8 @@
 									<i class="ace-icon fa fa-leaf green"></i>
 									<span class="red">一车管理系统</span>
 								</h4>
-								<h4 class="blue" id="id-company-text">&copy; 帕索设计(Puzzle Idea)</h4>
+								<h4 class="blue" id="id-company-text">&copy; 一车网(www.one-auto.com)</h4>
+
 							</div>
 
 							<div class="space-6"></div>
@@ -80,7 +81,7 @@
 
         {{include file="/inc/page_script_basic.html"}}
 
-
+        <div style="position:absolute;bottom:50px;text-align:center;width:100%;">技术支持:帕索设计(Puzzle Idea) www.puzzle-idea.com</div>
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 			$(function($) {
@@ -99,7 +100,7 @@
                       }
                       $.post("{{$contextPath}}/admin/sign.do", {username: username, password: password, remember: remember}, function(result){
                           if(result.code == 0){
-                              window.location = "{{$contextPath}}/{{$ReturnUrl}}{{$ReturnUrl}}{{else}}admin/index{{/if}}";
+                              window.location = "{{$contextPath}}/{{if $ReturnUrl}}{{$ReturnUrl}}{{else}}admin/index{{/if}}";
                           }else{
                               $("#msg").html(result.msg).show();
                           }

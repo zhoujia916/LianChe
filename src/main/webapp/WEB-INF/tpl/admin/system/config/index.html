@@ -9,12 +9,12 @@
 </div><!-- /.page-header -->
 
 <div class="row">
-    <div class="tabbable">
-        <ul class="nav nav-tabs padding-18">
+    <div class="tabbable" id="tab">
+        <ul class="nav nav-tabs padding-16">
             {{foreach from=$groupConfig item=groupItem key=index}}
             <li{{if $index eq 0}} class="active"{{/if}}>
                 <a data-toggle="tab" href="#{{$groupItem.code}}">
-                    <i class="green ace-icon fa fa-user bigger-120"></i>
+                    <span class="badge">{{$index+1}}</span>
                     {{$groupItem.name}}
                 </a>
             </li>
@@ -24,6 +24,7 @@
             {{foreach from=$groupConfig item=groupItem key=index}}
             <div id="#{{$groupItem.code}}" class="tab-pane{{if $index eq 0}} in active{{/if}}">
                 <div class="row">
+                    {{if $groupItem.children}}
                     {{foreach from=$groupItem.children item=childItem}}
                     <div class="col-sm-6 widget-container-col ui-sortable">
                         <div class="widget-box widget-color-blue ui-sortable-handle">
@@ -31,40 +32,48 @@
                                 <h5 class="widget-title">{{$childItem.name}}</h5>
 
                                 <div class="widget-toolbar no-border">
-                                    <a href="#" data-action="collapse">
-                                        <i class="1 ace-icon fa fa-chevron-up bigger-125"></i>
+                                    <!--<a href="#" data-action="collapse">-->
+                                        <!--<i class="1 ace-icon fa fa-chevron-up bigger-125"></i>-->
+                                    <!--</a>-->
+
+                                    <a href="#" data-action="refresh" data-setting="{{$childItem.code}}" title="刷新" style="color:#fff;">
+                                        <i class="ace-icon fa fa-refresh bigger-125"></i>
                                     </a>
 
-                                    <a href="#" data-action="reload">
-                                        <i class="1 ace-icon fa fa-refresh bigger-125"></i>
+                                    <a href="#" data-action="save" data-setting="{{$childItem.code}}" title="保存" style="color:#fff;">
+                                        <i class="ace-icon fa fa-floppy-o bigger-125"></i>
                                     </a>
                                 </div>
                             </div>
 
                             <div class="widget-body">
-                                <div class="widget-main padding-6 no-padding-left no-padding-right">
-                                    <div class="space-6"></div>
-                                    {{foreach form=$childItem.items item=item}}
+                                <div class="widget-main">
+                                    {{if $childItem.items}}
+                                    <form class="form-horizontal" data-setting="{{$childItem.code}}">
+                                    {{foreach from=$childItem.items item=item}}
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">
                                             {{$item.name}}
                                         </label>
 
                                         <div class="col-sm-9">
-                                            <input type="text" name="{{$item.code}}" placeholder="{{$item.name}}" class="txt input-sm col-sm-8">
+                                            {{if $item.valueType eq 1}}
+                                            <input type="text" name="{{$item.code}}" value="{{$item.value}}" placeholder="{{$item.name}}" class="txt input-sm col-sm-10">
+                                            {{elseif $item.valueType eq 2}}
+                                            <textarea name="{{$item.code}}" class="txt input-sm col-sm-10" style="height:120px;">{{$item.value}}</textarea>
+                                            {{/if}}
                                         </div>
                                     </div>
+                                    {{/foreach}}
+                                    </form>
+                                    {{/if}}
                                 </div>
-                                <div class="widget-toolbar padding-8 no-border">
-                                    <button class="btn btn-xs btn-danger pull-right">
-                                        <i class="ace-icon fa fa-times"></i>
-                                        <span class="bigger-110">保存设置</span>
-                                    </button>
-                                </div>
+
                             </div>
                         </div>
                     </div>
                     {{/foreach}}
+                    {{/if}}
                 </div>
             </div>
             {{/foreach}}
@@ -75,6 +84,14 @@
 </div>
 <script type="text/javascript">
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
+        $("#tab").on("click", ".btn-action", function(){
+            var action = $(this).attr("data-action");
+            if(action == "save"){
 
+            }
+            else if(action == "refresh"){
+
+            }
+        });
     })
 </script>

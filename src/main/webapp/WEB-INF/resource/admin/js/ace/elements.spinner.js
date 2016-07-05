@@ -53,6 +53,10 @@
 			}
 		}
 
+        $parent_div.on('click', ".spinbox-buttons", function(){
+            $element.trigger('change')//trigger the input's change event
+        });
+
 		$parent_div.on('changed', function(){
 			$element.trigger('change')//trigger the input's change event
 		});
