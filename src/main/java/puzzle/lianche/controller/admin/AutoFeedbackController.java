@@ -96,14 +96,14 @@ public class AutoFeedbackController extends ModuleController {
                 }
                 if(!autoFeedbackService.delete(map)){
                     result.setCode(1);
-                    result.setMsg("删除反馈信息时出错");
+                    result.setMsg("删除反馈信息失败");
                 }else{
                     insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除指定的反馈信息");
                 }
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("操作反馈信息时出错");
+            result.setMsg("操作反馈信息失败");
         }
         return result;
     }

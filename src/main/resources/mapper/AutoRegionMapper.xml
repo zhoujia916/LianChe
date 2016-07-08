@@ -30,7 +30,7 @@
     </insert>
 
     <update id="update" parameterType="AutoRegion">
-        update auto_region set 
+        update auto_region
         <set>
         	<if test="parentId != null">  
         		parent_id = #{parentId}
@@ -54,16 +54,16 @@
         <where>
 	        <trim prefixOverrides="and | or">  
 	        	<if test="regionId > 0">
-	                region_id = #{regionId}
+	                region_id = #{regionId},
 	            </if>
 	        	<if test="parentId > 0">
-	                parent_id = #{parentId}
+	                parent_id = #{parentId},
 	            </if>
 	        	<if test="regionName != null">
-	                region_name = #{regionName}
+	                region_name = #{regionName},
 	            </if>
 	        	<if test="regionType > 0">
-	                region_type = #{regionType}
+	                region_type = #{regionType},
 	            </if>
 	        </trim>
         </where>

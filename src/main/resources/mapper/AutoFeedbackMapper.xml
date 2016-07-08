@@ -35,20 +35,22 @@
     </insert>
 
     <update id="update" parameterType="AutoFeedback">
-        update auto_feedback set 
+        update auto_feedback
         <set>
-        	<if test="content != null">  
-        		content = #{content}
-        	</if>
-        	<if test="pic != null">  
-        		pic = #{pic}
-        	</if>
-        	<if test="addTime != null">  
-        		add_time = #{addTime}
-        	</if>
-        	<if test="addUserId != null">  
-        		add_user_id = #{addUserId}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="content != null">
+                    content = #{content},
+                </if>
+                <if test="pic != null">
+                    pic = #{pic},
+                </if>
+                <if test="addTime != null">
+                    add_time = #{addTime},
+                </if>
+                <if test="addUserId != null">
+                    add_user_id = #{addUserId},
+                </if>
+            </trim>
         </set>
         <where> 
         	<if test="feedbackId > 0">

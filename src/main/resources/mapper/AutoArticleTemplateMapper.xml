@@ -30,15 +30,17 @@
     <update id="update" parameterType="AutoArticleTemplate">
         update auto_article_template
         <set>
-        	<if test="name != null">
-                name = #{name},
-        	</if>
-        	<if test="content != null">
-                content = #{content},
-        	</if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder},
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="name != null">
+                    name = #{name},
+                </if>
+                <if test="content != null">
+                    content = #{content},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder},
+                </if>
+            </trim>
         </set>
         where template_id = #{templateId}
     </update>

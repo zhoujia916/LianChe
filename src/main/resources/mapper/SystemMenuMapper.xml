@@ -10,9 +10,6 @@
         <result column="parent_id" property="parentId" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="sort_order" property="sortOrder" jdbcType="INTEGER" />
-        <!--
-        <collection property="actions" column="menu_id" javaType="java.util.ArrayList" ofType="SystemMenuAction" select="queryAction" />
-        -->
     </resultMap>
 
     <sql id="allColumn">
@@ -32,40 +29,40 @@
         )
         values
         (
-            <if test="menuName != null">#{menuName, jdbcType=VARCHAR}, </if>
-            <if test="menuUrl != null">#{menuUrl, jdbcType=VARCHAR}, </if>
-            <if test="linkUrl != null">#{linkUrl, jdbcType=VARCHAR}, </if>
-            <if test="menuIco != null">#{menuIco, jdbcType=VARCHAR}, </if>
-            <if test="parentId != null">#{parentId, jdbcType=INTEGER}, </if>
-            <if test="status != null">#{status, jdbcType=INTEGER}, </if>
-            <if test="sortOrder != null">#{sortOrder, jdbcType=INTEGER}</if>
+            <if test="menuName != null">#{menuName}, </if>
+            <if test="menuUrl != null">#{menuUrl}, </if>
+            <if test="linkUrl != null">#{linkUrl}, </if>
+            <if test="menuIco != null">#{menuIco}, </if>
+            <if test="parentId != null">#{parentId}, </if>
+            <if test="status != null">#{status}, </if>
+            <if test="sortOrder != null">#{sortOrder}</if>
         )
     </insert>
 
     <update id="update" parameterType="SystemMenu">
         update system_menu
         <set>
-            <trim prefixOverrides=",">
+            <trim suffixOverrides=",">
                 <if test="menuName != null">
-                    , menu_name = #{menuName, jdbcType=VARCHAR}
+                    menu_name = #{menuName},
                 </if>
                 <if test="menuUrl != null">
-                    , menu_url = #{menuUrl, jdbcType=VARCHAR}
+                    menu_url = #{menuUrl},
                 </if>
                 <if test="linkUrl != null">
-                    , link_url = #{linkUrl, jdbcType=VARCHAR}
+                    link_url = #{linkUrl},
                 </if>
                 <if test="menuIco != null">
-                    , menu_ico = #{menuIco, jdbcType=VARCHAR}
+                    menu_ico = #{menuIco},
                 </if>
                 <if test="parentId != null">
-                    , parent_id = #{parentId, jdbcType=INTEGER}
+                    parent_id = #{parentId},
                 </if>
                 <if test="status != null">
-                    , status = #{status, jdbcType=INTEGER}
+                    status = #{status},
                 </if>
                 <if test="sortOrder != null">
-                    , sort_order = #{sortOrder, jdbcType=INTEGER}
+                    sort_order = #{sortOrder},
                 </if>
             </trim>
         </set>
@@ -87,19 +84,19 @@
                     and menu_id in (#{menuIds})
                 </if>
                 <if test="menuName != null">
-                    and menu_name = #{menuName, jdbcType=VARCHAR}
+                    and menu_name = #{menuName}
                 </if>
                 <if test="menuUrl != null">
-                    and menu_url = #{menuUrl, jdbcType=VARCHAR}
+                    and menu_url = #{menuUrl}
                 </if>
                 <if test="parentId != null">
-                    and parent_id = #{parentId, jdbcType=INTEGER}
+                    and parent_id = #{parentId}
                 </if>
                 <if test="status != null">
-                    and status = #{status, jdbcType=INTEGER}
+                    and status = #{status}
                 </if>
                 <if test="sortOrder != null">
-                    and sort_order = #{sortOrder, jdbcType=INTEGER}
+                    and sort_order = #{sortOrder}
                 </if>
             </trim>
         </where>
@@ -111,10 +108,10 @@
         left join system_menu as pm on sm.parent_id = pm.menu_id
         <where>
             <if test="menuId != null">
-                sm.menu_id = #{menuId, jdbcType=INTEGER}
+                sm.menu_id = #{menuId}
             </if>
             <if test="menuUrl != null">
-                sm.menu_url = #{menuUrl, jdbcType=VARCHAR}
+                sm.menu_url = #{menuUrl}
             </if>
         </where>
     </select>
@@ -126,25 +123,25 @@
         <where>
             <trim prefixOverrides="and | or">
                 <if test="menuId > 0">
-                    and sm.menu_id = #{menuId, jdbcType=INTEGER}
+                    and sm.menu_id = #{menuId}
                 </if>
                 <if test="menuIds != null and menuIds != ''">
                     and sm.menu_id in (${menuIds})
                 </if>
                 <if test="menuName != null">
-                    and sm.menu_name = #{menuName, jdbcType=VARCHAR}
+                    and sm.menu_name = #{menuName}
                 </if>
                 <if test="menuUrl != null and menuUrl != ''">
-                    and sm.menu_url = #{menuUrl, jdbcType=VARCHAR}
+                    and sm.menu_url = #{menuUrl}
                 </if>
                 <if test="parentId > 0">
-                    and sm.parent_id = #{parentId, jdbcType=INTEGER}
+                    and sm.parent_id = #{parentId}
                 </if>
                 <if test="status > 0">
-                    and sm.status = #{status, jdbcType=INTEGER}
+                    and sm.status = #{status}
                 </if>
                 <if test="sortOrder > 0">
-                    and sm.sort_order = #{sortOrder, jdbcType=INTEGER}
+                    and sm.sort_order = #{sortOrder}
                 </if>
             </trim>
         </where>

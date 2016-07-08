@@ -107,14 +107,14 @@ public class AutoCollectController extends ModuleController {
                 }
                 if(!autoCollectService.delete(map)){
                     result.setCode(1);
-                    result.setMsg("删除用户收藏信息时出错");
+                    result.setMsg("删除用户收藏信息失败");
                 }else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除特定的用户收藏信息");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除用户收藏信息");
                 }
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("操作用户收藏信息时出错");
+            result.setMsg("操作用户收藏信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

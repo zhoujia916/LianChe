@@ -61,20 +61,22 @@
     </insert>
 
     <update id="update" parameterType="SystemAuthority">
-        update system_authority set 
+        update system_authority
         <set>
-        	<if test="sourceId != null">  
-        		source_id = #{sourceId}
-        	</if>
-        	<if test="sourceType != null">  
-        		source_type = #{sourceType}
-        	</if>
-        	<if test="targetId != null">  
-        		target_id = #{targetId}
-        	</if>
-        	<if test="targetType != null">  
-        		target_type = #{targetType}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="sourceId != null">
+                    source_id = #{sourceId},
+                </if>
+                <if test="sourceType != null">
+                    source_type = #{sourceType},
+                </if>
+                <if test="targetId != null">
+                    target_id = #{targetId},
+                </if>
+                <if test="targetType != null">
+                    target_type = #{targetType},
+                </if>
+            </trim>
         </set>
         <where> 
         	<if test="authorityId > 0">

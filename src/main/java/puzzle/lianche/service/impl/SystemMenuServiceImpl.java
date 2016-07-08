@@ -153,6 +153,16 @@ public class SystemMenuServiceImpl implements ISystemMenuService {
     	return sqlMapper.query("SystemMenuMapper.query", map);
     }
 
+    /**
+     * 查询单条记录
+     */
+    @Override
+    public SystemMenu query(Integer menuId){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("menuId", menuId);
+        return query(map);
+    }
+
 	/**
 	* 查询多条记录
 	*/

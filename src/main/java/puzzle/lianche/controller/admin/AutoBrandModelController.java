@@ -125,7 +125,7 @@ public class AutoBrandModelController extends ModuleController {
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("获取车型信息时出错");
+            result.setMsg("获取车型信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
@@ -139,16 +139,16 @@ public class AutoBrandModelController extends ModuleController {
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 if(!autoBrandModelService.insert(autoBrandModel)){
                     result.setCode(1);
-                    result.setMsg("添加车型信息时出错");
+                    result.setMsg("添加车型信息失败");
                 }else{
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"添加车型信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
                 if(!autoBrandModelService.update(autoBrandModel)){
                     result.setCode(1);
-                    result.setMsg("修改车型信息时出错");
+                    result.setMsg("修改车型信息失败");
                 }else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改特定的车型信息");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改车型信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
                 Map<String, Object> map=new HashMap<String, Object>();
@@ -162,14 +162,14 @@ public class AutoBrandModelController extends ModuleController {
                 }
                 if(!autoBrandModelService.delete(map)){
                     result.setCode(1);
-                    result.setMsg("删除车型信息时出错");
+                    result.setMsg("删除车型信息失败");
                 }else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除特定的车型信息");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除车型信息");
                 }
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("操作车型信息时出错");
+            result.setMsg("操作车型信息失败");
         }
         return result;
     }

@@ -45,17 +45,19 @@
     </insert>
 
     <update id="update" parameterType="SystemUserMap">
-        update system_user_map set 
+        update system_user_map
         <set>
-        	<if test="userId != null">  
-        		user_id = #{userId}
-        	</if>
-        	<if test="targetId != null">  
-        		target_id = #{targetId}
-        	</if>
-        	<if test="targetType != null">  
-        		target_type = #{targetType}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="userId != null">
+                    user_id = #{userId},
+                </if>
+                <if test="targetId != null">
+                    target_id = #{targetId},
+                </if>
+                <if test="targetType != null">
+                    target_type = #{targetType},
+                </if>
+            </trim>
         </set>
         <where> 
         	<if test="mapId > 0">

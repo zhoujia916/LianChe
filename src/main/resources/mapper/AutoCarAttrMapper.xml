@@ -84,33 +84,35 @@
     <update id="update" parameterType="AutoCarAttr">
         update auto_car_attr
         <set>
-            <if test="outsideColor != null">
-                outside_color = #{outsideColor},
-            </if>
-            <if test="insideColor != null">
-                inside_color = #{insideColor},
-            </if>
-            <if test="quoteType != null">
-                quote_type = #{quoteType},
-            </if>
-            <if test="salePriceType != null">
-                sale_price_type = #{salePriceType},
-            </if>
-            <if test="saleAmount != null">
-                sale_amount = #{saleAmount},
-            </if>
-            <if test="totalNumber != null">
-                total_number = #{totalNumber},
-            </if>
-            <if test="lockNumber != null">
-                lock_number = #{lockNumber},
-            </if>
-            <if test="surplusNumber != null">
-                surplus_number = #{surplusNumber},
-            </if>
-            <if test="price != null">
-                price = #{price}
-            </if>
+            <trim suffixOverrides=",">
+                <if test="outsideColor != null">
+                    outside_color = #{outsideColor},
+                </if>
+                <if test="insideColor != null">
+                    inside_color = #{insideColor},
+                </if>
+                <if test="quoteType != null">
+                    quote_type = #{quoteType},
+                </if>
+                <if test="salePriceType != null">
+                    sale_price_type = #{salePriceType},
+                </if>
+                <if test="saleAmount != null">
+                    sale_amount = #{saleAmount},
+                </if>
+                <if test="totalNumber != null">
+                    total_number = #{totalNumber},
+                </if>
+                <if test="lockNumber != null">
+                    lock_number = #{lockNumber},
+                </if>
+                <if test="surplusNumber != null">
+                    surplus_number = #{surplusNumber},
+                </if>
+                <if test="price != null">
+                    price = #{price},
+                </if>
+            </trim>
         </set>
         <where>
             <if test="carAttrId > 0">

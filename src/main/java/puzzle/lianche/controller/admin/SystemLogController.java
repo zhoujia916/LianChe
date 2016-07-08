@@ -115,7 +115,7 @@ public class SystemLogController extends ModuleController{
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("操作日志信息时出错");
+            result.setMsg("操作日志信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

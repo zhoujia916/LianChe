@@ -237,7 +237,7 @@ public class AutoUserController extends ModuleController {
                     result.setMsg("删除会员信息失败");
                 }else{
                     //添加日志
-                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除特定的会员信息");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除会员信息");
                 }
             }
         }catch(Exception e){

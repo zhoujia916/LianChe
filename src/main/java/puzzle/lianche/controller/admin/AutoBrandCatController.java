@@ -89,7 +89,7 @@ public class AutoBrandCatController extends ModuleController {
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("获取车系信息时出错");
+            result.setMsg("获取车系信息失败");
         }
         return result;
     }
@@ -109,9 +109,9 @@ public class AutoBrandCatController extends ModuleController {
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
                 if(!autoBrandCatService.update(autoBrandCat)){
                     result.setCode(1);
-                    result.setMsg("修改车薪信息时出错");
+                    result.setMsg("修改车薪信息失败");
                 }else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改特定的车系信息");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改车系信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
                 Map<String, Object> map=new HashMap<String, Object>();
@@ -125,14 +125,14 @@ public class AutoBrandCatController extends ModuleController {
                 }
                 if(!autoBrandCatService.delete(map)){
                     result.setCode(1);
-                    result.setMsg("删除车系信息时出错");
+                    result.setMsg("删除车系信息失败");
                 }else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除特定的车系信息");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除车系信息");
                 }
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("操作车系信息时出错");
+            result.setMsg("操作车系信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

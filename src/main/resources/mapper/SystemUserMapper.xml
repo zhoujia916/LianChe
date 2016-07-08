@@ -71,45 +71,47 @@
     <update id="update" parameterType="SystemUser">
         update system_user
         <set>
-            <if test="loginName != null">
-                login_name = #{loginName},
-            </if>
-        	<if test="userName != null">  
-        		user_name = #{userName},
-        	</if>
-        	<if test="userAvatar != null">  
-        		user_avatar = #{userAvatar},
-        	</if>
-        	<if test="password != null">  
-        		password = #{password},
-        	</if>
-        	<if test="sex != null">  
-        		sex = #{sex},
-        	</if>
-        	<if test="birthday != null">  
-        		birthday = #{birthday},
-        	</if>
-        	<if test="lastVisitTime != null">  
-        		last_visit_time = #{lastVisitTime},
-        	</if>
-        	<if test="lastVisitIp != null">  
-        		last_visit_ip = #{lastVisitIp},
-        	</if>
-        	<if test="onlineTime != null">  
-        		online_time = #{onlineTime},
-        	</if>
-        	<if test="userType != null">  
-        		user_type = #{userType},
-        	</if>
-        	<if test="title != null">  
-        		title = #{title},
-        	</if>
-        	<if test="status != null">  
-        		status = #{status},
-        	</if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder},
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="loginName != null">
+                    login_name = #{loginName},
+                </if>
+                <if test="userName != null">
+                    user_name = #{userName},
+                </if>
+                <if test="userAvatar != null">
+                    user_avatar = #{userAvatar},
+                </if>
+                <if test="password != null">
+                    password = #{password},
+                </if>
+                <if test="sex != null">
+                    sex = #{sex},
+                </if>
+                <if test="birthday != null">
+                    birthday = #{birthday},
+                </if>
+                <if test="lastVisitTime != null">
+                    last_visit_time = #{lastVisitTime},
+                </if>
+                <if test="lastVisitIp != null">
+                    last_visit_ip = #{lastVisitIp},
+                </if>
+                <if test="onlineTime != null">
+                    online_time = #{onlineTime},
+                </if>
+                <if test="userType != null">
+                    user_type = #{userType},
+                </if>
+                <if test="title != null">
+                    title = #{title},
+                </if>
+                <if test="status != null">
+                    status = #{status},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder},
+                </if>
+            </trim>
         </set>
         where user_id=#{userId}
     </update>

@@ -71,7 +71,7 @@ public class AutoSmsController extends ModuleController{
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("获取短信信息时出错");
+            result.setMsg("获取短信信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
@@ -114,7 +114,7 @@ public class AutoSmsController extends ModuleController{
 //                }
 //                if(!autoSmsService.insertBatch(list)){
 //                    result.setCode(1);
-//                    result.setMsg("添加短信信息时出错");
+//                    result.setMsg("添加短信信息失败");
 //                }else{
 //                    insertLog(Constants.PageHelper.PAGE_ACTION_CREATE, "添加短信信息");
 //                }
@@ -131,14 +131,14 @@ public class AutoSmsController extends ModuleController{
                 }
                 if(!autoSmsService.delete(map)){
                     result.setCode(1);
-                    result.setMsg("删除短信信息时出错");
+                    result.setMsg("删除短信信息失败");
                 }else{
                     insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除短信信息");
                 }
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("操作短信信息时出错");
+            result.setMsg("操作短信信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

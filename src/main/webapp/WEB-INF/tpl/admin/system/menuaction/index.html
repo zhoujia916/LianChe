@@ -7,7 +7,7 @@
         菜单管理
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            设置菜单动作
+            设置菜单动作{{if $menu}}---[{{$menu.menuName}}]{{/if}}
         </small>
 
         <a class="btn btn-xs orange pull-right btn-warning" href="#page/systemmenu/index">
@@ -60,7 +60,7 @@
     <!--save form-->
     <div class="grid-form save-form">
 
-        <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;height:400px;margin-left:-300px;margin-top:-200px">
+        <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">
             <div class="widget-header">
                 <h5 class="widget-title smaller"></h5>
 
@@ -74,6 +74,7 @@
             <div class="widget-body">
                 <div class="widget-main">
                     <div class="alert-info red"></div>
+
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
@@ -129,21 +130,23 @@
                                 <input type="text" data-init="0"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
                             </div>
                         </div>
-                        <div class="clearfix form-actions">
+                        <div class="clearfix">
                             <input type="hidden" name="actionId" value="" />
                             <input type="hidden" id="menuId" name="menuId" value="{{$menuId}}" />
-                            <a class="btn btn-sm btn-action" data-action="reset">
-                                <i class="ace-icon fa fa-undo"></i>
-                                重置
-                            </a>
-                            &nbsp; &nbsp; &nbsp;
-                            <a class="btn btn-sm btn-primary btn-action" data-action="save">
-                                <i class="ace-icon fa fa-check"></i>
-                                提交
-                            </a>
                         </div>
                     </form>
                 </div>
+            </div>
+            <div class="widget-footer form-actions">
+                <a class="btn btn-sm btn-action" data-action="reset">
+                    <i class="ace-icon fa fa-undo"></i>
+                    重置
+                </a>
+                &nbsp; &nbsp; &nbsp;
+                <a class="btn btn-sm btn-primary btn-action" data-action="save">
+                    <i class="ace-icon fa fa-check"></i>
+                    提交
+                </a>
             </div>
         </div>
     </div>

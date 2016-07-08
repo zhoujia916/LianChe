@@ -119,6 +119,16 @@ public class AutoAd implements Serializable{
 		this.status = status;
 	}
 
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
+    private String pic;
+
     //新增属性
     private String positionName;
     private Integer width;

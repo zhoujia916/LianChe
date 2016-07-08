@@ -111,7 +111,7 @@
                                 用户图像
                             </label>
                             <div class="col-sm-4" style="height:62px;"{{if $action eq 'VIEW'}} style="padding-top:10px;"{{/if}}>
-                                {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+                                {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
                                 <input type="hidden" id="hidUserAvatar" name="userAvatar" />
                                 <input type="file" id="userAvatar" name="file" placeholder="封面图片">
                                 {{elseif $action eq 'VIEW'}}
@@ -301,7 +301,7 @@
                     </div>
                 </div>
             </div>
-            {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+            {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
             <div class="clearfix form-actions">
                 <button id="btnReset" class="btn" type="reset">
                     <i class="ace-icon fa fa-undo bigger-110"></i>
@@ -356,7 +356,7 @@
         {{/if}}
 
 
-        {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+        {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
         var spliter = "";
         $("#btnSubmit").on("click",function(){
             var name = $.trim($("#userName").val());
@@ -497,7 +497,7 @@
         {{if $action eq 'UPDATE' or $action eq 'VIEW'}}
         var mockFileList = [];
         {{foreach from=$picList item=picItem}}
-        mockFileList.push({ name: "temp.jpg", size: "10000", path: "{{$picItem.path}}" });
+        mockFileList.push({ name: "temp.jpg", size: "10000", path: "{{$picItem.picPath}}" });
         {{/foreach}}
         for(var i = 0; i < mockFileList.length; i++){
             dropZone.emit("addedfile", mockFileList[i]);
@@ -507,8 +507,8 @@
             dropZone.emit("complete", mockFileList[i]);
         }
         {{/if}}
-            {{if $action eq 'VIEW'}}
-            dropZone.disable();
-            {{/if}}
+        {{if $action eq 'VIEW'}}
+        dropZone.disable();
+        {{/if}}
     });
 </script>

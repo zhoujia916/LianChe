@@ -107,8 +107,6 @@ public class SystemIndexController extends ModuleController {
             Calendar calendar = Calendar.getInstance();
             Integer year = calendar.get(Calendar.YEAR);
             Integer month = calendar.get(Calendar.MONTH);
-            Integer day = calendar.get(Calendar.DAY_OF_MONTH);
-            Integer wday = calendar.get(Calendar.DAY_OF_WEEK);
             Integer miliseconds = calendar.get(Calendar.MILLISECOND);
             Long endTime = calendar.getTimeInMillis();
 
@@ -166,6 +164,11 @@ public class SystemIndexController extends ModuleController {
         }
         //endregion
         return Constants.UrlHelper.ADMIN_SYSTEM_MAIN;
+    }
+
+    @RequestMapping(value = "/admin/deny")
+    public String deny(){
+        return Constants.UrlHelper.ADMIN_SYSTEM_DENY;
     }
     //endregion
 

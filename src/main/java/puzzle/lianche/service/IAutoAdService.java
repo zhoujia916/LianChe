@@ -15,6 +15,8 @@ public interface IAutoAdService{
     public boolean delete(Map<String, Object> map);
 
     public AutoAd query(Map<String, Object> map);
+
+    public AutoAd query(Integer adId);
     
     public List<AutoAd> queryList(Object param);
 

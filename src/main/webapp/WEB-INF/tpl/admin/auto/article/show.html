@@ -71,7 +71,7 @@
                                 封面图
                             </label>
                             <div class="col-sm-5" style="height:62px;{{if $action eq 'VIEW'}}padding-top:10px{{/if}}">
-                                {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+                                {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
                                 <input type="hidden" id="hidCover" name="cover" />
                                 <input type="file" id="file" name="file" placeholder="封面图片">
                                 {{elseif $action eq 'VIEW'}}
@@ -151,7 +151,7 @@
             </div>
 
             <div class="clearfix form-actions">
-                {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+                {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
                 <button id="btnReset" class="btn" type="reset">
                     <i class="ace-icon fa fa-undo bigger-110"></i>
                     重置
@@ -173,14 +173,14 @@
 <script type="text/javascript">
 
     $('.page-content-area').ace_ajax('loadScripts', [ null,
-        {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+        {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
         "{{$contextPath}}/ueditor/ueditor.config.js",
         "{{$contextPath}}/ueditor/ueditor.all.min.js",
         "{{$contextPath}}/ueditor/lang/zh-cn/zh-cn.js",
         {{/if}}
         null], function() {
 
-        {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+        {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
         UE.getEditor("content");
         $("#btnSubmit").on("click", function(){
             var title = $.trim($("#title").val());
@@ -205,7 +205,7 @@
             }, "json");
         });
         {{/if}}
-        {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+        {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
         var cover = $('#file').ace_file_input({
             style:'well',
             allowExt: ["jpeg", "jpg", "png", "gif" , "bmp"],

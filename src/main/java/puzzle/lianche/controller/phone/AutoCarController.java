@@ -94,6 +94,7 @@ public class AutoCarController extends BaseController {
                     jsonItem.put("carName", item.getCarName());
                     jsonItem.put("brandName", item.getBrandName());
                     jsonItem.put("catName", item.getCatName());
+                    jsonItem.put("pic", item.getPic());
                     if(car.getCarType() == Constants.AUTO_CAR_TYPE_COMMON){
                         jsonItem.put("addTime", ConvertUtil.toString(new Date(item.getRefreshTime()),Constants.DATE_FORMAT));
                     }else{
@@ -121,12 +122,6 @@ public class AutoCarController extends BaseController {
                     }
                     jsonItem.put("attrs", jsonAttrArray);
 
-                    String pic = null;
-                    List<AutoCarPic> pics = autoCarPicService.queryList(map);
-                    if(pics != null && !pics.isEmpty()) {
-                        pic = pics.get(0).getPath();
-                    }
-                    jsonItem.put("pic", pic);
                     int isAuth = item.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS ? 1 : 0;
                     jsonItem.put("addUserAuth", isAuth);
 
@@ -313,7 +308,7 @@ public class AutoCarController extends BaseController {
                 result.setMsg("总数不能为空！");
                 return result;
             }
-            long now = System.currentTimeMillis();
+
             if(!StringUtil.isDate(car.getBeginTimeString()) || !StringUtil.isDate(car.getBeginTimeString())){
                 result.setCode(-1);
                 result.setMsg("开始时间不正确！");
@@ -325,29 +320,36 @@ public class AutoCarController extends BaseController {
                 result.setMsg("结束时间不正确！");
                 return result;
             }
-            long startTime = ConvertUtil.toLong(ConvertUtil.toDateTime(car.getBeginTimeString() + " 00:00:00"));
-            long endTime = ConvertUtil.toLong(ConvertUtil.toDateTime(car.getEndTimeString() + " 23:59:59"));
 
-            if(startTime > endTime){
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+
+            Date now = calendar.getTime();
+            Date startTime = ConvertUtil.toDate(car.getBeginTimeString());
+            Date endTime = ConvertUtil.toDate(car.getEndTimeString());
+
+
+            if(startTime.after(endTime)){
                 result.setCode(-1);
                 result.setMsg("开始时间不能大于结束时间！");
                 return result;
             }
-            if(startTime > now){
+            if(now.after(startTime)){
                 result.setCode(-1);
                 result.setMsg("开始时间不能小于今天！");
                 return result;
             }
-            if(now > endTime){
+            if(now.after(endTime)){
                 result.setCode(-1);
                 result.setMsg("结束时间不能小于今天！");
                 return result;
             }
-            long twoMonth = 2 * 30 * 24 * 3600 * 1000;
 
-            if((endTime - startTime) > twoMonth){
+            if(((endTime.getTime() - startTime.getTime()) / (24 * 3600 * 1000)) > 90){
                 result.setCode(-1);
-                result.setMsg("有效期不能超过两个月！");
+                result.setMsg("有效期不能超过90天！");
                 return result;
             }
 
@@ -407,8 +409,8 @@ public class AutoCarController extends BaseController {
             car.setCarName(model.getBrandName() + model.getCatName() + model.getModelName());
             car.setAddTime(ConvertUtil.toLong(new Date()));
             car.setRefreshTime(car.getAddTime());
-            car.setStartDate(startTime);
-            car.setEndDate(endTime);
+            car.setStartDate(ConvertUtil.toDateTime(car.getBeginTimeString() + " 00:00:00").getTime());
+            car.setEndDate(ConvertUtil.toDateTime(car.getEndTimeString() + " 23:59:59").getTime());
             car.setStatus(Constants.AUTO_CAR_STATUS_ON);
             car.setCarType(Constants.AUTO_CAR_TYPE_COMMON);
             for(int i = 0; i < car.getAttrs().size(); i++){

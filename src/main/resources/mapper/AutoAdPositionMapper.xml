@@ -35,18 +35,20 @@
     <update id="update" parameterType="AutoAdPosition">
         update auto_ad_position
         <set>
-        	<if test="positionName != null">  
-        		position_name = #{positionName},
-        	</if>
-        	<if test="width != null">  
-        		width = #{width},
-        	</if>
-        	<if test="height != null">  
-        		height = #{height},
-        	</if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder},
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="positionName != null">
+                    position_name = #{positionName},
+                </if>
+                <if test="width != null">
+                    width = #{width},
+                </if>
+                <if test="height != null">
+                    height = #{height},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder},
+                </if>
+            </trim>
         </set>
         where position_id = #{positionId}
     </update>

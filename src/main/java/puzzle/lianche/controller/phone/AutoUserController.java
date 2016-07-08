@@ -465,26 +465,22 @@ public class AutoUserController extends BaseController {
                 result.setMsg("该账户被禁用！");
                 return result;
             }
-            AutoUserProfile file=autoUserProfileService.query(profile.getUserId());
-            if(file != null){
+            if(find.getStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS){
                 result.setCode(-1);
                 result.setMsg("该用户已实名认证！");
                 return result;
             }
-            profile.setPhone(null);
-            Map<String,Object> map = new HashMap<String, Object>();
-            map.put("userId", profile.getUserId());
-            AutoUserProfile userProfile = autoUserProfileService.query(map);
+            AutoUserProfile userProfile = autoUserProfileService.query(profile.getUserId());
             if(userProfile == null){
                 if(!autoUserProfileService.insert(profile)){
                     result.setCode(1);
-                    result.setMsg("完善个人信息失败！");
+                    result.setMsg("保存个人信息失败！");
                 }
             }else{
                 profile.setProfileId(userProfile.getProfileId());
                 if(!autoUserProfileService.update(profile)){
                     result.setCode(1);
-                    result.setMsg("完善个人信息失败！");
+                    result.setMsg("保存个人信息失败！");
                 }
             }
 
@@ -1037,19 +1033,18 @@ public class AutoUserController extends BaseController {
             if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
                 String sql = " and (ao.order_id is null" +
                              " or (ao.order_status = " + Constants.OS_SUBMIT +
-                             " and ao.pay_status = " + Constants.PS_WAIT_BUYER_DEPOSIT +
+                             " and ao.pay_status in(" + Constants.PS_BUYER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SELLER_DEPOSIT + ")" +
                              " and ao.ship_status = " + Constants.SS_UNSHIP + "))";
                 map.put("filter", sql);
             }
             else if(order.getClientStatus().equals(Constants.CS_DEPOSIT)){
-                String sql = " and ao.order_status in(" + Constants.OS_SUBMIT + "," + Constants.OS_EXECUTE + ") " +
-                             " and ao.pay_status in(" + Constants.PS_BUYER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SELLER_DEPOSIT + "," + Constants.PS_SELLER_PAY_DEPOSIT + ") " +
+                String sql = " and ao.order_status = " + Constants.OS_EXECUTE +
+                             " and ao.pay_status = " + Constants.PS_SELLER_PAY_DEPOSIT +
                              " and ao.ship_status = " + Constants.SS_UNSHIP;
                 map.put("filter", sql);
             }
             else if(order.getClientStatus().equals(Constants.CS_SUCCESS)){
                 String sql = " and ao.order_status  = " + Constants.OS_SUCCESS +
-                             " and ao.pay_status in(" + Constants.PS_SELLER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SYSTEM_DEPOSIT + "," + Constants.PS_SYSTEM_RETURN_DEPOSIT + ") " +
                              " and ao.ship_status = " + Constants.SS_SHIPED;
                 map.put("filter", sql);
             }

@@ -126,7 +126,7 @@ public class SystemRoleController extends ModuleController {
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("操作角色信息时出错");
+            result.setMsg("操作角色信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

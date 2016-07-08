@@ -93,39 +93,41 @@
     <update id="update" parameterType="AutoMsg">
         update auto_msg
         <set>
-        	<if test="msgTitle != null">  
-        		msg_title = #{msgTitle},
-        	</if>
-        	<if test="msgContent != null">  
-        		msg_content = #{msgContent},
-        	</if>
-        	<if test="msgType != null">  
-        		msg_type = #{msgType},
-        	</if>
-        	<if test="msgContentType != null">  
-        		msg_content_type = #{msgContentType},
-        	</if>
-        	<if test="msgAuthor != null">  
-        		msg_author = #{msgAuthor},
-        	</if>
-        	<if test="msgUrl != null">  
-        		msg_url = #{msgUrl},
-        	</if>
-        	<if test="addTime != null">  
-        		add_time = #{addTime},
-        	</if>
-        	<if test="fromUserId != null">  
-        		from_user_id = #{fromUserId},
-        	</if>
-        	<if test="toUserId != null">  
-        		to_user_id = #{toUserId},
-        	</if>
-        	<if test="viewCount != null">  
-        		view_count = #{viewCount},
-        	</if>
-        	<if test="status != null">  
-        		status = #{status}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="msgTitle != null">
+                    msg_title = #{msgTitle},
+                </if>
+                <if test="msgContent != null">
+                    msg_content = #{msgContent},
+                </if>
+                <if test="msgType != null">
+                    msg_type = #{msgType},
+                </if>
+                <if test="msgContentType != null">
+                    msg_content_type = #{msgContentType},
+                </if>
+                <if test="msgAuthor != null">
+                    msg_author = #{msgAuthor},
+                </if>
+                <if test="msgUrl != null">
+                    msg_url = #{msgUrl},
+                </if>
+                <if test="addTime != null">
+                    add_time = #{addTime},
+                </if>
+                <if test="fromUserId != null">
+                    from_user_id = #{fromUserId},
+                </if>
+                <if test="toUserId != null">
+                    to_user_id = #{toUserId},
+                </if>
+                <if test="viewCount != null">
+                    view_count = #{viewCount},
+                </if>
+                <if test="status != null">
+                    status = #{status},
+                </if>
+            </trim>
         </set>
         where msg_id = #{msgId}
     </update>

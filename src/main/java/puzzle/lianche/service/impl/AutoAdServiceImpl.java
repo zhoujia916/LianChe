@@ -50,6 +50,16 @@ public class AutoAdServiceImpl implements IAutoAdService {
     	return sqlMapper.query("AutoAdMapper.query", map);
     }
 
+    /**
+     * 查询单条记录
+     */
+    @Override
+    public AutoAd query(Integer adId){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("adId", adId);
+        return query(map);
+    }
+
 	/**
 	* 查询多条记录
 	*/

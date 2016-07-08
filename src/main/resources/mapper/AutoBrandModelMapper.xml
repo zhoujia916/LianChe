@@ -34,15 +34,17 @@
     <update id="update" parameterType="AutoBrandModel">
         update auto_brand_model
         <set>
-        	<if test="brandCatId != null">  
-        		brand_cat_id = #{brandCatId},
-        	</if>
-        	<if test="modelName != null">  
-        		model_name = #{modelName},
-        	</if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder},
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="brandCatId != null">
+                    brand_cat_id = #{brandCatId},
+                </if>
+                <if test="modelName != null">
+                    model_name = #{modelName},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder},
+                </if>
+            </trim>
         </set>
         where model_id = #{modelId}
     </update>
@@ -117,6 +119,6 @@
                 </if>
             </trim>
         </where>
-        order by abm.sort_order desc,abm.model_id asc
+        order by abm.sort_order asc,abm.model_id asc
     </select>
 </mapper>

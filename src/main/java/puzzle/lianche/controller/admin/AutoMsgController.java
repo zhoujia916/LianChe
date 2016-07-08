@@ -122,7 +122,7 @@ public class AutoMsgController extends ModuleController {
                 }
                 if(!autoMsgService.insertBatch(list)){
                     result.setCode(1);
-                    result.setMsg("添加消息记录时出错");
+                    result.setMsg("添加消息记录失败");
                 }else{
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"新增消息记录");
                 }
@@ -138,7 +138,7 @@ public class AutoMsgController extends ModuleController {
                 }
                 if(!autoMsgService.delete(map)){
                     result.setCode(1);
-                    result.setMsg("删除消息信息时出错");
+                    result.setMsg("删除消息信息失败");
                 }else{
                     insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除指定的消息记录信息");
                 }

@@ -33,15 +33,17 @@
     <update id="update" parameterType="AutoArticleCat">
         update auto_article_cat
         <set>
-        	<if test="catName != null">  
-        		cat_name = #{catName},
-        	</if>
-        	<if test="parentId != null">  
-        		parent_id = #{parentId},
-        	</if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder},
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="catName != null">
+                    cat_name = #{catName},
+                </if>
+                <if test="parentId != null">
+                    parent_id = #{parentId},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder},
+                </if>
+            </trim>
         </set>
         where cat_id = #{catId}
     </update>

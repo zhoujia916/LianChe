@@ -375,6 +375,17 @@ public class Constants {
     };
     //endregion
 
+    //region System User Status
+    public static final Integer AUTO_AD_STATUS_VALID = 1;
+    public static final Integer AUTO_AD_STATUS_INVALID = 2;
+    public static final Map<Integer, String> MAP_AUTO_AD_STATUS = new HashMap<Integer, String>(){
+        {
+            put(1,"有效");
+            put(2,"无效");
+        }
+    };
+    //endregion
+
     public static final Integer AUTO_AUTHORITY_TARGET_TYPE_MENU = 1;
     public static final Integer AUTO_AUTHORITY_TARGET_TYPE_ACTION = 2;
 
@@ -392,6 +403,8 @@ public class Constants {
          */
 
         public static final String ADMIN_SYSTEM_LOGIN = "admin/login";
+
+        public static final String ADMIN_SYSTEM_DENY = "admin/deny";
 
         public static final String ADMIN_SYSTEM_MAIN = "admin/main";
 
@@ -447,6 +460,8 @@ public class Constants {
 
         public static final String ADMIN_AUTO_AD = "admin/auto/ad/index";
 
+        public static final String ADMIN_AUTO_AD_SHOW = "admin/auto/ad/show";
+
         public static final String ADMIN_AUTO_CAR = "admin/auto/car/index";
 
         public static final String ADMIN_AUTO_CAR_SHOW = "admin/auto/car/show";
@@ -488,5 +503,23 @@ public class Constants {
         public static final String PAGE_ACTION_SAVE = "SAVE";
 
         public static final String PAGE_ACTION_VIEW = "VIEW";
+    }
+
+    public class ResultHelper{
+        /**
+         * 未登录，未授权，参数错误，处理请求成功，处理请求失败，处理请求错误
+         */
+
+        public static final int RESULT_NOT_AUTHTICATE = 1000;
+
+        public static final int RESULT_NOT_AUTHRIZE = 1001;
+
+        public static final int RESULT_PARAM_ERROR = -1;
+
+        public static final int RESULT_HANDLE_SUCCESS = 0;
+
+        public static final int RESULT_HANDLE_FAILED = 1;
+
+        public static final int RESULT_HANDLE_ERROR = 2;
     }
 }

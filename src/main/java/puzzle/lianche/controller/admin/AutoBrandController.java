@@ -57,7 +57,7 @@ public class AutoBrandController extends ModuleController {
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("获取品牌信息时出错");
+            result.setMsg("获取品牌信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
@@ -72,7 +72,7 @@ public class AutoBrandController extends ModuleController {
                 //新增
                 if(!autoBrandService.insert(autoBrand)){
                     result.setCode(1);
-                    result.setMsg("添加品牌信息时出错");
+                    result.setMsg("添加品牌信息失败");
                 }else{
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"添加品牌信息");
                 }
@@ -80,7 +80,7 @@ public class AutoBrandController extends ModuleController {
                 //修改
                 if(!autoBrandService.update(autoBrand)){
                     result.setCode(1);
-                    result.setMsg("修改品牌信息时出错");
+                    result.setMsg("修改品牌信息失败");
                 }else{
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"修改品牌信息");
                 }
@@ -96,14 +96,14 @@ public class AutoBrandController extends ModuleController {
                 }
                 if(!autoBrandService.delete(map)){
                     result.setCode(1);
-                    result.setMsg("删除品牌信息时出错");
+                    result.setMsg("删除品牌信息失败");
                 }else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除特定的品牌信息");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除品牌信息");
                 }
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("操作品牌信息时出错");
+            result.setMsg("操作品牌信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

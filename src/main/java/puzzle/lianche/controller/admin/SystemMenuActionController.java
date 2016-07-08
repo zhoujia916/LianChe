@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
+import puzzle.lianche.entity.SystemMenu;
 import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.ISystemMenuActionService;
+import puzzle.lianche.service.ISystemMenuService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Result;
 import puzzle.lianche.utils.StringUtil;
@@ -24,10 +26,16 @@ public class SystemMenuActionController extends ModuleController {
     @Autowired
     private ISystemMenuActionService systemMenuActionService;
 
+    @Autowired
+    private ISystemMenuService systemMenuService;
+
 
     @RequestMapping(value = {"/index/{menuId}"})
-    public String index(@PathVariable int menuId){
-        this.setModelAttribute("menuId", menuId);
+    public String index(@PathVariable Integer menuId){
+        if(menuId != null && menuId > 0){
+            SystemMenu menu = systemMenuService.query(menuId);
+            this.setModelAttribute("menu", menu);
+        }
         return Constants.UrlHelper.ADMIN_SYSTEM_MENU_ACTION;
     }
 

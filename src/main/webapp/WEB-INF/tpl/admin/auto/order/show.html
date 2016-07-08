@@ -533,10 +533,10 @@
             var carNumber = parseInt($("#carNumber").val());
 
             if(carNumber > 1){
-                text = "( " + text + " ) * " + carNumber;
+                text = "( " + text + " ) * " + carNumber + "[数量]";
             }
 
-            text += " = " + (price * carNumber).toFixed(2);
+            text += " = " + (price * carNumber).toFixed(2) + "[总价]";
 
 
             $("#spPrice").html(text);

@@ -52,20 +52,22 @@
     </insert>
 
     <update id="update" parameterType="AutoUserPic">
-        update auto_user_pic set 
+        update auto_user_pic
         <set>
-        	<if test="userId != null">  
-        		user_id = #{userId}
-        	</if>
-        	<if test="picType != null">  
-        		pic_type = #{picType}
-        	</if>
-        	<if test="picPath != null">  
-        		pic_path = #{picPath}
-        	</if>
-        	<if test="addTime != null">  
-        		add_time = #{addTime}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="userId != null">
+                    user_id = #{userId},
+                </if>
+                <if test="picType != null">
+                    pic_type = #{picType},
+                </if>
+                <if test="picPath != null">
+                    pic_path = #{picPath},
+                </if>
+                <if test="addTime != null">
+                    add_time = #{addTime},
+                </if>
+            </trim>
         </set>
         <where> 
         	<if test="picId > 0">

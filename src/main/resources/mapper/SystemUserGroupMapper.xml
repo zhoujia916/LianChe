@@ -29,12 +29,14 @@
     <update id="update" parameterType="SystemUserGroup">
         update system_user_group
         <set>
-        	<if test="groupName != null">  
-        		group_name = #{groupName},
-        	</if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder},
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="groupName != null">
+                    group_name = #{groupName},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder},
+                </if>
+            </trim>
         </set>
         where group_id = #{groupId}
     </update>

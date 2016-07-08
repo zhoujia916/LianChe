@@ -15,6 +15,8 @@ public interface ISystemMenuService{
     public boolean delete(Map<String, Object> map);
 
     public SystemMenu query(Map<String, Object> map);
+
+    public SystemMenu query(Integer menuId);
     
     public List<SystemMenu> queryList(Object param);
 

@@ -80,36 +80,38 @@
     <update id="update" parameterType="AutoOrder">
         update auto_order
         <set>
-        	<if test="orderStatus != null">
-        		order_status = #{orderStatus},
-        	</if>
-        	<if test="payStatus != null">
-        		pay_status = #{payStatus},
-        	</if>
-        	<if test="shipStatus != null">
-        		ship_status = #{shipStatus},
-        	</if>
-            <if test="sellerDeposit != null and sellerDeposit > 0">
-                seller_deposit = #{sellerDeposit},
-            </if>
-            <if test="buyerDeposit != null and buyerDeposit > 0">
-                buyer_deposit = #{buyerDeposit},
-            </if>
-            <if test="shipTime != null and shipTime > 0">
-                ship_time = #{shipTime},
-            </if>
-            <if test="orderRemark != null and orderRemark != ''">
-                order_remark = #{orderRemark},
-            </if>
-            <if test="statusRemark != null and statusRemark != ''">
-                status_remark = #{statusRemark},
-            </if>
-            <if test="remark != null and remark != ''">
-                remark = #{remark},
-            </if>
-        	<if test="addTime != null">
-        		add_time = #{addTime}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="orderStatus != null">
+                    order_status = #{orderStatus},
+                </if>
+                <if test="payStatus != null">
+                    pay_status = #{payStatus},
+                </if>
+                <if test="shipStatus != null">
+                    ship_status = #{shipStatus},
+                </if>
+                <if test="sellerDeposit != null and sellerDeposit > 0">
+                    seller_deposit = #{sellerDeposit},
+                </if>
+                <if test="buyerDeposit != null and buyerDeposit > 0">
+                    buyer_deposit = #{buyerDeposit},
+                </if>
+                <if test="shipTime != null and shipTime > 0">
+                    ship_time = #{shipTime},
+                </if>
+                <if test="orderRemark != null and orderRemark != ''">
+                    order_remark = #{orderRemark},
+                </if>
+                <if test="statusRemark != null and statusRemark != ''">
+                    status_remark = #{statusRemark},
+                </if>
+                <if test="remark != null and remark != ''">
+                    remark = #{remark},
+                </if>
+                <if test="addTime != null">
+                    add_time = #{addTime},
+                </if>
+            </trim>
         </set>
         <where> 
         	<if test="orderId > 0">

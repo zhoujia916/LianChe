@@ -31,15 +31,17 @@
     <update id="update" parameterType="SystemDept">
         update system_dept
         <set>
-        	<if test="deptName != null">  
-        		dept_name = #{deptName},
-        	</if>
-        	<if test="parentId != null">  
-        		parent_id = #{parentId},
-        	</if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="deptName != null">
+                    dept_name = #{deptName},
+                </if>
+                <if test="parentId != null">
+                    parent_id = #{parentId},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder}
+                </if>
+            </trim>
         </set>
         where dept_id = #{deptId}
     </update>

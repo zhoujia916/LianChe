@@ -47,27 +47,29 @@
     <update id="update" parameterType="AutoUserProfile">
         update auto_user_profile
         <set>
-        	<if test="realName != null">  
-        		real_name = #{realName},
-        	</if>
-        	<if test="shopName != null">  
-        		shop_name = #{shopName},
-        	</if>
-        	<if test="phone != null">  
-        		phone = #{phone},
-        	</if>
-        	<if test="shopType != null ">
-        		shop_type = #{shopType},
-        	</if>
-        	<if test="shopDesc != null">  
-        		shop_desc = #{shopDesc},
-        	</if>
-        	<if test="shopBrands != null">  
-        		shop_brands = #{shopBrands},
-        	</if>
-        	<if test="shopBase != null">
-        		shop_base = #{shopBase}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="realName != null">
+                    real_name = #{realName},
+                </if>
+                <if test="shopName != null">
+                    shop_name = #{shopName},
+                </if>
+                <if test="phone != null">
+                    phone = #{phone},
+                </if>
+                <if test="shopType != null ">
+                    shop_type = #{shopType},
+                </if>
+                <if test="shopDesc != null">
+                    shop_desc = #{shopDesc},
+                </if>
+                <if test="shopBrands != null">
+                    shop_brands = #{shopBrands},
+                </if>
+                <if test="shopBase != null">
+                    shop_base = #{shopBase},
+                </if>
+            </trim>
         </set>
         where profile_id = ${profileId}
     </update>

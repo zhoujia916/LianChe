@@ -62,7 +62,7 @@ public class SystemUserGroupController extends ModuleController {
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("查看用户组信息时出错");
+            result.setMsg("查看用户组信息失败");
             logger.error(result.getMsg());
         }
         return result;
@@ -116,7 +116,7 @@ public class SystemUserGroupController extends ModuleController {
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("操作用户组信息时出错！");
+            result.setMsg("操作用户组信息失败！");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

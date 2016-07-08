@@ -12,6 +12,7 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
 import puzzle.lianche.entity.AutoBrand;
 import puzzle.lianche.entity.AutoBrandCat;
 import puzzle.lianche.entity.SystemConfig;
+import puzzle.lianche.mapper.SqlMapper;
 import puzzle.lianche.service.IAutoBrandCatService;
 import puzzle.lianche.service.IAutoBrandService;
 import puzzle.lianche.service.impl.AutoBrandCatServiceImpl;
@@ -31,6 +32,7 @@ import java.util.Map;
 @ContextConfiguration(locations = {"classpath*:spring-*.xml"})
 public class CommonTest {
 
+    SqlMapper mapper;
 
 //    @Test
 //    public void testBase64(){
@@ -142,7 +144,6 @@ public class CommonTest {
 
     @Test
     public void updateBrandCat(){
-
     }
 
 }

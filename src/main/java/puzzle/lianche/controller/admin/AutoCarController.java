@@ -59,6 +59,9 @@ public class AutoCarController extends ModuleController {
             map.put("carId", carId);
             List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
             this.setModelAttribute("attrList", attrs);
+
+            List<AutoCarPic> pics = autoCarPicService.queryList(map);
+            this.setModelAttribute("picList", pics);
         }
 
 
@@ -416,14 +419,14 @@ public class AutoCarController extends ModuleController {
                 }
                 if(!autoCarService.delete(map)){
                     result.setCode(1);
-                    result.setMsg("删除车源信息时出错");
+                    result.setMsg("删除车源信息失败");
                 }else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除特定的车源信息");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除车源信息");
                 }
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("操作车源信息时出错");
+            result.setMsg("操作车源信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

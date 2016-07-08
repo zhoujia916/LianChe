@@ -55,20 +55,22 @@
     </insert>
 
     <update id="update" parameterType="AutoSms">
-        update auto_sms set 
+        update auto_sms
         <set>
-        	<if test="smsType != null">  
-        		sms_type = #{smsType}
-        	</if>
-        	<if test="smsContent != null">  
-        		sms_content = #{smsContent}
-        	</if>
-        	<if test="code != null">  
-        		code = #{code}
-        	</if>
-        	<if test="phone != null">  
-        		phone = #{phone}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="smsType != null">
+                    sms_type = #{smsType},
+                </if>
+                <if test="smsContent != null">
+                    sms_content = #{smsContent},
+                </if>
+                <if test="code != null">
+                    code = #{code},
+                </if>
+                <if test="phone != null">
+                    phone = #{phone},
+                </if>
+            </trim>
         </set>
         <where> 
         	<if test="smsId > 0">

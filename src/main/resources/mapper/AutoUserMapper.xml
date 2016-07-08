@@ -67,45 +67,47 @@
     <update id="update" parameterType="AutoUser">
         update auto_user
         <set>
-        	<if test="userName != null and userName !=''">
-        		user_name = #{userName},
-        	</if>
-        	<if test="password != null and password !=''">
-        		password = #{password},
-        	</if>
-        	<if test="birth != null">
-        		birth = #{birth},
-        	</if>
-        	<if test="phone != null and phone !=''">
-        		phone = #{phone},
-        	</if>
-        	<if test="email != null and email !=''">
-        		email = #{email},
-        	</if>
-        	<if test="userAvatar != null and userAvatar !=''">
-        		user_avatar = #{userAvatar},
-        	</if>
-        	<if test="status > 0">
-        		status = #{status},
-        	</if>
-        	<if test="point > 0">
-        		point = #{point},
-        	</if>
-        	<if test="remark != null and remark !=''">
-        		remark = #{remark},
-        	</if>
-        	<if test="addTime != null">
-        		add_time = #{addTime},
-        	</if>
-            <if test="idNumber != null and idNumber != ''">
-                id_number = #{idNumber},
-            </if>
-        	<if test="authenticateTime != null">
-        		authenticate_time = #{authenticateTime},
-        	</if>
-        	<if test="sortOrder > 0">
-        		sort_order = #{sortOrder}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="userName != null and userName !=''">
+                    user_name = #{userName},
+                </if>
+                <if test="password != null and password !=''">
+                    password = #{password},
+                </if>
+                <if test="birth != null">
+                    birth = #{birth},
+                </if>
+                <if test="phone != null and phone !=''">
+                    phone = #{phone},
+                </if>
+                <if test="email != null and email !=''">
+                    email = #{email},
+                </if>
+                <if test="userAvatar != null and userAvatar !=''">
+                    user_avatar = #{userAvatar},
+                </if>
+                <if test="status > 0">
+                    status = #{status},
+                </if>
+                <if test="point > 0">
+                    point = #{point},
+                </if>
+                <if test="remark != null and remark !=''">
+                    remark = #{remark},
+                </if>
+                <if test="addTime != null">
+                    add_time = #{addTime},
+                </if>
+                <if test="idNumber != null and idNumber != ''">
+                    id_number = #{idNumber},
+                </if>
+                <if test="authenticateTime != null">
+                    authenticate_time = #{authenticateTime},
+                </if>
+                <if test="sortOrder > 0">
+                    sort_order = #{sortOrder},
+                </if>
+            </trim>
         </set>
         where user_id = #{userId}
     </update>

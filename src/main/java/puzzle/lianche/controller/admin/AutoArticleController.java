@@ -154,7 +154,7 @@ public class AutoArticleController extends ModuleController {
 
                 if(!autoArticleService.insert(autoArticle)){
                     result.setCode(1);
-                    result.setMsg("添加文章时出错");
+                    result.setMsg("添加文章失败");
                 }else{
                     //添加日志
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"添加文章信息");
@@ -166,10 +166,10 @@ public class AutoArticleController extends ModuleController {
                 }
                 if(!autoArticleService.update(autoArticle)){
                     result.setCode(1);
-                    result.setMsg("修改文章信息时出错");
+                    result.setMsg("修改文章信息失败");
                 }else{
                     //添加日志
-                    insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改特定的文章信息");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改文章信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
                 //删除
@@ -186,7 +186,7 @@ public class AutoArticleController extends ModuleController {
                     result.setMsg("删除文章信息出错");
                 }else{
                     //添加日志
-                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除特定的文章信息");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除文章信息");
                 }
             }else{
                 result.setCode(-1);
@@ -194,7 +194,7 @@ public class AutoArticleController extends ModuleController {
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("操作文章信息时出错!");
+            result.setMsg("操作文章信息失败!");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

@@ -51,38 +51,40 @@
     </insert>
 
     <update id="update" parameterType="AutoPay">
-        update auto_pay set 
+        update auto_pay
         <set>
-        	<if test="amount != null">  
-        		amount = #{amount}
-        	</if>
-        	<if test="fromAccount != null">  
-        		from_account = #{fromAccount}
-        	</if>
-        	<if test="fromUserId != null">  
-        		from_user_id = #{fromUserId}
-        	</if>
-        	<if test="fromAccountType != null">  
-        		from_account_type = #{fromAccountType}
-        	</if>
-        	<if test="toAccount != null">  
-        		to_account = #{toAccount}
-        	</if>
-        	<if test="toUserId != null">  
-        		to_user_id = #{toUserId}
-        	</if>
-        	<if test="toAccountType != null">  
-        		to_account_type = #{toAccountType}
-        	</if>
-        	<if test="type != null">  
-        		type = #{type}
-        	</if>
-        	<if test="status != null">  
-        		status = #{status}
-        	</if>
-        	<if test="addTime != null">  
-        		add_time = #{addTime}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="amount != null">
+                    amount = #{amount},
+                </if>
+                <if test="fromAccount != null">
+                    from_account = #{fromAccount},
+                </if>
+                <if test="fromUserId != null">
+                    from_user_id = #{fromUserId},
+                </if>
+                <if test="fromAccountType != null">
+                    from_account_type = #{fromAccountType},
+                </if>
+                <if test="toAccount != null">
+                    to_account = #{toAccount},
+                </if>
+                <if test="toUserId != null">
+                    to_user_id = #{toUserId},
+                </if>
+                <if test="toAccountType != null">
+                    to_account_type = #{toAccountType},
+                </if>
+                <if test="type != null">
+                    type = #{type},
+                </if>
+                <if test="status != null">
+                    status = #{status},
+                </if>
+                <if test="addTime != null">
+                    add_time = #{addTime},
+                </if>
+            </trim>
         </set>
         <where> 
         	<if test="payId > 0">

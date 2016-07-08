@@ -35,18 +35,20 @@
     <update id="update" parameterType="AutoBrand">
         update auto_brand
         <set>
-        	<if test="brandName != null">  
-        		brand_name = #{brandName},
-        	</if>
-        	<if test="brandLogo != null">  
-        		brand_logo = #{brandLogo},
-        	</if>
-            <if test="brandLogo2 != null">
-                brand_logo2 = #{brandLogo2},
-            </if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder},
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="brandName != null">
+                    brand_name = #{brandName},
+                </if>
+                <if test="brandLogo != null">
+                    brand_logo = #{brandLogo},
+                </if>
+                <if test="brandLogo2 != null">
+                    brand_logo2 = #{brandLogo2},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder},
+                </if>
+            </trim>
         </set>
         where brand_id = #{brandId}
     </update>
@@ -101,6 +103,6 @@
                 </if>
 	        </trim>
         </where>
-        order by sort_order desc, brand_id asc
+        order by sort_order asc, brand_id asc
     </select>
 </mapper>

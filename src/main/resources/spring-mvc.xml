@@ -167,21 +167,29 @@
         </mvc:interceptor>
 
         <!--授权-->
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/admin/**" />-->
-            <!--<bean id="authorityInterceptor" class="puzzle.lianche.intercept.AuthorityInterceptor">-->
-                <!--<property name="excludePath">-->
-                    <!--<list>-->
-                        <!--<value>/admin/login</value>-->
-                        <!--<value>/admin/logout</value>-->
-                        <!--<value>/admin/index</value>-->
-                        <!--<value>/admin/main</value>-->
-                        <!--<value>/admin/autouser/show/\d+</value>-->
-                    <!--</list>-->
-                <!--</property>-->
-            <!--</bean>-->
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/**" />
+            <bean id="authorityInterceptor" class="puzzle.lianche.intercept.AuthorityInterceptor">
+                <property name="excludePath">
+                    <list>
+                        <value>/admin/login</value>
+                        <value>/admin/logout</value>
+                        <value>/admin/index</value>
+                        <value>/admin/main</value>
+                        <value>/admin/deny</value>
+                        <value>/admin/autouser/show/\d+</value>
+                    </list>
+                </property>
+            </bean>
 
-        <!--</mvc:interceptor>-->
+        </mvc:interceptor>
+
+        <!--APP编码
+        <mvc:interceptor>
+            <mvc:mapping path="/phone/**" />
+            <bean id="encodeInterceptor" class="puzzle.lianche.intercept.phone.EncodeInterceptor" />
+        </mvc:interceptor>
+        -->
     </mvc:interceptors>
 
 

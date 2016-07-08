@@ -39,21 +39,23 @@
     <update id="update" parameterType="SystemLog">
         update system_log
         <set>
-        	<if test="logType != null">  
-        		log_type = #{logType},
-        	</if>
-        	<if test="logTime != null">  
-        		log_time = #{logTime},
-        	</if>
-        	<if test="logIp != null">  
-        		log_ip = #{logIp},
-        	</if>
-        	<if test="logMsg != null">  
-        		log_msg = #{logMsg},
-        	</if>
-        	<if test="userId != null">  
-        		user_id = #{userId},
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="logType != null">
+                    log_type = #{logType},
+                </if>
+                <if test="logTime != null">
+                    log_time = #{logTime},
+                </if>
+                <if test="logIp != null">
+                    log_ip = #{logIp},
+                </if>
+                <if test="logMsg != null">
+                    log_msg = #{logMsg},
+                </if>
+                <if test="userId != null">
+                    user_id = #{userId},
+                </if>
+            </trim>
         </set>
         where log_id = #{logId}
     </update>

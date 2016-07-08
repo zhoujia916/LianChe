@@ -53,29 +53,31 @@
     </insert>
 
     <update id="update" parameterType="SystemMenuAction">
-        update system_menu_action set 
+        update system_menu_action
         <set>
-        	<if test="actionName != null">  
-        		action_name = #{actionName}
-        	</if>
-            <if test="actionCode != null">
-                action_code = #{actionCode}
-            </if>
-            <if test="linkUrl != null">
-                link_url = #{linkUrl}
-            </if>
-            <if test="actionIco != null">
-                action_ico = #{actionIco}
-            </if>
-        	<if test="menuId != null">  
-        		menu_id = #{menuId}
-        	</if>
-        	<if test="actionConfig != null">  
-        		action_config = #{actionConfig}
-        	</if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="actionName != null and actionName != ''">
+                    action_name = #{actionName},
+                </if>
+                <if test="actionCode != null and actionCode != ''">
+                    action_code = #{actionCode},
+                </if>
+                <if test="linkUrl != null and linkUrl != ''">
+                    link_url = #{linkUrl},
+                </if>
+                <if test="actionIco != null and actionIco != ''">
+                    action_ico = #{actionIco},
+                </if>
+                <if test="menuId != null and menuId > 0">
+                    menu_id = #{menuId},
+                </if>
+                <if test="actionConfig != null and actionConfig != ''">
+                    action_config = #{actionConfig},
+                </if>
+                <if test="sortOrder != null and sortOrder > 0">
+                    sort_order = #{sortOrder},
+                </if>
+            </trim>
         </set>
         <where> 
         	<if test="actionId != null">

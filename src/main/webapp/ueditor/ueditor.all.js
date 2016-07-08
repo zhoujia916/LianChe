@@ -7652,7 +7652,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * @param { String } cmdName 需要查询的命令名称
          * @remind 具体命令的使用请参考<a href="#COMMAND.LIST">命令列表</a>
          * @remind 只有部分插件有此方法
-         * @return { * } 返回每个命令特定的当前状态值
+         * @return { * } 返回每个命令当前状态值
          * @grammar editor.queryCommandValue(cmdName)  =>  {*}
          * @see COMMAND.LIST
          */

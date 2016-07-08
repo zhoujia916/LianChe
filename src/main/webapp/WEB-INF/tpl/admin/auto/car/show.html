@@ -467,7 +467,7 @@
         </div>
         {{/foreach}}
         {{/if}}
-        {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+        {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
         <div class="col-xs-2" id="btnAddAttr" data-index="1">
             <div class="widget-box widget-color-blue" style="border-style:dotted">
                 <div class="widget-body blue" style="height:324px;line-height:324px;text-align:center;">
@@ -516,7 +516,7 @@
 
 </div><!-- /.col -->
 </div><!-- /.row -->
-{{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+{{if $action eq 'CREATE' || $action eq 'UPDATE'}}
 <div id="template" style="display:none">
     <div class="col-xs-2 attr-item">
         <div class="widget-box widget-color-blue">
@@ -558,7 +558,7 @@
 <script type="text/javascript">
 $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
     console.log("{{$action}}");
-    {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+    {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
     var spliter = '※';
     $("#btnSubmit").on("click", function(){
         console.log("submit");
@@ -660,7 +660,6 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         }
 
         function save(){
-            console.log($("form").serialize());
             $.post("{{$contextPath}}/admin/autocar/action.do", "action={{$action}}&" + $("form").serialize(), function(result){
                 if(result.code == 0){
                     changeHash("admin/autocar/index");
@@ -689,7 +688,7 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
     $( "#datepicker2").val(date2);
     {{/if}}
 
-    {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+    {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
     $( "#datepicker1" ).datepicker({
         showOtherMonths: true,
         selectOtherMonths: false
@@ -841,6 +840,7 @@ $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
 
         dropZone.emit("complete", mockFileList[i]);
     }
+
     {{/if}}
     {{if $action eq 'VIEW'}}
     dropZone.disable();

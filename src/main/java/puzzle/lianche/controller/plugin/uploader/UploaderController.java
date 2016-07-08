@@ -2,7 +2,6 @@ package puzzle.lianche.controller.plugin.uploader;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -11,7 +10,6 @@ import puzzle.lianche.controller.BaseController;
 import puzzle.lianche.utils.ImageUtil;
 import puzzle.lianche.utils.Result;
 import sun.misc.BASE64Decoder;
-
 import java.io.*;
 
 @Controller(value = "pluginUploaderController")
@@ -21,326 +19,67 @@ public class UploaderController extends BaseController {
     @ResponseBody
     @RequestMapping(value = {"/uploader"})
      public Result index(){
-        Result result = new Result();
-
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(session.getServletContext());
-        if(multipartResolver.isMultipart(request)) {
-            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
 
-            MultipartFile file = multiRequest.getFile("upfile");
-
-            String rootPath = session.getServletContext().getRealPath("");
-            String relativePath = request.getContextPath();
-            String typePath = getParameter("type");
-            String savePath = rootPath + "/upload/" + typePath + "/";
-            String relativeUrl = relativePath + "/upload/" + typePath + "/";
-
-            String saveName = PathFormatter.format(file.getOriginalFilename(), "{yy}{MM}{dd}/{hh}{mm}{rand:6}");
-
-            String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
-            try {
-                File dir = new File(dirName);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-
-                FileOutputStream fos = new FileOutputStream(savePath + saveName);
-                fos.write(file.getBytes());
-                fos.close();
-
-                String url = request.getScheme() + "://" + request.getServerName();
-                if(request.getServerPort() != 80){
-                    url += ":" + request.getServerPort();
-                }
-                url += relativeUrl + saveName;
-
-
-                result.setData(url);
-
-            } catch (Exception e) {
-                result.setCode(1);
-                result.setMsg("上传文件失败！");
-                e.printStackTrace();
-            }
-        }
-        return result;
+        return multipartResolver.isMultipart(request) ? handleBinary() : handleBase64();
     }
-
-    //region uploadBase64
-    public Result handleUpload(String file, String typePath, int width, int height) throws Exception{
-        Result result = new Result();
-
-        String rootPath = session.getServletContext().getRealPath("");
-        String relativePath = request.getContextPath();
-        String savePath = rootPath + "/upload/" + typePath + "/";
-        String relativeUrl = relativePath + "/upload/" + typePath + "/";
-
-        String saveExt = (file.startsWith("data:image/png;") ? "png" :
-                         file.startsWith("data:image/jpg;") ? "jpg" :
-                         file.startsWith("data:image/jpeg;") ? "jpeg" : "");
-
-        file = file.substring(("data:image/" + saveExt + ";base64,").length());
-
-        file = file.replaceAll(" ", "\n");
-        saveExt = "." + saveExt;
-
-        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
-        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
-
-        File dir = new File(dirName);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-
-
-        BASE64Decoder decoder = new BASE64Decoder();
-        byte[] b = decoder.decodeBuffer(file);
-        for(int i = 0; i < b.length; ++i){
-            if(b[i] < 0){
-                b[i] += 256;
-            }
-        }
-        //生成jpeg图片
-        OutputStream out = new FileOutputStream(savePath + saveName);
-        out.write(b);
-        out.flush();
-        out.close();
-
-        ImageUtil.zoomImage(savePath + saveName, savePath + saveName, 600, 360);
-
-        ImageUtil.zoomImage(savePath + saveName, savePath + saveName, 100, 60);
-
-        String url = request.getScheme() + "://" + request.getServerName();
-        if(request.getServerPort() != 80){
-            url += ":" + request.getServerPort();
-        }
-        url += relativeUrl + saveName.replace("\\", "/");
-
-        result.setData(url);
-
-        return result;
-    }
-    //endregion
 
     @ResponseBody
     @RequestMapping(value = {"/uploader/car"})
-    public Result uploadCar(@RequestParam("file") String file){
-        Result result = new Result();
-
-        String rootPath = session.getServletContext().getRealPath("");
-        String relativePath = request.getContextPath();
-        String typePath = getParameter("type");
-        String savePath = rootPath + "/upload/" + typePath + "/";
-        String relativeUrl = relativePath + "/upload/" + typePath + "/";
-
-        String saveExt =
-                (file.startsWith("data:image/png;") ? "png" :
-                 file.startsWith("data:image/jpg;") ? "jpg" :
-                 file.startsWith("data:image/jpeg;") ? "jpeg" : "");
-
-        file = file.substring(("data:image/" + saveExt + ";base64,").length());
-
-        file = file.replaceAll(" ", "\n");
-        saveExt = "." + saveExt;
-
-        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
-        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
-        saveName = saveName.substring(saveName.lastIndexOf("/") + 1);
-        try {
-            File dir = new File(dirName);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] b = decoder.decodeBuffer(file);
-            for(int i = 0; i < b.length; ++i){
-                if(b[i] < 0){
-                    b[i] += 256;
-                }
-            }
-            //生成jpeg图片
-            OutputStream out = new FileOutputStream(savePath + saveName);
-            out.write(b);
-            out.flush();
-            out.close();
-            ImageUtil.zoomImage(dirName + saveName, dirName + saveName, 600, 360);
-
-            ImageUtil.zoomImage(dirName + saveName, dirName + "s" + "_" + saveName, 100, 60);
-
-            String url = request.getScheme() + "://" + request.getServerName();
-            if(request.getServerPort() != 80){
-                url += ":" + request.getServerPort();
-            }
-            url += relativeUrl + saveName;
-
-            result.setData(url);
-        } catch (Exception e) {
-            result.setCode(1);
-            result.setMsg("文件上传失败！");
-        }
-        return result;
+    public Result uploadCar(){
+        return handleBase64();
     }
 
     @ResponseBody
     @RequestMapping(value = {"/uploader/userauth"})
-    public Result uploadUserAuth(@RequestParam("file") String file){
-        Result result = new Result();
-
-        String rootPath = session.getServletContext().getRealPath("");
-        String relativePath = request.getContextPath();
-        String typePath = getParameter("type");
-        String savePath = rootPath + "/upload/" + typePath + "/";
-        String relativeUrl = relativePath + "/upload/" + typePath + "/";
-
-        String saveExt =
-                (file.startsWith("data:image/png;") ? "png" :
-                file.startsWith("data:image/jpg;") ? "jpg" :
-                file.startsWith("data:image/jpeg;") ? "jpeg" : "");
-
-        file = file.substring(("data:image/" + saveExt + ";base64,").length());
-
-        file = file.replaceAll(" ", "\n");
-        saveExt = "." + saveExt;
-
-        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
-        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
-
-        try {
-            File dir = new File(dirName);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] b = decoder.decodeBuffer(file);
-            for(int i = 0; i < b.length; ++i){
-                if(b[i] < 0){
-                    b[i] += 256;
-                }
-            }
-            //生成jpeg图片
-            OutputStream out = new FileOutputStream(savePath + saveName);
-            out.write(b);
-            out.flush();
-            out.close();
-
-            String url = request.getScheme() + "://" + request.getServerName();
-            if(request.getServerPort() != 80){
-                url += ":" + request.getServerPort();
-            }
-            url += relativeUrl + saveName;
-
-            result.setData(url);
-        } catch (Exception e) {
-            result.setCode(1);
-            result.setMsg("文件上传失败！");
-        }
-        return result;
+    public Result uploadUserAuth(){
+        return handleBase64();
     }
 
     @ResponseBody
     @RequestMapping(value = {"/uploader/useravatar"})
-    public Result uploadUserAvatar(@RequestParam("file") String file){
-        Result result = new Result();
-
-        String rootPath = session.getServletContext().getRealPath("");
-        String relativePath = request.getContextPath();
-        String typePath = getParameter("type");
-        String savePath = rootPath + "/upload/" + typePath + "/";
-        String relativeUrl = relativePath + "/upload/" + typePath + "/";
-
-        String saveExt =
-                (file.startsWith("data:image/png;") ? "png" :
-                        file.startsWith("data:image/jpg;") ? "jpg" :
-                                file.startsWith("data:image/jpeg;") ? "jpeg" : "");
-
-        file = file.substring(("data:image/" + saveExt + ";base64,").length());
-
-        file = file.replaceAll(" ", "\n");
-        saveExt = "." + saveExt;
-
-        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
-        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
-
-        try {
-            File dir = new File(dirName);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] b = decoder.decodeBuffer(file);
-            for(int i = 0; i < b.length; ++i){
-                if(b[i] < 0){
-                    b[i] += 256;
-                }
-            }
-            //生成jpeg图片
-            OutputStream out = new FileOutputStream(savePath + saveName);
-            out.write(b);
-            out.flush();
-            out.close();
-
-            String url = request.getScheme() + "://" + request.getServerName();
-            if(request.getServerPort() != 80){
-                url += ":" + request.getServerPort();
-            }
-            url += relativeUrl + saveName;
-
-            result.setData(url);
-        } catch (Exception e) {
-            result.setCode(1);
-            result.setMsg("文件上传失败！");
-        }
-        return result;
+    public Result uploadUserAvatar(){
+        return handleBase64();
     }
 
     @ResponseBody
     @RequestMapping(value = {"/uploader/feedback"})
-    public Result uploadFeedback(@RequestParam("file") String file){
+    public Result uploadFeedback(){
+        return handleBase64();
+    }
+
+
+
+    //region Handle Binary Upload
+    public Result handleBinary(){
         Result result = new Result();
 
-        String rootPath = session.getServletContext().getRealPath("");
-        String relativePath = request.getContextPath();
+        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+
         String typePath = getParameter("type");
-        String savePath = rootPath + "/upload/" + typePath + "/";
+        MultipartFile file = multiRequest.getFile("upfile");
+        String rootPath = session.getServletContext().getRealPath("") + "/" + request.getContextPath();
+        String relativePath = request.getContextPath();
         String relativeUrl = relativePath + "/upload/" + typePath + "/";
 
-        String saveExt =
-              (file.startsWith("data:image/png;") ? "png" :
-              file.startsWith("data:image/jpg;") ? "jpg" :
-              file.startsWith("data:image/jpeg;") ? "jpeg" : "");
-
-        file = file.substring(("data:image/" + saveExt + ";base64,").length());
-
-        file = file.replaceAll(" ", "\n");
-        saveExt = "." + saveExt;
-
-        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
-        String dirName = savePath + saveName.substring(0, saveName.lastIndexOf('/'));
+        String saveName = PathFormatter.format(file.getOriginalFilename(), "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
+        String saveDir = rootPath + "upload/" + typePath + "/" + saveName.substring(0, saveName.lastIndexOf('/') + 1);
+        relativeUrl += saveName.substring(0, saveName.lastIndexOf('/') + 1);
+        saveName = saveName.substring(saveName.lastIndexOf("/") + 1);
 
         try {
-            File dir = new File(dirName);
+            File dir = new File(saveDir);
             if (!dir.exists()) {
                 dir.mkdirs();
             }
 
+            FileOutputStream fos = new FileOutputStream(saveDir + saveName);
+            fos.write(file.getBytes());
+            fos.close();
 
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] b = decoder.decodeBuffer(file);
-            for(int i = 0; i < b.length; ++i){
-                if(b[i] < 0){
-                    b[i] += 256;
-                }
+            if(typePath.equalsIgnoreCase("car")) {
+                ImageUtil.zoomImage(saveDir + saveName, saveDir + saveName, 600, 360);
             }
-            //生成jpeg图片
-            OutputStream out = new FileOutputStream(savePath + saveName);
-            out.write(b);
-            out.flush();
-            out.close();
 
             String url = request.getScheme() + "://" + request.getServerName();
             if(request.getServerPort() != 80){
@@ -349,10 +88,84 @@ public class UploaderController extends BaseController {
             url += relativeUrl + saveName;
 
             result.setData(url);
+
         } catch (Exception e) {
             result.setCode(1);
-            result.setMsg("文件上传失败！");
+            result.setMsg("上传文件失败！");
+            e.printStackTrace();
         }
         return result;
     }
+    //endregion
+
+    //region Handle Upload Base64 Image
+    public Result handleBase64(){
+        Result result = new Result();
+
+        String file = getParameter("file");
+        String typePath = getParameter("type");
+        if(typePath == null || typePath.trim().equals("")){
+            typePath = "temp";
+        }
+
+
+        String rootPath = session.getServletContext().getRealPath("") + "/" + request.getContextPath();
+        String relativeUrl = request.getContextPath() + "/upload/" + typePath + "/";
+
+        String saveExt = (file.startsWith("data:image/png;") ? "png" :
+                file.startsWith("data:image/jpg;") ? "jpg" :
+                        file.startsWith("data:image/jpeg;") ? "jpeg" : "");
+
+        file = file.substring(("data:image/" + saveExt + ";base64,").length());
+
+        file = file.replaceAll(" ", "\n");
+
+        saveExt = "." + saveExt;
+
+        String saveName = PathFormatter.format("test" + saveExt, "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
+        String saveDir = rootPath + "upload/" + typePath + "/" + saveName.substring(0, saveName.lastIndexOf('/') + 1);
+
+        relativeUrl += saveName.substring(0, saveName.lastIndexOf('/') + 1);
+        saveName = saveName.substring(saveName.lastIndexOf("/") + 1);
+
+        try {
+            File dir = new File(saveDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] b = decoder.decodeBuffer(file);
+            for (int i = 0; i < b.length; ++i) {
+                if (b[i] < 0) {
+                    b[i] += 256;
+                }
+            }
+            //生成jpeg图片
+            OutputStream out = new FileOutputStream(saveDir + saveName);
+            out.write(b);
+            out.flush();
+            out.close();
+
+            if(typePath.equalsIgnoreCase("car")) {
+                ImageUtil.zoomImage(saveDir + saveName, saveDir + saveName, 600, 360);
+            }
+
+            String url = request.getScheme() + "://" + request.getServerName();
+            if (request.getServerPort() != 80) {
+                url += ":" + request.getServerPort();
+            }
+            url += relativeUrl + saveName.replace("\\", "/");
+
+            result.setData(url);
+        }
+        catch (Exception e){
+            result.setCode(1);
+            result.setMsg("上传文件失败！");
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    //endregion
 }

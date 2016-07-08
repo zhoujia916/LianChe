@@ -39,23 +39,25 @@
     </insert>
 
     <update id="update" parameterType="AutoCollect">
-        update auto_collect set 
+        update auto_collect
         <set>
-        	<if test="userId != null">  
-        		user_id = #{userId}
-        	</if>
-        	<if test="targetType != null">  
-        		target_type = #{targetType}
-        	</if>
-        	<if test="targetId != null">  
-        		target_id = #{targetId}
-        	</if>
-        	<if test="addTime != null">  
-        		add_time = #{addTime}
-        	</if>
-        	<if test="status != null">  
-        		status = #{status}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="userId != null">
+                    user_id = #{userId},
+                </if>
+                <if test="targetType != null">
+                    target_type = #{targetType},
+                </if>
+                <if test="targetId != null">
+                    target_id = #{targetId},
+                </if>
+                <if test="addTime != null">
+                    add_time = #{addTime},
+                </if>
+                <if test="status != null">
+                    status = #{status},
+                </if>
+            </trim>
         </set>
         <where> 
         	<if test="collectId > 0">

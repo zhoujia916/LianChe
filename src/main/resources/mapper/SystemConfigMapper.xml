@@ -42,29 +42,31 @@
     </insert>
 
     <update id="update" parameterType="SystemConfig">
-        update system_config set 
+        update system_config
         <set>
-        	<if test="code != null">  
-        		code = #{code}
-        	</if>
-        	<if test="name != null">  
-        		name = #{name}
-        	</if>
-        	<if test="value != null">  
-        		value = #{value}
-        	</if>
-        	<if test="valueType != null">  
-        		value_type = #{valueType}
-        	</if>
-        	<if test="valueRange != null">  
-        		value_range = #{valueRange}
-        	</if>
-        	<if test="sortOrder != null">  
-        		sort_order = #{sortOrder}
-        	</if>
-        	<if test="groupId != null">  
-        		group_id = #{groupId}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="code != null">
+                    code = #{code},
+                </if>
+                <if test="name != null">
+                    name = #{name},
+                </if>
+                <if test="value != null">
+                    value = #{value},
+                </if>
+                <if test="valueType != null">
+                    value_type = #{valueType},
+                </if>
+                <if test="valueRange != null">
+                    value_range = #{valueRange},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder},
+                </if>
+                <if test="groupId != null">
+                    group_id = #{groupId},
+                </if>
+            </trim>
         </set>
         <where> 
         	<if test="configId > 0">

@@ -33,20 +33,22 @@
     </insert>
 
     <update id="update" parameterType="SystemMsg">
-        update system_msg set 
+        update system_msg
         <set>
-        	<if test="content != null">  
-        		content = #{content}
-        	</if>
-        	<if test="addTime != null">  
-        		add_time = #{addTime}
-        	</if>
-        	<if test="sourceUser != null">  
-        		source_user = #{sourceUser}
-        	</if>
-        	<if test="targetUser != null">  
-        		target_user = #{targetUser}
-        	</if>
+            <trim suffixOverrides=",">
+                <if test="content != null">
+                    content = #{content},
+                </if>
+                <if test="addTime != null">
+                    add_time = #{addTime},
+                </if>
+                <if test="sourceUser != null">
+                    source_user = #{sourceUser},
+                </if>
+                <if test="targetUser != null">
+                    target_user = #{targetUser},
+                </if>
+            </trim>
         </set>
         <where> 
         	<if test="msgId > 0">

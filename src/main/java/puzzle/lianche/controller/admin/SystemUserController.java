@@ -124,7 +124,7 @@ public class SystemUserController extends ModuleController {
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("查询用户信息时出错");
+            result.setMsg("查询用户信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;
@@ -153,7 +153,7 @@ public class SystemUserController extends ModuleController {
                 }
                 if(!systemUserService.update(systemUser)){
                     result.setCode(1);
-                    result.setMsg("修改用户信息时出错");
+                    result.setMsg("修改用户信息失败");
                 }else{
                     insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE, "修改指定的用户信息");
                 }
@@ -173,7 +173,7 @@ public class SystemUserController extends ModuleController {
                     result.setMsg("删除用户信息失败");
                 }
                 else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE, "删除特定的用户信息");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE, "删除用户信息");
                 }
             }
             else{
@@ -182,7 +182,7 @@ public class SystemUserController extends ModuleController {
             }
         }catch(Exception e){
             result.setCode(1);
-            result.setMsg("操作用户信息时出错");
+            result.setMsg("操作用户信息失败");
             logger.error(result.getMsg()+e.getMessage());
         }
         return result;

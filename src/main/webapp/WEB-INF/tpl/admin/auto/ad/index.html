@@ -49,8 +49,8 @@
                         <th width="100">编号</th>
                         <th>链接</th>
                         <th>位置</th>
-                        <th>位置宽度</th>
-                        <th>位置高度</th>
+                        <th>尺寸</th>
+                        <th>图片</th>
                         <th>添加时间</th>
                         <th>开始时间</th>
                         <th>结束时间</th>
@@ -90,14 +90,6 @@
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">
-                                        链接
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" id="adLink" name="adLink" placeholder="链接" class="txt input-sm col-sm-5 ">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
                                         位置
                                     </label>
                                     <div class="col-sm-9">
@@ -123,6 +115,14 @@
                                     </label>
                                     <div class="col-sm-9">
                                         <input type="text" id="endDate" name="endTimeString" placeholder="结束时间" class="txt input-sm col-sm-5 "/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        链接
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="adLink" name="adLink" placeholder="链接" class="txt input-sm col-sm-8 ">
                                     </div>
                                 </div>
                                 <div class="clearfix form-actions">
@@ -184,75 +184,40 @@
                     var adPositionId=$("#adPositionId").val();
                     var startDate=$("#startDate").val();
                     var endDate=$("#endDate").val();
-                    var urlFormant= new RegExp(
-                                    "^" +
-                                // protocol identifier
-                                    "(?:(?:https?|ftp)://)" +
-                                // user:pass authentication
-                                    "(?:\\S+(?::\\S*)?@)?" +
-                                    "(?:" +
-                                // IP address dotted notation octets
-                                // excludes loopback network 0.0.0.0
-                                // excludes reserved space >= 224.0.0.0
-                                // excludes network & broacast addresses
-                                // (first & last IP address of each class)
-                                    "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
-                                    "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
-                                    "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
-                                    "|" +
-                                // host name
-                                    "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
-                                // domain name
-                                    "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
-                                // TLD identifier
-                                    "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
-                                    ")" +
-                                // port number
-                                    "(?::\\d{2,5})?" +
-                                // resource path
-                                    "(?:/\\S*)?" +
-                                    "$", "i"
-                    );
-                    var dateFormat=/(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)/;
-                    var time1 = new Date(startDate).getTime();
-                    var time2 = new Date(endDate).getTime();
+
+                    var dateFormat=/^\d{4}-\d{2}-\d{2}$/;
+
                     if(!adLink){
                         console.log("check form");
                         $("#adLink").focus();
                         return "请输入URL链接";
                     }
-                    else if(!urlFormant.test(adLink)){
-                        console.log("check form");
-                        $("#adLink").focus();
-                        return "请输入正确的URL链接";
-                    }
-                    else if(adPositionId==0){
+                    if(adPositionId==0){
                         console.log("check form");
                         $("#adPositionId").focus();
                         return "请选择位置";
-                    }else if(!startDate){
+                    }
+                    if(!startDate){
                         console.log("check form");
                         $("#startDate").focus();
                         return "请输入开始时间";
-                    }else if(!dateFormat.test(startDate) && startDate){
+                    }
+                    if(!dateFormat.test(startDate) && startDate){
                         console.log("check form");
                         $("#startDate").focus();
-                        return "日期格式应为yyyy-MM-dd,如:2001:05:10";
-                    }else if(!endDate){
+                        return "日期格式应为yyyy-MM-dd";
+                    }
+                    if(!endDate){
                         console.log("check form");
                         $("#endDate").focus();
                         return "请输入结束时间";
-                    }else if(!dateFormat.test(endDate) && endDate){
-                        console.log("check form");
-                        $("#endDate").focus();
-                        return "日期格式应为yyyy-MM-dd,如:2001:05:10";
-                    }else if(time1>time2 || time1==time2){
-                        console.log("check form");
-                        $("#endDate").focus();
-                        return "结束时间必须大于开始时间";
-                    }else{
-                        return true;
                     }
+                    if(!dateFormat.test(endDate) && endDate){
+                        console.log("check form");
+                        $("#endDate").focus();
+                        return "日期格式应为yyyy-MM-dd";
+                    }
+                    return true;
                 }
             },
             jsonReader: {
@@ -272,10 +237,16 @@
                     name: "positionName"
                 },
                 {
-                    name: "width"
+                    name: "width",
+                    format: function(opts, column, row){
+                        return "<td>" + row["width"] + "*" + row["height"] + "</td>";
+                    }
                 },
                 {
-                    name: "height"
+                    name: "pic",
+                    format: function(opts, column, row){
+                        return row["pic"] ? ("<td><img style='width:50px;height:30px' src='" + row["pic"] + "' /></td>") : "<td></td>";
+                    }
                 },
                 {
                     name: "addTime"
@@ -298,7 +269,24 @@
                     name: "actions",
                     list: ["edit", "delete"]
                 }
-            ]
+            ],
+            buttons:{
+                add:{
+                    handler: function(){
+                        changeHash("page/autoad/add");
+                    }
+                },
+                edit:{
+                    handler: function(key){
+                        key = key || this.gridview("getKey");
+                        if(!key){
+                            showTip("请选择选项");
+                            return;
+                        }
+                        changeHash("page/autoad/edit/" + key);
+                    }
+                }
+            }
         });
     });
 </script>

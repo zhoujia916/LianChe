@@ -105,66 +105,68 @@
     <update id="update" parameterType="AutoCar">
         update auto_car
         <set>
-            <if test="carName != null">
-                car_name = #{carName},
-            </if>
-            <if test="brandId != null">
-                brand_id = #{brandId},
-            </if>
-            <if test="brandCatId != null">
-                brand_cat_id = #{brandCatId},
-            </if>
-            <if test="brandModelId != null">
-                brand_model_id = #{brandModelId},
-            </if>
-            <if test="officalPrice != null">
-                offical_price = #{officalPrice},
-            </if>
-            <if test="province != null">
-                province = #{province},
-            </if>
-            <if test="city != null">
-                city = #{city},
-            </if>
-            <if test="area != null">
-                area = #{area},
-            </if>
-            <if test="refreshTime != null">
-                refresh_time = #{refreshTime},
-            </if>
-            <if test="hasParts != null">
-                has_parts = #{hasParts},
-            </if>
-            <if test="parts != null">
-                parts = #{parts},
-            </if>
-            <if test="partsPrice != null">
-                parts_price = #{partsPrice},
-            </if>
-            <if test="addTime != null">
-                add_time = #{addTime},
-            </if>
-            <if test="addUserId != null">
-                add_user_id = #{addUserId},
-            </if>
-            <if test="startDate != null">
-                start_date = #{startDate},
-            </if>
-            <if test="endDate != null">
-                end_date = #{endDate},
-            </if>
-            <if test="carType != null">
-                car_type = #{carType},
-            </if>
-            <if test="status != null">
-                status = #{status},
-            </if>
-            <if test="sortOrder != null">
-                sort_order = #{sortOrder},
-            </if>
-            <if test="remark != null">
-                remark = #{remark}
-            </if>
+            <trim suffixOverrides=",">
+                <if test="carName != null">
+                    car_name = #{carName},
+                </if>
+                <if test="brandId != null">
+                    brand_id = #{brandId},
+                </if>
+                <if test="brandCatId != null">
+                    brand_cat_id = #{brandCatId},
+                </if>
+                <if test="brandModelId != null">
+                    brand_model_id = #{brandModelId},
+                </if>
+                <if test="officalPrice != null">
+                    offical_price = #{officalPrice},
+                </if>
+                <if test="province != null">
+                    province = #{province},
+                </if>
+                <if test="city != null">
+                    city = #{city},
+                </if>
+                <if test="area != null">
+                    area = #{area},
+                </if>
+                <if test="refreshTime != null">
+                    refresh_time = #{refreshTime},
+                </if>
+                <if test="hasParts != null">
+                    has_parts = #{hasParts},
+                </if>
+                <if test="parts != null">
+                    parts = #{parts},
+                </if>
+                <if test="partsPrice != null">
+                    parts_price = #{partsPrice},
+                </if>
+                <if test="addTime != null">
+                    add_time = #{addTime},
+                </if>
+                <if test="addUserId != null">
+                    add_user_id = #{addUserId},
+                </if>
+                <if test="startDate != null">
+                    start_date = #{startDate},
+                </if>
+                <if test="endDate != null">
+                    end_date = #{endDate},
+                </if>
+                <if test="carType != null">
+                    car_type = #{carType},
+                </if>
+                <if test="status != null">
+                    status = #{status},
+                </if>
+                <if test="sortOrder != null">
+                    sort_order = #{sortOrder},
+                </if>
+                <if test="remark != null">
+                    remark = #{remark},
+                </if>
+            </trim>
         </set>
         where car_id = #{carId}
     </update>
@@ -242,7 +244,8 @@
 
     <select id="queryList" parameterType="Map" resultMap="AutoCar">
         select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as add_user_status,
-        (select count(1) from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id) as collect_count
+        (select count(1) from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id) as collect_count,
+        (select path from auto_car_pic as acp where acp.car_id = ac.car_id limit 0 , 1) as pic
         <if test="viewUserId != null and viewUserId > 0">
             ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
         </if>
@@ -308,7 +311,8 @@
     <select id="queryOrderCar" parameterType="Map" resultMap="AutoCar">
         select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as add_user_status,
         ao.add_time as order_add_time, ao.order_status, ao.pay_status, ao.ship_status, ao.buyer_id, ao.order_id,
-        (select count(1) from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id) as collect_count
+        (select count(1) from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id) as collect_count,
+        (select path from auto_car_pic as acp where acp.car_id = ac.car_id limit 0 , 1) as pic
         <if test="viewUserId != null and viewUserId > 0">
             ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
         </if>
