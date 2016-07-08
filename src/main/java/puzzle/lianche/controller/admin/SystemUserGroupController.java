@@ -31,7 +31,7 @@ public class SystemUserGroupController extends ModuleController {
     @Autowired
     private ISystemMenuActionService systemMenuActionService;
 
-    @RequestMapping(value = {"/","/index"})
+    @RequestMapping(value = {"/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);

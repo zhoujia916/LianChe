@@ -1,5 +1,6 @@
 package puzzle.lianche.controller.admin;
 
+import com.gexin.rp.sdk.http.utils.Constant;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import puzzle.lianche.controller.ModuleController;
 import puzzle.lianche.entity.AutoBrand;
 import puzzle.lianche.entity.AutoBrandCat;
 import puzzle.lianche.entity.AutoBrandModel;
-import puzzle.lianche.entity.SystemMenuAction;
 import puzzle.lianche.service.IAutoBrandCatService;
 import puzzle.lianche.service.IAutoBrandModelService;
 import puzzle.lianche.service.IAutoBrandService;
@@ -38,68 +38,50 @@ public class AutoBrandModelController extends ModuleController {
     @Autowired
     private IAutoBrandService autoBrandService;
 
-    @RequestMapping (value = {"/","/index"})
-    public String modelIndex(){
-        List<SystemMenuAction> actions = getActions();
-        List<AutoBrandCat> catList=autoBrandCatService.queryList(null);
-        if(catList.size()>0 && catList!=null){
-            Map map=new HashMap();
-            StringBuffer str=new StringBuffer();
-            for(int i=0;i<catList.size();i++){
-                str.append(catList.get(i).getBrandId());
-                if(catList.size()-i>1){
-                    str.append(",");
-                }
-            }
-            map.put("brandId",str.toString());
-            List<AutoBrand> brandList=autoBrandService.queryList(map);
-            if(brandList!=null && brandList.size()>0){
-                this.setModelAttribute("brandList",brandList);
-            }
-        }
-        this.setModelAttribute("catList",catList);
-        this.setModelAttribute("actions", actions);
+    @RequestMapping (value = {"/index"})
+    public String index(){
+        this.showActions();
+
+        List<AutoBrand> brandList = autoBrandService.queryList(null);
+        this.setModelAttribute("brandList",brandList);
+
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_MODEL;
     }
 
     @RequestMapping (value = "/index/{catId}")
-    public String show(@PathVariable String catId){
-        List<SystemMenuAction> actions = getActions();
-        List<AutoBrandCat> list=autoBrandCatService.queryList(null);
-        if(list.size()>0 && list!=null){
-            Map map=new HashMap();
-            StringBuffer str=new StringBuffer();
-            for(int i=0;i<list.size();i++){
-                str.append(list.get(i).getBrandId());
-                if(list.size()-i>1){
-                    str.append(",");
-                }
-            }
-            map.put("brandId",str.toString());
-            List<AutoBrand> brandList=autoBrandService.queryList(map);
-            if(brandList.size()>0 && brandList!=null){
-                this.setModelAttribute("brandList",brandList);
-            }
+    public String index2(@PathVariable String catId){
+        this.showActions();
+
+        List<AutoBrand> brandList = autoBrandService.queryList(null);
+        this.setModelAttribute("brandList",brandList);
+
+        if(StringUtil.isNotNullOrEmpty(catId) && StringUtil.isNumber(catId)) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("catId", ConvertUtil.toInt(catId));
+
+            AutoBrandCat cat = autoBrandCatService.query(map);
+            this.setModelAttribute("cat", cat);
+
+            map.clear();
+            map.put("brandId", cat.getBrandId());
+
+            AutoBrand brand = autoBrandService.query(map);
+            this.setModelAttribute("brand", brand);
+
+            List<AutoBrandCat> catList = autoBrandCatService.queryList(map);
+            this.setModelAttribute("catList", catList);
         }
-        for(AutoBrandCat brandCat:list){
-            if(catId.equalsIgnoreCase(ConvertUtil.toString(brandCat.getCatId()))){
-                this.setModelAttribute("brandId",brandCat.getBrandId());
-                break;
-            }
-        }
-        this.setModelAttribute("catList",list);
-        this.setModelAttribute("catId",catId);
-        this.setModelAttribute("actions", actions);
+
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_MODEL;
     }
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result modelList(AutoBrandModel autoBrandModel,Page page){
+    public Result list(AutoBrandModel autoBrandModel,Page page){
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            if(autoBrandModel!=null) {
+            if(autoBrandModel != null) {
                 if(StringUtil.isNotNullOrEmpty(autoBrandModel.getModelName())) {
                     map.put("modelName", autoBrandModel.getModelName());
                 }
@@ -134,7 +116,7 @@ public class AutoBrandModelController extends ModuleController {
     @RequestMapping (value = "/action.do")
     @ResponseBody
     public Result action(String action,AutoBrandModel autoBrandModel){
-        Result result=new Result();
+        Result result = new Result();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 if(!autoBrandModelService.insert(autoBrandModel)){
@@ -170,6 +152,28 @@ public class AutoBrandModelController extends ModuleController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("操作车型信息失败");
+        }
+        return result;
+    }
+
+    @RequestMapping (value = "/queryBrandCat.do")
+    @ResponseBody
+    public Result queryBrandCat(Integer brandId){
+        Result result = new Result();
+        try{
+            Map<String, Object> map = new HashMap<String, Object>();
+            if(brandId != null && brandId > 0){
+                map.put("brandId", brandId);
+            }
+            List<AutoBrandCat> list = autoBrandCatService.queryList(map);
+            result.setCode(0);
+            result.setData(list);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            result.setCode(Constants.ResultHelper.RESULT_HANDLE_ERROR);
+            result.setMsg("查询车源信息出错");
+
         }
         return result;
     }

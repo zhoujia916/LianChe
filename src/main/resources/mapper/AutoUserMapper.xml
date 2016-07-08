@@ -161,8 +161,8 @@
         aup.real_name as realName,
         aup.shop_name as shopName,
         aup.shop_type as shopType,
-        (select count(1) from auto_order as ao where ao.buyer_id = au.user_id or ao.seller_id = au.user_id) as order_Number,
-        (select count(1) from auto_car as ac where ac.add_user_id = au.user_id) as car_Number
+        (select count(1) from auto_order as ao where ao.buyer_id = au.user_id or ao.seller_id = au.user_id) as order_number,
+        (select count(1) from auto_car as ac where ac.add_user_id = au.user_id) as car_number
         from auto_user as au
         left join auto_user_profile as aup on aup.user_id = au.user_id
         <where>

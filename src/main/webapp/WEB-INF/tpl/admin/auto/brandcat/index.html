@@ -10,8 +10,6 @@
             <i class="ace-icon fa fa-angle-double-right"></i>
             车系管理
         </small>
-        <a class="btn btn-xs orange pull-right btn-warning" href="#page/autobrand/index">
-            <i class="glyphicon glyphicon-arrow-left"></i>返回品牌管理</span></a>
     </h4>
 
 </div>
@@ -199,13 +197,7 @@
                 select:{
                     handler:function(){
                         var key = this.gridview("getKey");
-                        var hash = "";
-                        if(!key){
-                            hash = "page/autobrandmodel/index";
-                        }else{
-
-                            hash = "page/autobrandmodel/index/"+key;
-                        }
+                        var hash = "page/autobrandmodel/index" + (!key ? "" : "/" +key);
                         changeHash(hash);
                     }
                 }

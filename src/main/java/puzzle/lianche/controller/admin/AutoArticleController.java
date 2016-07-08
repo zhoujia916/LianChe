@@ -38,7 +38,7 @@ public class AutoArticleController extends ModuleController {
     @Autowired
     private IAutoArticleCatService autoArticleCatService;
 
-    @RequestMapping (value = {"/","/index"})
+    @RequestMapping (value = {"/index"})
     public String index(){
 
         List<SystemMenuAction> actions = getActions();

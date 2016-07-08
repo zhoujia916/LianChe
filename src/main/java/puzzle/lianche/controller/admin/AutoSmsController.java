@@ -34,7 +34,7 @@ public class AutoSmsController extends ModuleController{
     @Autowired
     private IAutoUserService autoUserService;
 
-    @RequestMapping(value = {"/","/index"})
+    @RequestMapping(value = {"/index"})
     public String index()
     {
         List<AutoUser> list=autoUserService.queryList(null);

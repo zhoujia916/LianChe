@@ -48,7 +48,7 @@ public class ModuleController extends BaseController {
             if(user.getAuthorities() != null) {
                 String url = request.getRequestURI().replace(request.getContextPath() + "/admin/", "");
 
-                int menuId = 0;
+                Integer menuId = 0;
                 List<Integer> actionIds = new ArrayList<Integer>();
                 for (SystemAuthority authority : user.getAuthorities()) {
                     if(StringUtil.isNotNullOrEmpty(authority.getMenuUrl())){
@@ -63,13 +63,20 @@ public class ModuleController extends BaseController {
                         actionIds.add(item.getTargetId());
                     }
                 }
-                Map<String,Object> map = new HashMap<String, Object>();
-                map.put("menuId", menuId);
-                map.put("actionIds", StringUtil.concat(actionIds, ","));
-                List<SystemMenuAction> actions = systemMenuActionService.queryList(map);
-                return actions;
+                if(menuId != null && menuId > 0 && actionIds != null && actionIds.size() > 0) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("menuId", menuId);
+                    map.put("actionIds", StringUtil.concat(actionIds, ","));
+                    List<SystemMenuAction> actions = systemMenuActionService.queryList(map);
+                    return actions;
+                }
             }
         }
         return null;
+    }
+
+    public void showActions(){
+        List<SystemMenuAction> actions = getActions();
+        this.setModelAttribute("actions", actions);
     }
 }

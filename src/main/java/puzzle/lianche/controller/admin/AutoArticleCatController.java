@@ -25,7 +25,7 @@ public class AutoArticleCatController extends ModuleController {
     @Autowired
     private IAutoArticleCatService autoArticleCatService;
 
-    @RequestMapping (value = {"/","/index"})
+    @RequestMapping (value = {"/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);

@@ -25,7 +25,7 @@ public class AutoArticleTemplateController extends ModuleController {
     @Autowired
     private IAutoArticleTemplateService autoArticleTemplateService;
 
-    @RequestMapping (value = {"/","/index"})
+    @RequestMapping (value = {"/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);

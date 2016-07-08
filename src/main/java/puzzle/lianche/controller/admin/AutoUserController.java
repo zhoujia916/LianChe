@@ -42,7 +42,7 @@ public class AutoUserController extends ModuleController {
     @Autowired
     private IAutoUserPicService autoUserPicService;
 
-    @RequestMapping (value = {"/","/index"})
+    @RequestMapping (value = {"/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);

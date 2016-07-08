@@ -25,7 +25,7 @@ public class AutoAdPositionController extends ModuleController{
     @Autowired
     private IAutoAdPositionService autoAdPositionService;
 
-    @RequestMapping (value = {"/","/index"})
+    @RequestMapping (value = {"/index"})
     public String index(){
         List<SystemMenuAction> actions=getActions();
         this.setModelAttribute("actions", actions);

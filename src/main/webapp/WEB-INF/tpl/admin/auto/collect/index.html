@@ -8,7 +8,7 @@
             会员管理
         <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-            查看会员收藏动作
+            查看会员收藏
         </small>
         <a class="btn btn-xs orange pull-right btn-warning" href="#page/autouser/index">
             <i class="glyphicon glyphicon-arrow-left"></i>返回会员管理</span></a>
@@ -20,7 +20,7 @@
     <div class="col-xs-12">
         <div id="collect-gridview" class="gridview">
             <div class="grid-filter">
-                <input type="hidden" id="userId" name="userId" value="{{$userId}}">
+                <input type="hidden" id="userId" name="userId" value="{{if $userId}}{{$userId}}{{/if}}">
                 <input type="text input-sm" style="height: 29px" class="txt" name="carName" placeholder="商品名称" />
                 <input type="text input-sm" style="height: 29px" class="txt" name="userName" {{if $userName!=null}}value={{$userName}}{{/if}} placeholder="用户名" />
                 <a class="btn btn-xs btn-action btn-purple" data-action="search" style="margin-top: -2px;margin-left: 10px;"><i class="ace-icon fa fa-search"></i>搜索</a>

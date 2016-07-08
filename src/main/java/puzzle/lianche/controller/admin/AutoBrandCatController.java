@@ -34,59 +34,45 @@ public class AutoBrandCatController extends ModuleController {
     @Autowired
     private IAutoBrandCatService autoBrandCatService;
 
-    @RequestMapping (value = {"/","/index"})
+    @RequestMapping (value = { "/index" })
     public String index(){
-        List<SystemMenuAction> actions = getActions();
-        List<AutoBrand> brandList=autoBrandService.queryList(null);
-        this.setModelAttribute("brandList",brandList);
-        this.setModelAttribute("actions", actions);
+        this.showActions();
+
+        List<AutoBrand> brandList = autoBrandService.queryList(null);
+        this.setModelAttribute("brandList", brandList);
+
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_CAT;
     }
 
-    @RequestMapping (value = "/index/{brandId}")
-    public String show(@PathVariable String brandId){
-        List<SystemMenuAction> actions = getActions();
-        List<AutoBrand> list = autoBrandService.queryList(null);
+    @RequestMapping (value = { "/index/{brandId}" })
+    public String index2(@PathVariable String brandId){
+        this.showActions();
+
+        List<AutoBrand> brandList = autoBrandService.queryList(null);
+        this.setModelAttribute("brandList", brandList);
+
         this.setModelAttribute("brandId", brandId);
-        this.setModelAttribute("brandList",list);
-        this.setModelAttribute("actions", actions);
+
         return Constants.UrlHelper.ADMIN_AUTO_BRAND_CAT;
     }
 
     @RequestMapping (value = "/list.do")
     @ResponseBody
-    public Result catList(AutoBrandCat autoBrandCat,Page page){
-        Result result=new Result();
+    public Result list(AutoBrandCat autoBrandCat,Page page){
+        Result result = new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            if(autoBrandCat!=null) {
-                if(StringUtil.isNotNullOrEmpty(autoBrandCat.getCatName())) {
-                    map.put("catName", autoBrandCat.getCatName());
-                }
-                if(StringUtil.isNotNullOrEmpty(autoBrandCat.getBrandString())){
-                    if (!autoBrandCat.getBrandString().equalsIgnoreCase("null")) {
-                        map.put("brandId", autoBrandCat.getBrandString());
-                    }
-                }
+            if(autoBrandCat != null) {
                 if (autoBrandCat.getBrandId() != null && autoBrandCat.getBrandId() > 0) {
                     map.put("brandId", autoBrandCat.getBrandId());
                 }
-            }
-            List<AutoBrandCat> list=new ArrayList<AutoBrandCat>();
-            if(autoBrandCat.getCatId()==null) {
-                list = autoBrandCatService.queryList(map, page);
-            }else{
-                list = autoBrandCatService.queryList(map);
-            }
-            if(list!=null && list.size()>0){
-                JSONArray array=new JSONArray();
-                for(AutoBrandCat brandCat:list){
-                    JSONObject jsonObject=JSONObject.fromObject(brandCat);
-                    array.add(jsonObject);
+                if(StringUtil.isNotNullOrEmpty(autoBrandCat.getCatName())) {
+                    map.put("catName", autoBrandCat.getCatName());
                 }
-                result.setData(array);
-                result.setTotal(page.getTotal());
             }
+            List<AutoBrandCat> list= autoBrandCatService.queryList(map, page);
+            result.setData(list);
+            result.setTotal(page.getTotal());
         }catch(Exception e){
             result.setCode(1);
             result.setMsg("获取车系信息失败");

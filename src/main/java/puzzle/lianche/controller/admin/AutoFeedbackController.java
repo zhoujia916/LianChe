@@ -27,7 +27,7 @@ public class AutoFeedbackController extends ModuleController {
     @Autowired
     private IAutoFeedbackService autoFeedbackService;
 
-    @RequestMapping (value = {"/","/index"})
+    @RequestMapping (value = {"/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);

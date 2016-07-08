@@ -27,7 +27,7 @@ public class SystemLogController extends ModuleController{
     @Autowired
     private ISystemLogService systemLogService;
 
-    @RequestMapping(value = {"/","/index"})
+    @RequestMapping(value = {"/index"})
     public String index()
     {
         List<SystemMenuAction> actions=getActions();

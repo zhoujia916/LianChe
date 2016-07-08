@@ -10,8 +10,6 @@
             <i class="ace-icon fa fa-angle-double-right"></i>
             车型管理
         </small>
-        <a class="btn btn-xs orange pull-right btn-warning" href="#page/autobrandcat/index">
-            <i class="glyphicon glyphicon-arrow-left"></i>返回车系管理</span></a>
     </h4>
 
 </div>
@@ -24,18 +22,13 @@
                 <select id="brandId" name="brandId" style="height: 29px;width: 160px;">
                     <option value="0">请选择品牌</option>
                     {{foreach from=$brandList item=brandItem}}
-                    <option value="{{$brandItem.brandId}}" {{if $brandId eq $brandItem.brandId }} selected="selected"{{/if}}>{{$brandItem.brandName}}</option>
+                    <option value="{{$brandItem.brandId}}" {{if $brand.brandId eq $brandItem.brandId }} selected="selected"{{/if}}>{{$brandItem.brandName}}</option>
                     {{/foreach}}
                 </select>
                 <select id="catId" name="brandCatId" style="height: 29px;width: 160px;">
                     <option value="0">请选择车系</option>
                     {{foreach from=$catList item=cat}}
-                    {{if $brandId == null}}
-                    <option value="{{$cat.catId}}">{{$cat.catName}}</option>
-                    {{/if}}
-                    {{if $cat.brandId eq $brandId}}
-                    <option value="{{$cat.catId}}" {{if $catId eq $cat.catId }} selected="selected"{{/if}}>{{$cat.catName}}</option>
-                    {{/if}}
+                    <option value="{{$cat.catId}}" {{if $cat.catId eq $cat.catId }} selected="selected"{{/if}}>{{$cat.catName}}</option>
                     {{/foreach}}
                 </select>
                 <input type="text input-sm" style="height: 29px" class="txt" name="modelName" placeholder="车型名称" />
@@ -153,21 +146,22 @@
     $('.page-content-area').ace_ajax('loadScripts', [null, null], function() {
         $("#brandId").on("change",function(){
             var brandId=$(this).val();
-            var html="<option value='0'>请选择车系</option>";
             if(brandId != "0"){
-                $.post("autobrandcat/list.do",{brandId:brandId,catId:0},function(result){
-                    var item=result.data;
-                    $.each(item, function () {
-                        html+="<option value='"+this["catId"]+"'>"+this["catName"]+"</option>";
-                    });
-                    $("#catId").html(html);
+                $.post("{{$contextPath}}/admin/autobrandmodel/queryBrandCat.do",{
+                    brandId:brandId
+                },function(result){
+                    if(result.code == 0) {
+                        var html = "<option value='0'>请选择车系</option>";
+                        $.each(result.data, function () {
+                            html += "<option value='" + this["catId"] + "'>" + this["catName"] + "</option>";
+                        });
+                        $("#catId").html(html);
+                    }else{
+                        showTip(result.msg)
+                    }
                 });
             }else{
-                html+="{{foreach from=$catList item=cat}}" +
-                        "<option value='{{$cat.catId}}'>{{$cat.catName}}</option>" +
-                        "{{/foreach}}";
-
-                $("#catId").html(html);
+                $("#catId").html("<option value='0'>请选择车系</option>");
             }
         });
 

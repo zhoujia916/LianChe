@@ -27,7 +27,7 @@ public class AutoBrandController extends ModuleController {
     @Autowired
     private IAutoBrandService autoBrandService;
 
-    @RequestMapping (value = {"/","/index"})
+    @RequestMapping (value = {"/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);
@@ -40,7 +40,7 @@ public class AutoBrandController extends ModuleController {
         Result result=new Result();
         try{
             Map<String, Object> map=new HashMap<String, Object>();
-            if(autoBrand!=null){
+            if(autoBrand != null){
                 if(StringUtil.isNotNullOrEmpty(autoBrand.getBrandName())){
                     map.put("brandName",autoBrand.getBrandName());
                 }

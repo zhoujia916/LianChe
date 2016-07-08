@@ -38,7 +38,7 @@ public class AutoOrderController extends ModuleController {
     @Autowired
     private IAutoCarAttrService autoCarAttrService;
 
-    @RequestMapping(value = {"/","/index"})
+    @RequestMapping(value = {"/index"})
     public String index(){
         List<SystemMenuAction> actions=getActions();
 
@@ -133,10 +133,10 @@ public class AutoOrderController extends ModuleController {
                     }
                 }
                 AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
-                buyer.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(buyer.getShopType()));
+                buyer.setShopTypeString(Constants.MAP_AUTO_USER_SHOP_TYPE.get(buyer.getShopType()));
 
                 AutoUser seller = autoUserService.query(order.getSellerId(), null);
-                seller.setShopTypeString(Constants.MAP_AUTO_COLLECT_TYPE.get(seller.getShopType()));
+                seller.setShopTypeString(Constants.MAP_AUTO_USER_SHOP_TYPE.get(seller.getShopType()));
 
                 map.put("orderId",order.getOrderId());
                 AutoCar car = autoCarService.query(map);

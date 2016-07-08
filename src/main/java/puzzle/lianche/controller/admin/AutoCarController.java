@@ -38,7 +38,7 @@ public class AutoCarController extends ModuleController {
     @Autowired
     private IAutoCarPicService autoCarPicService;
 
-    @RequestMapping(value = {"/","/index"})
+    @RequestMapping(value = {"/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);

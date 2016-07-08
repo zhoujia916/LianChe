@@ -35,7 +35,7 @@ public class SystemRoleController extends ModuleController {
      * 进入到角色index页面
      * @return
      */
-    @RequestMapping(value = {"/","/index"})
+    @RequestMapping(value = {"/index"})
     public String index(){
         List<SystemMenuAction> actions = getActions();
         this.setModelAttribute("actions", actions);
