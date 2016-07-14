@@ -92,11 +92,8 @@
 	        	<if test="authorityId > 0">
                     and authority_id = #{authorityId}
 	            </if>
-                <if test="authorityIds != null">
-                    and authority_id in
-                    <foreach item="item" index="index" collection="authorityIds" open="(" separator="," close=")">
-                        #{item}
-                    </foreach>
+                <if test="authorityIds != null and authorityIds != ''">
+                    and authority_id in ${authorityIds}
                 </if>
 	        	<if test="sourceId > 0">
                     and source_id = #{sourceId}
@@ -130,11 +127,8 @@
         left join system_menu_action as sma on sma.action_id = sa.target_id and sa.target_type = 2
         <where>
 	        <trim prefixOverrides="and | or">
-                <if test="authorityIds != null">
-                    and sa.authority_id in
-                    <foreach item="item" index="index" collection="authorityIds" open="(" separator="," close=")">
-                        #{item}
-                    </foreach>
+                <if test="authorityIds != null and authorityIds != ''">
+                    and sa.authority_id in ${authorityIds}
                 </if>
 	        	<if test="sourceId > 0">
                     and sa.source_id = #{sourceId}
@@ -149,7 +143,8 @@
                     and sa.target_type = #{targetType}
 	            </if>
                 <if test="userId != null and userId > 0">
-                    sa.source_id = #{userId} and sa.source_type = 1
+                    and (
+                    (sa.source_id = #{userId} and sa.source_type = 1)
                     or (
                         exists(
                             select map_id from system_user_map as sum
@@ -168,7 +163,7 @@
                             select map_id from system_user_map as sum
                             where sum.target_id = sa.source_id and sum.user_id = #{userId} and sum.target_type = 3
                         ) and sa.source_type = 4
-                    )
+                    ))
                 </if>
 	        </trim>
         </where>

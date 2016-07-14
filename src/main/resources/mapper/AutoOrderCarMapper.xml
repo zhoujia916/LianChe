@@ -142,11 +142,8 @@
     <select id="queryList" parameterType="Map" resultMap="AutoOrderCar">
         select aoc.* from auto_order_car as aoc
         <where>
-            <if test="carIdList!=null and carIdList.size()>0">
-                and aoc.car_id in
-                <foreach collection="carIdList" item="carId" open="(" separator="," close=")">
-                    ${carId}
-                </foreach>
+            <if test="carIdList!=null and carIdList != ''">
+                and aoc.car_id in (${carIdList})
             </if>
         </where>
     </select>

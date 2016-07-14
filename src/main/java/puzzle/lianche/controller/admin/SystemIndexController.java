@@ -248,6 +248,7 @@ public class SystemIndexController extends ModuleController {
 
                     map.clear();
                     map.put("menuIds", StringUtil.concat(menuIds, ","));
+                    map.put("status", Constants.SYSTEM_MENU_STATUS_VISIBLE);
                     List<SystemMenu> menus = systemMenuService.queryList(map);
 
                     map.clear();
@@ -303,6 +304,8 @@ public class SystemIndexController extends ModuleController {
         }catch(Exception e){
             logger.error("验证用户登录出错:" + e.getMessage());
             e.printStackTrace();
+            result.setCode(Constants.ResultHelper.RESULT_HANDLE_ERROR);
+            result.setMsg("验证用户登录出错");
         }
         return result;
     }

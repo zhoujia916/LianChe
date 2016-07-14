@@ -79,12 +79,15 @@ public class AutoOrderController extends BaseController {
                 result.setMsg("您没有取消该订单的权限!");
                 return result;
             }
-            //只有卖家未处理(接受或取消时)可取消
-            if(order.getOrderStatus() != Constants.OS_SUBMIT){
+            //只有买家未支付订金时可以取消
+            if(order.getOrderStatus() != Constants.OS_SUBMIT ||
+                    order.getPayStatus() != Constants.PS_WAIT_BUYER_DEPOSIT ||
+                    order.getShipStatus() != Constants.SS_UNSHIP){
                 result.setCode(-1);
                 result.setMsg("该订单不能取消！");
                 return result;
             }
+
             if(!autoOrderService.doCancel(order)){
                 result.setCode(1);
                 result.setMsg("取消订单出错");
@@ -99,6 +102,108 @@ public class AutoOrderController extends BaseController {
         }
         return result;
     }
+
+
+    /**
+     * 申请取消订单
+     * @param order 订单数据
+     * @return
+     */
+    @RequestMapping(value = "/requestCancel.do")
+    @ResponseBody
+    public Result requestCancel(AutoOrder order){
+        Result result = new Result();
+        try {
+            if(order == null || ((order.getOrderId() == null && order.getOrderId() <= 0) && StringUtil.isNullOrEmpty(order.getOrderSn()))){
+                result.setCode(-1);
+                result.setMsg("订单不能为空!");
+                return result;
+            }
+            if((order.getBuyerId() == null || order.getBuyerId() <= 0) && (order.getSellerId() == null || order.getSellerId() <= 0)){
+                result.setCode(-1);
+                result.setMsg("用户不能为空!");
+                return result;
+            }
+            if(order.getBuyerId() > 0){
+                int buyerId = order.getBuyerId();
+                AutoUser find = autoUserService.query(buyerId, null);
+                if(find == null){
+                    result.setCode(1);
+                    result.setMsg("该用户不存在！");
+                    return result;
+                }
+                if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                    result.setCode(1);
+                    result.setMsg("该账户已被禁用！");
+                    return result;
+                }
+                order = autoOrderService.query(order.getOrderId(), order.getOrderSn());
+                if(order == null){
+                    result.setCode(Constants.ResultHelper.RESULT_PARAM_ERROR);
+                    result.setMsg("该订单不存在");
+                    return result;
+                }
+                if(order.getBuyerId() != buyerId){
+                    result.setCode(1);
+                    result.setMsg("您不能申请取消该订单！");
+                    return result;
+                }
+                if(order.getOrderStatus() != Constants.OS_EXECUTE ||
+                        order.getPayStatus() == Constants.PS_SELLER_PAY_DEPOSIT ||
+                        order.getShipStatus() == Constants.SS_UNSHIP){
+                    result.setCode(Constants.ResultHelper.RESULT_PARAM_ERROR);
+                    result.setMsg("该订单不能申请取消");
+                    return result;
+                }
+
+            }
+            else if(order.getSellerId() > 0){
+                int sellerId = order.getSellerId();
+                AutoUser find = autoUserService.query(sellerId, null);
+                if(find == null){
+                    result.setCode(1);
+                    result.setMsg("该用户不存在！");
+                    return result;
+                }
+                if(find.getStatus() == Constants.AUTO_USER_STATUS_DISABLED){
+                    result.setCode(1);
+                    result.setMsg("该账户已被禁用！");
+                    return result;
+                }
+                order = autoOrderService.query(order.getOrderId(), order.getOrderSn());
+                if(order == null){
+                    result.setCode(Constants.ResultHelper.RESULT_PARAM_ERROR);
+                    result.setMsg("该订单不存在");
+                    return result;
+                }
+                if(order.getSellerId() != sellerId){
+                    result.setCode(1);
+                    result.setMsg("您不能申请取消该订单！");
+                    return result;
+                }
+                if(order.getOrderStatus() != Constants.OS_EXECUTE ||
+                        order.getPayStatus() == Constants.PS_SELLER_PAY_DEPOSIT ||
+                        order.getShipStatus() == Constants.SS_UNSHIP){
+                    result.setCode(Constants.ResultHelper.RESULT_PARAM_ERROR);
+                    result.setMsg("该订单不能申请取消");
+                    return result;
+                }
+            }
+            order.setStatusRemark(Constants.OD_REQUEST_CANCEL);
+            if(!autoOrderService.doRequestCancel(order)){
+                result.setCode(1);
+                result.setMsg("申请取消订单出错");
+                return result;
+            }
+
+        }
+        catch (Exception e){
+            result.setCode(Constants.ResultHelper.RESULT_HANDLE_ERROR);
+            result.setMsg("申请取消订单操作失败");
+        }
+        return result;
+    }
+
 
     /**
      * 通知系统买家已经支付订金
@@ -121,7 +226,7 @@ public class AutoOrderController extends BaseController {
                 result.setMsg("买家不能为空！");
                 return result;
             }
-            if(order.getPayMethod() == null || (order.getPayMethod() != Constants.ORDER_PAYMENT_ALIPAY && order.getPayMethod() != Constants.ORDER_PAYMENT_WXPAY)){
+            if(order.getBuyerPayMethod() == null || (order.getBuyerPayMethod() != Constants.ORDER_PAYMENT_ALIPAY && order.getBuyerPayMethod() != Constants.ORDER_PAYMENT_WXPAY)){
                 result.setCode(-1);
                 result.setMsg("支付方式不能为空！");
                 return result;
@@ -158,6 +263,7 @@ public class AutoOrderController extends BaseController {
                 return result;
             }
             //endregion
+            order.setStatusRemark(Constants.OD_BUYER_PAID);
             if(!autoOrderService.doDeposit(order)){
                 result.setCode(1);
                 result.setMsg("支付订金操作失败！");
@@ -213,6 +319,7 @@ public class AutoOrderController extends BaseController {
                     result.setMsg("该订单不能拒绝！");
                     return result;
                 }
+                order.setStatusRemark(Constants.OD_SELLER_REJECT);
                 if(!autoOrderService.doReject(order)){
                     result.setCode(1);
                     result.setMsg("拒绝订单操作失败！");
@@ -273,6 +380,45 @@ public class AutoOrderController extends BaseController {
                 result.setMsg("该订单不能同意！");
                 return result;
             }
+            //计算订金金额
+            boolean isTest = ConvertUtil.toBool(initConfig.getProperty("test"));
+            if(isTest){
+                order.setSellerDeposit(ConvertUtil.toDouble(initConfig.getProperty("order.depositTest")));
+            }
+            else{
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("orderId", order.getOrderId());
+                AutoCar car = autoCarService.query(map);
+                AutoCarAttr attr = autoCarAttrService.query(map);
+
+                double price = car.getOfficalPrice();
+                if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP){
+                    if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
+                        price += attr.getSaleAmount();
+                    }
+                    else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
+                        price += price * attr.getSaleAmount() / 100;
+                    }
+                }
+                else if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
+                    if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
+                        price -= attr.getSaleAmount();
+                    }
+                    else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
+                        price -= price * attr.getSaleAmount() / 100;
+                    }
+                }
+                if(car.getOrderHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
+                    price += car.getPartsPrice();
+                }
+
+                double depositPercent = ConvertUtil.toDouble(initConfig.getProperty("order.depositPercent"));
+                double depositMax = ConvertUtil.toDouble(initConfig.getProperty("order.depositMax"));
+                double deposit = Math.min(price * depositPercent, depositMax);
+
+                order.setSellerDeposit(deposit * car.getOrderCarNumber());
+            }
+            order.setStatusRemark(Constants.OD_SELLER_PAID);
             if(!autoOrderService.doAccept(order)){
                 result.setCode(1);
                 result.setMsg("同意订单操作失败！");
@@ -280,7 +426,7 @@ public class AutoOrderController extends BaseController {
             }
         }catch (Exception e){
             result.setCode(1);
-            result.setMsg("同意订单操作失败！");
+            result.setMsg("同意订单操作出错！");
             logger.error(e.getMessage());
             e.printStackTrace();
         }
@@ -297,56 +443,67 @@ public class AutoOrderController extends BaseController {
     public Result calc(AutoOrderCar orderCar){
         Result result = new Result();
         try{
-            result.setData(0.1);
-            return result;
-//            if((Boolean)initConfig.getProperty("test") == true){
-//                result.setData(0.1);
-//                return result;
-//            }
-//            if(orderCar == null ||
-//                orderCar.getCarId() == null || orderCar.getCarId() == 0 ||
-//                orderCar.getCarAttrId() == null || orderCar.getCarAttrId() == 0 ||
-//                orderCar.getHasParts() == null){
-//                result.setCode(-1);
-//                result.setMsg("订购车源不能为空！");
-//                return result;
-//            }
-//            if(orderCar.getCarNumber() == null || orderCar.getCarNumber() == 0){
-//                result.setCode(-1);
-//                result.setMsg("订购车源数量不能为空！");
-//                return result;
-//            }
-//            AutoCar car = autoCarService.query(orderCar.getCarId());
-//            AutoCarAttr attr = autoCarAttrService.query(orderCar.getCarAttrId());
-//            if(car == null || attr == null){
-//                result.setCode(-1);
-//                result.setMsg("该车源不存在！");
-//                return result;
-//            }
-//            double price = car.getOfficalPrice();
-//            if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP){
-//                if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
-//                    price += attr.getSaleAmount();
-//                }
-//                else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
-//                    price += price * attr.getSaleAmount() / 100;
-//                }
-//            }
-//            else if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
-//                if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
-//                    price -= attr.getSaleAmount();
-//                }
-//                else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
-//                    price -= price * attr.getSaleAmount() / 100;
-//                }
-//            }
-//            if(orderCar.getHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
-//                price += car.getPartsPrice();
-//            }
-//
-//            double deposit = Math.min(price * 5 / 1000, 2000);
-//
-//            result.setData(deposit);
+            boolean isTest = ConvertUtil.toBool(initConfig.getProperty("test"));
+            if(isTest){
+                result.setData(ConvertUtil.toDouble(initConfig.getProperty("order.depositTest")));
+                return result;
+            }
+            if(orderCar == null ||
+                orderCar.getCarId() == null || orderCar.getCarId() == 0 ||
+                orderCar.getCarAttrId() == null || orderCar.getCarAttrId() == 0 ||
+                orderCar.getHasParts() == null){
+                result.setCode(-1);
+                result.setMsg("订购车源不能为空！");
+                return result;
+            }
+            if(orderCar.getCarNumber() == null || orderCar.getCarNumber() == 0){
+                result.setCode(-1);
+                result.setMsg("订购车源数量不能为空！");
+                return result;
+            }
+            AutoCar car = autoCarService.query(orderCar.getCarId());
+            AutoCarAttr attr = autoCarAttrService.query(orderCar.getCarAttrId());
+            if(car == null || attr == null){
+                result.setCode(-1);
+                result.setMsg("该车源不存在！");
+                return result;
+            }
+            if(car.getStatus() == Constants.AUTO_CAR_STATUS_OFF){
+                result.setCode(-1);
+                result.setMsg("该车源已下架！");
+                return result;
+            }
+            if(attr.getSurplusNumber() == 0){
+                result.setCode(-1);
+                result.setMsg("该车源剩余数量为0,无法预定");
+                return result;
+            }
+            double price = car.getOfficalPrice();
+            if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP){
+                if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
+                    price += attr.getSaleAmount();
+                }
+                else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
+                    price += price * attr.getSaleAmount() / 100;
+                }
+            }
+            else if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
+                if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
+                    price -= attr.getSaleAmount();
+                }
+                else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
+                    price -= price * attr.getSaleAmount() / 100;
+                }
+            }
+            if(orderCar.getHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
+                price += car.getPartsPrice();
+            }
+
+            double depositPercent = ConvertUtil.toDouble(initConfig.getProperty("order.depositPercent"));
+            double depositMax = ConvertUtil.toDouble(initConfig.getProperty("order.depositMax"));
+            double deposit = Math.min(price * depositPercent, depositMax);
+
+            result.setData(deposit * orderCar.getCarNumber());
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("同意订单操作失败！");
@@ -407,6 +564,7 @@ public class AutoOrderController extends BaseController {
                 result.setMsg("该订单不能确认收货！");
                 return result;
             }
+            order.setStatusRemark(Constants.OD_SUCESS);
             if(!autoOrderService.doReceive(order)){
                 result.setCode(1);
                 result.setMsg("订单收货操作失败！");
@@ -420,6 +578,7 @@ public class AutoOrderController extends BaseController {
         }
         return result;
     }
+
 
     /**
      * 卖家通知买家确认收货
@@ -600,6 +759,7 @@ public class AutoOrderController extends BaseController {
             order.setSellerDeposit(0);
             order.setBuyerDeposit(0);
             order.setShipTime(0);
+
             order.setAmount(price * orderCar.getCarNumber());
             order.setAddTime(ConvertUtil.toLong(new Date()));
             order.setPutTime(ConvertUtil.toLong(ConvertUtil.toDate(order.getPutTimeString())));
@@ -609,7 +769,7 @@ public class AutoOrderController extends BaseController {
             orderCar.setHasParts(Constants.AUTO_CAR_HAS_PARTS_NO);
             order.setCar(orderCar);
             //endregion
-
+            order.setStatusRemark(Constants.OD_SUBMIT);
             if(!autoOrderService.insert(order)){
                 result.setCode(1);
                 result.setMsg("保存订单信息失败！");
@@ -625,6 +785,7 @@ public class AutoOrderController extends BaseController {
         }
         return result;
     }
+
 
     /**
      * 查询订单列表(买家)
@@ -676,36 +837,62 @@ public class AutoOrderController extends BaseController {
             }
             List<AutoOrder> orderList = autoOrderService.queryList(map, page);
 
+            int officalUserId = ConvertUtil.toInt(initConfig.getConfig("admin_addcar_userid"));
+
+            boolean isTest = ConvertUtil.toBool(initConfig.getProperty("test"));
             JSONArray jsonOrderArray = new JSONArray();
             if(orderList != null && !orderList.isEmpty()){
                 for(AutoOrder orderItem : orderList){
                     JSONObject jsonOrderItem = new JSONObject();
                     jsonOrderItem.put("orderId", orderItem.getOrderId());
+                    jsonOrderItem.put("orderSn", orderItem.getOrderSn());
+                    jsonOrderItem.put("statusRemark", order.getStatusRemark());
                     jsonOrderItem.put("sellerId", orderItem.getSellerId());
-                    map.clear();
-                    map.put("userId",orderItem.getSellerId());
-                    AutoUser user=autoUserService.query(map);
-                    jsonOrderItem.put("sellerPhone", user.getPhone());
-                    jsonOrderItem.put("buyerDeposit",0.01);
+                    jsonOrderItem.put("sellerPhone", orderItem.getSellerName());
                     jsonOrderItem.put("orderSn", orderItem.getOrderSn());
                     jsonOrderItem.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(orderItem.getAddTime()), "MM-dd HH:mm"));
-
                     jsonOrderItem.put("operate", autoOrderService.queryOperate(orderItem, Constants.ORDER_USER_BUYER));
+                    jsonOrderItem.put("pic", orderItem.getCarPic());
 
                     map.clear();
                     map.put("orderId", orderItem.getOrderId());
-                    AutoOrderCar orderCar = autoOrderCarService.query(map);
 
-                    map.clear();
-                    map.put("carId", orderCar.getCarId());
                     AutoCar car = autoCarService.query(map);
+                    AutoCarAttr attr = autoCarAttrService.query(map);
 
+                    if(isTest) {
+                        jsonOrderItem.put("buyerDeposit", ConvertUtil.toDouble(initConfig.getProperty("order.depositTest")));
+                    }else{
+                        double price = car.getOfficalPrice();
+                        if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP){
+                            if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
+                                price += attr.getSaleAmount();
+                            }
+                            else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
+                                price += price * attr.getSaleAmount() / 100;
+                            }
+                        }
+                        else if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
+                            if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
+                                price -= attr.getSaleAmount();
+                            }
+                            else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
+                                price -= price * attr.getSaleAmount() / 100;
+                            }
+                        }
+                        if(car.getOrderHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
+                            price += car.getPartsPrice();
+                        }
 
-                    map.clear();
-                    map.put("carAttrId", orderCar.getCarAttrId());
-                    AutoCarAttr catAttr = autoCarAttrService.query(map);
+                        double depositPercent = ConvertUtil.toDouble(initConfig.getProperty("order.depositPercent"));
+                        double depositMax = ConvertUtil.toDouble(initConfig.getProperty("order.depositMax"));
+                        double deposit = Math.min(price * depositPercent, depositMax);
+
+                        jsonOrderItem.put("buyerDeposit", deposit * orderItem.getCarNumber());
+                    }
 
                     JSONObject jsonCar = new JSONObject();
+                    jsonCar.put("isOffical", car.getAddUserId().equals(officalUserId));
                     jsonCar.put("carId", car.getCarId());
                     jsonCar.put("pic", car.getPic());
                     jsonCar.put("brandName", car.getBrandName());
@@ -714,18 +901,12 @@ public class AutoOrderController extends BaseController {
                     jsonCar.put("officalPrice", car.getOfficalPrice());
                     jsonCar.put("addUserAuth", car.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
 
-                    map.clear();
-                    map.put("carPicId", car.getCarId());
-                    AutoCarPic carPic=autoCarPicService.query(map);
-                    if(carPic!=null){
-                        jsonOrderItem.put("pic",carPic.getPath());
-                    }
 
                     JSONObject jsonAttr = new JSONObject();
-                    jsonAttr.put("outsideColor", catAttr.getOutsideColor());
-                    jsonAttr.put("quoteType", catAttr.getQuoteType());
-                    jsonAttr.put("salePriceType", catAttr.getSalePriceType());
-                    jsonAttr.put("saleAmount", catAttr.getSaleAmount());
+                    jsonAttr.put("outsideColor", attr.getOutsideColor());
+                    jsonAttr.put("quoteType", attr.getQuoteType());
+                    jsonAttr.put("salePriceType", attr.getSalePriceType());
+                    jsonAttr.put("saleAmount", attr.getSaleAmount());
 
                     jsonCar.put("attr", jsonAttr);
                     jsonOrderItem.put("car", jsonCar);

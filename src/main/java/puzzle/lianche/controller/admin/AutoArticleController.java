@@ -113,7 +113,7 @@ public class AutoArticleController extends ModuleController {
                 }
             }
             List<AutoArticle> list=autoArticleService.queryList(map,page);
-            if(list!=null && list.size()>0){
+            if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
                 for(AutoArticle article:list) {
                     JSONObject jsonObject = JSONObject.fromObject(article);
@@ -276,11 +276,7 @@ public class AutoArticleController extends ModuleController {
                 fos.write(cover.getBytes());
                 fos.close();
 
-                String url = request.getScheme() + "://" + request.getServerName();
-                if (request.getServerPort() != 80) {
-                    url += ":" + request.getServerPort();
-                }
-                url += relativeUrl + saveName;
+                String url = getHost()+ relativeUrl + saveName;
 
                 return url;
             }

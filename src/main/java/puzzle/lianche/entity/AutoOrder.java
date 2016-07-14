@@ -70,20 +70,32 @@ public class AutoOrder implements Serializable{
     private double sellerDeposit;
     @Column(name="buyer_deposit", nullable=true)
     private double buyerDeposit;
-    public Integer getPayMethod() {
-        return payMethod;
+    public Integer getBuyerPayMethod() {
+        return buyerPayMethod;
     }
-    public void setPayMethod(Integer payMethod) {
-        this.payMethod = payMethod;
+    public void setBuyerPayMethod(Integer buyerPayMethod) {
+        this.buyerPayMethod = buyerPayMethod;
     }
-    @Column(name="pay_method", nullable=true)
-    private Integer payMethod;
+    @Column(name="buyer_pay_method", nullable=true)
+    private Integer buyerPayMethod;
+    public Integer getSellerPayMethod() {
+        return sellerPayMethod;
+    }
+    public void setSellerPayMethod(Integer sellerPayMethod) {
+        this.sellerPayMethod = sellerPayMethod;
+    }
+    @Column(name="seller_pay_method", nullable=true)
+    private Integer sellerPayMethod;
     public String getRemark() {
         return remark;
     }
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    /**
+     * 订单操作备注
+     */
     @Column(name="remark", nullable=true)
     private String remark;
     public String getStatusRemark() {
@@ -92,6 +104,10 @@ public class AutoOrder implements Serializable{
     public void setStatusRemark(String statusRemark) {
         this.statusRemark = statusRemark;
     }
+
+    /**
+     * 订单状态描述
+     */
     @Column(name="status_remark", nullable=true)
     private String statusRemark;
     public String getOrderRemark() {
@@ -100,17 +116,25 @@ public class AutoOrder implements Serializable{
     public void setOrderRemark(String orderRemark) {
         this.orderRemark = orderRemark;
     }
+
+    /**
+     * 订单操作状态描述
+     */
     @Column(name="order_remark", nullable=true)
     private String orderRemark;
-    private String payNumber;
-
-
-    public String getPayNumber() {
-        return payNumber;
+    private String buyerPayNumber;
+    public String getBuyerPayNumber() {
+        return buyerPayNumber;
     }
-
-    public void setPayNumber(String payNumber) {
-        this.payNumber = payNumber;
+    public void setBuyerPayNumber(String buyerPayNumber) {
+        this.buyerPayNumber = buyerPayNumber;
+    }
+    private String sellerPayNumber;
+    public String getSellerPayNumber() {
+        return sellerPayNumber;
+    }
+    public void setSellerPayNumber(String sellerPayNumber) {
+        this.sellerPayNumber = sellerPayNumber;
     }
 
     /**
@@ -242,6 +266,16 @@ public class AutoOrder implements Serializable{
     private String payStatusString;
     private String shipStatusString;
     private Integer carAttrId;
+
+    public String getCarPic() {
+        return carPic;
+    }
+
+    public void setCarPic(String carPic) {
+        this.carPic = carPic;
+    }
+
+    private String carPic;
 
     public Integer getCarAttrId() {
         return carAttrId;

@@ -148,8 +148,8 @@
                 <if test="carAttrId != null and carAttrId > 0">
                     and car_attr_id = #{carAttrId}
                 </if>
-                <if test="attrCarId > 0">
-                    and car_id = #{attrCarId}
+                <if test="orderId != null and orderId > 0">
+                    and car_attr_id = (select car_attr_id from auto_order_car where order_id = #{orderId})
                 </if>
             </trim>
         </where>

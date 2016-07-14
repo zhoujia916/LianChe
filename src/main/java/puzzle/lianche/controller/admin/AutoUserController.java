@@ -194,11 +194,10 @@ public class AutoUserController extends ModuleController {
                 }
 
                 String avatar = saveAvatar();
-                if(StringUtil.isNotNullOrEmpty(avatar)){
-                    autoUser.setUserAvatar(avatar);
-                }else{
-                    autoUser.setUserAvatar("/resource/admin/avatars/profile-pic.jpg");
+                if(StringUtil.isNullOrEmpty(avatar)){
+                    avatar = getHost() + "/resource/admin/avatars/profile-pic.jpg";
                 }
+                autoUser.setUserAvatar(avatar);
 
                 autoUser.setAddTime(ConvertUtil.toLong(new Date()));
                 autoUser.setPhone(autoUser.getUserName());
@@ -212,7 +211,6 @@ public class AutoUserController extends ModuleController {
                     insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"新建会员信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
-                autoUser.setPassword(EncryptUtil.MD5(autoUser.getPassword()));
                 if(StringUtil.isNotNullOrEmpty(autoUser.getBirthString())){
                     autoUser.setBirth(ConvertUtil.toLong(ConvertUtil.toDate(autoUser.getBirthString()+" 00:00:00")));
                 }
@@ -301,11 +299,7 @@ public class AutoUserController extends ModuleController {
                 fos.write(cover.getBytes());
                 fos.close();
 
-                String url = request.getScheme() + "://" + request.getServerName();
-                if (request.getServerPort() != 80) {
-                    url += ":" + request.getServerPort();
-                }
-                url += relativeUrl + saveName;
+                String url = getHost() + relativeUrl + saveName;
 
                 return url;
             }

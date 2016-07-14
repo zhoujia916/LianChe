@@ -168,6 +168,12 @@ public class BaseController {
         }
     }
 
-
+    public String getHost(){
+        String url = request.getScheme() + "://" + request.getServerName();
+        if (request.getServerPort() != 80) {
+            url += ":" + request.getServerPort();
+        }
+        return url;
+    }
 
 }

@@ -96,7 +96,7 @@ public class AutoBrandModelController extends ModuleController {
                 }
             }
             List<AutoBrandModel> list=autoBrandModelService.queryList(map,page);
-            if(list!=null && list.size()>0){
+            if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
                 for(AutoBrandModel brandModel:list){
                     JSONObject jsonObject=JSONObject.fromObject(brandModel);

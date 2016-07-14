@@ -169,7 +169,7 @@ public class AutoCarController extends ModuleController {
                 }
             }
             List<AutoCar> list=autoCarService.queryList(map,page);
-            if(list!=null && list.size()>0){
+            if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
                 for(AutoCar car:list){
                     JSONObject jsonObject=new JSONObject();
@@ -414,8 +414,7 @@ public class AutoCarController extends ModuleController {
                 if(StringUtil.isNotNullOrEmpty(id)){
                     map.put("carId",ConvertUtil.toInt(id));
                 }else if(StringUtil.isNotNullOrEmpty(ids)){
-                    String[] carIds=ids.split(",");
-                    map.put("carIds",carIds);
+                    map.put("carIds", ids);
                 }
                 if(!autoCarService.delete(map)){
                     result.setCode(1);

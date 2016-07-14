@@ -43,7 +43,7 @@ public class AutoAdPositionController extends ModuleController{
                 map.put("positionName", autoAdPosition.getPositionName());
             }
             List<AutoAdPosition> list=autoAdPositionService.queryList(map,page);
-            if(list!=null && list.size()>0){
+            if(list != null && list.size() > 0){
                 result.setData(list);
                 result.setTotal(page.getTotal());
             }

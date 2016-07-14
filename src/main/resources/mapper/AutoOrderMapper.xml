@@ -9,7 +9,10 @@
     	<result column="ship_status" property="shipStatus" /> 
     	<result column="seller_id" property="sellerId" />
         <result column="buyer_id" property="buyerId" />
-        <result column="pay_method" property="payMethod" />
+        <result column="buyer_pay_method" property="buyerPayMethod" />
+        <result column="buyer_pay_number" property="buyerPayNumber" />
+        <result column="seller_pay_method" property="sellerPayMethod" />
+        <result column="seller_pay_number" property="sellerPayNumber" />
         <result column="seller_deposit" property="sellerDeposit" />
         <result column="buyer_deposit" property="buyerDeposit" />
         <result column="ship_time" property="shipTime" />
@@ -18,19 +21,19 @@
         <result column="amount" property="amount" />
         <result column="remark" property="remark" />
         <result column="add_time" property="addTime" />
-        <result column="carName" property="carName"/>
-        <result column="carNumber" property="carNumber"/>
-        <result column="sellerName" property="sellerName"/>
-        <result column="sellerRealName" property="sellerRealName"/>
-        <result column="buyerName" property="buyerName"/>
-        <result column="buyerRealName" property="buyerRealName"/>
+        <result column="car_name" property="carName"/>
+        <result column="car_number" property="carNumber"/>
+        <result column="car_pic" property="carPic"/>
+        <result column="seller_name" property="sellerName"/>
+        <result column="seller_real_name" property="sellerRealName"/>
+        <result column="buyer_name" property="buyerName"/>
+        <result column="buyer_real_name" property="buyerRealName"/>
         <result column="put_time" property="putTime"/>
-        <result column="carAttrId" property="carAttrId"/>
-
+        <result column="car_attr_id" property="carAttrId"/>
     </resultMap>
 
     <sql id="allColumn">
-    	order_id, order_sn, order_status, pay_status, ship_status, seller_id, buyer_id, pay_method,
+    	order_id, order_sn, order_status, pay_status, ship_status, seller_id, buyer_id, buyer_pay_method, buyer_pay_number, seller_pay_method, seller_pay_number,
     	pay_number,seller_deposit, buyer_deposit, ship_time, order_remark, status_remark, amount, remark, add_time, put_time
     </sql>
 
@@ -43,8 +46,10 @@
         	<if test="shipStatus != null">ship_status, </if>
             <if test="sellerId != null">seller_id, </if>
             <if test="buyerId != null">buyer_id, </if>
-            <if test="payMethod != null">pay_method, </if>
-            <if test="payNumber != null">pay_number,</if>
+            <if test="buyerPayMethod != null">buyer_ay_method, </if>
+            <if test="buyerPayNumber != null">buyer_pay_number,</if>
+            <if test="sellerPayMethod != null">seller_pay_method, </if>
+            <if test="sellerPayNumber != null">seller_pay_number,</if>
             <if test="sellerDeposit != null">seller_deposit, </if>
             <if test="buyerDeposit != null">buyer_deposit, </if>
             <if test="shipTime != null">ship_time, </if>
@@ -63,8 +68,10 @@
         	<if test="shipStatus != null">#{shipStatus}, </if>
             <if test="sellerId != null">#{sellerId}, </if>
             <if test="buyerId != null">#{buyerId}, </if>
-            <if test="payMethod != null">#{payMethod}, </if>
-            <if test="payNumber != null">#{payNumber},</if>
+            <if test="buyerPayMethod != null">#{buyerPayMethod}, </if>
+            <if test="buyerPayNumber != null">#{buyerPayNumber},</if>
+            <if test="sellerPayMethod != null">#{sellerPayMethod}, </if>
+            <if test="sellerPayNumber != null">#{sellerPayNumber},</if>
             <if test="sellerDeposit != null">#{sellerDeposit}, </if>
             <if test="buyerDeposit != null">#{buyerDeposit}, </if>
             <if test="shipTime != null">#{shipTime}, </if>
@@ -141,11 +148,11 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoOrder">
-        select ao.*,aoc.car_number as carNumber,aoc.has_parts as hasParts,aoc.car_attr_id as carAttrId,
-        (select au.user_name from auto_user as au where ao.seller_id=au.user_id) as sellerName,
-        (select aup.real_name from auto_user_profile as aup where ao.seller_id=aup.user_id) as sellerRealName,
-        (select au.user_name from auto_user as au where ao.buyer_id=au.user_id) as buyerName,
-        (select aup.real_name from auto_user_profile as aup where ao.buyer_id=aup.user_id) as buyerRealName
+        select ao.*,aoc.car_number,aoc.has_parts,aoc.car_attr_id,
+        (select au.user_name from auto_user as au where ao.seller_id=au.user_id) as seller_name,
+        (select aup.real_name from auto_user_profile as aup where ao.seller_id=aup.user_id) as seller_real_name,
+        (select au.user_name from auto_user as au where ao.buyer_id=au.user_id) as buyer_name,
+        (select aup.real_name from auto_user_profile as aup where ao.buyer_id=aup.user_id) as buyer_real_name
         from auto_order as ao
         inner join auto_order_car as aoc on ao.order_id=aoc.order_id
         <where>  
@@ -159,7 +166,17 @@
     </select>
 
     <select id="queryList" parameterType="Map" resultMap="AutoOrder">
-        select <include refid="allColumn"/> from auto_order as ao
+        select ao.*, ac.car_name,aoc.car_number,
+        (select path from auto_car_pic where car_id = aoc.car_id limit 0, 1) as car_pic,
+        (select au.user_name from auto_user as au where ao.seller_id = au.user_id) as seller_name,
+        (select aup.real_name from auto_user_profile as aup where ao.seller_id = aup.user_id) as seller_real_name,
+        (select au.user_name from auto_user as au where ao.buyer_id = au.user_id) as buyer_name,
+        (select aup.real_name from auto_user_profile as aup where ao.buyer_id = aup.user_id) as buyer_real_name
+
+        from auto_order as ao
+        inner join auto_order_car as aoc on ao.order_id = aoc.order_id
+        inner join auto_car as ac on aoc.car_id = ac.car_id
+        inner join auto_car_attr as aca on ac.car_id = aca.car_id and aoc.car_attr_id = aca.car_attr_id
         <where>
             <trim prefixOverrides="and | or">
                 <if test="orderId > 0">
@@ -168,21 +185,16 @@
                 <if test="orderSn != null and orderSn != ''">
                     and order_sn = #{orderSn}
                 </if>
-                <if test="orderStatus != null">
+                <if test="orderStatus != null and orderStatus > 0">
                     and order_status = #{orderStatus}
                 </if>
-                <if test="payStatus != null">
+                <if test="payStatus != null and payStatus > 0">
                     and pay_status = #{payStatus}
                 </if>
-                <if test="shipStatus != null">
+                <if test="shipStatus != null and shipStatus > 0">
                     and ship_status = #{shipStatus}
                 </if>
-                <if test="orderIdList!=null and orderIdList.size()>0">
-                    and order_id in
-                    <foreach collection="orderIdList" item="orderId" open="(" separator="," close=")">
-                        ${orderId}
-                    </foreach>
-                </if>
+
                 <if test="orderStatusList != null and orderStatusList != ''">
                     and order_status in (${orderStatusList})
                 </if>
@@ -198,38 +210,15 @@
                 <if test="buyerId != null and buyerId > 0">
                     and buyer_id = ${buyerId}
                 </if>
+                <if test="beginTime != null and beginTime > 0">
+                    and ao.add_time &gt;= #{beginTime}
+                </if>
+                <if test="endTime != null and endTime">
+                    and ao.add_time &lt;= #{endTime}
+                </if>
 	        </trim>
         </where>
-    </select>
-
-    <select id="queryOrder" parameterType="Map" resultMap="AutoOrder">
-        select ao.*,ac.car_name as carName,aoc.car_number as carNumber,
-        (select au.user_name from auto_user as au where ao.seller_id=au.user_id) as sellerName,
-        (select aup.real_name from auto_user_profile as aup where ao.seller_id=aup.user_id) as sellerRealName,
-        (select au.user_name from auto_user as au where ao.buyer_id=au.user_id) as buyerName,
-        (select aup.real_name from auto_user_profile as aup where ao.buyer_id=aup.user_id) as buyerRealName
-        from auto_order as ao
-        inner join auto_order_car as aoc on ao.order_id=aoc.order_id
-        inner join auto_car as ac on aoc.car_id=ac.car_id
-        inner join auto_car_attr as aca on ac.car_id=aca.car_id and aoc.car_attr_id=aca.car_attr_id
-        <where>
-            <if test="orderStatus != null and orderStatus >0">
-                and ao.order_status = ${orderStatus}
-            </if>
-            <if test="payStatus != null and payStatus >0">
-                and ao.pay_status = ${payStatus}
-            </if>
-            <if test="shipStatus != null and shipStatus >0 ">
-                and ao.ship_status = ${shipStatus}
-            </if>
-            <if test="beginTime != null">
-                and ao.add_time &gt;= #{beginTime}
-            </if>
-            <if test="endTime != null">
-                and ao.add_time &lt;= #{endTime}
-            </if>
-        </where>
-        order by ao.add_time desc,ao.order_id desc
+        order by ao.order_id desc
     </select>
 
     <select id="queryCount" parameterType="Map" resultType="java.lang.Integer">

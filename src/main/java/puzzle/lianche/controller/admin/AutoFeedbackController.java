@@ -47,7 +47,7 @@ public class AutoFeedbackController extends ModuleController {
                 }
             }
             List<AutoFeedback> list=autoFeedbackService.queryList(map,page);
-            if(list!=null && list.size()>0){
+            if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
                 for(AutoFeedback feedback:list){
                     JSONObject jsonObject=JSONObject.fromObject(feedback);

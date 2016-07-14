@@ -196,6 +196,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
                     operates.add(Constants.OO_RECEIVE);
                     operates.add(Constants.OO_CONTACT_SELLER);
                 } else if (userType == Constants.ORDER_USER_SELLER) {
+                    operates.add(Constants.OO_REQUEST_CANCEL);
                     operates.add(Constants.OO_CONTACT_BUYER);
                     operates.add(Constants.OO_NOTIFY_RECEIVE);
                 } else if (userType == Constants.ORDER_USER_ADMIN) {
@@ -256,10 +257,30 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
      */
     public boolean doCancel(AutoOrder order){
         try {
-            doReturnDeposit(order, Constants.ORDER_USER_BUYER);
-
             // 更新订单状态
             order.setOrderStatus(Constants.OS_CANCEL);
+            sqlMapper.update("AutoOrderMapper.update", order);
+
+            //短信消息通知买家和卖家
+            return true;
+        }
+        catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * 申请取消订单
+     * @param order
+     * @return
+     */
+    @Override
+    public boolean doRequestCancel(AutoOrder order) {
+        try {
+            // 更新订单状态
+            order.setOrderStatus(Constants.OS_REQUEST_CANCEL);
             sqlMapper.update("AutoOrderMapper.update", order);
 
             //短信消息通知买家和卖家
@@ -283,9 +304,6 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
             order.setOrderStatus(Constants.OS_CANCEL);
 
             sqlMapper.update("AutoOrderMapper.update", order);
-
-            //退回买家订金
-            doReturnDeposit(order, Constants.ORDER_USER_BUYER);
 
             //短信消息通知买家
             AutoUser buyer = autoUserService.query(order.getBuyerId(), null);
@@ -391,11 +409,6 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         return false;
     }
 
-    @Override
-    public List<AutoOrder> queryOrder(Map<String, Object> map, Page page) {
-        return sqlMapper.queryList("AutoOrderMapper.queryOrder",map,page);
-    }
-
     /**
      * 退还支付订金
      * @param order
@@ -404,23 +417,31 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
     public boolean doReturnDeposit(AutoOrder order, Integer type){
         try {
             if (type == Constants.ORDER_USER_ALL) {
-                return doReturnDeposit(order, Constants.ORDER_USER_BUYER) && doReturnDeposit(order, Constants.ORDER_USER_SELLER);
+//                doReturnDeposit(order, Constants.ORDER_USER_BUYER);
+//                doReturnDeposit(order, Constants.ORDER_USER_SELLER);
+                order.setBuyerDeposit(0);
+                order.setSellerDeposit(0);
+                sqlMapper.update("AutoOrderMapper.update", order);
             } else{
                 if (type == Constants.ORDER_USER_BUYER && order.getBuyerDeposit() > 0) {
-                    if(order.getPayMethod() == Constants.ORDER_PAYMENT_ALIPAY){
-
-                    }
-                    else if(order.getPayMethod() == Constants.ORDER_PAYMENT_WXPAY){
-
-                    }
+                    order.setBuyerDeposit(0);
+                    sqlMapper.update("AutoOrderMapper.update", order);
+//                    if(order.getBuyerPayMethod() == Constants.ORDER_PAYMENT_ALIPAY){
+//
+//                    }
+//                    else if(order.getBuyerPayMethod() == Constants.ORDER_PAYMENT_WXPAY){
+//
+//                    }
                 }
                 else if (type == Constants.ORDER_USER_SELLER && order.getSellerDeposit() > 0) {
-                    if(order.getPayMethod() == Constants.ORDER_PAYMENT_ALIPAY){
-
-                    }
-                    else if(order.getPayMethod() == Constants.ORDER_PAYMENT_WXPAY){
-
-                    }
+                    order.setSellerDeposit(0);
+                    sqlMapper.update("AutoOrderMapper.update", order);
+//                    if(order.getSellerPayMethod() == Constants.ORDER_PAYMENT_ALIPAY){
+//
+//                    }
+//                    else if(order.getSellerPayMethod() == Constants.ORDER_PAYMENT_WXPAY){
+//
+//                    }
                 }
             }
             return true;

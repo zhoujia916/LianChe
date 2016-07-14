@@ -132,7 +132,7 @@ public class SystemAuthorityServiceImpl implements ISystemAuthorityService {
         }
         if(ids.size() > 0){
             map.clear();
-            map.put("authorityIds", ids);
+            map.put("authorityIds", StringUtil.concat(ids, ","));
             this.delete(map);
         }
         return true;

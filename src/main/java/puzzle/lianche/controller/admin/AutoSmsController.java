@@ -59,7 +59,7 @@ public class AutoSmsController extends ModuleController{
                 }
             }
             List<AutoSms> list=autoSmsService.queryList(map,page);
-            if(list!=null && list.size()>0){
+            if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
                 for(AutoSms sms:list){
                     JSONObject jsonObject=JSONObject.fromObject(sms);

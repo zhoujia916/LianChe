@@ -85,11 +85,13 @@ public class AutoCarController extends BaseController {
             if(car.getSort() != null && car.getSort() == 1){
                 map.put("sort", " au.point desc ");
             }
+            int officalUserId = ConvertUtil.toInt(initConfig.getConfig("admin_addcar_userid"));
             List<AutoCar> list = autoCarService.queryList(map, page);
             if(list != null && list.size() > 0){
                 JSONArray jsonArray = new JSONArray();
                 for(AutoCar item : list){
                     JSONObject jsonItem = new JSONObject();
+                    jsonItem.put("isOffical", item.getAddUserId().equals(officalUserId));
                     jsonItem.put("carId", item.getCarId());
                     jsonItem.put("carName", item.getCarName());
                     jsonItem.put("brandName", item.getBrandName());
@@ -162,8 +164,9 @@ public class AutoCarController extends BaseController {
                 result.setMsg("该车源不存在！");
                 return result;
             }
-
+            int officalUserId = ConvertUtil.toInt(initConfig.getConfig("admin_addcar_userid"));
             JSONObject jsonCar = new JSONObject();
+            jsonCar.put("isOffical", car.getAddUserId().equals(officalUserId));
             jsonCar.put("carId", car.getCarId());
             jsonCar.put("carName", car.getCarName());
             jsonCar.put("collectId", car.getCollectId() == null ? 0 : car.getCollectId());
@@ -325,6 +328,7 @@ public class AutoCarController extends BaseController {
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
 
             Date now = calendar.getTime();
             Date startTime = ConvertUtil.toDate(car.getBeginTimeString());

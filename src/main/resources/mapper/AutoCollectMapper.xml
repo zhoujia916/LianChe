@@ -91,11 +91,8 @@
                 <if test="carId > 0">
                     target_id = #{carId}
                 </if>
-                <if test="carIds!=null and carIds.length>0">
-                    target_id in
-                    <foreach collection="carIds" item="carId" open="(" separator="," close=")">
-                        #{carId}
-                    </foreach>
+                <if test="carIds!=null and carIds !=''">
+                    target_id in (${carIds})
                 </if>
 	        	<if test="status > 0">
 	                status = #{status}

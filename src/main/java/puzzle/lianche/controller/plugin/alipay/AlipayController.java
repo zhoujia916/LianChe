@@ -11,7 +11,10 @@ import puzzle.lianche.controller.plugin.alipay.config.AlipayConfig;
 import puzzle.lianche.controller.plugin.alipay.sign.RSA;
 import puzzle.lianche.controller.plugin.alipay.util.AlipayCore;
 import puzzle.lianche.entity.AutoCar;
+import puzzle.lianche.entity.AutoCarAttr;
 import puzzle.lianche.entity.AutoOrder;
+import puzzle.lianche.entity.AutoOrderCar;
+import puzzle.lianche.service.IAutoCarAttrService;
 import puzzle.lianche.service.IAutoCarService;
 import puzzle.lianche.service.IAutoOrderCarService;
 import puzzle.lianche.service.IAutoOrderService;
@@ -32,7 +35,13 @@ public class AlipayController extends BaseController {
     private IAutoOrderService autoOrderService;
 
     @Autowired
+    private IAutoOrderCarService autoOrderCarService;
+
+    @Autowired
     private IAutoCarService autoCarService;
+
+    @Autowired
+    private IAutoCarAttrService autoCarAttrService;
 
     /**
      * 申请生成支付链接
@@ -97,11 +106,43 @@ public class AlipayController extends BaseController {
             // 可选，买家ID
             payinfo.put("seller_id", "\"" + AlipayConfig.account + "\"");
             // 必填，总金额，取值范围为[0.01,100000000.00]
-//            if((Boolean)initConfig.getProperty("test") == true){
-                payinfo.put("total_fee", "\"" + 0.01 + "\"");
-//            }else{
-//                payinfo.put("total_fee", "\"" + ConvertUtil.toString(order.getAmount()) + "\"");
-//            }
+            boolean isTest = ConvertUtil.toBool(initConfig.getProperty("test"));
+            if(isTest){
+                payinfo.put("total_fee", "\"" + ConvertUtil.toDouble(initConfig.getProperty("order.depositTest")) + "\"");
+            }else{
+                map.clear();
+                map.put("orderId", order.getOrderId());
+                AutoCarAttr attr = autoCarAttrService.query(map);
+
+                AutoOrderCar orderCar = autoOrderCarService.query(map);
+
+                double price = car.getOfficalPrice();
+                if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP){
+                    if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
+                        price += attr.getSaleAmount();
+                    }
+                    else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
+                        price += price * attr.getSaleAmount() / 100;
+                    }
+                }
+                else if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
+                    if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
+                        price -= attr.getSaleAmount();
+                    }
+                    else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
+                        price -= price * attr.getSaleAmount() / 100;
+                    }
+                }
+                if(car.getOrderHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
+                    price += car.getPartsPrice();
+                }
+
+                double depositPercent = ConvertUtil.toDouble(initConfig.getProperty("order.depositPercent"));
+                double depositMax = ConvertUtil.toDouble(initConfig.getProperty("order.depositMax"));
+                double deposit = Math.min(price * depositPercent, depositMax);
+
+                payinfo.put("total_fee", "\"" + ConvertUtil.toString(deposit * orderCar.getCarNumber()) + "\"");
+            }
             // 必填，商品详情
             payinfo.put("body", "\"" + car.getCarName() + "\"");
             // 可选，未付款交易的超时时间

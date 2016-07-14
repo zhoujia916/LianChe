@@ -582,7 +582,7 @@ public class AutoUserController extends BaseController {
             }
             if(find.getStatus() == Constants.AUTO_USER_STATUS_AUTH_WAITCHECK){
                 result.setCode(-1);
-                result.setMsg("用户账户正在等待实名验证！");
+                result.setMsg("用户账户正等待实名验证！");
                 return result;
             }
             if(find.getStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS){
@@ -710,11 +710,13 @@ public class AutoUserController extends BaseController {
             Map<String, Object> map=new HashMap<String, Object>();
             map.put("userId",userId);
             List<AutoCar> carList = autoCarService.queryUserCollect(map,page);
+            int officalUserId = ConvertUtil.toInt(initConfig.getConfig("admin_addcar_userid"));
             if(carList != null && carList.size()>0){
                 JSONArray array=new JSONArray();
                 for(AutoCar car:carList){
                     JSONObject object=new JSONObject();
                     object.put("collectId",car.getCollectId());
+                    object.put("isOffical",car.getAddUserId().equals(officalUserId));
                     object.put("carId",car.getCarId());
                     object.put("carName",car.getCarName());
                     object.put("brandName",car.getBrandName());
@@ -1009,7 +1011,7 @@ public class AutoUserController extends BaseController {
     @RequestMapping(value = "/listCar.do")
     @ResponseBody
     public Result listCar(AutoOrder order, Page page){
-        Result result=new Result();
+        Result result = new Result();
         try{
             if(order == null || order.getSellerId() == null || order.getSellerId() <= 0 || order.getClientStatus() == null){
                 result.setCode(-1);
@@ -1031,10 +1033,9 @@ public class AutoUserController extends BaseController {
             map.put("addUserId",order.getSellerId());
 
             if(order.getClientStatus().equals(Constants.CS_UNDEPOSIT)){
-                String sql = " and (ao.order_id is null" +
-                             " or (ao.order_status = " + Constants.OS_SUBMIT +
+                String sql = " and (ao.order_status = " + Constants.OS_SUBMIT +
                              " and ao.pay_status in(" + Constants.PS_BUYER_PAY_DEPOSIT + "," + Constants.PS_WAIT_SELLER_DEPOSIT + ")" +
-                             " and ao.ship_status = " + Constants.SS_UNSHIP + "))";
+                             " and ao.ship_status = " + Constants.SS_UNSHIP + ")";
                 map.put("filter", sql);
             }
             else if(order.getClientStatus().equals(Constants.CS_DEPOSIT)){
@@ -1053,6 +1054,10 @@ public class AutoUserController extends BaseController {
                 map.put("filter", sql);
             }
             List<AutoCar> carList = autoCarService.queryOrderCar(map,page);
+            result.setData(carList);
+            result.setTotal(page.getTotal());
+
+            boolean isTest = ConvertUtil.toBool(initConfig.getProperty("test"));
             if(carList!=null && carList.size()>0){
                 JSONArray array=new JSONArray();
                 for(AutoCar car:carList){
@@ -1060,25 +1065,53 @@ public class AutoUserController extends BaseController {
                     object.put("collectId",car.getCollectId());
                     object.put("carId",car.getCarId());
                     object.put("orderId",car.getOrderId());
+                    object.put("orderSn", car.getOrderSn());
+                    object.put("statusRemark", car.getOrderStatusRemark());
+                    if(isTest) {
+                        object.put("sellerDeposit", ConvertUtil.toDouble(initConfig.getProperty("order.depositTest")));
+                    }else{
+                        AutoCarAttr attr = autoCarAttrService.query(map);
+                        double price = car.getOfficalPrice();
+                        if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_UP){
+                            if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
+                                price += attr.getSaleAmount();
+                            }
+                            else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
+                                price += price * attr.getSaleAmount() / 100;
+                            }
+                        }
+                        else if(attr.getQuoteType() == Constants.AUTO_CAR_QUOTE_TYPE_DOWN){
+                            if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_MONEY){
+                                price -= attr.getSaleAmount();
+                            }
+                            else if(attr.getSalePriceType() == Constants.AUTO_CAR_SALE_PRICE_TYPE_PERCENT){
+                                price -= price * attr.getSaleAmount() / 100;
+                            }
+                        }
+                        if(car.getOrderHasParts() == Constants.AUTO_CAR_HAS_PARTS_YES){
+                            price += car.getPartsPrice();
+                        }
+
+                        double depositPercent = ConvertUtil.toDouble(initConfig.getProperty("order.depositPercent"));
+                        double depositMax = ConvertUtil.toDouble(initConfig.getProperty("order.depositMax"));
+                        double deposit = Math.min(price * depositPercent, depositMax);
+                        object.put("sellerDeposit", deposit * car.getOrderCarNumber());
+                    }
+
                     map.clear();
                     map.put("userId",car.getAddUserId());
                     AutoUser user = autoUserService.query(map);
                     object.put("buyerId",car.getBuyerId());
                     object.put("buyerPhone",user.getPhone());
-                    object.put("sellerDeposit",0.01);
+
                     object.put("carName",car.getCarName());
                     object.put("brandName",car.getBrandName());
                     object.put("catName",car.getCatName());
                     object.put("officalPrice",(car.getOfficalPrice()));
-                    map.clear();
-                    map.put("carPicId", car.getCarId());
-                    AutoCarPic carPic=autoCarPicService.query(map);
-                    if(carPic!=null){
-                        object.put("pic",carPic.getPath());
-                    }
-                    map.clear();
+                    object.put("pic", car.getPic());
+
                     map.put("attrCarId",car.getCarId());
-                    List<AutoCarAttr> attrList=autoCarAttrService.queryList(map);
+                    List<AutoCarAttr> attrList = autoCarAttrService.queryList(map);
                     if(attrList!=null && attrList.size()>0){
                         List<AutoCarAttr> carAttrList=new ArrayList<AutoCarAttr>();
                         for(AutoCarAttr attrs:attrList){
@@ -1108,7 +1141,7 @@ public class AutoUserController extends BaseController {
         }catch (Exception e){
             result.setCode(1);
             result.setMsg("查看我的销车出错！");
-            logger.error(e.getMessage());
+            logger.error("查看我的销车出错:" + e.getMessage());
             e.printStackTrace();
         }
         return result;

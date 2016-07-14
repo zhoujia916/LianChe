@@ -252,6 +252,7 @@ public class SystemUserServiceImpl extends BaseServiceImpl implements ISystemUse
     public List<SystemAuthority> queryAuthority(int userId){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userId", userId);
+        map.put("status", Constants.SYSTEM_MENU_STATUS_VISIBLE);
         return systemAuthorityService.queryList(map);
     }
 }

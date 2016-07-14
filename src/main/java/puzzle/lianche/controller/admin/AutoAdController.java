@@ -92,7 +92,7 @@ public class AutoAdController extends ModuleController {
                 }
             }
             List<AutoAd> list=autoAdService.queryList(map,page);
-            if(list!=null && list.size()>0){
+            if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
                 for(AutoAd ad:list){
                     JSONObject jsonObject=JSONObject.fromObject(ad);
@@ -110,6 +110,7 @@ public class AutoAdController extends ModuleController {
             result.setCode(1);
             result.setMsg("获取广告信息出错");
             logger.error(result.getMsg()+e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
@@ -150,8 +151,7 @@ public class AutoAdController extends ModuleController {
                     map.put("adId", ConvertUtil.toInt(id));
                 }
                 else if(StringUtil.isNotNullOrEmpty(ids)){
-                    String[] adIds=ids.split(",");
-                    map.put("adIds",adIds);
+                    map.put("adIds",ids);
                 }
                 if(!autoAdService.delete(map)){
                     result.setCode(1);

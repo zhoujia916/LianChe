@@ -43,7 +43,6 @@
                     <stopKey>foo</stopKey>
                     <stopPort>9090</stopPort>
                     <scanIntervalSeconds>5</scanIntervalSeconds>
-                    <!--<jettyConfig>${project.basedir}/src/main/resources/jetty-config.xml</jettyConfig>-->
 
                     <systemProperties>
                         <systemProperty>

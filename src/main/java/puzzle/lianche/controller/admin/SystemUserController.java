@@ -73,7 +73,7 @@ public class SystemUserController extends ModuleController {
                 }
             }
             List<SystemUser> list=systemUserService.queryList(map,page);
-            if(list!=null && list.size()>0){
+            if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
                 for(SystemUser user:list){
                     JSONObject jsonObject=JSONObject.fromObject(user);

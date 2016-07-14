@@ -86,4 +86,8 @@ public class ConvertUtil {
     public static int toInt(Date date, long base){
         return (int)(date.getTime() - base);
     }
+
+    public static Boolean toBool(String value){
+        return Boolean.valueOf(value);
+    }
 }

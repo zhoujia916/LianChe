@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.ModuleController;
+import puzzle.lianche.controller.plugin.wxpay.util.WxPayAPI;
+import puzzle.lianche.controller.plugin.wxpay.util.WxPayResult;
 import puzzle.lianche.entity.*;
 import puzzle.lianche.service.IAutoCarAttrService;
 import puzzle.lianche.service.IAutoCarService;
@@ -40,7 +42,7 @@ public class AutoOrderController extends ModuleController {
 
     @RequestMapping(value = {"/index"})
     public String index(){
-        List<SystemMenuAction> actions=getActions();
+        List<SystemMenuAction> actions = getActions();
 
         this.setModelAttribute("actions", actions);
 
@@ -50,8 +52,8 @@ public class AutoOrderController extends ModuleController {
     @RequestMapping(value = {"/add"})
     public String add(){
 
-        List<AutoUser> users=autoUserService.queryList(null);
-        List<AutoCar> cars=autoCarService.queryList(null);
+        List<AutoUser> users = autoUserService.queryList(null);
+        List<AutoCar> cars = autoCarService.queryList(null);
         this.setModelAttribute("userList",users);
         this.setModelAttribute("carList",cars);
 
@@ -63,8 +65,8 @@ public class AutoOrderController extends ModuleController {
     public String edit(@PathVariable Integer orderId){
         if(orderId != null && orderId > 0){
 
-            List<AutoUser> users=autoUserService.queryList(null);
-            List<AutoCar> cars=autoCarService.queryList(null);
+            List<AutoUser> users = autoUserService.queryList(null);
+            List<AutoCar> cars = autoCarService.queryList(null);
             this.setModelAttribute("userList",users);
             this.setModelAttribute("carList",cars);
 
@@ -75,13 +77,13 @@ public class AutoOrderController extends ModuleController {
                 order.setOrderStatusString(Constants.ORDER_STATUS.get(order.getOrderStatus()));
                 order.setPayStatusString(Constants.PAY_STATUS.get(order.getPayStatus()));
                 order.setShipStatusString(Constants.SHIP_STATUS.get(order.getShipStatus()));
-                List<String> list=autoOrderService.queryOperate(order,Constants.ORDER_USER_ADMIN);
-                List<Map> orderActions=new ArrayList<Map>();
-                if(list!=null && list.size()>0){
+                List<String> list = autoOrderService.queryOperate(order,Constants.ORDER_USER_ADMIN);
+                List<Map> orderActions = new ArrayList<Map>();
+                if(list != null && list.size() > 0){
                     for(String action:list){
-                        Map actionMap=new HashMap();
+                        Map actionMap = new HashMap();
                         actionMap.put("key",action);
-                        actionMap.put("value",Constants.OO_OPERATE.get(action));
+                        actionMap.put("value",Constants.MAP_OO_OPERATE.get(action));
                         orderActions.add(actionMap);
                     }
                 }
@@ -122,13 +124,13 @@ public class AutoOrderController extends ModuleController {
                 order.setOrderStatusString(Constants.ORDER_STATUS.get(order.getOrderStatus()));
                 order.setPayStatusString(Constants.PAY_STATUS.get(order.getPayStatus()));
                 order.setShipStatusString(Constants.SHIP_STATUS.get(order.getShipStatus()));
-                List<String> list=autoOrderService.queryOperate(order,Constants.ORDER_USER_ADMIN);
-                List<Map> orderActions=new ArrayList<Map>();
-                if(list!=null && list.size()>0){
+                List<String> list = autoOrderService.queryOperate(order,Constants.ORDER_USER_ADMIN);
+                List<Map> orderActions = new ArrayList<Map>();
+                if(list != null && list.size() > 0){
                     for(String action:list){
-                        Map actionMap=new HashMap();
+                        Map actionMap = new HashMap();
                         actionMap.put("key",action);
-                        actionMap.put("value",Constants.OO_OPERATE.get(action));
+                        actionMap.put("value",Constants.MAP_OO_OPERATE.get(action));
                         orderActions.add(actionMap);
                     }
                 }
@@ -162,9 +164,9 @@ public class AutoOrderController extends ModuleController {
     @RequestMapping(value = "/list.do")
     @ResponseBody
     public Result list(AutoOrder autoOrder, Page page){
-        Result result=new Result();
+        Result result = new Result();
         try{
-            Map<String, Object> map=new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<String, Object>();
             if(autoOrder != null) {
                 if (autoOrder.getOrderStatus() != null && autoOrder.getOrderStatus() > 0) {
                     map.put("orderStatus", autoOrder.getOrderStatus());
@@ -182,11 +184,11 @@ public class AutoOrderController extends ModuleController {
                     map.put("endTime", ConvertUtil.toLong(ConvertUtil.toDateTime(autoOrder.getEndAddTime() + " 23:59:59")));
                 }
             }
-            List<AutoOrder> list=autoOrderService.queryOrder(map,page);
-            if(list!=null && list.size()>0){
-                JSONArray array=new JSONArray();
+            List<AutoOrder> list = autoOrderService.queryList(map,page);
+            if(list != null && list.size() > 0){
+                JSONArray array = new JSONArray();
                 for(AutoOrder order:list){
-                    JSONObject jsonObject=new JSONObject();
+                    JSONObject jsonObject = new JSONObject();
                     jsonObject.put("orderId",order.getOrderId());
                     jsonObject.put("carName",order.getCarName());
                     jsonObject.put("orderStatus",Constants.ORDER_STATUS.get(order.getOrderStatus()));
@@ -215,7 +217,7 @@ public class AutoOrderController extends ModuleController {
     @RequestMapping(value = "/action.do")
     @ResponseBody
     public Result action(String action,AutoOrder autoOrder){
-        Result result=new Result();
+        Result result = new Result();
         try{
             if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_CREATE)){
                 Map<String, Object> map = new HashMap<String, Object>();
@@ -255,7 +257,7 @@ public class AutoOrderController extends ModuleController {
                 autoOrder.getCar().setSendNumber(0);
                 autoOrder.setCar(autoOrder.getCar());
                 autoOrder.setPutTime(ConvertUtil.toLong(ConvertUtil.toDateTime(autoOrder.getPutTimeString()+" 23:59:59")));
-
+                autoOrder.setOrderRemark(Constants.OD_SUBMIT);
                 if(!autoOrderService.insert(autoOrder)){
                     result.setCode(1);
                     result.setData("保存订单信息出错！");
@@ -265,13 +267,13 @@ public class AutoOrderController extends ModuleController {
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
 
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
-                Map<String, Object> map=new HashMap<String, Object>();
-                String id=request.getParameter("id");
-                String ids=request.getParameter("ids");
+                Map<String, Object> map = new HashMap<String, Object>();
+                String id = request.getParameter("id");
+                String ids = request.getParameter("ids");
                 if(StringUtil.isNotNullOrEmpty(id)){
                     map.put("orderId",ConvertUtil.toInt(id));
                 }else if(StringUtil.isNotNullOrEmpty(ids)){
-                    String[] orderIds=ids.split(",");
+                    String[] orderIds = ids.split(",");
                     map.put("orderIds",orderIds);
                 }
                 if(!autoOrderService.delete(map)){
@@ -292,50 +294,99 @@ public class AutoOrderController extends ModuleController {
     @RequestMapping("/operate.do")
     @ResponseBody
     public Result operate(String action,Integer orderId){
-        Result result=new Result();
+        Result result = new Result();
         try{
-            AutoOrder order=autoOrderService.query(orderId, null);
-            boolean flag=false;
+            AutoOrder order = autoOrderService.query(orderId, null);
+            boolean flag = false;
             if(action.equalsIgnoreCase(Constants.OO_CANCEL)){
-                flag=autoOrderService.doCancel(order);
-            }else if(action.equalsIgnoreCase(Constants.OO_PAYMENT)){
-                flag=autoOrderService.doDeposit(order);
-            }else if(action.equalsIgnoreCase(Constants.OO_UNPAYMENT)){
+                if(StringUtil.isNullOrEmpty(order.getOrderRemark())){
+                    result.setCode(Constants.ResultHelper.RESULT_PARAM_ERROR);
+                    result.setMsg("取消订单时请填写理由");
+                    return result;
+                }
+                order.setStatusRemark(Constants.OD_CANCEL);
+                flag = autoOrderService.doCancel(order);
+            }
+            else if(action.equalsIgnoreCase(Constants.OO_ACCEPT_CANCEL)){
+                order.setStatusRemark(Constants.OD_CANCEL);
+                order.setOrderRemark("系统同意取消该笔订单");
+                flag = autoOrderService.doCancel(order);
+            }
+            else if(action.equalsIgnoreCase(Constants.OO_REJECT_CANCEL)){
+                if(StringUtil.isNullOrEmpty(order.getRemark())){
+                    result.setCode(Constants.ResultHelper.RESULT_PARAM_ERROR);
+                    result.setMsg("拒绝取消订单时请填写理由");
+                    return result;
+                }
+                order.setOrderRemark("系统拒绝取消该笔订单");
+                flag = autoOrderService.update(order);
+            }
+            else if(action.equalsIgnoreCase(Constants.OO_PAYMENT)){
+                flag = autoOrderService.doDeposit(order);
+            }
+            else if(action.equalsIgnoreCase(Constants.OO_UNPAYMENT)){
+                //取消买家支付订金，状态回退至前面一步
                 order.setPayStatus(Constants.PS_WAIT_BUYER_DEPOSIT);
-                flag=autoOrderService.update(order);
-            }else if(action.equalsIgnoreCase(Constants.OO_ACCEPT)){
-                flag=autoOrderService.doAccept(order);
-            }else if(action.equalsIgnoreCase(Constants.OO_UNACCEPT)){
-                flag=autoOrderService.doReject(order);
-            }else if(action.equalsIgnoreCase(Constants.OO_REJECT)){
-                flag=autoOrderService.doReject(order);
-            }else if(action.equalsIgnoreCase(Constants.OO_RECEIVE)){
-                flag=autoOrderService.doReceive(order);
-            }else if(action.equalsIgnoreCase(Constants.OO_NOTIFY_RECEIVE)){
-                flag=autoOrderService.doNotify(order);
-            }else if(action.equalsIgnoreCase(Constants.OO_RETURN_BUYER_DEPOSIT)){
-                Integer type=0;
-                if(order.getPayStatus()==Constants.PS_BUYER_PAY_DEPOSIT) {
-                    type=Constants.ORDER_USER_BUYER;
+                order.setStatusRemark(Constants.OD_SUBMIT);
+                flag = autoOrderService.update(order);
+            }
+            else if(action.equalsIgnoreCase(Constants.OO_ACCEPT)){
+                order.setStatusRemark(Constants.OD_SELLER_PAID);
+                flag = autoOrderService.doAccept(order);
+            }
+            else if(action.equalsIgnoreCase(Constants.OO_UNACCEPT)){
+                //取消卖家接受该笔订单，状态回退至前面一步
+                order.setStatusRemark(Constants.OD_BUYER_PAID);
+                flag = autoOrderService.doReject(order);
+            }
+            else if(action.equalsIgnoreCase(Constants.OO_REJECT)){
+                if(StringUtil.isNullOrEmpty(order.getRemark())){
+                    result.setCode(Constants.ResultHelper.RESULT_PARAM_ERROR);
+                    result.setMsg("拒绝订单时请填写理由");
+                    return result;
                 }
-                else if(order.getPayStatus()==Constants.PS_SELLER_PAY_DEPOSIT){
-                    type=Constants.ORDER_USER_ALL;
-                }
-                else if(order.getPayStatus()==Constants.PS_WAIT_SYSTEM_DEPOSIT){
-                    type=Constants.ORDER_USER_ALL;
-                }
-                flag = autoOrderService.doReturnDeposit(order, type);
+                order.setOrderRemark("系统拒绝该笔订单");
+                order.setStatusRemark(Constants.OD_SELLER_REJECT);
+                flag = autoOrderService.doReject(order);
+            }
+            else if(action.equalsIgnoreCase(Constants.OO_RECEIVE)){
+                order.setOrderRemark("系统确定订单收货");
+                order.setStatusRemark(Constants.OD_SUCESS);
+                flag = autoOrderService.doReceive(order);
+            }
+            else if(action.equalsIgnoreCase(Constants.OO_NOTIFY_RECEIVE)){
+                order.setOrderRemark("系统提醒买家确认收货");
+                flag = autoOrderService.doNotify(order);
             }
             else if(action.equalsIgnoreCase(Constants.OO_RETURN_BUYER_DEPOSIT)){
-                Integer type=Constants.ORDER_USER_BUYER;
-                flag = autoOrderService.doReturnDeposit(order, type);
+                if(!checkReturnDeposit(order, Constants.ORDER_USER_BUYER)){
+                    result.setCode(1);
+                    result.setMsg("退还订金操作失败");
+                    return result;
+                }
+
+                if(order.getOrderRemark().equals("系统已退还卖家订金")){
+                    order.setOrderRemark("系统已退还双方订金");
+                }else{
+                    order.setOrderRemark("系统已退还买家订金");
+                }
+                flag = autoOrderService.doReturnDeposit(order, Constants.ORDER_USER_BUYER);
             }
             else if(action.equalsIgnoreCase(Constants.OO_RETURN_SELLER_DEPOSIT)){
-                Integer type=Constants.ORDER_USER_SELLER;
-                flag = autoOrderService.doReturnDeposit(order, type);
+                if(!checkReturnDeposit(order, Constants.ORDER_USER_SELLER)){
+                    result.setCode(1);
+                    result.setMsg("退还订金操作失败");
+                    return result;
+                }
+                if(order.getOrderRemark().equals("系统已退还买家订金")){
+                    order.setOrderRemark("系统已退还双方订金");
+                }else{
+                    order.setOrderRemark("系统已退还卖家订金");
+                }
+                flag = autoOrderService.doReturnDeposit(order, Constants.ORDER_USER_SELLER);
             }
             if(flag){
-                insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改订单详情");
+                insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"执行订单操作成功");
             }else{
                 result.setCode(1);
                 result.setMsg("执行订单操作失败！");
@@ -348,6 +399,38 @@ public class AutoOrderController extends ModuleController {
         return result;
     }
 
+    private boolean checkReturnDeposit(AutoOrder order, Integer type){
+        try {
+            if (order != null) {
+                if(order.getBuyerDeposit() > 0 && type.equals(Constants.ORDER_USER_BUYER)){
+                    if(order.getBuyerPayMethod() == Constants.ORDER_PAYMENT_WXPAY){
+                        WxPayResult result = WxPayAPI.refundOrder(order.getBuyerPayNumber(), order.getOrderSn() + Constants.ORDER_USER_BUYER,
+                                (int) (order.getBuyerDeposit() * 100));
+                        return result != null;
+                    }
+                    else if(order.getBuyerPayMethod() == Constants.ORDER_PAYMENT_ALIPAY){
+                        return true;
+                    }
+                }
+                else if(order.getSellerDeposit() > 0 && type.equals(Constants.ORDER_USER_SELLER)){
+                    if(order.getSellerPayMethod() == Constants.ORDER_PAYMENT_WXPAY){
+                        WxPayResult result = WxPayAPI.refundOrder(order.getBuyerPayNumber(), order.getOrderSn() + Constants.ORDER_USER_SELLER,
+                                (int) (order.getSellerDeposit() * 100));
+                        return result != null;
+                    }
+                    else if(order.getSellerPayMethod() == Constants.ORDER_PAYMENT_ALIPAY){
+                        return true;
+                    }
+                }
+            }
+        }
+        catch (Exception e){
+
+        }
+        return false;
+
+    }
+
 
     /**
      * 查看车源属性
@@ -357,12 +440,12 @@ public class AutoOrderController extends ModuleController {
     @RequestMapping(value = "/queryCarAttr.do")
     @ResponseBody
     public Result queryCarAttr(AutoCar orderCar){
-        Result result=new Result();
+        Result result = new Result();
         try{
-            Map<String, Object> map=new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("carId", orderCar.getCarId());
             orderCar = autoCarService.query(map);
-            List<AutoCarAttr> list= autoCarAttrService.queryList(map);
+            List<AutoCarAttr> list = autoCarAttrService.queryList(map);
             orderCar.setAttr(list);
             result.setData(orderCar);
         }catch(Exception e){

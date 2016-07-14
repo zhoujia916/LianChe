@@ -324,7 +324,7 @@
 			}).one('error', function() {
 				imgFailed.call(null, img);
 			});
-
+//            img.setAttribute('crossOrigin', 'anonymous');
 			img.src = src;
 		}
 		var imgLoaded = function(img) {

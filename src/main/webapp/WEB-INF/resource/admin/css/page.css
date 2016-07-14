@@ -376,6 +376,10 @@ ul,li,ol{
     color: #ffffff;
     font-weight: bold;
 }
+
+.ace-file-multiple .ace-file-container .ace-file-name img{
+    height:62px;
+}
 .tree-list{
 
 }

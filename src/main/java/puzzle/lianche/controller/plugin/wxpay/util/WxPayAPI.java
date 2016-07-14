@@ -69,7 +69,7 @@ public class WxPayAPI {
         data.setValue("mch_id", WxConfig.MCHID);
         if(transactionId != null && transactionId != "")
             data.setValue("transaction_id", transactionId);
-        if(outTradeNo != null && outTradeNo != "")
+        else if(outTradeNo != null && outTradeNo != "")
             data.setValue("out_trade_no", outTradeNo);
         data.setValue("nonce_str", getNonceStr(32));
         data.setSign();
@@ -78,7 +78,13 @@ public class WxPayAPI {
         String url = "https://api.mch.weixin.qq.com/pay/orderquery";
         String response = postXml(data.toXml(), url, false);
 
-        return WxPayResult.init(response);
+        if(response != null) {
+            WxPayResult result = WxPayResult.init(response);
+            if (result != null && result.getValue("return_code").equals("SUCCESS")) {
+                return result;
+            }
+        }
+        return null;
     }
 
     /**
@@ -98,7 +104,7 @@ public class WxPayAPI {
         data.setValue("mch_id", WxConfig.MCHID);
         if(transactionId != null && transactionId != "")
             data.setValue("transaction_id", transactionId);
-        if(outTradeNo != null && outTradeNo != "")
+        else if(outTradeNo != null && outTradeNo != "")
             data.setValue("out_trade_no", outTradeNo);
         data.setValue("nonce_str", getNonceStr(32));
         data.setSign();
@@ -107,7 +113,13 @@ public class WxPayAPI {
         String url = "https://api.mch.weixin.qq.com/pay/closeorder";
         String response = postXml(data.toXml(), url, false);
 
-        return WxPayResult.init(response);
+        if(response != null) {
+            WxPayResult result = WxPayResult.init(response);
+            if (result != null && result.getValue("return_code").equals("SUCCESS")) {
+                return result;
+            }
+        }
+        return null;
     }
 
     /**
@@ -128,7 +140,7 @@ public class WxPayAPI {
 
         if(transactionId != null && transactionId != "")
             data.setValue("transaction_id", transactionId);
-        if(outTradeNo != null && outTradeNo != "")
+        else if(outTradeNo != null && outTradeNo != "")
             data.setValue("out_trade_no", outTradeNo);
         data.setValue("nonce_str", getNonceStr(32));
         data.setValue("total_fee", String.valueOf(totalFee));
@@ -138,8 +150,13 @@ public class WxPayAPI {
 
         String url = "https://api.mch.weixin.qq.com/pay/refund";
         String response = postXml(data.toXml(), url, false);
-
-        return WxPayResult.init(response);
+        if(response != null) {
+            WxPayResult result = WxPayResult.init(response);
+            if (result != null && result.getValue("return_code").equals("SUCCESS")) {
+                  return result;
+            }
+        }
+        return null;
     }
 
     /**
@@ -160,7 +177,7 @@ public class WxPayAPI {
 
         if(transactionId != null && transactionId != "")
             data.setValue("transaction_id", transactionId);
-        if(outTradeNo != null && outTradeNo != "")
+        else if(outTradeNo != null && outTradeNo != "")
             data.setValue("out_trade_no", outTradeNo);
         data.setValue("nonce_str", getNonceStr(32));
         data.setSign();
@@ -169,7 +186,13 @@ public class WxPayAPI {
         String url = "https://api.mch.weixin.qq.com/pay/refundquery";
         String response = postXml(data.toXml(), url, false);
 
-        return WxPayResult.init(response);
+        if(response != null) {
+            WxPayResult result = WxPayResult.init(response);
+            if (result != null && result.getValue("return_code").equals("SUCCESS")) {
+                return result;
+            }
+        }
+        return null;
     }
 
 
@@ -212,7 +235,6 @@ public class WxPayAPI {
      * 获取毫秒级别的时间戳
      */
     private static String getMillisecond(){
-        //获取毫秒的时间戳
         return String.valueOf(System.currentTimeMillis());
     }
 }

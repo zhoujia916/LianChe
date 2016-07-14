@@ -23,11 +23,13 @@ public interface IAutoOrderService{
 
     public boolean realeseLock(List<AutoOrder> list);
 
-    public List<String> queryOperate(AutoOrder order, int userType  );
+    public List<String> queryOperate(AutoOrder order, int userType);
 
     public AutoOrder query(Integer orderId, String orderSn);
 
     public boolean doCancel(AutoOrder order);
+
+    public boolean doRequestCancel(AutoOrder order);
 
     public boolean doAccept(AutoOrder order);
 
@@ -40,8 +42,6 @@ public interface IAutoOrderService{
     public boolean doDeposit(AutoOrder order);
 
     public boolean doReturnDeposit(AutoOrder order,Integer type);
-
-    public List<AutoOrder> queryOrder(Map<String, Object> map,Page page);
 
     public Integer queryCount(Map<String, Object> map);
 }

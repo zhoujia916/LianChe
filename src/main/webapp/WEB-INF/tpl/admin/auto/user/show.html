@@ -55,7 +55,7 @@
                             </label>
                             <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px;"{{/if}}>
                                 {{if $action eq 'CREATE'}}
-                                <input type="text" id="userName" name="userName" placeholder="用户名,请使用手机号码" class="txt input-sm col-sm-6">
+                                <input type="text" id="userName" name="userName" placeholder="用户名,请使用手机号码" class="txt input-sm col-sm-4">
                                 {{elseif $action eq 'UPDATE'}}
                                 <input type="text" id="userName" name="userName" placeholder="用户名,请使用手机号码" value="{{$user.userName}}" class="txt input-sm col-sm-6">
                                 {{elseif $action eq 'VIEW'}}
@@ -85,7 +85,7 @@
                                 {{if $action eq 'CREATE'}}
                                 <input type="text" id="phone" name="phone" placeholder="手机号码" class="txt input-sm col-sm-4">
                                 {{elseif $action eq 'UPDATE'}}
-                                <input type="text" id="phone" name="phone" placeholder="手机号码" value="{{$user.phone}}" class="txt input-sm col-sm-4">
+                                <input type="text" id="phone" name="phone" placeholder="手机号码" value="{{if $user.phone}}{{$user.phone}}{{/if}}" class="txt input-sm col-sm-4">
                                 {{elseif $action eq 'VIEW'}}
                                 {{$user.phone}}
                                 {{/if}}
@@ -157,7 +157,7 @@
                                 {{if $action eq 'CREATE'}}
                                 <input type="text" id="point" name="point" placeholder="信誉积分" value="100" class="txt input-sm col-sm-2">
                                 {{elseif $action eq 'UPDATE'}}
-                                <input type="text" id="point" name="point" placeholder="信誉积分" value="{{$user.point}}" class="txt input-sm col-sm-2">
+                                <input type="text" id="point" name="point" placeholder="信誉积分" value="{{if $user.point}}{{$user.point}}{{/if}}" class="txt input-sm col-sm-2">
                                 {{elseif $action eq 'VIEW'}}
                                 {{$user.point}}
                                 {{/if}}
@@ -171,7 +171,7 @@
                                 {{if $action eq 'CREATE'}}
                                 <input type="text" id="idNumber" name="idNumber" placeholder="生份证号码" class="txt input-sm col-sm-4">
                                 {{elseif $action eq 'UPDATE'}}
-                                <input type="text" id="idNumber" name="idNumber" placeholder="生份证号码" value="{{$user.idNumber}}" class="txt input-sm col-sm-4">
+                                <input type="text" id="idNumber" name="idNumber" placeholder="生份证号码" value="{{if $user.idNumber}}{{$user.idNumber}}{{/if}}" class="txt input-sm col-sm-4">
                                 {{elseif $action eq 'VIEW'}}
                                 {{if $user.idNumber}}{{$user.idNumber}}{{/if}}
                                 {{/if}}
@@ -303,6 +303,7 @@
             </div>
             {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
             <div class="clearfix form-actions">
+                {{if $action eq 'UPDATE'}}<input type="hidden" name="userId" value="{{$user.userId}}" />{{/if}}
                 <button id="btnReset" class="btn" type="reset">
                     <i class="ace-icon fa fa-undo bigger-110"></i>
                     重置
@@ -327,8 +328,6 @@
             </div>
             {{/if}}
         </form>
-
-
     </div><!-- /.col -->
 </div><!-- /.row -->
 <script type="text/javascript">
@@ -377,7 +376,7 @@
             });
         });
 
-        $("#birthString").datepicker({
+        $("#birth").datepicker({
             showOtherMonths: true,
             selectOtherMonths: false
         });
@@ -403,6 +402,7 @@
                 return true;
             },
             preview_error : function(filename, error_code) {
+                console.log("preview error");
                 var errorMsg = '';
                 if(error_code == 2){
                     errorMsg = "加载读取图片出错";
@@ -410,12 +410,6 @@
                     errorMsg = "创建缩列图出错";
                 }
                 showTip(errorMsg);
-                //name of the file that failed
-                //error_code values
-                //1 = 'FILE_LOAD_FAILED',
-                //2 = 'IMAGE_LOAD_FAILED',
-                //3 = 'THUMBNAIL_FAILED'
-                //alert(error_code);
             }
         });
         {{/if}}
@@ -425,6 +419,7 @@
             type: "image",
             path: "{{$user.userAvatar}}"
         }];
+
         userAvatar.ace_file_input("show_file_list", files, false);
         {{/if}}
 
@@ -492,7 +487,7 @@
             ,
             dictResponseError: '上传文件出错!',
             //change the previewTemplate to use Bootstrap progress bars
-            previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
+            previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <!--<div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>-->\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
         });
         {{if $action eq 'UPDATE' or $action eq 'VIEW'}}
         var mockFileList = [];

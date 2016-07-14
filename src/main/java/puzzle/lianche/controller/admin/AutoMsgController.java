@@ -71,7 +71,7 @@ public class AutoMsgController extends ModuleController {
                 }
             }
             List<AutoMsg> list=autoMsgService.queryList(map,page);
-            if(list!=null && list.size()>0){
+            if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
                 for(AutoMsg msg:list){
                     if(msg.getFromUserName()==null && msg.getFromRealName()==null){

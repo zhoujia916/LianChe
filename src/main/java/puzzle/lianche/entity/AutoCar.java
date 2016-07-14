@@ -626,4 +626,44 @@ public class AutoCar implements Serializable{
     }
 
     private Integer orderId;
+
+    public String getOrderSn() {
+        return orderSn;
+    }
+
+    public void setOrderSn(String orderSn) {
+        this.orderSn = orderSn;
+    }
+
+    private String orderSn;
+
+    public String getOrderStatusRemark() {
+        return orderStatusRemark;
+    }
+
+    public void setOrderStatusRemark(String orderStatusRemark) {
+        this.orderStatusRemark = orderStatusRemark;
+    }
+
+    private String orderStatusRemark;
+
+    public Integer getOrderHasParts() {
+        return orderHasParts;
+    }
+
+    public void setOrderHasParts(Integer orderHasParts) {
+        this.orderHasParts = orderHasParts;
+    }
+
+    private Integer orderHasParts;
+
+    public Integer getOrderCarNumber() {
+        return orderCarNumber;
+    }
+
+    public void setOrderCarNumber(Integer orderCarNumber) {
+        this.orderCarNumber = orderCarNumber;
+    }
+
+    private Integer orderCarNumber;
 }

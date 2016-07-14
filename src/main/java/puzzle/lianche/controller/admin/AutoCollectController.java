@@ -71,7 +71,7 @@ public class AutoCollectController extends ModuleController {
                 }
             }
             List<AutoCollect> list=autoCollectService.queryList(map,page);
-            if(list!=null && list.size()>0){
+            if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
                 for(AutoCollect collect:list){
                     JSONObject jsonObject=JSONObject.fromObject(collect);

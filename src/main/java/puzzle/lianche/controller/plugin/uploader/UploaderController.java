@@ -24,29 +24,29 @@ public class UploaderController extends BaseController {
         return multipartResolver.isMultipart(request) ? handleBinary() : handleBase64();
     }
 
-    @ResponseBody
-    @RequestMapping(value = {"/uploader/car"})
-    public Result uploadCar(){
-        return handleBase64();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = {"/uploader/userauth"})
-    public Result uploadUserAuth(){
-        return handleBase64();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = {"/uploader/useravatar"})
-    public Result uploadUserAvatar(){
-        return handleBase64();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = {"/uploader/feedback"})
-    public Result uploadFeedback(){
-        return handleBase64();
-    }
+//    @ResponseBody
+//    @RequestMapping(value = {"/uploader/car"})
+//    public Result uploadCar(){
+//        return handleBase64();
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = {"/uploader/userauth"})
+//    public Result uploadUserAuth(){
+//        return handleBase64();
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = {"/uploader/useravatar"})
+//    public Result uploadUserAvatar(){
+//        return handleBase64();
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = {"/uploader/feedback"})
+//    public Result uploadFeedback(){
+//        return handleBase64();
+//    }
 
 
 
@@ -56,8 +56,16 @@ public class UploaderController extends BaseController {
 
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
 
-        String typePath = getParameter("type");
+
         MultipartFile file = multiRequest.getFile("upfile");
+        if(file == null){
+            result.setCode(-1);
+            result.setMsg("文件不能为空");
+            return result;
+        }
+
+        String typePath = getParameter("type");
+
         String rootPath = session.getServletContext().getRealPath("") + "/" + request.getContextPath();
         String relativePath = request.getContextPath();
         String relativeUrl = relativePath + "/upload/" + typePath + "/";
@@ -80,12 +88,7 @@ public class UploaderController extends BaseController {
             if(typePath.equalsIgnoreCase("car")) {
                 ImageUtil.zoomImage(saveDir + saveName, saveDir + saveName, 600, 360);
             }
-
-            String url = request.getScheme() + "://" + request.getServerName();
-            if(request.getServerPort() != 80){
-                url += ":" + request.getServerPort();
-            }
-            url += relativeUrl + saveName;
+            String url = getHost() + relativeUrl + saveName;
 
             result.setData(url);
 
@@ -103,6 +106,12 @@ public class UploaderController extends BaseController {
         Result result = new Result();
 
         String file = getParameter("file");
+        if(file == null || file.equals("")){
+            result.setCode(-1);
+            result.setMsg("文件不能为空");
+            return result;
+        }
+
         String typePath = getParameter("type");
         if(typePath == null || typePath.trim().equals("")){
             typePath = "temp";
@@ -151,11 +160,7 @@ public class UploaderController extends BaseController {
                 ImageUtil.zoomImage(saveDir + saveName, saveDir + saveName, 600, 360);
             }
 
-            String url = request.getScheme() + "://" + request.getServerName();
-            if (request.getServerPort() != 80) {
-                url += ":" + request.getServerPort();
-            }
-            url += relativeUrl + saveName.replace("\\", "/");
+            String url = getHost() + relativeUrl + saveName.replace("\\", "/");
 
             result.setData(url);
         }
@@ -164,7 +169,6 @@ public class UploaderController extends BaseController {
             result.setMsg("上传文件失败！");
             e.printStackTrace();
         }
-
         return result;
     }
     //endregion

@@ -58,7 +58,7 @@ public class SystemRoleController extends ModuleController {
                 }
             }
             List<SystemRole> list=systemRoleService.queryList(map,page);
-            if(list!=null && list.size()>0){
+            if(list != null && list.size() > 0){
                 JSONArray array=new JSONArray();
                 for(SystemRole role:list){
                     JSONObject jsonObject=JSONObject.fromObject(role);

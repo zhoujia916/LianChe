@@ -81,11 +81,8 @@
 	        	<if test="adId > 0">
 	                ad_id = #{adId}
 	            </if>
-                <if test="adIds!=null and adIds.length>0">
-                    ad_id in
-                    <foreach collection="adIds" item="adId" open="(" separator="," close=")">
-                        #{adId}
-                    </foreach>
+                <if test="adIds != null and adIds != ''">
+                    ad_id in (${adIds})
                 </if>
 	        	<if test="adPositionId > 0">
 	                ad_position_id = #{adPositionId}

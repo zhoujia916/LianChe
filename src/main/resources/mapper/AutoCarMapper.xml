@@ -43,6 +43,9 @@
         <result column="ship_status" property="orderShipStatus"/>
         <result column="buyer_id" property="buyerId"/>
         <result column="order_id" property="orderId"/>
+        <result column="order_sn" property="orderSn"/>
+        <result column="order_status_remark" property="orderStatusRemark"/>
+        <result column="order_has_parts" property="orderHasParts"/>
     </resultMap>
 
     <sql id="allColumn">
@@ -178,11 +181,8 @@
                 <if test="carId > 0">
                     car_id = #{carId}
                 </if>
-                <if test="carIds != null and carIds.length > 0">
-                    car_id in
-                    <foreach collection="carIds" item="carId" open="(" separator="," close=")">
-                        #{carId}
-                    </foreach>
+                <if test="carIds != null and carIds != '' ">
+                    car_id in (${carIds})
                 </if>
                 <if test="carName != null">
                     car_name = #{carName}
@@ -222,7 +222,8 @@
     </delete>
 
     <select id="query" parameterType="Map" resultMap="AutoCar">
-        select ac.*, p.region_name as province_name, c.region_name as city_name, ab.brand_name, abc.cat_name, abm.model_name
+        select ac.*, p.region_name as province_name, c.region_name as city_name, ab.brand_name, abc.cat_name, abm.model_name,
+        (select path from auto_car_pic as acp where acp.car_id = ac.car_id limit 0, 1) as pic
         <if test="viewUserId != null and viewUserId > 0">
             ,(select collect_id from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id and auc.user_id = #{viewUserId}) as collect_id
         </if>
@@ -257,11 +258,8 @@
         inner join auto_brand_model as abm on ac.brand_model_id=abm.model_id
         <where>
             <trim prefixOverrides="and | or">
-                <if test="carIdList!=null and carIdList.size()>0">
-                    and ac.car_id in
-                    <foreach collection="carIdList" item="carId" open="(" separator="," close=")">
-                        ${carId}
-                    </foreach>
+                <if test="carIdList!=null and carIdList !=''">
+                    and ac.car_id in (${carIdList})
                 </if>
                 <if test="carName!= null and carName !='' ">
                     and ac.car_name like concat('%',#{carName},'%')
@@ -310,7 +308,8 @@
 
     <select id="queryOrderCar" parameterType="Map" resultMap="AutoCar">
         select ac.*, ab.brand_name,abc.cat_name,abm.model_name,au.user_name,aup.real_name,au.status as add_user_status,
-        ao.add_time as order_add_time, ao.order_status, ao.pay_status, ao.ship_status, ao.buyer_id, ao.order_id,
+        ao.add_time as order_add_time, ao.order_status, ao.pay_status, ao.ship_status, ao.buyer_id, ao.order_id, ao.order_sn, ao.status_remark as order_status_remark,
+        aoc.has_parts as order_has_parts, aoc.car_number as order_car_number,
         (select count(1) from auto_collect as auc where auc.target_type = 1 and auc.target_id = ac.car_id) as collect_count,
         (select path from auto_car_pic as acp where acp.car_id = ac.car_id limit 0 , 1) as pic
         <if test="viewUserId != null and viewUserId > 0">
@@ -326,11 +325,8 @@
         left join auto_order as ao on ao.order_id = aoc.order_id
         <where>
             <trim prefixOverrides="and | or">
-                <if test="carIdList!=null and carIdList.size()>0">
-                    and ac.car_id in
-                    <foreach collection="carIdList" item="carId" open="(" separator="," close=")">
-                        ${carId}
-                    </foreach>
+                <if test="carIdList!=null and carIdList != ''">
+                    and ac.car_id in (${carIdList})
                 </if>
                 <if test="carName!= null and carName !='' ">
                     and ac.car_name like concat('%',#{carName},'%')
@@ -374,7 +370,7 @@
         <if test="sort != null and sort != ''">
             ${sort},
         </if>
-        ac.refresh_time desc, ac.car_id desc
+        ao.order_id desc, ac.sort_order desc, ac.refresh_time desc, ac.car_id desc
     </select>
     
     <select id="queryUserCollect" parameterType="Map" resultMap="AutoCar">

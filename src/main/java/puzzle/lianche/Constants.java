@@ -218,20 +218,20 @@ public class Constants {
 
     //region 订单
     /*
-        item_name   		order_status     		pay_status    		shipping_status           buyer actions                                   seller_actions                          admin
-    1. 	提交订单    			买家已提交订单			等待买家付订金        未提车                     cancel  payment                                                                         cancel payment
+        item_name   		order_status     		pay_status    		shipping_status           buyer actions                                   seller_actions                                    admin
+    1. 	提交订单    			买家已提交订单			等待买家付订金        未提车                     cancel  payment                                                                                 cancel payment
 
-    2. 	买家支付     			买家已提交订单			买家已支付订金	    未提车                     cancel                                          accept reject                           cancel accept reject unpayment
+    2. 	买家支付     			买家已提交订单			买家已支付订金	    未提车                     request_cancel                                  accept reject                                   cancel accept reject unpayment return_buyer_deposit
 
-    3A. 卖家同意并支付      	交易中                   卖家已支付订金   	    未提车                     request_cancel receive contact_seller           notify_receive contact_buyer            cancel unaccept notify_receive receive
+    3A. 卖家同意并支付      	交易中                   卖家已支付订金   	    未提车                     request_cancel receive contact_seller           request_cancel notify_receive contact_buyer     cancel unaccept notify_receive receive
 
-    3B.	买家拒绝订单         	交易拒绝                 买家已支付订金        未提车
+    3B.	买家拒绝订单         	交易拒绝                 买家已支付订金        未提车                                                                                                                     return_buyer_deposit
 
-    4. 	买家确认收货         	交易成功                 等待系统退还定金       已提车                     contact_seller                                 contact_buyer                           return_buyer_deposit return_buyer_deposit
+    4. 	买家确认收货         	交易成功                 等待系统退还定金       已提车                    contact_seller                                  contact_buyer                                    return_buyer_deposit return_buyer_deposit
 
     5. 	系统退还订金         	交易成功                 定金已经退还          已提车                     contact_seller                                  contact_buyer
 
-    6. 	管理员取消订单       	交易取消                 定金已经退还          未提车                                                                                                             return_buyer_deposit return_buyer_deposit
+    6. 	管理员取消订单       	交易取消                 定金已经退还          未提车                                                                                                                     return_buyer_deposit return_buyer_deposit
     */
 
     /**
@@ -244,6 +244,8 @@ public class Constants {
     public static final String OO_UNACCEPT = "unaccept";
     public static final String OO_REJECT = "reject";
     public static final String OO_REQUEST_CANCEL = "request_cancel";
+    public static final String OO_ACCEPT_CANCEL = "request_cancel";
+    public static final String OO_REJECT_CANCEL = "request_cancel";
     public static final String OO_CONTACT_BUYER = "contact_buyer";
     public static final String OO_CONTACT_SELLER = "contact_seller";
     public static final String OO_RECEIVE = "receive";
@@ -251,7 +253,7 @@ public class Constants {
     public static final String OO_RETURN_BUYER_DEPOSIT = "return_buyer_deposit";
     public static final String OO_RETURN_SELLER_DEPOSIT = "return_seller_deposit";
 
-    public static final Map<String, String> OO_OPERATE = new HashMap<String, String>(){
+    public static final Map<String, String> MAP_OO_OPERATE = new HashMap<String, String>(){
         {
             put("cancel","取消订单");
             put("payment","设为买家订金已支付");
@@ -260,6 +262,10 @@ public class Constants {
             put("unaccept","设为卖家取消交易");
             put("reject","设为卖家拒绝交易");
             put("request_cancel","请求取消订单");
+            put("accept_cancel","同意取消订单");
+            put("reject_cancel","拒绝取消订单");
+            put("accept_request_cancel","同意取消订单");
+            put("reject_request_cancel","拒绝取消订单");
             put("contact_buyer","联系买家");
             put("contact_seller","联系卖家");
             put("receive","确认收货");
@@ -269,23 +275,14 @@ public class Constants {
         }
     };
 
-    public static final Map<String, String> OO_ACTIONS = new HashMap<String, String>(){
-        {
-            put("取消订单","cancel");
-            put("设为买家订金已支付","payment");
-            put("设为买家订金未支付","unpayment");
-            put("设为卖家同意交易","accept");
-            put("设为卖家取消交易","unaccept");
-            put("设为卖家拒绝交易","reject");
-            put("请求取消订单","request_cancel");
-            put("联系买家","contact_buyer");
-            put("联系卖家","contact_seller");
-            put("确认收货","receive");
-            put("通知买家收货","notify_receive");
-            put("退还买家订金","return_buyer_deposit");
-            put("退还卖家订金","return_seller_deposit");
-        }
-    };
+    public static final String OD_SUBMIT = "等待付款";
+    public static final String OD_BUYER_PAID = "买家已付款";
+    public static final String OD_SELLER_PAID = "卖家已付款";
+    public static final String OD_SELLER_REJECT = "卖家拒绝订单";
+    public static final String OD_SUCESS = "订单已成交";
+    public static final String OD_CANCEL = "订单已取消";
+    public static final String OD_REQUEST_CANCEL = "已申请取消";
+
 
     /**
      * 订单状态(买家已提交,卖家已同意,卖家不同意,交易中,交易成功,交易取消)
@@ -294,6 +291,7 @@ public class Constants {
     public static final Integer OS_EXECUTE = 2;
     public static final Integer OS_SUCCESS = 3;
     public static final Integer OS_CANCEL = 4;
+    public static final Integer OS_REQUEST_CANCEL = 5;
 
     public static final  Map<Integer,String> ORDER_STATUS=new HashMap<Integer, String>(){
         {
@@ -395,6 +393,10 @@ public class Constants {
     //下拉加载
     public static final Integer PULLREFRESH_DOWN = 2;
 
+
+    public static final Integer SYSTEM_MENU_STATUS_VISIBLE = 1;
+    public static final Integer SYSTEM_MENU_STATUS_INVISIBLE = 2;
+
     public class UrlHelper{
         public static final String PARAM_RETURN_URL = "ReturnUrl";
 
@@ -475,6 +477,11 @@ public class Constants {
         public static final String ADMIN_AUTO_ORDER_SHOW = "admin/auto/order/show";
 
         public static final String ADMIN_AUTO_ORDER = "admin/auto/order/index";
+
+        /**
+         *  APP相关页面
+         */
+        public static final String PHONE_ARTICLE_SHOW = "phone/article/show";
     }
 
     public class PageHelper{
