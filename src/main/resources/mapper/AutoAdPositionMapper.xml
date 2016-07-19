@@ -60,11 +60,8 @@
 	        	<if test="positionId > 0">
 	                position_id = #{positionId}
 	            </if>
-                <if test="positionIds=null and positionIds.length>0">
-                    position_id in
-                    <foreach collection="positionIds" item="positionId" open="(" separator="," close=")">
-                        #{positionId}
-                    </foreach>
+                <if test="positionIds != null and positionIds != ''">
+                    position_id in (${positionIds})
                 </if>
 	        	<if test="positionName != null">
 	                position_name = #{positionName}

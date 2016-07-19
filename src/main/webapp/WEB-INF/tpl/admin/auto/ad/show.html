@@ -17,157 +17,250 @@
 
 <div class="row" id="">
     <div class="col-xs-12">
-        <form class="form-horizontal" role="form">
-            <div class="space-10"></div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">
-                    位置
-                </label>
-                <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
-                    {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
-                    <select id="adPositionId" name="adPositionId" class="select" >
-                        {{foreach from=$positionList item=positionItem}}
-                        <option {{if $ad.adPositionId eq $positionItem.positionId}}selected="selected"{{/if}}
-                        value="{{$positionItem.positionId}}">
-                        {{$positionItem.positionName}}({{$positionItem.width}} * {{$positionItem.height}})
-                        </option>
-                        {{/foreach}}
-                    </select>
-                    {{elseif $action eq 'VIEW'}}
-                    {{$ad.positionName}}
+                <form id="form" class="form-horizontal" action="{{$contextPath}}/admin/autoad/action.do" enctype="multipart/form-data">
+                    {{if $action eq 'UPDATE'}}
+                        <input hidden="hidden" name="adId" value="{{$ad.adId}}"/>
                     {{/if}}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">
-                    开始时间
-                </label>
-                <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
-                    {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
-                    <input type="text" id="datepicker1" value="{{if $ad.beginTimeString}}{{$ad.beginTimeString}}{{/if}}" name="beginTimeString" placeholder="开始时间" class="txt input-sm col-sm-2 ">
-                    {{elseif $action eq 'VIEW'}}
-                    {{if $ad.beginTimeString}}{{$ad.beginTimeString}}{{/if}}
-                    {{/if}}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">
-                    结束时间
-                </label>
-                <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
-                    {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
-                    <input type="text" id="datepicker2" value="{{if $ad.endTimeString}}{{$ad.endTimeString}}{{/if}}" name="endTimeString" placeholder="结束时间" class="txt input-sm col-sm-2 ">
-                    {{elseif $action eq 'VIEW'}}
-                    {{if $ad.endTimeString}}{{$ad.endTimeString}}{{/if}}
-                    {{/if}}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">
-                    链接
-                </label>
-                <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
-                    {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
-                    <input type="text" id="adLink" value="{{if $ad.adLink}}{{$ad.adLink}}{{/if}}" name="adLink" placeholder="链接" class="txt input-sm col-sm-6 ">
-                    {{elseif $action eq 'VIEW'}}
-                    {{if $ad.adLink}}{{$ad.adLink}}{{/if}}
-                    {{/if}}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">
-                    广告图
-                </label>
-                <div class="col-sm-5" style="height:62px;{{if $action eq 'VIEW'}}padding-top:10px{{/if}}">
-                    {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
-                    <input type="hidden" id="hidPic" name="pic" />
-                    <input type="file" id="file" name="file" placeholder="广告图">
-                    {{elseif $action eq 'VIEW'}}
-                    <img src="{{$ad.pic}}" style="height:100%;" />
-                    {{/if}}
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">
-                    是否有效
-                </label>
-                <div class="col-sm-5" style="height:62px;{{if $action eq 'VIEW'}}padding-top:10px{{/if}}">
-                    {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
-                    <div class="position-relative">
-                        <label>
-                            <input value="1" type="radio" name="status" class="ace"{{if $action eq 'CREATE' || $ad.status eq 1}} checked="checked"{{/if}} />
-                            <span class="lbl">是</span>
-                        </label>
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs padding-16">
+                            <li class="active">
+                                <a data-toggle="tab" href="#edit-basic">
+                                    <i class="green ace-icon fa fa-pencil-square-o bigger-125"></i>
+                                    基本信息
+                                </a>
+                            </li>
 
-                        <label style="margin-left:20px;">
-                            <input value="2" type="radio" name="status" class="ace"{{if $ad.status eq 2}} checked="checked"{{/if}} />
-                            <span class="lbl">否</span>
-                        </label>
+                            <li>
+                                <a data-toggle="tab" href="#edit-content">
+                                    <i class="purple ace-icon ace-icon fa fa-globe bigger-125"></i>
+                                    广告内容
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content profile-edit-tab-content">
+                            <div id="edit-basic" class="tab-pane in active">
+                                <div class="space-10"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        广告标题
+                                    </label>
+                                    <div class="col-sm-9">
+                                    {{if $action eq 'CREATE'}}
+                                    <input type="text"  id="title"  name="title" placeholder="广告标题" class="txt input-sm col-sm-6">
+                                    {{elseif $action eq 'UPDATE'}}
+                                    <input type="text"  id="title" {{if $ad.title}} value="{{$ad.title}}" {{/if}}  name="title" placeholder="广告标题" class="txt input-sm col-sm-6">
+                                    {{/if}}
+                                </div>
+                            </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        位置
+                                    </label>
+                                    <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
+                                    {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
+                                    <select id="adPositionId" name="adPositionId" class="select" >
+                                        {{foreach from=$positionList item=positionItem}}
+                                        <option {{if $ad.adPositionId eq $positionItem.positionId}}selected="selected"{{/if}}
+                                        value="{{$positionItem.positionId}}">
+                                        {{$positionItem.positionName}}({{$positionItem.width}} * {{$positionItem.height}})
+                                        </option>
+                                        {{/foreach}}
+                                    </select>
+                                    {{elseif $action eq 'VIEW'}}
+                                    {{$ad.positionName}}
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    开始时间
+                                </label>
+                                <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
+                                {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
+                                <input type="text" id="datepicker1" value="{{if $ad.beginTimeString}}{{$ad.beginTimeString}}{{/if}}" name="beginTimeString" placeholder="开始时间" class="txt input-sm col-sm-2 ">
+                                {{elseif $action eq 'VIEW'}}
+                                {{if $ad.beginTimeString}}{{$ad.beginTimeString}}{{/if}}
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                结束时间
+                            </label>
+                            <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
+                            {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
+                            <input type="text" id="datepicker2" value="{{if $ad.endTimeString}}{{$ad.endTimeString}}{{/if}}" name="endTimeString" placeholder="结束时间" class="txt input-sm col-sm-2 ">
+                            {{elseif $action eq 'VIEW'}}
+                            {{if $ad.endTimeString}}{{$ad.endTimeString}}{{/if}}
+                            {{/if}}
+                        </div>
                     </div>
-                    {{elseif $action eq 'VIEW'}}
-                    {{if $ad.status eq 1}}否{{else}}是{{/if}}
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            链接
+                        </label>
+                        <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
+                        {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
+                        <input type="text" id="adLink" value="{{if $ad.adLink}}{{$ad.adLink}}{{/if}}" name="adLink" placeholder="链接" class="txt input-sm col-sm-6 ">
+                        {{elseif $action eq 'VIEW'}}
+                        {{if $ad.adLink}}{{$ad.adLink}}{{/if}}
+                        {{/if}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            广告图
+                        </label>
+                        <div class="col-sm-5" style="height:62px;{{if $action eq 'VIEW'}}padding-top:10px{{/if}}">
+                            {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
+                            <input type="hidden" id="hidPic" name="pic" {{if $ad.pic}} value="{{$ad.pic}}" {{/if}}/>
+                            <input type="file" id="file" name="file" placeholder="广告图">
+                            {{elseif $action eq 'VIEW'}}
+                            <img src="{{$ad.pic}}" style="height:100%;" />
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            是否有效
+                        </label>
+                        <div class="col-sm-5" style="height:62px;{{if $action eq 'VIEW'}}padding-top:10px{{/if}}">
+                            {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
+                            <div class="position-relative">
+                                <label>
+                                    <input value="1" type="radio" name="status" class="ace"{{if $action eq 'CREATE' || $ad.status eq 1}} checked="checked"{{/if}} />
+                                    <span class="lbl">是</span>
+                                </label>
+
+                                <label style="margin-left:20px;">
+                                    <input value="2" type="radio" name="status" class="ace"{{if $ad.status eq 2}} checked="checked"{{/if}} />
+                                    <span class="lbl">否</span>
+                                </label>
+                            </div>
+                            {{elseif $action eq 'VIEW'}}
+                            {{if $ad.status eq 1}}否{{else}}是{{/if}}
+                            {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="edit-content" class="tab-pane">
+                        <div class="space-10"></div>
+                        {{if $action eq 'CREATE'}}
+                        <textarea id="content" name="content" style="min-height:300px;width:100%;"></textarea>
+                        {{elseif $action eq 'UPDATE'}}
+                        <textarea id="content" name="content" style="min-height:300px;width:100%;">{{$ad.content}}</textarea>
+                        {{/if}}
+                    </div>
+                    </div>
+                    {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
+                    <div class="clearfix form-actions">
+                        <input type="hidden" name="action" value="{{$action}}">
+                        {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+                        <button id="btnReset" class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+                        &nbsp; &nbsp;
+                        <button id="btnSubmit" data-action="{{$action}}" class="btn btn-info" type="button">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            确定
+                        </button>
+                        {{/if}}
+                    </div>
                     {{/if}}
-                </div>
-            </div>
-            {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
-            <div class="clearfix form-actions">
-                {{if $action eq 'UPDATE'}}<input type="hidden" name="carId" value="{{$ad.adId}}" />{{/if}}
-                <button id="btnReset" class="btn" type="reset">
-                    <i class="ace-icon fa fa-undo bigger-110"></i>
-                    重置
-                </button>
-                &nbsp; &nbsp;
-                <button id="btnSubmit" class="btn btn-info" type="button" data-action="{{$action}}">
-                    <i class="ace-icon fa fa-check bigger-110"></i>
-                    确定
-                </button>
-
-            </div>
-            {{/if}}
+        </div>
         </form>
-
-
     </div><!-- /.col -->
 </div><!-- /.row -->
+{{if $action eq 'CREATE' or $action eq 'UPDATE'}}
+<script type="text/javascript" src="{{$contextPath}}/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="{{$contextPath}}/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="{{$contextPath}}/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" src="{{$contextPath}}/resource/admin/js/jquery.form.js"></script>
+{{/if}}
 <script type="text/javascript">
 
-    $('.page-content-area').ace_ajax('loadScripts', [ null, null], function() {
+    $('.page-content-area').ace_ajax('loadScripts', [ null,null], function() {
         {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
+        UE.getEditor("content");
         $("#btnSubmit").on("click", function(){
-            $.post("{{$contextPath}}/admin/autoad/action.do", "action=" + $(this).attr("data-action") + "&" + $("form").serialize(), function(result){
-                if(result.code == 0){
-                    changeHash("admin/autoad/index");
-                }else{
-                    showTip(result.msg);
+            var title= $.trim($("#title").val());
+            var adPositionId= $("#adPositionId").val();
+            var startDate= $.trim($("#datepicker1").val());
+            var endDate= $.trim($("#datepicker2").val());
+            var adLink= $.trim($("#adLink").val());
+            var hidPic= $.trim($("#hidPic").val());
+            var content= $.trim($("#content").val());
+//            if((adPositionId == 1 || adPositionId == 2) && hidPic == ""){
+//                showTip("请选择广告图片");
+//                return;
+//            }
+            if(adPositionId == 3 && title == ""){
+                showTip("标题不能为空");
+                $("#title").focus();
+                return;
+            }
+            if(startDate == ""){
+                showTip("开始时间不能为空");
+                $("#datepicker1").focus();
+                return;
+            }
+            if(endDate == ""){
+                showTip("结束时间不能为空");
+                $("#datepicker2").focus();
+                return;
+            }
+            if(adLink == ""){
+                showTip("广告链接不能为空");
+                $("#adLink").focus();
+                return;
+            }
+            if(content == ""){
+                showTip("广告内容不能为空");
+                return;
+            }
+
+            $("#form").ajaxSubmit({
+                type: 'post',
+                url: '{{$contextPath}}/admin/autoad/action.do',
+                dataType:"json",
+                success: function(result) {
+                    if(result.code == 0){
+                        changeHash("admin/autoad/index");
+                    }else {
+                        showTip(result.msg);
+                    }
                 }
-            }, "json");
+            });
+            return false;
         });
         {{/if}}
         {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
-        var cover = $('#file').ace_file_input({
-            style:'well',
-            allowExt: ["jpeg", "jpg", "png", "gif" , "bmp"],
-            allowMime: ["image/jpg", "image/jpeg", "image/png", "image/gif", "image/bmp"],
+            $('#file').ace_file_input({
+                style:'well',
+                allowExt: ["jpeg", "jpg", "png", "gif" , "bmp"],
+                allowMime: ["image/jpg", "image/jpeg", "image/png", "image/gif", "image/bmp"],
 
-            btn_choose:'拖放或点击选择图片',
-            btn_change:null,
-            no_icon:'ace-icon fa fa-cloud-upload',
-            droppable:true,
-            thumbnail:'small',
-            before_remove : function() {
-                $("#hidCover").val("");
-                return true;
-            },
-            preview_error : function(filename, error_code) {
-                var errorMsg = '';
-                if(error_code == 2){
-                    errorMsg = "加载读取图片出错";
-                }else if(error_code == 3){
-                    errorMsg = "创建缩列图出错";
+                btn_choose:'拖放或点击选择图片',
+                btn_change:null,
+                no_icon:'ace-icon fa fa-cloud-upload',
+                droppable:true,
+                thumbnail:'small',
+                before_remove : function() {
+                    $("#hidPic").val("");
+                    return true;
+                },
+                preview_error : function(filename, error_code) {
+                    var errorMsg = '';
+                    if(error_code == 2){
+                        errorMsg = "加载读取图片出错";
+                    }else if(error_code == 3){
+                        errorMsg = "创建缩列图出错";
+                    }
+                    showTip(errorMsg);
                 }
-                showTip(errorMsg);
-            }
-        });
+            });
         {{if $action eq 'CREATE'}}
         var date = new Date();
         var month = date.getMonth();
@@ -193,13 +286,13 @@
             selectOtherMonths: false
         });
         {{/if}}
-        {{if $action eq 'UPDATE'}}
-        var files = [{
-            name: "temp.jpeg",
-            type: "image",
-            path: "{{$ad.cover}}"
-        }];
-        cover.ace_file_input("show_file_list", files, false);
+        {{if $action eq 'UPDATE' and $ad.pic}}
+            var files = [{
+                name: "temp.jpeg",
+                type: "image",
+                path: "{{$ad.pic}}"
+            }];
+            $('#file').ace_file_input("show_file_list", files, false);
         {{/if}}
 
 

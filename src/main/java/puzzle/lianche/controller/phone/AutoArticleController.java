@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import puzzle.lianche.Constants;
 import puzzle.lianche.controller.BaseController;
-import puzzle.lianche.entity.AutoArticle;
-import puzzle.lianche.service.IAutoArticleService;
+import puzzle.lianche.entity.AutoAd;
+import puzzle.lianche.service.IAutoAdService;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.Page;
 import puzzle.lianche.utils.Result;
-import puzzle.lianche.utils.StringUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -26,52 +25,48 @@ import java.util.Map;
 public class AutoArticleController extends BaseController {
 
     @Autowired
-    private IAutoArticleService autoArticleService;
+    private IAutoAdService autoAdService;
 
     /**
-     * 获取文章列表
-     * @param autoArticle
+     * 获取广告列表
+     * @param autoAd
      * @return
      */
     @RequestMapping(value = "/list.do")
     @ResponseBody
-    public Result list(AutoArticle autoArticle){
+    public Result list(AutoAd autoAd){
         Result result = new Result();
         try{
-            if(autoArticle == null || autoArticle.getCatId() == null || autoArticle.getCatId() == 0){
+            if(autoAd == null || autoAd.getAdPositionId() == null || autoAd.getAdPositionId() == 0){
                 result.setCode(-1);
                 result.setMsg("类型不能为空");
                 return result;
             }
             Page page = new Page();
             page.setPageIndex(1);
-            //2,3,6 对应特卖会  首页幻灯  首页通知
-            if(autoArticle.getCatId().equals(2)){
+            //2,3,4 对应特卖会  首页幻灯  首页通知
+            if(autoAd.getAdPositionId().equals(2)){
                 page.setPageSize(2);
             }
-            else if(autoArticle.getCatId().equals(3)){
+            else if(autoAd.getAdPositionId().equals(3)){
                 page.setPageSize(6);
             }
-            else if(autoArticle.getCatId().equals(4)){
+            else if(autoAd.getAdPositionId().equals(4)){
                 page.setPageSize(3);
             }
 
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("catId", autoArticle.getCatId());
+            map.put("adPositionId", autoAd.getAdPositionId());
             map.put("curTime", ConvertUtil.toLong(new Date()));
             map.put("status", Constants.AUTO_AD_STATUS_VALID);
-            List<AutoArticle> list = autoArticleService.queryList(map, page);
+            List<AutoAd> list = autoAdService.queryList(map, page);
             if(list != null && !list.isEmpty()){
                 JSONArray jsonArray = new JSONArray();
-                for(AutoArticle item : list){
+                for(AutoAd item : list){
                     JSONObject jsonItem = new JSONObject();
-                    jsonItem.put("cover", item.getCover());
+                    jsonItem.put("pic", item.getPic());
                     jsonItem.put("title", item.getTitle());
-                    String link = item.getSourceUrl();
-                    if(StringUtil.isNullOrEmpty(link)){
-                        link = getHost() + request.getContextPath() + "/phone/autoarticle/" + item.getArticleId();
-                    }
-                    jsonItem.put("link", link);
+                    jsonItem.put("link", item.getAdLink());
                     jsonArray.add(jsonItem);
                 }
                 result.setData(jsonArray);
@@ -86,16 +81,16 @@ public class AutoArticleController extends BaseController {
     }
 
     /**
-     * 文章详情页面
+     * 广告详情页面
      * @return
      */
-    @RequestMapping(value = "/{articleId}")
-    public String show(@PathVariable Integer articleId){
-        if(articleId != null && articleId > 0){
+    @RequestMapping(value = "/{adId}")
+    public String show(@PathVariable Integer adId){
+        if(adId != null && adId > 0){
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("articleId", articleId);
-            AutoArticle article = autoArticleService.query(map);
-            this.setModelAttribute("article", article);
+            map.put("adId", adId);
+            AutoAd autoAd = autoAdService.query(map);
+            this.setModelAttribute("autoAd", autoAd);
         }
         return Constants.UrlHelper.PHONE_ARTICLE_SHOW;
     }

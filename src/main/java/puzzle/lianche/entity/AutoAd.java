@@ -48,8 +48,10 @@ public class AutoAd implements Serializable{
 	private Integer adId;
 	@Column(name="ad_position_id", nullable=true)
 	private Integer adPositionId;
+    private String title;
 	@Column(name="ad_link", nullable=true, length=255)
 	private String adLink;
+    private String content;
 	@Column(name="add_time", nullable=true)
 	private Long addTime;
 	@Column(name="start_date", nullable=true)
@@ -78,16 +80,32 @@ public class AutoAd implements Serializable{
 	public void setAdPositionId(Integer adPositionId){
 		this.adPositionId = adPositionId;
 	}
-		
-	public String getAdLink(){
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAdLink(){
 		return adLink;
 	}
 	
 	public void setAdLink(String adLink){
 		this.adLink = adLink;
 	}
-		
-	public Long getAddTime(){
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Long getAddTime(){
 		return addTime;
 	}
 	

@@ -65,14 +65,14 @@ public class AutoAdPositionController extends ModuleController{
                     result.setCode(1);
                     result.setMsg("插入广告位置信息失败");
                 }else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"��ӹ��λ����Ϣ");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_CREATE,"新增广告位置信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
                 if(!autoAdPositionService.update(autoAdPosition)){
                     result.setCode(1);
                     result.setMsg("修改广告位置信息失败");
                 }else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"�޸�ָ���Ĺ��λ����Ϣ");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_UPDATE,"修改广告位置信息");
                 }
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_DELETE)){
                 Map<String, Object> map=new HashMap<String, Object>();
@@ -81,14 +81,13 @@ public class AutoAdPositionController extends ModuleController{
                 if(StringUtil.isNotNullOrEmpty(id)){
                     map.put("positionId", ConvertUtil.toInt(id));
                 }else if(StringUtil.isNotNullOrEmpty(ids)){
-                    String[] positionIds=ids.split(",");
-                    map.put("positionIds",positionIds);
+                    map.put("positionIds",ids);
                 }
                 if(!autoAdPositionService.delete(map)){
                     result.setCode(1);
                     result.setMsg("删除广告位置信息失败");
                 }else{
-                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"ɾ���ض��Ĺ��λ����Ϣ");
+                    insertLog(Constants.PageHelper.PAGE_ACTION_DELETE,"删除广告位置信息");
                 }
             }
         }catch(Exception e){

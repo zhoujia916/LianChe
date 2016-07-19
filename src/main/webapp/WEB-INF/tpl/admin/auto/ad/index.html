@@ -178,47 +178,7 @@
         $("#role-gridview").gridview({
             url: "autoad/list.do",
             form: {
-                url: "autoad/action.do",
-                check:function(){
-                    var adLink=$("#adLink").val();
-                    var adPositionId=$("#adPositionId").val();
-                    var startDate=$("#startDate").val();
-                    var endDate=$("#endDate").val();
-
-                    var dateFormat=/^\d{4}-\d{2}-\d{2}$/;
-
-                    if(!adLink){
-                        console.log("check form");
-                        $("#adLink").focus();
-                        return "请输入URL链接";
-                    }
-                    if(adPositionId==0){
-                        console.log("check form");
-                        $("#adPositionId").focus();
-                        return "请选择位置";
-                    }
-                    if(!startDate){
-                        console.log("check form");
-                        $("#startDate").focus();
-                        return "请输入开始时间";
-                    }
-                    if(!dateFormat.test(startDate) && startDate){
-                        console.log("check form");
-                        $("#startDate").focus();
-                        return "日期格式应为yyyy-MM-dd";
-                    }
-                    if(!endDate){
-                        console.log("check form");
-                        $("#endDate").focus();
-                        return "请输入结束时间";
-                    }
-                    if(!dateFormat.test(endDate) && endDate){
-                        console.log("check form");
-                        $("#endDate").focus();
-                        return "日期格式应为yyyy-MM-dd";
-                    }
-                    return true;
-                }
+                url: "autoad/action.do"
             },
             jsonReader: {
                 key_field: 'adId'
@@ -252,12 +212,10 @@
                     name: "addTime"
                 },
                 {
-                    name: "beginTimeString",
-                    value: "startDate"
+                    name: "startDate"
                 },
                 {
-                    name: "endTimeString",
-                    value: "endDate"
+                    name: "endDate"
                 },
                 {
                     name: "status",

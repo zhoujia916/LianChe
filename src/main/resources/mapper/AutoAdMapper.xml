@@ -3,8 +3,10 @@
 <mapper namespace="AutoAdMapper">
     <resultMap id="AutoAd" type="puzzle.lianche.entity.AutoAd">
     	<id column="ad_id" property="adId" /> 
-    	<result column="ad_position_id" property="adPositionId" /> 
-    	<result column="ad_link" property="adLink" /> 
+    	<result column="ad_position_id" property="adPositionId" />
+        <result column="title" property="title"/>
+    	<result column="ad_link" property="adLink" />
+        <result column="content" property="content"/>
     	<result column="add_time" property="addTime" /> 
     	<result column="start_date" property="startDate" /> 
     	<result column="end_date" property="endDate" /> 
@@ -16,7 +18,7 @@
     </resultMap>
 
     <sql id="allColumn">
-    	ad_id, ad_position_id, ad_link, add_time, start_date, end_date, status, pic
+    	ad_id, ad_position_id, title, ad_link, content, add_time, start_date, end_date, status, pic
     </sql>
 
     <insert id="insert" parameterType="AutoAd" useGeneratedKeys="true" keyProperty="adId">
@@ -24,8 +26,10 @@
         (
 
         	<if test="adPositionId != null">ad_position_id, </if>
+            <if test="title != null">title, </if>
         	<if test="adLink != null">ad_link, </if>
             <if test="pic != null">pic, </if>
+            <if test="content != null">content, </if>
         	<if test="addTime != null">add_time, </if>
         	<if test="startDate != null">start_date, </if>
         	<if test="endDate != null">end_date, </if>
@@ -35,8 +39,10 @@
         (
         	
         	<if test="adPositionId != null">#{adPositionId}, </if>
+            <if test="title != null">#{title}, </if>
         	<if test="adLink != null">#{adLink}, </if>
             <if test="pic != null">#{pic}, </if>
+            <if test="content != null">#{content}, </if>
         	<if test="addTime != null">#{addTime}, </if>
         	<if test="startDate != null">#{startDate}, </if>
         	<if test="endDate != null">#{endDate}, </if>
@@ -51,11 +57,17 @@
                 <if test="adPositionId != null">
                     ad_position_id = #{adPositionId},
                 </if>
+                <if test="title != null">
+                    title = #{title},
+                </if>
                 <if test="adLink != null">
                     ad_link = #{adLink},
                 </if>
-                <if test="pic != null">
+                <if test="pic != null and pic != ''">
                     pic = #{pic},
+                </if>
+                <if test="content != null">
+                    content = #{content},
                 </if>
                 <if test="addTime != null">
                     add_time = #{addTime},
@@ -114,6 +126,9 @@
             <trim prefixOverrides="and | or">
                 <if test="adPositionId != null and adPositionId >0">
                     and aa.ad_position_id = #{adPositionId}
+                </if>
+                <if test="status != null and status > 0">
+                    and aa.status = ${status}
                 </if>
                 <if test="startDate != null">
                     and aa.start_date &gt;= #{startDate}

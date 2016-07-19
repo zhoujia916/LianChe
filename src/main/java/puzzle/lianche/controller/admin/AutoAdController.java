@@ -96,10 +96,8 @@ public class AutoAdController extends ModuleController {
                 JSONArray array=new JSONArray();
                 for(AutoAd ad:list){
                     JSONObject jsonObject=JSONObject.fromObject(ad);
-                    jsonObject.put("startDate",ConvertUtil.toString(ConvertUtil.toDate(ad.getStartDate())));
-                    jsonObject.put("endDate",ConvertUtil.toString(ConvertUtil.toDate(ad.getEndDate())));
-                    jsonObject.put("beginTimeString",ConvertUtil.toString(ConvertUtil.toDate(ad.getStartDate()),"yyyy-MM-dd"));
-                    jsonObject.put("endTimeString",ConvertUtil.toString(ConvertUtil.toDate(ad.getEndDate()),"yyyy-MM-dd"));
+                    jsonObject.put("startDate",ConvertUtil.toString(ConvertUtil.toDate(ad.getStartDate()),"yyyy-MM-dd"));
+                    jsonObject.put("endDate",ConvertUtil.toString(ConvertUtil.toDate(ad.getEndDate()),"yyyy-MM-dd"));
                     jsonObject.put("addTime",ConvertUtil.toString(ConvertUtil.toDate(ad.getAddTime())));
                     array.add(jsonObject);
                 }
@@ -137,6 +135,14 @@ public class AutoAdController extends ModuleController {
             }else if(action.equalsIgnoreCase(Constants.PageHelper.PAGE_ACTION_UPDATE)){
                 autoAd.setStartDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getBeginTimeString()+" 00:00:00")));
                 autoAd.setEndDate(ConvertUtil.toLong(ConvertUtil.toDateTime(autoAd.getEndTimeString()+" 23:59:59")));
+                String pic = savePic();
+                if(StringUtil.isNotNullOrEmpty(pic)) {
+                    autoAd.setPic(pic);
+                }else{
+                    if(StringUtil.isNullOrEmpty(autoAd.getPic())){
+                        autoAd.setPic("");
+                    }
+                }
                 if(!autoAdService.update(autoAd)){
                     result.setCode(1);
                     result.setMsg("修改广告信息失败");
