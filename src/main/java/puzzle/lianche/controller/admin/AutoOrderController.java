@@ -168,6 +168,9 @@ public class AutoOrderController extends ModuleController {
         try{
             Map<String, Object> map = new HashMap<String, Object>();
             if(autoOrder != null) {
+                if(StringUtil.isNotNullOrEmpty(autoOrder.getOrderSn())){
+                    map.put("orderSn", autoOrder.getOrderSn());
+                }
                 if (autoOrder.getOrderStatus() != null && autoOrder.getOrderStatus() > 0) {
                     map.put("orderStatus", autoOrder.getOrderStatus());
                 }

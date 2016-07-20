@@ -59,7 +59,7 @@
                                     </label>
                                     <div class="col-sm-9"{{if $action eq 'VIEW'}} style="padding-top:10px"{{/if}}>
                                     {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
-                                    <select id="adPositionId" name="adPositionId" class="select" >
+                                    <select id="adPositionId" name="adPositionId" class="select">
                                         {{foreach from=$positionList item=positionItem}}
                                         <option {{if $ad.adPositionId eq $positionItem.positionId}}selected="selected"{{/if}}
                                         value="{{$positionItem.positionId}}">
@@ -192,10 +192,6 @@
             var adLink= $.trim($("#adLink").val());
             var hidPic= $.trim($("#hidPic").val());
             var content= $.trim($("#content").val());
-//            if((adPositionId == 1 || adPositionId == 2) && hidPic == ""){
-//                showTip("请选择广告图片");
-//                return;
-//            }
             if(adPositionId == 3 && title == ""){
                 showTip("标题不能为空");
                 $("#title").focus();
@@ -216,6 +212,10 @@
                 $("#adLink").focus();
                 return;
             }
+//            if((adPositionId == 1 || adPositionId == 2) && hidPic == ""){
+//                showTip("请选择广告图片");
+//                return;
+//            }
             if(content == ""){
                 showTip("广告内容不能为空");
                 return;
