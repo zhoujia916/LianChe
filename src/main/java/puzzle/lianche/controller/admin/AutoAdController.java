@@ -138,11 +138,12 @@ public class AutoAdController extends ModuleController {
                 String pic = savePic();
                 if(StringUtil.isNotNullOrEmpty(pic)) {
                     autoAd.setPic(pic);
-                }else{
-                    if(StringUtil.isNullOrEmpty(autoAd.getPic())){
-                        autoAd.setPic("");
-                    }
                 }
+//                else{
+//                    if(StringUtil.isNullOrEmpty(autoAd.getPic())){
+//                        autoAd.setPic("");
+//                    }
+//                }
                 if(!autoAdService.update(autoAd)){
                     result.setCode(1);
                     result.setMsg("修改广告信息失败");

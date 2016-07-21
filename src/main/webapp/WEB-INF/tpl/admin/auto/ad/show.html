@@ -192,10 +192,12 @@
             var adLink= $.trim($("#adLink").val());
             var hidPic= $.trim($("#hidPic").val());
             var content= $.trim($("#content").val());
-            if(adPositionId == 3 && title == ""){
-                showTip("标题不能为空");
-                $("#title").focus();
-                return;
+            if(adPositionId == 3){
+                if(title == "") {
+                    showTip("标题不能为空");
+                    $("#title").focus();
+                    return;
+                }
             }
             if(startDate == ""){
                 showTip("开始时间不能为空");
@@ -212,10 +214,15 @@
                 $("#adLink").focus();
                 return;
             }
-//            if((adPositionId == 1 || adPositionId == 2) && hidPic == ""){
-//                showTip("请选择广告图片");
-//                return;
-//            }
+            if((adPositionId == 1 || adPositionId == 2)){
+                if(hidPic == "") {
+                    var files = $('#file').data("ace_input_files");
+                    if (files == null || files.length == 0) {
+                        showTip("请选择广告图片");
+                        return;
+                    }
+                }
+            }
             if(content == ""){
                 showTip("广告内容不能为空");
                 return;
