@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 
 import puzzle.lianche.Constants;
 import puzzle.lianche.entity.*;
+import puzzle.lianche.init.InitConfig;
+import puzzle.lianche.init.InitTask;
 import puzzle.lianche.push.SmsPush;
 import puzzle.lianche.service.*;
+import puzzle.lianche.task.TimeoutTask;
 import puzzle.lianche.utils.ConvertUtil;
 import puzzle.lianche.utils.EncryptUtil;
 import puzzle.lianche.utils.Page;
@@ -26,6 +29,9 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
 
     @Autowired
     private IAutoUserService autoUserService;
+
+    @Autowired
+    private InitTask initTask;
 	
 	/**
 	* 插入单条记录
@@ -328,6 +334,7 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
             // 更新订单状态
             order.setOrderStatus(Constants.OS_EXECUTE);
             order.setPayStatus(Constants.PS_SELLER_PAY_DEPOSIT);
+            order.setSellerPayTime(ConvertUtil.toLong(new Date()));
             sqlMapper.update("AutoOrderMapper.update", order);
 
             // 短信消息通知买家
@@ -396,6 +403,11 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
         try{
             // 更新订单状态
             order.setPayStatus(Constants.PS_BUYER_PAY_DEPOSIT);
+            order.setBuyerPayTime(ConvertUtil.toLong(new Date()));
+
+            //定时任务
+
+
             sqlMapper.update("AutoOrderMapper.update", order);
             // 短信通知卖家
             AutoUser seller = autoUserService.query(order.getSellerId(), null);
@@ -417,8 +429,6 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
     public boolean doReturnDeposit(AutoOrder order, Integer type){
         try {
             if (type == Constants.ORDER_USER_ALL) {
-//                doReturnDeposit(order, Constants.ORDER_USER_BUYER);
-//                doReturnDeposit(order, Constants.ORDER_USER_SELLER);
                 order.setBuyerDeposit(0);
                 order.setSellerDeposit(0);
                 sqlMapper.update("AutoOrderMapper.update", order);
@@ -426,22 +436,10 @@ public class AutoOrderServiceImpl extends BaseServiceImpl implements IAutoOrderS
                 if (type == Constants.ORDER_USER_BUYER && order.getBuyerDeposit() > 0) {
                     order.setBuyerDeposit(0);
                     sqlMapper.update("AutoOrderMapper.update", order);
-//                    if(order.getBuyerPayMethod() == Constants.ORDER_PAYMENT_ALIPAY){
-//
-//                    }
-//                    else if(order.getBuyerPayMethod() == Constants.ORDER_PAYMENT_WXPAY){
-//
-//                    }
                 }
                 else if (type == Constants.ORDER_USER_SELLER && order.getSellerDeposit() > 0) {
                     order.setSellerDeposit(0);
                     sqlMapper.update("AutoOrderMapper.update", order);
-//                    if(order.getSellerPayMethod() == Constants.ORDER_PAYMENT_ALIPAY){
-//
-//                    }
-//                    else if(order.getSellerPayMethod() == Constants.ORDER_PAYMENT_WXPAY){
-//
-//                    }
                 }
             }
             return true;

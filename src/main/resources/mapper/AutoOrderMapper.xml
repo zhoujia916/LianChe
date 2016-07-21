@@ -9,10 +9,12 @@
     	<result column="ship_status" property="shipStatus" /> 
     	<result column="seller_id" property="sellerId" />
         <result column="buyer_id" property="buyerId" />
-        <result column="buyer_pay_method" property="buyerPayMethod" />
-        <result column="buyer_pay_number" property="buyerPayNumber" />
         <result column="seller_pay_method" property="sellerPayMethod" />
         <result column="seller_pay_number" property="sellerPayNumber" />
+        <result column="seller_pay_time" property="sellerPayTime" />
+        <result column="buyer_pay_method" property="buyerPayMethod" />
+        <result column="buyer_pay_number" property="buyerPayNumber" />
+        <result column="buyer_pay_time" property="buyerPayTime" />
         <result column="seller_deposit" property="sellerDeposit" />
         <result column="buyer_deposit" property="buyerDeposit" />
         <result column="ship_time" property="shipTime" />
@@ -46,10 +48,12 @@
         	<if test="shipStatus != null">ship_status, </if>
             <if test="sellerId != null">seller_id, </if>
             <if test="buyerId != null">buyer_id, </if>
-            <if test="buyerPayMethod != null">buyer_ay_method, </if>
-            <if test="buyerPayNumber != null">buyer_pay_number,</if>
             <if test="sellerPayMethod != null">seller_pay_method, </if>
             <if test="sellerPayNumber != null">seller_pay_number,</if>
+            <if test="sellerPayTime != null">seller_pay_time, </if>
+            <if test="buyerPayMethod != null">buyer_pay_method, </if>
+            <if test="buyerPayNumber != null">buyer_pay_number,</if>
+            <if test="buyerPayTime != null">buyer_pay_time, </if>
             <if test="sellerDeposit != null">seller_deposit, </if>
             <if test="buyerDeposit != null">buyer_deposit, </if>
             <if test="shipTime != null">ship_time, </if>
@@ -68,10 +72,12 @@
         	<if test="shipStatus != null">#{shipStatus}, </if>
             <if test="sellerId != null">#{sellerId}, </if>
             <if test="buyerId != null">#{buyerId}, </if>
-            <if test="buyerPayMethod != null">#{buyerPayMethod}, </if>
-            <if test="buyerPayNumber != null">#{buyerPayNumber},</if>
             <if test="sellerPayMethod != null">#{sellerPayMethod}, </if>
             <if test="sellerPayNumber != null">#{sellerPayNumber},</if>
+            <if test="sellerPayTime != null">#{sellerPayTime}, </if>
+            <if test="buyerPayMethod != null">#{buyerPayMethod}, </if>
+            <if test="buyerPayNumber != null">#{buyerPayNumber},</if>
+            <if test="buyerPayTime != null">#{buyerPayTime}, </if>
             <if test="sellerDeposit != null">#{sellerDeposit}, </if>
             <if test="buyerDeposit != null">#{buyerDeposit}, </if>
             <if test="shipTime != null">#{shipTime}, </if>
@@ -96,6 +102,24 @@
                 </if>
                 <if test="shipStatus != null">
                     ship_status = #{shipStatus},
+                </if>
+                <if test="sellerPayMethod != null">
+                    seller_pay_method = #{sellerPayMethod},
+                </if>
+                <if test="sellerPayNumber != null">
+                    seller_pay_number = #{sellerPayNumber},
+                </if>
+                <if test="sellerPayTime != null">
+                    seller_pay_time = #{sellerPayTime},
+                </if>
+                <if test="buyerPayMethod != null">
+                    buyer_pay_method = #{buyerPayMethod},
+                </if>
+                <if test="buyerPayNumber != null">
+                    buyer_pay_number = #{buyerPayNumber},
+                </if>
+                <if test="buyerPayTime != null">
+                    buyer_pay_time = #{buyerPayTime},
                 </if>
                 <if test="sellerDeposit != null and sellerDeposit > 0">
                     seller_deposit = #{sellerDeposit},
@@ -134,11 +158,8 @@
 	        	<if test="orderId != null and orderId > 0">
 	                order_id = #{orderId}
 	            </if>
-                <if test="orderIds != null and orderIds.length > 0">
-                    order_id in
-                    <foreach collection="orderIds" item="orderId" open="(" separator="," close=")">
-                        #{orderId}
-                    </foreach>
+                <if test="orderIds != null and orderIds != ''">
+                    order_id in (${orderIds})
                 </if>
 	        	<if test="orderSn != null and orderSn != ''">
 	                order_sn = #{orderSn}
