@@ -90,44 +90,54 @@ public class AutoCarController extends BaseController {
             if(list != null && list.size() > 0){
                 JSONArray jsonArray = new JSONArray();
                 for(AutoCar item : list){
-                    JSONObject jsonItem = new JSONObject();
-                    jsonItem.put("isOffical", item.getAddUserId().equals(officalUserId));
-                    jsonItem.put("carId", item.getCarId());
-                    jsonItem.put("carName", item.getCarName());
-                    jsonItem.put("brandName", item.getBrandName());
-                    jsonItem.put("catName", item.getCatName());
-                    jsonItem.put("pic", item.getPic());
-                    if(car.getCarType() == Constants.AUTO_CAR_TYPE_COMMON){
-                        jsonItem.put("addTime", ConvertUtil.toString(new Date(item.getRefreshTime()),Constants.DATE_FORMAT));
-                    }else{
-                        jsonItem.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(item.getRefreshTime()), "yyyy.MM.dd HH:mm"));
-                    }
-
-                    jsonItem.put("officalPrice", item.getOfficalPrice());
-                    jsonItem.put("collectCount", item.getCollectCount());
-                    jsonItem.put("collectId", item.getCollectId() == null ? 0 : item.getCollectId());
-
-                    map.clear();
-                    map.put("carId", item.getCarId());
-
-                    JSONArray jsonAttrArray = new JSONArray();
-                    List<AutoCarAttr> attrs = autoCarAttrService.queryList(map);
-                    if(attrs != null && !attrs.isEmpty()) {
-                        for (AutoCarAttr attrItem : attrs) {
-                            JSONObject jsonAttrItem = new JSONObject();
-                            jsonAttrItem.put("outsideColor", attrItem.getOutsideColor());
-                            jsonAttrItem.put("quoteType", attrItem.getQuoteType());
-                            jsonAttrItem.put("salePriceType", attrItem.getSalePriceType());
-                            jsonAttrItem.put("saleAmount", attrItem.getSaleAmount());
-                            jsonAttrArray.add(jsonAttrItem);
+                    int i=0;
+                    int carId=0;
+                    map.put("attrCarId",item.getCarId());
+                    List<AutoCarAttr> attrList=autoCarAttrService.queryList(map);
+                    for(AutoCarAttr carAttr:attrList){
+                        if(carAttr.getSurplusNumber()==0){
+                            i+=1;
                         }
                     }
-                    jsonItem.put("attrs", jsonAttrArray);
+                    if(i!=attrList.size()){
+                        carId=item.getCarId();
+                    }
+                    if(carId==item.getCarId()){
+                        JSONObject jsonItem = new JSONObject();
+                        jsonItem.put("isOffical", item.getAddUserId().equals(officalUserId));
+                        jsonItem.put("carId", item.getCarId());
+                        jsonItem.put("carName", item.getCarName());
+                        jsonItem.put("brandName", item.getBrandName());
+                        jsonItem.put("catName", item.getCatName());
+                        jsonItem.put("pic", item.getPic());
+                        if(car.getCarType() == Constants.AUTO_CAR_TYPE_COMMON){
+                            jsonItem.put("addTime", ConvertUtil.toString(new Date(item.getRefreshTime()),Constants.DATE_FORMAT));
+                        }else{
+                            jsonItem.put("addTime", ConvertUtil.toString(ConvertUtil.toDate(item.getRefreshTime()), "yyyy.MM.dd HH:mm"));
+                        }
 
-                    int isAuth = item.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS ? 1 : 0;
-                    jsonItem.put("addUserAuth", isAuth);
+                        jsonItem.put("officalPrice", item.getOfficalPrice());
+                        jsonItem.put("collectCount", item.getCollectCount());
+                        jsonItem.put("collectId", item.getCollectId() == null ? 0 : item.getCollectId());
 
-                    jsonArray.add(jsonItem);
+                        JSONArray jsonAttrArray = new JSONArray();
+                        if(attrList != null && !attrList.isEmpty()) {
+                            for (AutoCarAttr attrItem : attrList) {
+                                JSONObject jsonAttrItem = new JSONObject();
+                                jsonAttrItem.put("outsideColor", attrItem.getOutsideColor());
+                                jsonAttrItem.put("quoteType", attrItem.getQuoteType());
+                                jsonAttrItem.put("salePriceType", attrItem.getSalePriceType());
+                                jsonAttrItem.put("saleAmount", attrItem.getSaleAmount());
+                                jsonAttrArray.add(jsonAttrItem);
+                            }
+                        }
+                        jsonItem.put("attrs", jsonAttrArray);
+
+                        int isAuth = item.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS ? 1 : 0;
+                        jsonItem.put("addUserAuth", isAuth);
+
+                        jsonArray.add(jsonItem);
+                    }
                 }
                 result.setData(jsonArray);
             }

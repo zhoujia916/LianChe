@@ -61,7 +61,7 @@
 
                     <tbody>
                     <tr>
-                        <td colspan="9">
+                        <td colspan="11">
                             <div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class="text">正在加载</span></div>
                         </td>
                     </tr>
@@ -71,78 +71,6 @@
 
                 </div>
             </div>
-            <div class="grid-form save-form" style="">
-                <div class="overlay"></div>
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">
-                    <div class="widget-header">
-                        <h5 class="widget-title smaller"></h5>
-
-                        <div class="widget-toolbar">
-                            <a href="#" class="btn-action" data-action="hide">
-                                <i class="ace-icon fa fa-close white"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            <div class="alert-info red"></div>
-                            <form class="form-horizontal" role="form">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        位置
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <select id="adPositionId" name="adPositionId" class="select" data-init="0" >
-                                            <option value="0" selected="selected">请选择位置</option>
-                                            {{foreach from=$list item=aap}}
-                                            <option value="{{$aap.positionId}}">{{$aap.positionName}}</option>
-                                            {{/foreach}}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        开始时间
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" id="startDate" name="beginTimeString" placeholder="开始时间" class="txt input-sm col-sm-5 "/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        结束时间
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" id="endDate" name="endTimeString" placeholder="结束时间" class="txt input-sm col-sm-5 "/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        链接
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" id="adLink" name="adLink" placeholder="链接" class="txt input-sm col-sm-8 ">
-                                    </div>
-                                </div>
-                                <div class="clearfix form-actions">
-                                    <input type="hidden" name="adId" value="" />
-                                    <a class="btn btn-sm btn-action" data-action="reset">
-                                        <i class="ace-icon fa fa-undo"></i>
-                                        重置
-                                    </a>
-                                    &nbsp; &nbsp; &nbsp;
-                                    <a class="btn btn-sm btn-primary btn-action" data-action="save">
-                                        <i class="ace-icon fa fa-check"></i>
-                                        提交
-                                    </a>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="grid-form search-form "></div>
 
         </div>

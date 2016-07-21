@@ -138,11 +138,12 @@ public class AutoAdController extends ModuleController {
                 String pic = savePic();
                 if(StringUtil.isNotNullOrEmpty(pic)) {
                     autoAd.setPic(pic);
-                }else{
-                    if(StringUtil.isNullOrEmpty(autoAd.getPic())){
-                        autoAd.setPic("");
-                    }
                 }
+//                else{
+//                    if(StringUtil.isNullOrEmpty(autoAd.getPic())){
+//                        autoAd.setPic("");
+//                    }
+//                }
                 if(!autoAdService.update(autoAd)){
                     result.setCode(1);
                     result.setMsg("修改广告信息失败");
@@ -180,36 +181,38 @@ public class AutoAdController extends ModuleController {
         if (multipartResolver.isMultipart(request)) {
             MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
             MultipartFile pic = multiRequest.getFile("file");
+            if(pic!=null) {
 
-            String typePath = "ad";
+                String typePath = "ad";
 
-            String rootPath = session.getServletContext().getRealPath("") + "/" + request.getContextPath();
-            String relativePath = request.getContextPath();
-            String relativeUrl = relativePath + "/upload/" + typePath + "/";
+                String rootPath = session.getServletContext().getRealPath("") + "/" + request.getContextPath();
+                String relativePath = request.getContextPath();
+                String relativeUrl = relativePath + "/upload/" + typePath + "/";
 
-            String saveName = PathFormatter.format(pic.getOriginalFilename(), "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
-            String saveDir = rootPath + "upload/" + typePath + "/" + saveName.substring(0, saveName.lastIndexOf('/') + 1);
-            relativeUrl += saveName.substring(0, saveName.lastIndexOf('/') + 1);
-            saveName = saveName.substring(saveName.lastIndexOf("/") + 1);
-            try {
-                File dir = new File(saveDir);
-                if (!dir.exists()) {
-                    dir.mkdirs();
+                String saveName = PathFormatter.format(pic.getOriginalFilename(), "{yy}{MM}{dd}/{HH}{mm}{ss}{rand:6}");
+                String saveDir = rootPath + "upload/" + typePath + "/" + saveName.substring(0, saveName.lastIndexOf('/') + 1);
+                relativeUrl += saveName.substring(0, saveName.lastIndexOf('/') + 1);
+                saveName = saveName.substring(saveName.lastIndexOf("/") + 1);
+                try {
+                    File dir = new File(saveDir);
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    }
+
+                    FileOutputStream fos = new FileOutputStream(saveDir + saveName);
+                    fos.write(pic.getBytes());
+                    fos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                String url = request.getScheme() + "://" + request.getServerName();
+                if (request.getServerPort() != 80) {
+                    url += ":" + request.getServerPort();
+                }
+                url += relativeUrl + saveName;
 
-                FileOutputStream fos = new FileOutputStream(saveDir + saveName);
-                fos.write(pic.getBytes());
-                fos.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+                return url;
             }
-            String url = request.getScheme() + "://" + request.getServerName();
-            if (request.getServerPort() != 80) {
-                url += ":" + request.getServerPort();
-            }
-            url += relativeUrl + saveName;
-
-            return url;
         }
 
         return null;
