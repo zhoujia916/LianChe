@@ -137,7 +137,7 @@
                     and aa.end_date &lt;= #{endDate}
                 </if>
                 <if test="curTime != null and curTime > 0">
-                    and aa.start_date &lt;= #{curTime} and end_date &gt; #{curTime}
+                    and aa.start_date &lt;= #{curTime} and end_date &gt;= #{curTime}
                 </if>
             </trim>
         </where>

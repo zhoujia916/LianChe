@@ -44,15 +44,15 @@ public class AutoArticleController extends BaseController {
             }
             Page page = new Page();
             page.setPageIndex(1);
-            //2,3,4 对应特卖会  首页幻灯  首页通知
-            if(autoAd.getAdPositionId().equals(2)){
+            //1,2,3 对应特卖会  首页幻灯  首页通知
+            if(autoAd.getAdPositionId().equals(1)){
                 page.setPageSize(2);
+            }
+            else if(autoAd.getAdPositionId().equals(2)){
+                page.setPageSize(3);
             }
             else if(autoAd.getAdPositionId().equals(3)){
                 page.setPageSize(6);
-            }
-            else if(autoAd.getAdPositionId().equals(4)){
-                page.setPageSize(3);
             }
 
             Map<String, Object> map = new HashMap<String, Object>();

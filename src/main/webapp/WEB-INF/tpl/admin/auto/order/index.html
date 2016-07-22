@@ -79,113 +79,6 @@
                 </div>
             </div>
 
-            <div class="grid-form save-form">
-                <div class="overlay"></div>
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">
-                    <div class="widget-header">
-                        <h5 class="widget-title smaller"></h5>
-
-                        <div class="widget-toolbar">
-                            <a href="#" class="btn-action" data-action="hide">
-                                <i class="ace-icon fa fa-close white"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            <div class="alert-info red"></div>
-                            <form class="form-horizontal" role="form">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        买家
-                                    </label>
-
-                                    <div class="col-sm-9">
-                                        <select data-init="0" id="buyerId" name="buyerId" class="chosen-select" data-placeholder="请选择买家" style="width:160px;">
-                                            <option value="0">请选择买家</option>
-                                            {{foreach from=$users item=user}}
-                                                <option value="{{$user.userId}}">
-                                                    {{$user.userName}}{{if $user.realName!=null}}({{$user.realName}}){{/if}}
-                                                </option>
-                                            {{/foreach}}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        车源
-                                    </label>
-
-                                    <div class="col-sm-9">
-                                        <select data-init="0" id="carId" name="car.carId" class="chosen-select" data-placeholder="请选择车源" style="width:360px;">
-                                            <option value="0">请选择车源</option>
-                                            {{foreach from=$cars item=car}}
-                                            <option data-adduserid="{{$car.addUserId}}" value="{{$car.carId}}">{{$car.carName}}</option>
-                                            {{/foreach}}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        属性
-                                    </label>
-
-                                    <div class="col-sm-9">
-                                        <select data-init="0" id="carAttrId" name="car.carAttrId">
-                                            <option value="0">请选择属性</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        数量
-                                    </label>
-
-                                    <div class="col-sm-9">
-                                        <input type="text" data-init="1" class="txt input-sm col-sm-2input-mini" id="carNumber" name="car.carNumber" />
-                                    </div>
-                                </div>
-                                <div class="form-group" id="rowHasParts">
-                                    <label class="col-sm-3 control-label">
-                                        加配
-                                    </label>
-
-                                    <div class="col-sm-9">
-                                        <input type="checkbox" data-init="1" value="1" offval="0" name="car.hasParts" role="checkbox" class="editable ace ace-switch ace-switch-5">
-                                        <span class="lbl" style="top:6px;"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        提车时间
-                                    </label>
-
-                                    <div class="col-sm-9">
-                                        <input type="text" class="txt input-sm col-sm-2input-mini" placeholder="提车时间" id="putTime" name="putTimeString" />
-                                    </div>
-                                </div>
-                                <div class="clearfix">
-                                    <input type="hidden" name="orderId" value="" />
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="widget-footer form-actions">
-                        <a class="btn btn-sm btn-action" data-action="reset">
-                            <i class="ace-icon fa fa-undo"></i>
-                            重置
-                        </a>
-                        &nbsp; &nbsp; &nbsp;
-                        <a class="btn btn-sm btn-primary btn-action" data-action="save">
-                            <i class="ace-icon fa fa-check"></i>
-                            提交
-                        </a>
-                    </div>
-                </div>
-            </div>
-
             <div class="grid-form search-form "></div>
 
         </div>
@@ -214,51 +107,7 @@
         $("#order-gridview").gridview({
             url: "autoorder/list.do",
             form: {
-                url: "autoorder/action.do",
-                check:function(){
-                    var buyerId=$("#buyerId").val();
-                    var carId=$("#carId").val();
-                    var addUserId=$("#carId option:selected").data("adduserid");
-                    var carAttrId=$("#carAttrId").val();
-                    var surplusNumber=$("#carAttrId option:selected").data("surplus");
-                    var carNumber=$("#carNumber").val();
-                    var putTime=$("#putTime").val();
-                    if(buyerId==0){
-                        console.log("check form");
-                        $("#buyerId").focus();
-                        return "请选择买家";
-                    }else if(carId==0){
-                        console.log("check form");
-                        $("#carId").focus();
-                        return "请选择车源";
-                    }else if(addUserId==buyerId){
-                        console.log("check form");
-                        $("#carId").focus();
-                        return "您不能购买您自己发布的车辆";
-                    }else if(carAttrId==0){
-                        console.log("check form");
-                        $("#carAttrId").focus();
-                        return "请选择属性";
-                    }else if(carNumber<=0){
-                        console.log("check form");
-                        $("#carNumber").focus();
-                        return "请输入数量";
-                    }else if(surplusNumber==0){
-                        console.log("check form");
-                        $("#carAttrId").focus();
-                        return "该车源属性库存为0,请重新选择";
-                    }else if(parseInt(carNumber)>parseInt(surplusNumber)){
-                        console.log("check form");
-                        $("#carNumber").focus();
-                        return "数量大于库存,请重新输入";
-                    }else if(!putTime){
-                        console.log("check form");
-                        $("#putTime").focus();
-                        return "请选择提车时间";
-                    }else{
-                        return true;
-                    }
-                }
+                url: "autoorder/action.do"
             },
             jsonReader: {
                 key_field: 'orderId'
@@ -317,17 +166,18 @@
                     handler:function(){
                         changeHash("page/autoorder/add");
                     }
-                },
-                edit: {
-                    handler:function(key){
-                        key = key || this.gridview("getKey");
-                        if(!key){
-                            showTip("请选择记录");
-                            return;
-                        }
-                        changeHash("page/autoorder/edit/" + key);
-                    }
                 }
+//                ,
+//                edit: {
+//                    handler:function(key){
+//                        key = key || this.gridview("getKey");
+//                        if(!key){
+//                            showTip("请选择记录");
+//                            return;
+//                        }
+//                        changeHash("page/autoorder/edit/" + key);
+//                    }
+//                }
             }
         });
     });

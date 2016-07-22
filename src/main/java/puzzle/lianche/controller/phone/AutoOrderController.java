@@ -846,7 +846,7 @@ public class AutoOrderController extends BaseController {
                     JSONObject jsonOrderItem = new JSONObject();
                     jsonOrderItem.put("orderId", orderItem.getOrderId());
                     jsonOrderItem.put("orderSn", orderItem.getOrderSn());
-                    jsonOrderItem.put("statusRemark", order.getStatusRemark());
+                    jsonOrderItem.put("statusRemark", orderItem.getStatusRemark());
                     jsonOrderItem.put("sellerId", orderItem.getSellerId());
                     jsonOrderItem.put("sellerPhone", orderItem.getSellerName());
                     jsonOrderItem.put("orderSn", orderItem.getOrderSn());

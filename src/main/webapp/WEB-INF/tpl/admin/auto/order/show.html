@@ -350,7 +350,7 @@
         </tbody>
     </table>
     <table class="table table-bordered table-form">
-        {{if $operateList}}
+        {{if $operateList and $operateList|@count gt 0}}
         <thead>
         <tr>
             <th colspan="4" class="center">可执行操作</th>

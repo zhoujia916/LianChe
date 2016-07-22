@@ -64,7 +64,7 @@
 	        	<if test="brandId > 0">
                     and brand_id = ${brandId}
 	            </if>
-                <if test="brandIds!=null and brandIds != ''">
+                <if test="brandIds!=null and brandIds.length>0">
                     and brand_id in
                     <foreach collection="brandIds" item="brandId" open="(" separator="," close=")">
                         ${brandId}
@@ -91,11 +91,26 @@
 
     <select id="queryList" parameterType="Map" resultMap="AutoBrandCat">
         select abc.*, ab.brand_name as brand_name from auto_brand_cat as abc
-        inner join auto_brand as ab on abc.brand_id =  ab.brand_id
+        left join auto_brand as ab on abc.brand_id =  ab.brand_id
         <where>
             <trim prefixOverrides="and | or">
                 <if test="brandId != null and brandId > 0">
                     and abc.brand_id = #{brandId}
+                </if>
+                <if test="brandIds != null and brandIds.length>0">
+                    and abc.brand_id in
+                    <foreach collection="brandIds" item="brandId" open="(" separator="," close=")">
+                        ${brandId}
+                    </foreach>
+                </if>
+                <if test="catId > 0">
+                    and abc.cat_id = ${catId}
+                </if>
+                <if test="catIds!=null and catIds.length>0">
+                    and abc.cat_id in
+                    <foreach collection="catIds" item="catId" open="(" separator="," close=")">
+                        ${catId}
+                    </foreach>
                 </if>
                 <if test="catName !=null and catName != ''">
                     and abc.cat_name like concat('%',#{catName},'%')
