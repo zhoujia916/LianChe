@@ -276,8 +276,7 @@ public class AutoOrderController extends ModuleController {
                 if(StringUtil.isNotNullOrEmpty(id)){
                     map.put("orderId",ConvertUtil.toInt(id));
                 }else if(StringUtil.isNotNullOrEmpty(ids)){
-                    String[] orderIds = ids.split(",");
-                    map.put("orderIds",orderIds);
+                    map.put("orderIds", ids);
                 }
                 if(!autoOrderService.delete(map)){
                     result.setCode(1);

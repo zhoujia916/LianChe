@@ -35,4 +35,5 @@
     <task:scheduler id="qbScheduler" pool-size="10"/>
 
     <bean id="initConfig" class="puzzle.lianche.init.InitConfig" scope="singleton"></bean>
+    <bean id="initTask" class="puzzle.lianche.init.InitTask" scope="singleton"></bean>
 </beans>

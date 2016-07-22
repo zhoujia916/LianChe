@@ -93,6 +93,25 @@ public class AutoOrder implements Serializable{
         this.remark = remark;
     }
 
+    @Column(name="seller_pay_time", nullable=true)
+    private long sellerPayTime;
+    public long getSellerPayTime() {
+        return sellerPayTime;
+    }
+    public void setSellerPayTime(long sellerPayTime) {
+        this.sellerPayTime = sellerPayTime;
+    }
+    @Column(name="seller_pay_time", nullable=true)
+    private long buyerPayTime;
+    public long getBuyerPayTime() {
+        return buyerPayTime;
+    }
+    public void setBuyerPayTime(long buyerPayTime) {
+        this.buyerPayTime = buyerPayTime;
+    }
+
+
+
     /**
      * 订单操作备注
      */
