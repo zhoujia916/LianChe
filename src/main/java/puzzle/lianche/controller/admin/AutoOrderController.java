@@ -260,7 +260,7 @@ public class AutoOrderController extends ModuleController {
                 autoOrder.getCar().setSendNumber(0);
                 autoOrder.setCar(autoOrder.getCar());
                 autoOrder.setPutTime(ConvertUtil.toLong(ConvertUtil.toDateTime(autoOrder.getPutTimeString()+" 23:59:59")));
-                autoOrder.setOrderRemark(Constants.OD_SUBMIT);
+                autoOrder.setStatusRemark(Constants.OD_SUBMIT);
                 if(!autoOrderService.insert(autoOrder)){
                     result.setCode(1);
                     result.setData("保存订单信息出错！");
