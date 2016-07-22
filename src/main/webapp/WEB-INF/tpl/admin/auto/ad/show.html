@@ -1,5 +1,5 @@
 
-<title>Puzzle Admin</title>
+<title>Puzzle Admin {{if $action eq 'CREATE'}}新建广告{{elseif $action eq 'UPDATE'}}编辑广告{{elseif $action eq 'VIEW'}}查看广告详情{{/if}}</title>
 
 <div class="page-header">
     <h4>
@@ -18,6 +18,7 @@
 <div class="row" id="">
     <div class="col-xs-12">
                 <form id="form" class="form-horizontal" action="{{$contextPath}}/admin/autoad/action.do" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="{{$action}}">
                     {{if $action eq 'UPDATE'}}
                         <input hidden="hidden" name="adId" value="{{$ad.adId}}"/>
                     {{/if}}
@@ -155,7 +156,6 @@
                     </div>
                     {{if $action eq 'CREATE' || $action eq 'UPDATE'}}
                     <div class="clearfix form-actions">
-                        <input type="hidden" name="action" value="{{$action}}">
                         {{if $action eq 'CREATE' or $action eq 'UPDATE'}}
                         <button id="btnReset" class="btn" type="reset">
                             <i class="ace-icon fa fa-undo bigger-110"></i>
@@ -190,6 +190,7 @@
             var startDate= $.trim($("#datepicker1").val());
             var endDate= $.trim($("#datepicker2").val());
             var adLink= $.trim($("#adLink").val());
+            var adRegExp = /[a-zA-z]+:\/\/[^\s]+/;
             var hidPic= $.trim($("#hidPic").val());
             var content= $.trim($("#content").val());
             if(adPositionId == 3){
@@ -211,6 +212,12 @@
             }
             if(adLink == ""){
                 showTip("广告链接不能为空");
+                $("#adLink").focus();
+                return;
+            }
+            console.log(adRegExp)
+            if(!adRegExp.test(adLink)){
+                showTip("广告链接格式不正确");
                 $("#adLink").focus();
                 return;
             }

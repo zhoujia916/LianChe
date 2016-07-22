@@ -718,7 +718,7 @@ public class AutoUserController extends BaseController {
                     object.put("collectId",car.getCollectId());
                     object.put("isOffical",car.getAddUserId().equals(officalUserId));
                     object.put("carId",car.getCarId());
-                    object.put("carName",car.getCarName());
+                    object.put("carName",car.getModelName());
                     object.put("brandName",car.getBrandName());
                     object.put("catName",car.getCatName());
                     object.put("officalPrice",(car.getOfficalPrice()));
@@ -977,7 +977,7 @@ public class AutoUserController extends BaseController {
                 return result;
             }
             msg.setViewCount(msg.getViewCount() + 1);
-            msg.setStatus(1);
+            msg.setStatus(Constants.AUTO_MSG_STATUS_MARKREAD);
             autoMsgService.update(msg);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("msgId", msg.getMsgId());
@@ -1104,7 +1104,7 @@ public class AutoUserController extends BaseController {
                     object.put("buyerId",car.getBuyerId());
                     object.put("buyerPhone",user.getPhone());
 
-                    object.put("carName",car.getCarName());
+                    object.put("carName",car.getModelName());
                     object.put("brandName",car.getBrandName());
                     object.put("catName",car.getCatName());
                     object.put("officalPrice",(car.getOfficalPrice()));

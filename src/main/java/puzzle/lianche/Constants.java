@@ -215,6 +215,10 @@ public class Constants {
 
     public static final Integer DEFAULT_SMS_TYPE = 4;
 
+    //推送消息状态
+    public static final Integer AUTO_MSG_STATUS_UNREAD = 1;
+    public static final Integer AUTO_MSG_STATUS_MARKREAD = 2;
+
 
     //region 订单
     /*
@@ -455,6 +459,8 @@ public class Constants {
         public static final String ADMIN_AUTO_MSG = "admin/auto/msg/index";
 
         public static final String ADMIN_AUTO_BRAND = "admin/auto/brand/index";
+
+        public static final String ADMIN_AUTO_BRAND_SHOW = "admin/auto/brand/show";
 
         public static final String ADMIN_AUTO_BRAND_CAT = "admin/auto/brandcat/index";
 

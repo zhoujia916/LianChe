@@ -12,7 +12,7 @@
 
 <div class="row" id="">
     <div class="col-xs-12">
-        <div id="role-gridview" class="gridview">
+        <div id="ad-gridview" class="gridview">
             <div class="grid-filter">
                 <select data-init="0" name="adPositionId" style="height: 29px;width: 160px;">
                     <option value="0">请选择广告位置</option>
@@ -103,7 +103,7 @@
             selectOtherMonths: false
         });
 
-        $("#role-gridview").gridview({
+        $("#ad-gridview").gridview({
             url: "autoad/list.do",
             form: {
                 url: "autoad/action.do"

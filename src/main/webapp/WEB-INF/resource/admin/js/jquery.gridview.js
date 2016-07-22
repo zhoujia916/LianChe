@@ -16,7 +16,7 @@
             }
         });
     };
-	
+
 	function debugMsg(mode, msg){
 		if(mode){
 			if(console.log){
@@ -24,18 +24,18 @@
 			}
 		}
 	}
-	
+
 	function initialize(jq, opts){
 		if(opts.columns == null || opts.columns.length == 0){
 			debugMsg(opts.debug, "columns can't be null or empty");
 			return;
 		}
-		
+
 		loadData(jq);
 
         attachEvent(jq);
 	}
-	
+
 	function attachEvent(jq){
 		var opts = getOption(jq);
 
@@ -51,7 +51,7 @@
 				loadData(jq);
 			}
 		});
-		
+
 		jq.on("click", opts.gridaction + " .btn-action", function(){
 			var action = $(this).attr("data-action");
             if(!isUndefinedOrNull(opts.buttons) && !isUndefinedOrNull(opts.buttons[action]) && $.isFunction(opts.buttons[action].handler)){
@@ -99,7 +99,7 @@
 				loadData(jq);
 			}
 		});
-		
+
 		jq.on("click", opts.gridtable + " .btn-action", function(){
 			var action = $(this).attr("data-action").toLowerCase();
 			var key = $(this).attr("data-key");
@@ -128,14 +128,14 @@
 				});
 			}
 		});
-		
+
 		jq.on("change", opts.gridtable + " thead " + opts.gridallcb, function(){
 			var checked = this.checked;
 			jq.find(opts.gridtable + " tbody " + opts.gridrowcb).each(function(){
 				this.checked = checked;
 			});
 		});
-			
+
 		jq.on("click", opts.gridform + " .btn-action", function(){
 			var action = $(this).attr("data-action");
 			var form = false;
@@ -173,8 +173,8 @@
 				fillForm(form);
 			}
 		});
-			
-		
+
+
 		if(opts.treeReader.show){
 			jq.on("click", opts.gridtable + " tbody " + opts.treeReader.branch_class, function(event){
 				var key = $(this.parentNode).attr("data-key");
@@ -193,7 +193,7 @@
 
 		jq.find(opts.gridform + " .widget-box").draggable({ handle:".widget-header", cancel: ".widget-toolbar" });
 	}
-	
+
 	function getKeys(jq, length){
 		var keys = [];
 		var opts = $.data(jq[0], "gridview");
@@ -210,7 +210,7 @@
 		}
 		return keys;
 	}
-	
+
 	function getRows(jq, length){
 		var rows = [];
 		var opts = $.data(jq[0], "gridview");
@@ -230,7 +230,7 @@
 		}
 		return rows;
 	}
-	
+
 	function getRowData(jq, key){
 		var rowData = null;
 		var opts = $.data(jq[0], "gridview");
@@ -282,7 +282,7 @@
 			fillForm(form, data);
 			form.find(".form-actions").hide();
 			form.addClass("read-form");
-			
+
 			form.find("input, select, textarea").attr("disabled", "disabled");
 		}
 
@@ -300,14 +300,14 @@
 
         $("body").addClass("noscroll");
 	}
-	
+
 	function hideForm(jq, action){
 		var opts = $.data(jq[0], "gridview");
 		var form = $(opts.form.selector);
 		form.hide();
         $("body").removeClass("noscroll");
 	}
-	
+
 	function fillForm(form, data){
 		var fields = [];
 		form.find("input, select, textarea").each(function(){
@@ -390,12 +390,12 @@
         });
         return result;
     }
-	
+
 	function showLoading(jq){
 		var opts = $.data(jq[0], "gridview");
 		jq.find(opts.gridtable + " tbody").html("<tr><td colspan='" + opts.columns.length + "'><div class='loading'><i class='ace-icon fa fa-spinner bigger-200 orange'></i><span class='text'>正在加载</span></div></td></tr>");
 	}
-	
+
 	function hideLoading(jq){
 		var opts = $.data(jq[0], "gridview");
 		jq.find(opts.gridtable + " tbody tr").each(function(){
@@ -404,7 +404,7 @@
 			}
 		});
 	}
-	
+
 	function showStatus(jq, status){
 		var opts = $.data(jq[0], "gridview");
 		if(status == "empty"){
@@ -419,7 +419,7 @@
 			});
 		}
 	}
-	
+
 	function loadData(jq, param){
 		var opts = $.data(jq[0], "gridview");
 		if(opts.status === "loading"){
@@ -427,13 +427,13 @@
 			return;
 		}
 		changeStatus(jq, "loading");
-		
+
 		param = $.extend(true, opts.param, opts.filter, opts.search.data, param);
 
         if(opts.pagination.show){
             param = $.extend(param, {pageIndex: opts.pagination.pageIndex, pageSize: opts.pagination.pageSize});
         }
-		
+
 		debugMsg(opts.debug, "Gridview request data:");
 		debugMsg(opts.debug, param);
 		$.ajax({
@@ -448,7 +448,7 @@
 					var opts = $.data(this[0], "gridview");
 					debugMsg(opts.debug, "Gridview load data success:");
 					debugMsg(opts.debug, response);
-					
+
 					if(response[opts.jsonReader.statu_field] == 0){
 						if(response[opts.jsonReader.data_field] && response[opts.jsonReader.data_field].length > 0){
 							var total = response[opts.jsonReader.total_field] || response[opts.jsonReader.data_field].length;
@@ -459,16 +459,16 @@
 							changeStatus(this, "loaded.empty");
 						}
 					}else{
-						
+
 						changeStatus(this, "loaded.error");
 					}
 				}
 			},
 			error: function(xhr, status, error){
 				var opts = getOption(this);
-				
+
 				debugMsg(opts.debug, "Gridview load data error:" + status);
-				
+
 				if(status == "timeout"){
 					changeStatus(this, "loaded.timeout");
 				}
@@ -481,7 +481,7 @@
 			}
 		});
 	}
-	
+
 	function changeStatus(jq, status){
 		var opts = $.data(jq[0], "gridview");
 		opts.status = status;
@@ -520,7 +520,7 @@
 			showStatus(jq, "abort");
 		}
 	}
-	
+
 	function changePage(jq, pageIndex, pageSize){
 		setOption(jq, { pagination:{ pageIndex: pageIndex, pageSize: pageSize } });
 		loadData(jq);
@@ -568,13 +568,13 @@
         }
         return html;
     }
-	
+
 	function getLevel(opts, row){
 		if(opts.treeReader.show == false || opts.treeReader.parent_field == null)
 			return undefined;
 		if(row[opts.treeReader.parent_field] == opts.treeReader.parent_root)
 			return 0;
-		
+
 		var level = 0;
 		var hasParent = true;
 		while(hasParent){
@@ -590,7 +590,7 @@
 		}
 		return level;
 	}
-	
+
 	function formatColumn(opts, column, row){
 		var html = '';
 		if(column.name == "checkbox"){
@@ -611,9 +611,9 @@
 					html += '	<i class="ace-icon ' + action.icon + ' bigger-120"></i>';
 					html += '</a>';
 				});
-				
+
 				html += '</div>';
-				
+
 				html += '<div class="hidden-md hidden-lg">';
 				html += '	<div class="inline position-relative">';
 				html += '		<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">';
@@ -663,13 +663,13 @@
 				if(style.length > 0 && style[style.length - 1] != ';')
 					style += ";";
 				style += "text-align:left;";
-				
+
 				html += '<td class="' + clazz + '"' + ' style="' + style + '">';
 				html += prefix + (!column.value ? row[column.name] : (row[column.value] || ""));
 				html += '</td>';
 			}else{
 				html += '<td' + (column.clazz ? (' class="' + column.clazz + '"') : "") + (column.style ? (' style="' + column.style + '"') : "") + '>';
-				html += (column.prefix ? column.prefix : "") + 
+				html += (column.prefix ? column.prefix : "") +
 						(column.value ? (isUndefinedOrNull(row[column.value]) ? "" : row[column.value]) :
                                         (isUndefinedOrNull(row[column.name]) ? "" : row[column.name])) +
 						(column.suffix ? column.suffix : "");
@@ -681,13 +681,13 @@
 		debugMsg(opts.debug, html);
 		return html;
 	}
-	
+
 	function showPagination(jq, total){
 		var opts = $.data(jq[0], "gridview");
 		if(opts.pagination.show && total > 0 && $.fn.pager){
 			$(opts.pagination.selector).pager({
-				recordCount: total, 
-				pageIndex: opts.pagination.pageIndex, 
+				recordCount: total,
+				pageIndex: opts.pagination.pageIndex,
 				pageSize: opts.pagination.pageSize,
 				changePage: function(pageIndex, pageSize){
 					changePage(jq, pageIndex, pageSize);
@@ -698,7 +698,7 @@
 			jq.find(opts.gridtable + " " + opts.pagination.selector).hide();
 		}
 	}
-	
+
 	function hidePagination(jq){
 		var opts = $.data(jq[0], "gridview");
 		jq.find(opts.gridtable + " " + opts.pagination.selector).hide();
@@ -707,12 +707,12 @@
     function getOption(jq) {
         return $.data(jq[0], 'gridview');
     }
-	
+
 	function setOption(jq, opts) {
         var now = $.data(jq[0], 'gridview');
         $.extend(true, now, opts);
     }
-	
+
     $.fn.gridview.methods = {
         getOption: function () {
             return getOption($(this));
@@ -866,7 +866,7 @@
 			showConfirm("您确定删除指定项？", handler);
 		},
 		onLoadSuccess: function(){
-			
+
 		},
 		afterSaveSuccess: function(){
 			showTip("保存成功！");
@@ -875,16 +875,16 @@
 			showAlert("保存失败！");
 		},
 		afterDeleteSuccess: function(){
-			
+
 		},
 		afterDeleteError: function(){
 			showAlert("删除失败！");
 		},
 		onEdit: function(){
-			
+
 		},
 		onView: function(){
-			
+
 		}
     };
 })(jQuery);

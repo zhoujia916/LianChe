@@ -106,7 +106,7 @@ public class AutoCarController extends BaseController {
                         JSONObject jsonItem = new JSONObject();
                         jsonItem.put("isOffical", item.getAddUserId().equals(officalUserId));
                         jsonItem.put("carId", item.getCarId());
-                        jsonItem.put("carName", item.getCarName());
+                        jsonItem.put("carName", item.getModelName());
                         jsonItem.put("brandName", item.getBrandName());
                         jsonItem.put("catName", item.getCatName());
                         jsonItem.put("pic", item.getPic());
@@ -178,7 +178,7 @@ public class AutoCarController extends BaseController {
             JSONObject jsonCar = new JSONObject();
             jsonCar.put("isOffical", car.getAddUserId().equals(officalUserId));
             jsonCar.put("carId", car.getCarId());
-            jsonCar.put("carName", car.getCarName());
+            jsonCar.put("carName", car.getModelName());
             jsonCar.put("collectId", car.getCollectId() == null ? 0 : car.getCollectId());
             jsonCar.put("officalPrice", car.getOfficalPrice());
 

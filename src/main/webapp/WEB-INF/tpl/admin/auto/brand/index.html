@@ -45,63 +45,6 @@
 
                 </div>
             </div>
-            <!--
-            <div style="position: fixed;width:100%;height:100%;top:0;z-index:1000;">
-                <div style="background:#000;opacity:0.1;width:100%;height:100%;"></div>
-            </div>
-            -->
-            <!--edit form-->
-            <div class="grid-form save-form" style="">
-                <div class="overlay"></div>
-                <div class="widget-box widget-color-blue light-border ui-sortable-handle" style="width:600px;">
-                    <div class="widget-header">
-                        <h5 class="widget-title smaller"></h5>
-
-                        <div class="widget-toolbar">
-                            <a href="#" class="btn-action" data-action="hide">
-                                <i class="ace-icon fa fa-close white"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            <div class="alert-info red"></div>
-                            <form class="form-horizontal" role="form">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        名称
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" id="brandName" name="brandName" placeholder="名称" class="txt input-sm col-sm-5 ">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        排序号
-                                    </label>
-
-                                    <div class="col-sm-9">
-                                        <input type="text" data-init="0" id="sortOrder"  name="sortOrder" placeholder="排序号" class="txt input-sm col-sm-2">
-                                    </div>
-                                </div>
-                                <div class="clearfix form-actions">
-                                    <input type="hidden" name="brandId" value="" />
-                                    <a class="btn btn-sm btn-action" data-action="reset">
-                                        <i class="ace-icon fa fa-undo"></i>
-                                        重置
-                                    </a>
-                                    &nbsp; &nbsp; &nbsp;
-                                    <a class="btn btn-sm btn-primary btn-action" data-action="save">
-                                        <i class="ace-icon fa fa-check"></i>
-                                        提交
-                                    </a>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="grid-form search-form "></div>
 
@@ -117,22 +60,7 @@
         $("#brand-gridview").gridview({
             url: "autobrand/list.do",
             form: {
-                url: "autobrand/action.do",
-                check:function(){
-                    var brandName=$("#brandName").val();
-                    var sortOrder=$("#sortOrder").val();
-                    if(!brandName){
-                        console.log("check form");
-                        $("#brandName").focus();
-                        return "请输入品牌名称";
-                    }else if(sortOrder<0 || isNaN(sortOrder)){
-                        console.log("check form");
-                        $("#sortOrder").focus();
-                        return "排序号必须大于等于0且必须为数字";
-                    }else{
-                        return true;
-                    }
-                }
+                url: "autobrand/action.do"
             },
             jsonReader: {
                 key_field: 'brandId'
@@ -147,7 +75,7 @@
                 {
                     name: "brandLogo",
                     format: function(opts, column, row){
-                        return "<td><img style='width: 30px;height: 30px;' src='{{$contextPath}}/resource/admin/img/car/" + row[column.name] + "' /></td>";
+                        return "<td><img style='width: 30px;height: 30px;' src='" + row[column.name] + "' /></td>";
                     }
                 },
                 {
@@ -165,16 +93,20 @@
                 }
             ],
             buttons:{
-                select:{
+                add:{
                     handler:function(){
-                        var key = this.gridview("getKey");
-                        var hash = "";
-                        if(!key){
-                            hash = "admin/autobrandcat/index";
-                        }else{
-                            hash = "admin/autobrandcat/index/"+key;
-                        }
+                        var hash="page/autobrand/add";
                         changeHash(hash);
+                    }
+                },
+                edit:{
+                    handler:function(key){
+                        key == key || this.gridview("getKey");
+                        if(!key){
+                            showTip("请选择选项");
+                            return;
+                        }
+                        changeHash("page/autobrand/edit/"+key);
                     }
                 }
             }

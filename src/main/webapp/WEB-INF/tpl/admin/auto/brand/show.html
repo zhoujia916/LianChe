@@ -1,0 +1,150 @@
+<title>Puzzle Admin {{if $action eq 'CREATE'}}新建品牌{{elseif $action eq 'UPDATE'}}编辑品牌{{/if}}</title>
+
+<div class="page-header">
+    <h4>
+        <i class="glyphicon glyphicon-signal"></i>
+        品牌管理
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            {{if $action eq 'CREATE'}}新建品牌{{elseif $action eq 'UPDATE'}}编辑品牌{{/if}}
+        </small>
+
+        <a class="btn btn-xs orange pull-right btn-warning" href="#page/autobrand/index">
+            <i class="glyphicon glyphicon-arrow-left"></i>返回品牌管理</span></a>
+    </h4>
+</div>
+<div class="row" id="">
+    <div class="col-xs-12">
+        <form class="form-horizontal" id="form" enctype="multipart/form-data">
+            <input hidden="hidden" name="action" value="{{$action}}"/>
+            {{if $action eq 'UPDATE'}}
+            <input hidden="hidden" name="brandId" value="{{$brand.brandId}}"/>
+            {{/if}}
+            <div class="space-10"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">
+                    名称
+                </label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="brandName" name="brandName" placeholder="名称" {{if $brand}} value="{{$brand.brandName}}" {{/if}} class="txt input-sm col-sm-5 ">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">
+                    图标
+                </label>
+
+                <div class="col-sm-4" style="height:62px;">
+                    <input type="hidden" id="brandLogo" name="brandLogo" {{if $brand}} value="{{$brand.brandLogo}}" {{/if}}/>
+                    <input type="file" id="file" name="file" placeholder="图标">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">
+                    排序号
+                </label>
+
+                <div class="col-sm-9">
+                    <input type="text" data-init="0" id="sortOrder"  name="sortOrder" placeholder="排序号" {{if $brand}} value="{{$brand.sortOrder}}" {{/if}} class="txt input-sm col-sm-2">
+                </div>
+            </div>
+            <br><br>
+            <div class="clearfix form-actions">
+                <button id="btnReset" class="btn" type="reset">
+                    <i class="ace-icon fa fa-undo bigger-110"></i>
+                    重置
+                </button>
+                &nbsp; &nbsp;
+                <button id="btnSubmit" data-action="{{$action}}" class="btn btn-info" type="button">
+                    <i class="ace-icon fa fa-check bigger-110"></i>
+                    确定
+                </button>
+            </div>
+        </form>
+    </div><!-- /.col -->
+</div><!-- /.row -->
+<script type="text/javascript" src="{{$contextPath}}/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="{{$contextPath}}/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="{{$contextPath}}/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" src="{{$contextPath}}/resource/admin/js/jquery.form.js"></script>
+<script type="text/javascript">
+
+    $('.page-content-area').ace_ajax('loadScripts', [ null,null], function(){
+        $("#btnSubmit").on("click",function(){
+            var brandName = $.trim($("#brandName").val());
+            var brandLogo = $("#brandLogo").val();
+            var sortOrder = $.trim($("#sortOrder").val());
+            if(brandName == ""){
+                showTip("品牌名称不能为空");
+                $("#brandName").focus();
+                return;
+            }
+            if(brandLogo == ""){
+                var files = $('#file').data("ace_input_files");
+                if (files == null || files.length == 0) {
+                    showTip("请选择图标");
+                    return;
+                }
+            }
+            if(sortOrder == ""){
+                showTip("排序号不能为空");
+                $("#sortOrder").focus();
+                return;
+            }
+            if(isNaN(sortOrder)){
+                showTip("排序号必须为数字");
+                $("#sortOrder").focus();
+                return;
+            }
+
+            $("#form").ajaxSubmit({
+                type: "post",
+                url: "{{$contextPath}}/admin/autobrand/action.do",
+                dataType: "json",
+                success:function(result){
+                    if(result.code == 0){
+                        changeHash("admin/autobrand/index");
+                    }else{
+                        showTip(result.msg);
+                    }
+                }
+            });
+        });
+
+
+        $('#file').ace_file_input({
+            style:'well',
+            allowExt: ["jpeg", "jpg", "png", "gif" , "bmp"],
+            allowMime: ["image/jpg", "image/jpeg", "image/png", "image/gif", "image/bmp"],
+
+            btn_choose:'拖放或点击选择图片',
+            btn_change:null,
+            no_icon:'ace-icon fa fa-cloud-upload',
+            droppable:true,
+            thumbnail:'small',
+            before_remove : function() {
+                $("#brandLogo").val("");
+                return true;
+            },
+            preview_error : function(filename, error_code) {
+                var errorMsg = '';
+                if(error_code == 2){
+                    errorMsg = "加载读取图片出错";
+                }else if(error_code == 3){
+                    errorMsg = "创建缩列图出错";
+                }
+                showTip(errorMsg);
+            }
+        });
+
+        {{if $action eq 'UPDATE' and $brand.brandLogo}}
+        var files = [{
+            name: "temp.jpeg",
+            type: "image",
+            path: "{{$brand.brandLogo}}"
+        }];
+        $('#file').ace_file_input("show_file_list", files, false);
+        {{/if}}
+    });
+</script>

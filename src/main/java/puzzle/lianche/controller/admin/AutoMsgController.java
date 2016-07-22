@@ -111,7 +111,7 @@ public class AutoMsgController extends ModuleController {
                     msg.setMsgContent(autoMsg.getMsgContent());
                     msg.setMsgType(1);
                     msg.setFromUserId(0);
-                    msg.setStatus(1);
+                    msg.setStatus(Constants.AUTO_MSG_STATUS_UNREAD);
                     msg.setAddTime(ConvertUtil.toLong(new Date()));
                     msg.setViewCount(0);
                     if(autoMsg.getMsgContentType()==2){

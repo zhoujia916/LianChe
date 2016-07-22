@@ -897,7 +897,7 @@ public class AutoOrderController extends BaseController {
                     jsonCar.put("pic", car.getPic());
                     jsonCar.put("brandName", car.getBrandName());
                     jsonCar.put("catName", car.getCatName());
-                    jsonCar.put("carName", car.getCarName());
+                    jsonCar.put("carName", car.getModelName());
                     jsonCar.put("officalPrice", car.getOfficalPrice());
                     jsonCar.put("addUserAuth", car.getAddUserStatus() == Constants.AUTO_USER_STATUS_AUTH_SUCCESS);
 
