@@ -176,7 +176,7 @@ public class AutoUserController extends BaseController {
             }
 
             user.setPassword(EncryptUtil.MD5(user.getPassword()));
-            user.setUserAvatar("/resource/admin/avatars/profile-pic.jpg");
+            user.setUserAvatar(getHost()+"/resource/admin/avatars/profile-pic.jpg");
             user.setPoint(100);
             user.setPhone(user.getUserName());
             user.setBirth(new Long(0));
